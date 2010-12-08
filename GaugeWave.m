@@ -1,4 +1,6 @@
 
+(* A gauge wave exact solution thorn *)
+
 Get["KrancThorn`"];
 
 SetEnhancedTimes[False];
