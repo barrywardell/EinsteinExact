@@ -139,7 +139,7 @@ calculations =
 keywordParameters = 
 {
   {Name -> "when",
-   AllowedValues -> {"initial", "always"},
+   AllowedValues -> {"initial", "always", "dummy"},
    Default -> "initial"}
 };
 
