@@ -1,0 +1,102 @@
+# File produced by Kranc
+
+
+shares: GenericFD
+
+
+
+shares: MethodOfLines
+
+USES CCTK_INT MoL_Num_Evolved_Vars
+
+restricted:
+CCTK_INT verbose "verbose"
+{
+  *:* :: ""
+} 0
+
+restricted:
+CCTK_REAL amp "amp"
+{
+  "*:*" :: ""
+} 0.1
+
+restricted:
+CCTK_REAL period "period"
+{
+  "*:*" :: ""
+} 1
+
+restricted:
+CCTK_REAL theta "theta"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL phi "phi"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL psi "psi"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL vx "vx"
+{
+  "*:*" :: ""
+} 0
+
+private:
+KEYWORD when "when"
+{
+  "initial" :: "initial"
+  "always" :: "always"
+} "initial"
+
+restricted:
+CCTK_INT GaugeWave_MaxNumEvolvedVars "Number of evolved variables used by this thorn" ACCUMULATOR-BASE=MethodofLines::MoL_Num_Evolved_Vars
+{
+  0:0 :: "Number of evolved variables used by this thorn"
+} 0
+
+restricted:
+CCTK_INT timelevels "Number of active timelevels"
+{
+  0:3 :: ""
+} 3
+
+restricted:
+CCTK_INT rhs_timelevels "Number of active RHS timelevels"
+{
+  0:3 :: ""
+} 1
+
+restricted:
+CCTK_INT gauge_wave_initial_calc_every "gauge_wave_initial_calc_every"
+{
+  *:* :: ""
+} 1
+
+restricted:
+CCTK_INT gauge_wave_always_calc_every "gauge_wave_always_calc_every"
+{
+  *:* :: ""
+} 1
+
+restricted:
+CCTK_INT gauge_wave_initial_calc_offset "gauge_wave_initial_calc_offset"
+{
+  *:* :: ""
+} 0
+
+restricted:
+CCTK_INT gauge_wave_always_calc_offset "gauge_wave_always_calc_offset"
+{
+  *:* :: ""
+} 0
+
