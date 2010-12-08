@@ -141,7 +141,7 @@ keywordParameters =
    Default -> "initial"}
 };
 
-CreateKrancThornTT[groups, ".", "GaugeWave", 
+CreateKrancThornTT[groups, "thorns", "GaugeWave", 
   Calculations -> calculations,
   DeclaredGroups -> declaredGroupNames,
   IntParameters -> intParameters,
