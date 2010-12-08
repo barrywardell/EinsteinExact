@@ -56,6 +56,7 @@ KEYWORD when "when"
 {
   "initial" :: "initial"
   "always" :: "always"
+  "dummy" :: "dummy"
 } "initial"
 
 restricted:
