@@ -113,7 +113,7 @@ gaugeWaveCalc[when_] :=
 
     Sequence@@Flatten[Table[Jac[i,j] -> Rot[[i,j]], {i,1,3}, {j,1,3}]],
 
-    XX[ui] -> Jac[lj,ui] xx[uj],
+    XX[ui] -> Jac[ui,lj] xx[uj],
     X -> XX[1],
 
     G[li,lj] -> Euc[li,lj],
@@ -123,8 +123,8 @@ gaugeWaveCalc[when_] :=
     alp -> Sqrt[(1-amp Sin[2 Pi (X - t)/period])],
     beta[ui] -> 0,
 
-    g[li,lj] -> Jac[li,um] Jac[lj,un] G[lm,ln],
-    k[li,lj] -> Jac[li,um] Jac[lj,un] K[lm,ln]
+    g[li,lj] -> Jac[um,li] Jac[un,lj] G[lm,ln],
+    k[li,lj] -> Jac[um,li] Jac[un,lj] K[lm,ln]
   }
 };
 
