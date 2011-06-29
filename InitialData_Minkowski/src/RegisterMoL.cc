@@ -4,7 +4,7 @@
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 
-void GaugeWave_RegisterVars(CCTK_ARGUMENTS)
+extern "C" void InitialData_Minkowski_RegisterVars(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;

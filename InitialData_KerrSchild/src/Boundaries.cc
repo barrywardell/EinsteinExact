@@ -17,7 +17,7 @@
 /* are currently applied in separate functions      */
 
 
-void GaugeWave_CheckBoundaries(CCTK_ARGUMENTS)
+extern "C" void InitialData_KerrSchild_CheckBoundaries(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
@@ -25,7 +25,7 @@ void GaugeWave_CheckBoundaries(CCTK_ARGUMENTS)
   return;
 }
 
-void GaugeWave_SelectBoundConds(CCTK_ARGUMENTS)
+extern "C" void InitialData_KerrSchild_SelectBoundConds(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;

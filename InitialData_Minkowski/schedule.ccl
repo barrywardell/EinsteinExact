@@ -1,0 +1,55 @@
+# File produced by Kranc
+
+
+schedule InitialData_Minkowski_Startup at STARTUP
+{
+  LANG: C
+  OPTIONS: meta
+} "create banner"
+
+schedule InitialData_Minkowski_RegisterVars in MoL_Register
+{
+  LANG: C
+  OPTIONS: meta
+} "Register Variables for MoL"
+
+schedule InitialData_Minkowski_RegisterSymmetries in SymmetryRegister
+{
+  LANG: C
+  OPTIONS: meta
+} "register symmetries"
+
+
+if (CCTK_EQUALS(when, "initial"))
+{
+  schedule gauge_wave_initial in ADMBase_PostInitial
+  {
+    LANG: C
+  } "gauge_wave_initial"
+}
+
+
+if (CCTK_EQUALS(when, "always"))
+{
+  schedule gauge_wave_always at ANALYSIS
+  {
+    LANG: C
+  } "gauge_wave_always"
+}
+
+schedule InitialData_Minkowski_SelectBoundConds in MoL_PostStep
+{
+  LANG: C
+  OPTIONS: level
+} "select boundary conditions"
+
+schedule InitialData_Minkowski_CheckBoundaries at BASEGRID
+{
+  LANG: C
+  OPTIONS: meta
+} "check boundaries treatment"
+
+schedule group ApplyBCs as InitialData_Minkowski_ApplyBCs in MoL_PostStep after InitialData_Minkowski_SelectBoundConds
+{
+  # no language specified
+} "Apply boundary conditions controlled by thorn Boundary"

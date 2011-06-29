@@ -1,19 +1,19 @@
 # File produced by Kranc
 
 
-schedule GaugeWave_Startup at STARTUP
+schedule InitialData_KerrSchild_Startup at STARTUP
 {
   LANG: C
   OPTIONS: meta
 } "create banner"
 
-schedule GaugeWave_RegisterVars in MoL_Register
+schedule InitialData_KerrSchild_RegisterVars in MoL_Register
 {
   LANG: C
   OPTIONS: meta
 } "Register Variables for MoL"
 
-schedule GaugeWave_RegisterSymmetries in SymmetryRegister
+schedule InitialData_KerrSchild_RegisterSymmetries in SymmetryRegister
 {
   LANG: C
   OPTIONS: meta
@@ -37,19 +37,19 @@ if (CCTK_EQUALS(when, "always"))
   } "gauge_wave_always"
 }
 
-schedule GaugeWave_SelectBoundConds in MoL_PostStep
+schedule InitialData_KerrSchild_SelectBoundConds in MoL_PostStep
 {
   LANG: C
   OPTIONS: level
 } "select boundary conditions"
 
-schedule GaugeWave_CheckBoundaries at BASEGRID
+schedule InitialData_KerrSchild_CheckBoundaries at BASEGRID
 {
   LANG: C
   OPTIONS: meta
 } "check boundaries treatment"
 
-schedule group ApplyBCs as GaugeWave_ApplyBCs in MoL_PostStep after GaugeWave_SelectBoundConds
+schedule group ApplyBCs as InitialData_KerrSchild_ApplyBCs in MoL_PostStep after InitialData_KerrSchild_SelectBoundConds
 {
   # no language specified
 } "Apply boundary conditions controlled by thorn Boundary"

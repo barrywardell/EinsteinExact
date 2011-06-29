@@ -1,6 +1,6 @@
 # File produced by Kranc
 
-implements: GaugeWave
+implements: InitialData_KerrSchild
 
 inherits:   admbase Grid GenericFD Boundary
 
@@ -16,6 +16,9 @@ USES FUNCTION MoLRegisterEvolved
 
 SUBROUTINE Diff_coeff(CCTK_POINTER_TO_CONST IN cctkGH, CCTK_INT IN dir, CCTK_INT IN nsize, CCTK_INT OUT ARRAY imin, CCTK_INT OUT ARRAY imax, CCTK_REAL OUT ARRAY q, CCTK_INT IN table_handle)
 USES FUNCTION Diff_coeff
+
+CCTK_INT FUNCTION MultiPatch_GetMap(CCTK_POINTER_TO_CONST IN cctkGH)
+USES FUNCTION MultiPatch_GetMap
 
 CCTK_INT FUNCTION Boundary_SelectGroupForBC(CCTK_POINTER_TO_CONST IN GH, CCTK_INT IN faces, CCTK_INT IN boundary_width, CCTK_INT IN table_handle, CCTK_STRING IN group_name, CCTK_STRING IN bc_name)
 USES FUNCTION Boundary_SelectGroupForBC

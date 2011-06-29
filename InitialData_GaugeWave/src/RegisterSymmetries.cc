@@ -5,7 +5,7 @@
 #include "cctk_Parameters.h"
 #include "Symmetry.h"
 
-void GaugeWave_RegisterSymmetries(CCTK_ARGUMENTS)
+extern "C" void InitialData_GaugeWave_RegisterSymmetries(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
