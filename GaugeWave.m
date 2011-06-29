@@ -1,7 +1,9 @@
+(* ::Package:: *)
 
 (* A gauge wave exact solution thorn *)
 
 Get["KrancThorn`"];
+Needs["Metrics`"];
 
 SetEnhancedTimes[False];
 SetSourceLanguage["C"];
@@ -18,7 +20,7 @@ Map[DefineTensor,
   g, k, AInv, DDphi, B, DDalpha, divA, gInv, divh,
   gPhys, kPhys, n, dir, dampG, dampDD, dampDDD, dampDG, ell,
   Lambda00, Lambda0, Lambda, g00, g0,
-  Jac, xx, XX, XX2, X, G, K
+  Jac, xx, XX, X, Y, Z, G, K
 }];
 
 Map[AssertSymmetricDecreasing, 
@@ -95,45 +97,58 @@ Rpsi =
 
 Rot = FullSimplify[Rpsi.Rtheta.Rphi];
 
-gaugeWaveCalc[when_] := 
-{
-  Name -> "gauge_wave_" <> when,
-  Switch[when,
-    "initial", Schedule -> {"in ADMBase_PostInitial"},
-    "always",  Schedule -> {"at ANALYSIS"},
-    _, Throw["Unrecognised scheduling keyword"]],
+gaugeWaveCalc[when_, spacetime_] := Module[{m, fourMetric, threeMetric, lapse, shift, extrinsicCurvature},
+  m = GetMetric[spacetime];
+  If[("Coordinates" /. m) =!= {t, x, y, z},
+    Throw["Error, only metrics in Cartesian coordinates are supported"];
+  ];
 
-  ConditionalOnKeyword -> {"when", when},  
-  Shorthands -> {Jac[ui,lj], xx[ui], XX[ui], XX2, X, G[li,lj], K[li,lk]},
-  Equations -> 
+  fourMetric = ("Metric" /. m) /. {x -> X, y -> Y, z -> Z};
+
+  threeMetric = fourMetric[[2;;4, 2;;4]];
+  lapse = -fourMetric[[1,1]];
+  shift = fourMetric[[1, 2;;4]];
+  extrinsicCurvature = - 1/2 D[threeMetric, t] / Sqrt[lapse];
+
   {
-    xx[1] -> x,
-    xx[2] -> y,
-    xx[3] -> z,
+    Name -> "gauge_wave_" <> when,
+    Switch[when,
+      "initial", Schedule -> {"in ADMBase_PostInitial"},
+      "always",  Schedule -> {"at ANALYSIS"},
+      _, Throw["Unrecognised scheduling keyword"]],
 
-    Sequence@@Flatten[Table[Jac[i,j] -> Rot[[i,j]], {i,1,3}, {j,1,3}]],
+    ConditionalOnKeyword -> {"when", when},
+    Shorthands -> {Jac[ui,lj], xx[ui], XX[ui], X, Y, Z, G[li,lj], K[li,lk]},
+    Equations -> Flatten@
+    {
+      xx[1] -> x,
+      xx[2] -> y,
+      xx[3] -> z,
 
-    XX[ui] -> Jac[ui,lj] xx[uj],
-    X -> XX[1],
+      Table[Jac[i,j] -> Rot[[i,j]], {i,1,3}, {j,1,3}],
 
-    G[li,lj] -> Euc[li,lj],
-    G11 -> (1-amp Sin[2 Pi (X - t)/period]),
-    K[li,lj] -> 0,
-    K11 -> -Pi amp/period Cos[2 Pi (X - t)/period]/Sqrt[1- amp Sin[2Pi(X-t)/period]],
-    alp -> Sqrt[(1-amp Sin[2 Pi (X - t)/period])],
-    beta[ui] -> 0,
+      XX[ui] -> Jac[ui,lj] xx[uj],
+      X -> XX[1],
+      Y -> XX[2],
+      Z -> XX[3],
 
-    g[li,lj] -> Jac[um,li] Jac[un,lj] G[lm,ln],
-    k[li,lj] -> Jac[um,li] Jac[un,lj] K[lm,ln]
+      Table[Symbol["G"<>ToString[i]<>ToString[j]] -> threeMetric[[i, j]], {j, 3}, {i, 3}],
+      Table[Symbol["K"<>ToString[i]<>ToString[j]] -> extrinsicCurvature[[i, j]], {j, 3}, {i, 3}],
+      alp -> lapse,
+      Table[Symbol["beta"<>ToString[i]] -> shift[[i]], {i, 3}],
+
+      g[li,lj] -> Jac[um,li] Jac[un,lj] G[lm,ln],
+      k[li,lj] -> Jac[um,li] Jac[un,lj] K[lm,ln]
+    }
   }
-};
+];
 
-Print[gaugeWaveCalc["initial"]];
+Print[gaugeWaveCalc["initial", "GaugeWave"]];
 
 calculations = 
 {
-  gaugeWaveCalc["initial"],
-  gaugeWaveCalc["always"]
+  gaugeWaveCalc["initial", "GaugeWave"],
+  gaugeWaveCalc["always", "GaugeWave"]
 };
 
 keywordParameters = 
@@ -150,3 +165,6 @@ CreateKrancThornTT[groups, "thorns", "GaugeWave",
   RealParameters -> realParameters,
   KeywordParameters -> keywordParameters,
   InheritedImplementations -> {"admbase"}];
+
+
+
