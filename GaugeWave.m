@@ -61,19 +61,24 @@ shorthands =
 (* Parameters *)
 (**************************************************************************************)
 
-realParameters = 
+realParameters =
 {
-  {Name -> amp, Default -> 10^-1},
-  {Name -> period, Default -> 1},
   {Name -> theta, Default -> 0},
   {Name -> phi, Default -> 0},
   {Name -> psi, Default -> 0},
   vx
 };
 
-intParameters = 
+intParameters =
 {
 
+};
+
+keywordParameters =
+{
+  {Name -> "when",
+   AllowedValues -> {"initial", "always", "dummy"},
+   Default -> "initial"}
 };
 
 k11=kxx; k21=kxy; k22=kyy; k31=kxz; k32=kyz; k33=kzz;
@@ -97,12 +102,14 @@ Rpsi =
 
 Rot = FullSimplify[Rpsi.Rtheta.Rphi];
 
-gaugeWaveCalc[when_, spacetime_] := Module[{m, fourMetric, threeMetric, lapse, shift, extrinsicCurvature},
+idThorn[spacetime_] :=
+  Module[{m, fourMetric, threeMetric, lapse, shift, extrinsicCurvature, calc, calculations, parameters},
   m = GetMetric[spacetime];
   If[("Coordinates" /. m) =!= {t, x, y, z},
     Throw["Error, only metrics in Cartesian coordinates are supported"];
   ];
 
+  parameters = ("Parameters" /. m)/. "Parameters" -> {};
   fourMetric = ("Metric" /. m) /. {x -> X, y -> Y, z -> Z};
 
   threeMetric = fourMetric[[2;;4, 2;;4]];
@@ -110,7 +117,7 @@ gaugeWaveCalc[when_, spacetime_] := Module[{m, fourMetric, threeMetric, lapse, s
   shift = fourMetric[[1, 2;;4]];
   extrinsicCurvature = - 1/2 D[threeMetric, t] / Sqrt[lapse];
 
-  {
+  calc[when_] := {
     Name -> "gauge_wave_" <> when,
     Switch[when,
       "initial", Schedule -> {"in ADMBase_PostInitial"},
@@ -140,31 +147,23 @@ gaugeWaveCalc[when_, spacetime_] := Module[{m, fourMetric, threeMetric, lapse, s
       g[li,lj] -> Jac[um,li] Jac[un,lj] G[lm,ln],
       k[li,lj] -> Jac[um,li] Jac[un,lj] K[lm,ln]
     }
-  }
+  };
+
+  calculations =
+  {
+    calc["initial"],
+    calc["always"]
+  };
+
+  CreateKrancThornTT[groups, "thorns", "InitialData_"<>spacetime,
+    Calculations -> calculations,
+    DeclaredGroups -> declaredGroupNames,
+    IntParameters -> intParameters,
+    RealParameters -> Join[realParameters, parameters],
+    KeywordParameters -> keywordParameters,
+    InheritedImplementations -> {"admbase"}];
 ];
 
-Print[gaugeWaveCalc["initial", "GaugeWave"]];
+spacetimes = {"GaugeWave", "KerrSchild", "Minkowski"};
 
-calculations = 
-{
-  gaugeWaveCalc["initial", "GaugeWave"],
-  gaugeWaveCalc["always", "GaugeWave"]
-};
-
-keywordParameters = 
-{
-  {Name -> "when",
-   AllowedValues -> {"initial", "always", "dummy"},
-   Default -> "initial"}
-};
-
-CreateKrancThornTT[groups, "thorns", "GaugeWave", 
-  Calculations -> calculations,
-  DeclaredGroups -> declaredGroupNames,
-  IntParameters -> intParameters,
-  RealParameters -> realParameters,
-  KeywordParameters -> keywordParameters,
-  InheritedImplementations -> {"admbase"}];
-
-
-
+idThorn /@ spacetimes;
