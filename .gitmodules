@@ -1,0 +1,6 @@
+[submodule "thorns"]
+	path = thorns
+	url = ../GaugeWave
+	upstreamurl = ../GaugeWave
+	upstreamtype = git
+	revision = master_thorns
