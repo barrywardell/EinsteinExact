@@ -6,7 +6,7 @@ Get["KrancThorn`"];
 Needs["Metrics`"];
 
 SetEnhancedTimes[False];
-SetSourceLanguage["C"];
+SetSourceLanguage["C"]; (* remove *)
 
 
 (**************************************************************************************)
@@ -20,7 +20,7 @@ Map[DefineTensor,
   g, k, AInv, DDphi, B, DDalpha, divA, gInv, divh,
   gPhys, kPhys, n, dir, dampG, dampDD, dampDDD, dampDG, ell,
   Lambda00, Lambda0, Lambda, g00, g0,
-  Jac, xx, XX, X, Y, Z, G, K
+  Jac, xx, XX, X, Y, Z, G, K (* some redundant *)
 }];
 
 Map[AssertSymmetricDecreasing, 
@@ -54,7 +54,7 @@ groups = Join[declaredGroups, admGroups];
 
 shorthands = 
 {
-  ell[li], ss, rr, Lambda00, Lambda0[li], Lambda[ui,lj], g0[li], g00
+  ell[li], ss, rr, Lambda00, Lambda0[li], Lambda[ui,lj], g0[li], g00 (* some redundant *)
 };
 
 (**************************************************************************************)
@@ -113,12 +113,12 @@ idThorn[spacetime_] :=
   fourMetric = ("Metric" /. m) /. {x -> X, y -> Y, z -> Z};
 
   threeMetric = fourMetric[[2;;4, 2;;4]];
-  lapse = -fourMetric[[1,1]];
-  shift = fourMetric[[1, 2;;4]];
-  extrinsicCurvature = - 1/2 D[threeMetric, t] / Sqrt[lapse];
+  lapse = -fourMetric[[1,1]]; (* from inverse metric *)
+  shift = fourMetric[[1, 2;;4]]; (* from inverse metric *)
+  extrinsicCurvature = - 1/2 D[threeMetric, t] / Sqrt[lapse]; (* shift terms *)
 
   calc[when_] := {
-    Name -> "gauge_wave_" <> when,
+    Name -> "gauge_wave_" <> when, (* rename *)
     Switch[when,
       "initial", Schedule -> {"in ADMBase_PostInitial"},
       "always",  Schedule -> {"at ANALYSIS"},
@@ -145,7 +145,9 @@ idThorn[spacetime_] :=
       Table[Symbol["beta"<>ToString[i]] -> shift[[i]], {i, 3}],
 
       g[li,lj] -> Jac[um,li] Jac[un,lj] G[lm,ln],
-      k[li,lj] -> Jac[um,li] Jac[un,lj] K[lm,ln]
+      k[li,lj] -> Jac[um,li] Jac[un,lj] K[lm,ln],
+      beta[ui] -> Jac[lj,ui] betap[uj]
+      (* dtlapse and dtshift *)
     }
   };
 
@@ -155,7 +157,7 @@ idThorn[spacetime_] :=
     calc["always"]
   };
 
-  CreateKrancThornTT[groups, "thorns", "InitialData_"<>spacetime,
+  CreateKrancThornTT[groups, "thorns", "InitialData_"<>spacetime, (* remove "InitialData_" *)
     Calculations -> calculations,
     DeclaredGroups -> declaredGroupNames,
     IntParameters -> intParameters,
