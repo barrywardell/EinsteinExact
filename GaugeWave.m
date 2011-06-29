@@ -15,7 +15,7 @@ SetEnhancedTimes[False];
 (* Register all the tensors that will be used with TensorTools *)
 Map[DefineTensor, 
 {
-  beta, betat, g, k, Jac, xx, XX, G, K
+  beta, dtbeta, g, k, Jac, xx, XX, G, K
 }];
 
 Map[AssertSymmetricDecreasing, 
@@ -35,7 +35,9 @@ admGroups =
   {{"admbase::metric", {gxx,gxy,gxz,gyy,gyz,gzz}},
    {"admbase::curv", {kxx,kxy,kxz,kyy,kyz,kzz}},
    {"admbase::lapse", {alp}},
-   {"admbase::shift", {betax,betay,betaz}}};
+   {"admbase::shift", {betax,betay,betaz}},
+   {"admbase::dtlapse", {dtalp}},
+   {"admbase::dtshift", {dtbetax,dtbetay,dtbetaz}}};
 
 (**************************************************************************************)
 (* Shorthands *)
@@ -67,6 +69,7 @@ keywordParameters =
 k11=kxx; k21=kxy; k22=kyy; k31=kxz; k32=kyz; k33=kzz;
 g11=gxx; g21=gxy; g22=gyy; g31=gxz; g32=gyz; g33=gzz;
 beta1=betax; beta2=betay; beta3=betaz;
+dtbeta1=dtbetax; dtbeta2=dtbetay; dtbeta3=dtbetaz;
 
 Rphi =
  {{Cos[phi], Sin[phi], 0},
@@ -130,7 +133,8 @@ idThorn[spacetime_] :=
       g[li,lj] -> Jac[um,li] Jac[un,lj] G[lm,ln],
       k[li,lj] -> Jac[um,li] Jac[un,lj] K[lm,ln],
       beta[ui] -> Jac[lj,ui] betap[uj]
-      (* dtlapse and dtshift *)
+      dtalp -> D[alp, t],
+      Table[Symbol["dtbeta"<>ToString[i]] -> D[shift[[i]], t], {i, 3}]
     }
   };
 
