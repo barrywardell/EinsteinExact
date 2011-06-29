@@ -1,6 +1,6 @@
 [submodule "thorns"]
 	path = thorns
-	url = ../GaugeWave
-	upstreamurl = ../GaugeWave
+	url = ../EinsteinExact
+	upstreamurl = ../EinsteinExact
 	upstreamtype = git
 	revision = master_thorns
