@@ -6,7 +6,6 @@ Get["KrancThorn`"];
 Needs["Metrics`"];
 
 SetEnhancedTimes[False];
-SetSourceLanguage["C"]; (* remove *)
 
 
 (**************************************************************************************)
@@ -16,16 +15,11 @@ SetSourceLanguage["C"]; (* remove *)
 (* Register all the tensors that will be used with TensorTools *)
 Map[DefineTensor, 
 {
-  h, hInv, phi, A, K, alpha, Gam, beta, betat, R, Rphi, gamma, bssnmom,  bssnCcons,
-  g, k, AInv, DDphi, B, DDalpha, divA, gInv, divh,
-  gPhys, kPhys, n, dir, dampG, dampDD, dampDDD, dampDG, ell,
-  Lambda00, Lambda0, Lambda, g00, g0,
-  Jac, xx, XX, X, Y, Z, G, K (* some redundant *)
+  beta, betat, g, k, Jac, xx, XX, G, K
 }];
 
 Map[AssertSymmetricDecreasing, 
 {
-  h[la,lb], hInv[ua,ub], A[la,lb], R[la,lb], Rphi[la,lb],
   g[la,lb], k[la,lb]
 }];
 
@@ -43,18 +37,13 @@ admGroups =
    {"admbase::lapse", {alp}},
    {"admbase::shift", {betax,betay,betaz}}};
 
-declaredGroups = Join[];
-declaredGroupNames = Map[First, declaredGroups];
-
-groups = Join[declaredGroups, admGroups];
-
 (**************************************************************************************)
 (* Shorthands *)
 (**************************************************************************************)
 
 shorthands = 
 {
-  ell[li], ss, rr, Lambda00, Lambda0[li], Lambda[ui,lj], g0[li], g00 (* some redundant *)
+  Jac[ui,lj], xx[ui], XX[ui], X, Y, Z, G[li,lj], K[li,lk]
 };
 
 (**************************************************************************************)
@@ -65,19 +54,13 @@ realParameters =
 {
   {Name -> theta, Default -> 0},
   {Name -> phi, Default -> 0},
-  {Name -> psi, Default -> 0},
-  vx
-};
-
-intParameters =
-{
-
+  {Name -> psi, Default -> 0}
 };
 
 keywordParameters =
 {
   {Name -> "when",
-   AllowedValues -> {"initial", "always", "dummy"},
+   AllowedValues -> {"initial", "always"},
    Default -> "initial"}
 };
 
@@ -118,14 +101,14 @@ idThorn[spacetime_] :=
   extrinsicCurvature = - 1/2 D[threeMetric, t] / Sqrt[lapse]; (* shift terms *)
 
   calc[when_] := {
-    Name -> "gauge_wave_" <> when, (* rename *)
+    Name -> spacetime <> when, (* rename *)
     Switch[when,
       "initial", Schedule -> {"in ADMBase_PostInitial"},
       "always",  Schedule -> {"at ANALYSIS"},
       _, Throw["Unrecognised scheduling keyword"]],
 
     ConditionalOnKeyword -> {"when", when},
-    Shorthands -> {Jac[ui,lj], xx[ui], XX[ui], X, Y, Z, G[li,lj], K[li,lk]},
+    Shorthands -> shorthands,
     Equations -> Flatten@
     {
       xx[1] -> x,
@@ -157,10 +140,8 @@ idThorn[spacetime_] :=
     calc["always"]
   };
 
-  CreateKrancThornTT[groups, "thorns", "InitialData_"<>spacetime, (* remove "InitialData_" *)
+  CreateKrancThornTT[admGroups, "thorns", spacetime,
     Calculations -> calculations,
-    DeclaredGroups -> declaredGroupNames,
-    IntParameters -> intParameters,
     RealParameters -> Join[realParameters, parameters],
     KeywordParameters -> keywordParameters,
     InheritedImplementations -> {"admbase"}];
