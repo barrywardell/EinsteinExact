@@ -72,7 +72,7 @@ realParameters =
 intParameters = 
 {
 
-}
+};
 
 k11=kxx; k21=kxy; k22=kyy; k31=kxz; k32=kyz; k33=kzz;
 g11=gxx; g21=gxy; g22=gyy; g31=gxz; g32=gyz; g33=gzz;
