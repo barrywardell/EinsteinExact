@@ -165,44 +165,7 @@ static void KerrSchild_initial_Body(cGH const * restrict const cctkGH, int const
           SQR(Y) + SQR(Z),-1)*SQR(Z)*SQR(ToReal(a)))*INV(sqrt(SQR(X) + SQR(Y) + 
           SQR(Z)))*SQR(Z)*ToReal(M);
         
-        CCTK_REAL K11 = -2*INV(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
-          SQR(X)*(SQR(Y) + SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*INV((SQR(X) + SQR(Y) 
-          + SQR(Z) + SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + 
-          SQR(Y) + SQR(Z))*ToReal(M))*pow(SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a)),-3)*SQR(ToReal(M))*sqrt(INV(pow(SQR(X) + SQR(Y) + 
-          SQR(Z),3.5) + pow(SQR(X) + SQR(Y) + SQR(Z),0.5)*QAD(ToReal(a))*SQR(Z) + 
-          (SQR(X) + SQR(Y) + SQR(Z))*SQR(ToReal(a))*(pow(SQR(X) + SQR(Y) + 
-          SQR(Z),0.5)*(SQR(X) + SQR(Y) + 2*SQR(Z)) - 2*(SQR(X) + 
-          SQR(Y))*ToReal(M)))*(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
-          SQR(X)*(SQR(Y) + SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*(pow(SQR(X) + SQR(Y) 
-          + SQR(Z),0.5)*(SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a))) + 2*(SQR(X) + 
-          SQR(Y) + SQR(Z))*ToReal(M)))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          Y*ToReal(a))*(-(Z*INV(SQR(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
-          SQR(X)*(SQR(Y) + SQR(Z))) + SQR(Z)*SQR(ToReal(a))))*SQR(pow(X,2) + 
-          pow(Y,2) + pow(Z,2))*(SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a)))*(pow(ToReal(a),5)*SQR(Z)*(5*SQR(Y) + 2*(SQR(X) + 
-          SQR(Z))) + CUB(ToReal(a))*(2*pow(X,6) + QAD(X)*(5*SQR(Y) + 8*SQR(Z)) + 
-          SQR(X)*(4*QAD(Y) + 10*QAD(Z) + 13*SQR(Y)*SQR(Z)) + (SQR(Y) + 
-          SQR(Z))*SQR(pow(Y,2) + 2*pow(Z,2))) + X*Y*(-3*pow(SQR(X) + SQR(Y) + 
-          SQR(Z),3.5) + (5*QAD(ToReal(a))*SQR(Z) + (QAD(X) + QAD(Y) + 2*QAD(Z) + 
-          3*SQR(Y)*SQR(Z) + SQR(X)*(2*SQR(Y) + 
-          3*SQR(Z)))*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + CUB(SQR(X) 
-          + SQR(Y) + SQR(Z))*(-3*SQR(Y) + 2*(SQR(X) + SQR(Z)))*ToReal(a))) + 
-          INV(SQR(SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + SQR(Y) + 
-          SQR(Z))*SQR(ToReal(a)))))*pow(SQR(X) + SQR(Y) + 
-          SQR(Z),1.5)*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
-          X*ToReal(a))*(X*(SQR(X) + SQR(Y) + SQR(Z) - 4*(SQR(X) + SQR(Y) + 
-          SQR(Z)) + SQR(ToReal(a)))*(SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + 
-          SQR(Y) + SQR(Z))*SQR(ToReal(a))))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          Y*ToReal(a)) + (SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a)))*(2*INV(sqrt(SQR(X) + SQR(Y) + SQR(Z)))*(2*SQR(X) + 
-          SQR(Y) + SQR(Z))*(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
-          SQR(X)*(SQR(Y) + SQR(Z))) + SQR(Z)*SQR(ToReal(a))) + X*(-SQR(X) - 
-          SQR(Y) - SQR(Z))*(2 - 2*INV(SQR(SQR(X) + SQR(Y) + 
-          SQR(Z)))*SQR(Z)*SQR(ToReal(a)))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          Y*ToReal(a)))));
-        
-        CCTK_REAL K21 = -(INV(SQR((SQR(X) + SQR(Y) + SQR(Z) + 
+        CCTK_REAL K11 = -2*INV(SQR((SQR(X) + SQR(Y) + SQR(Z) + 
           SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
           SQR(Z))*ToReal(M)))*pow(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
           SQR(X)*(SQR(Y) + SQR(Z))) + 
@@ -230,31 +193,36 @@ static void KerrSchild_initial_Body(cGH const * restrict const cctkGH, int const
           SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + 
           SQR(Z))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + Y*ToReal(a))*(3*(SQR(X) + 
           SQR(Y) + SQR(Z)) + SQR(ToReal(a)) + 4*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M)))) + ToReal(M)*(-2*(pow(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)))) + ToReal(M)*((pow(SQR(X) + SQR(Y) + 
           SQR(Z),2.5)*pow(SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a)),-3)*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
-          X*ToReal(a))*(Y*(-(QAD(SQR(X) + SQR(Y) + SQR(Z))*(-2*SQR(X) + SQR(Y) + 
-          SQR(Z))) + pow(ToReal(a),6)*SQR(Z)*(4*SQR(X) + SQR(Y) + SQR(Z)) + 
-          QAD(ToReal(a))*(CUB(SQR(Y) + SQR(Z)) + QAD(X)*(SQR(Y) - 5*SQR(Z)) + 
-          2*SQR(X)*(QAD(Y) - 2*QAD(Z) - SQR(Y)*SQR(Z))) - (6*QAD(X) + 
-          SQR(Z)*(SQR(Y) + SQR(Z)) + SQR(X)*(6*SQR(Y) + 8*SQR(Z)))*SQR(pow(X,2) + 
-          pow(Y,2) + pow(Z,2))*SQR(ToReal(a))) + X*(2*(CUB(ToReal(a))*pow(SQR(X) 
-          + SQR(Y) + SQR(Z),2.5)*(SQR(X) + SQR(Y) + 2*SQR(Z)) + 
-          pow(ToReal(a),5)*SQR(Z)*(3*SQR(X) - SQR(Y) + SQR(Z))*sqrt(SQR(X) + 
-          SQR(Y) + SQR(Z))) - 2*pow(SQR(X) + SQR(Y) + SQR(Z),3.5)*(SQR(X) - 
-          3*SQR(Y) - SQR(Z))*ToReal(a))) + Z*INV(SQR(SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a))))*SQR(pow(X,2) + pow(Y,2) + pow(Z,2))*(X*(QAD(SQR(X) + 
-          SQR(Y) + SQR(Z))*(SQR(X) - 2*SQR(Y) + SQR(Z)) - 
-          pow(ToReal(a),6)*SQR(Z)*(SQR(X) + 4*SQR(Y) + SQR(Z)) - 
-          QAD(ToReal(a))*(pow(X,6) + pow(Z,6) - 4*QAD(Z)*SQR(Y) - 5*QAD(Y)*SQR(Z) 
-          + QAD(X)*(2*SQR(Y) + 3*SQR(Z)) + SQR(X)*(QAD(Y) + 3*QAD(Z) - 
-          2*SQR(Y)*SQR(Z))) + (6*QAD(Y) + QAD(Z) + 8*SQR(Y)*SQR(Z) + 
-          SQR(X)*(6*SQR(Y) + SQR(Z)))*SQR(pow(X,2) + pow(Y,2) + 
-          pow(Z,2))*SQR(ToReal(a))) + 2*Y*(CUB(ToReal(a))*pow(SQR(X) + SQR(Y) + 
-          SQR(Z),2.5)*(SQR(X) + SQR(Y) + 2*SQR(Z)) + 
-          pow(ToReal(a),5)*SQR(Z)*(-SQR(X) + 3*SQR(Y) + SQR(Z))*sqrt(SQR(X) + 
-          SQR(Y) + SQR(Z)) + pow(SQR(X) + SQR(Y) + SQR(Z),3.5)*(3*SQR(X) - SQR(Y) 
-          + SQR(Z))*ToReal(a))))*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)),-3)*SQR(X*sqrt(pow(X,2) + pow(Y,2) + pow(Z,2)) + 
+          Y*ToReal(a))*(-3*X*Y*pow(ToReal(a),5)*SQR(Z) + pow(SQR(X) + SQR(Y) + 
+          SQR(Z),3.5)*(SQR(X) - 2*(SQR(Y) + SQR(Z))) + 
+          (-(QAD(ToReal(a))*SQR(Z)*(7*SQR(X) + 2*(SQR(Y) + SQR(Z)))) - 
+          (3*pow(X,6) + QAD(X)*(8*SQR(Y) + 11*SQR(Z)) + SQR(X)*(7*QAD(Y) + 
+          12*QAD(Z) + 19*SQR(Y)*SQR(Z)) + 2*(SQR(Y) + 2*SQR(Z))*SQR(pow(Y,2) + 
+          pow(Z,2)))*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          X*(Y*CUB(ToReal(a))*(QAD(X) + QAD(Y) + 2*QAD(Z) + 3*SQR(Y)*SQR(Z) + 
+          SQR(X)*(2*SQR(Y) + 3*SQR(Z))) + 5*Y*CUB(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(a))) + (X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a))*(pow(SQR(X) + SQR(Y) + SQR(Z),2.5)*pow(SQR(X) + SQR(Y) + 
+          SQR(Z) + SQR(ToReal(a)),-3)*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
+          X*ToReal(a))*(pow(ToReal(a),5)*SQR(Z)*(5*SQR(Y) + 2*(SQR(X) + SQR(Z))) 
+          + CUB(ToReal(a))*(2*pow(X,6) + QAD(X)*(5*SQR(Y) + 8*SQR(Z)) + 
+          SQR(X)*(4*QAD(Y) + 10*QAD(Z) + 13*SQR(Y)*SQR(Z)) + (SQR(Y) + 
+          SQR(Z))*SQR(pow(Y,2) + 2*pow(Z,2))) + X*Y*(-3*pow(SQR(X) + SQR(Y) + 
+          SQR(Z),3.5) + (5*QAD(ToReal(a))*SQR(Z) + (QAD(X) + QAD(Y) + 2*QAD(Z) + 
+          3*SQR(Y)*SQR(Z) + SQR(X)*(2*SQR(Y) + 
+          3*SQR(Z)))*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + CUB(SQR(X) 
+          + SQR(Y) + SQR(Z))*(-3*SQR(Y) + 2*(SQR(X) + SQR(Z)))*ToReal(a)) + 
+          INV(SQR(SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a))))*SQR(Z)*SQR(pow(X,2) 
+          + pow(Y,2) + pow(Z,2))*(X*(3*pow(SQR(X) + SQR(Y) + SQR(Z),3.5) + 
+          pow(SQR(X) + SQR(Y) + SQR(Z),1.5)*(SQR(X) + SQR(Y))*SQR(ToReal(a)) + 
+          QAD(ToReal(a))*(2*(SQR(X) + SQR(Y)) - 3*SQR(Z))*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))) + Y*(pow(ToReal(a),5)*(2*(SQR(X) + SQR(Y)) - SQR(Z)) + 
+          CUB(ToReal(a))*(3*(QAD(X) + QAD(Y)) + 4*QAD(Z) + 7*SQR(Y)*SQR(Z) + 
+          SQR(X)*(6*SQR(Y) + 7*SQR(Z))) + 5*CUB(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(a)))))*((SQR(X) + SQR(Y) + SQR(Z) + 
           SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
           SQR(Z))*ToReal(M)) + (X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
           Y*ToReal(a))*(4*X*INV(SQR(X) + SQR(Y) + SQR(Z) + 
@@ -278,9 +246,9 @@ static void KerrSchild_initial_Body(cGH const * restrict const cctkGH, int const
           3*ToReal(M)))) + CUB(ToReal(a))*(QAD(X)*(SQR(Y) + 3*SQR(Z)) + 
           SQR(X)*(2*QAD(Y) + 5*QAD(Z) + SQR(Z)*(7*SQR(Y) + 6*sqrt(SQR(X) + SQR(Y) 
           + SQR(Z))*ToReal(M))) + (SQR(Y) + SQR(Z))*(QAD(Y) + 3*SQR(Y)*SQR(Z) + 
-          2*(QAD(Z) + SQR(Z)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)))))))));
+          2*(QAD(Z) + SQR(Z)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M))))))));
         
-        CCTK_REAL K31 = -(INV(SQR((SQR(X) + SQR(Y) + SQR(Z) + 
+        CCTK_REAL K21 = -(INV(SQR((SQR(X) + SQR(Y) + SQR(Z) + 
           SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
           SQR(Z))*ToReal(M)))*pow(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
           SQR(X)*(SQR(Y) + SQR(Z))) + 
@@ -291,156 +259,146 @@ static void KerrSchild_initial_Body(cGH const * restrict const cctkGH, int const
           SQR(Y))*ToReal(M)))*(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
           SQR(X)*(SQR(Y) + SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*(pow(SQR(X) + SQR(Y) 
           + SQR(Z),0.5)*(SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a))) + 2*(SQR(X) + 
-          SQR(Y) + SQR(Z))*ToReal(M)))*ToReal(M)*(-((SQR(X) + SQR(Y) + 
-          SQR(Z))*(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + SQR(X)*(SQR(Y) + 
-          SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*(1 + 2*INV(SQR(SQR(X) + SQR(Y) + 
-          SQR(Z) + SQR(ToReal(a))))*INV(SQR(X) + SQR(Y) + SQR(Z)*(1 + pow(SQR(X) 
-          + SQR(Y) + SQR(Z),-1)*SQR(ToReal(a))))*SQR(X*sqrt(pow(X,2) + pow(Y,2) + 
-          pow(Z,2)) + Y*ToReal(a))*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M))*((-4*Y*SQR(pow(X,2) + pow(Y,2) + 
-          pow(Z,2))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + Y*ToReal(a)) + (QAD(X) + 
-          QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + SQR(X)*(SQR(Y) + SQR(Z))) + 
-          SQR(Z)*SQR(ToReal(a)))*((SQR(X) + SQR(Y) + SQR(Z))*(X*Y*INV(sqrt(SQR(X) 
-          + SQR(Y) + SQR(Z))) + ToReal(a)) + 4*Y*(X*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z)) + Y*ToReal(a))))*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(Y) + SQR(Z))*ToReal(M)))*ToReal(M)*(2*(pow(SQR(X) + SQR(Y) + 
+          SQR(Z),2.5)*pow(SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)),-3)*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
+          X*ToReal(a))*(2*Y*CUB(ToReal(a))*pow(SQR(X) + SQR(Y) + 
+          SQR(Z),2.5)*(SQR(X) + SQR(Y) + 2*SQR(Z)) + X*(QAD(SQR(X) + SQR(Y) + 
+          SQR(Z))*(SQR(X) - 2*SQR(Y) + SQR(Z)) - pow(ToReal(a),6)*SQR(Z)*(SQR(X) 
+          + 4*SQR(Y) + SQR(Z)) - QAD(ToReal(a))*(pow(X,6) + pow(Z,6) - 
+          4*QAD(Z)*SQR(Y) - 5*QAD(Y)*SQR(Z) + QAD(X)*(2*SQR(Y) + 3*SQR(Z)) + 
+          SQR(X)*(QAD(Y) + 3*QAD(Z) - 2*SQR(Y)*SQR(Z)))) + X*(6*QAD(Y) + QAD(Z) + 
+          8*SQR(Y)*SQR(Z) + SQR(X)*(6*SQR(Y) + SQR(Z)))*SQR(pow(X,2) + pow(Y,2) + 
+          pow(Z,2))*SQR(ToReal(a)) + 2*Y*pow(ToReal(a),5)*SQR(Z)*(-SQR(X) + 
+          3*SQR(Y) + SQR(Z))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*Y*pow(SQR(X) + 
+          SQR(Y) + SQR(Z),3.5)*(3*SQR(X) - SQR(Y) + 
+          SQR(Z))*ToReal(a))*ToReal(M)*((SQR(X) + SQR(Y) + SQR(Z) + 
           SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M)) - Y*(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
-          SQR(X)*(SQR(Y) + SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) 
-          + SQR(Z))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + Y*ToReal(a))*(3*(SQR(X) + 
-          SQR(Y) + SQR(Z)) + SQR(ToReal(a)) + 4*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M)))) + ToReal(M)*(INV(SQR(SQR(X) + SQR(Y) + SQR(Z)*(1 + 
-          INV(SQR(X) + SQR(Y) + 
-          SQR(Z))*SQR(ToReal(a)))))*SQR(2*(pow(Y,2)*pow(Z,2) + pow(X,2)*(pow(Y,2) 
-          + pow(Z,2))) + pow(Z,2)*pow(ToReal(a),2) + QAD(X) + QAD(Y) + 
-          QAD(Z))*(2*Z*INV(SQR(SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a))))*SQR(pow(X,2) + pow(Y,2) + pow(Z,2))*(-(Y*sqrt(SQR(X) + 
-          SQR(Y) + SQR(Z))) + X*ToReal(a))*(-2*X*(SQR(X) + SQR(Y) + SQR(Z)*(1 + 
-          INV(SQR(X) + SQR(Y) + SQR(Z))*SQR(ToReal(a))))*(X*sqrt(SQR(X) + SQR(Y) 
-          + SQR(Z)) + Y*ToReal(a)) + (SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a)))*(INV(sqrt(SQR(X) + SQR(Y) + SQR(Z)))*(2*SQR(X) + SQR(Y) 
-          + SQR(Z))*(SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + SQR(Y) + 
-          SQR(Z))*SQR(ToReal(a)))) - X*(2 - 2*INV(SQR(SQR(X) + SQR(Y) + 
-          SQR(Z)))*SQR(Z)*SQR(ToReal(a)))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          Y*ToReal(a)))) - 2*INV(SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a)))*pow(SQR(X) + SQR(Y) + SQR(Z),1.5)*SQR(Z)*(-2*Y*(SQR(X) 
-          + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + SQR(Y) + 
-          SQR(Z))*SQR(ToReal(a))))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          Y*ToReal(a)) + (SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a)))*((SQR(X) + 
-          SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + SQR(Y) + 
-          SQR(Z))*SQR(ToReal(a))))*(X*Y*INV(sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
-          ToReal(a)) - Y*(2 - 2*INV(SQR(SQR(X) + SQR(Y) + 
-          SQR(Z)))*SQR(Z)*SQR(ToReal(a)))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          Y*ToReal(a)))))*((SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M)) + (X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          Y*ToReal(a))*(2*CUB(SQR(X) + SQR(Y) + SQR(Z))*INV(SQR(SQR(X) + SQR(Y) + 
-          SQR(Z) + SQR(ToReal(a))))*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
-          X*ToReal(a))*(pow(SQR(X) + SQR(Y) + SQR(Z),3.5)*(SQR(X) - SQR(Y) + 
-          SQR(Z)) + (QAD(ToReal(a))*SQR(Z)*(SQR(X) + 5*SQR(Y) + SQR(Z)) + 
-          (pow(X,6) + pow(Y,6) + 2*pow(Z,6) + 7*QAD(Z)*SQR(Y) + 6*QAD(Y)*SQR(Z) + 
-          QAD(X)*(3*SQR(Y) + 4*SQR(Z)) + SQR(X)*(3*QAD(Y) + 5*QAD(Z) + 
-          10*SQR(Y)*SQR(Z)))*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          X*Y*(-3*pow(ToReal(a),5)*SQR(Z) + CUB(ToReal(a))*(SQR(X) + 
-          SQR(Y))*(SQR(X) + SQR(Y) + SQR(Z)) + 3*CUB(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(a)) + 2*(pow(X,8) + pow(X,6)*(3*SQR(Y) + 4*SQR(Z)) + 
-          QAD(X)*(3*QAD(Y) + 6*QAD(Z) + SQR(Z)*(9*SQR(Y) + SQR(ToReal(a)))) + 
-          SQR(X)*(pow(Y,6) + 6*QAD(Y)*SQR(Z) + 2*QAD(Z)*(2*SQR(Z) + 
+          SQR(Z))*ToReal(M)) + CUB(SQR(X) + SQR(Y) + SQR(Z))*INV(SQR(SQR(X) + 
+          SQR(Y) + SQR(Z) + SQR(ToReal(a))))*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) 
+          + X*ToReal(a))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a))*ToReal(M)*(-3*X*Y*pow(ToReal(a),5)*SQR(Z) + pow(SQR(X) + 
+          SQR(Y) + SQR(Z),3.5)*(SQR(X) - SQR(Y) + SQR(Z)) + 
+          X*Y*CUB(ToReal(a))*(SQR(X) + SQR(Y))*(SQR(X) + SQR(Y) + SQR(Z)) + 
+          QAD(ToReal(a))*SQR(Z)*(SQR(X) + 5*SQR(Y) + SQR(Z))*sqrt(SQR(X) + SQR(Y) 
+          + SQR(Z)) + (pow(X,6) + pow(Y,6) + 2*pow(Z,6) + 7*QAD(Z)*SQR(Y) + 
+          6*QAD(Y)*SQR(Z) + QAD(X)*(3*SQR(Y) + 4*SQR(Z)) + SQR(X)*(3*QAD(Y) + 
+          5*QAD(Z) + 10*SQR(Y)*SQR(Z)))*SQR(ToReal(a))*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z)) + 3*X*Y*CUB(SQR(X) + SQR(Y) + SQR(Z))*ToReal(a) + 2*(pow(X,8) + 
+          pow(X,6)*(3*SQR(Y) + 4*SQR(Z)) + QAD(X)*(3*QAD(Y) + 6*QAD(Z) + 
+          9*SQR(Y)*SQR(Z) + SQR(Z)*SQR(ToReal(a))) + SQR(Z)*(SQR(Y) + 
+          SQR(Z))*(SQR(pow(Y,2) + pow(Z,2)) + (4*SQR(Y) + SQR(Z))*SQR(ToReal(a))) 
+          + SQR(X)*(pow(Y,6) + 6*QAD(Y)*SQR(Z) + 2*QAD(Z)*(2*SQR(Z) + 
           SQR(ToReal(a))) + SQR(Y)*(9*QAD(Z) + 5*SQR(Z)*SQR(ToReal(a)))) + 
-          2*Y*(pow(X,5) + X*(QAD(Y) + QAD(Z) + SQR(Z)*(2*SQR(Y) - 
-          SQR(ToReal(a)))))*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(a) + (SQR(Y) + 
-          SQR(Z))*(SQR(Z)*(SQR(pow(Y,2) + pow(Z,2)) + (4*SQR(Y) + 
-          SQR(Z))*SQR(ToReal(a))) + 4*Y*CUB(X)*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(a)))*ToReal(M)) + 4*Y*INV(SQR(X) + SQR(Y) + SQR(Z) + 
+          2*Y*pow(X,5)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(a) + 
+          4*Y*CUB(X)*(SQR(Y) + SQR(Z))*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(a) + 
+          2*X*Y*(QAD(Y) + QAD(Z) + SQR(Z)*(2*SQR(Y) - 
+          SQR(ToReal(a))))*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(a))*ToReal(M))) 
+          - 4*X*INV(SQR(X) + SQR(Y) + SQR(Z) + 
           SQR(ToReal(a)))*SQR(Z)*SQR(pow(X,2) + pow(Y,2) + 
-          pow(Z,2))*(-(pow(ToReal(a),6)*SQR(Z)) + CUB(SQR(X) + SQR(Y) + 
-          SQR(Z))*(SQR(X) + SQR(Y) + SQR(Z) + sqrt(SQR(X) + SQR(Y) + 
+          pow(Z,2))*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
+          X*ToReal(a))*ToReal(M)*(-(pow(ToReal(a),6)*SQR(Z)) + CUB(SQR(X) + 
+          SQR(Y) + SQR(Z))*(SQR(X) + SQR(Y) + SQR(Z) + sqrt(SQR(X) + SQR(Y) + 
           SQR(Z))*ToReal(M)) + QAD(ToReal(a))*(QAD(X) + QAD(Y) + 2*SQR(X)*SQR(Y) 
           - SQR(Z)*(SQR(Z) + sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M))) + (SQR(X) 
-          + SQR(Y) + SQR(Z))*SQR(ToReal(a))*(2*(QAD(X) + QAD(Y)) + QAD(Z) + 
+          + SQR(Y) + SQR(Z))*SQR(ToReal(a))*(2*QAD(X) + 2*QAD(Y) + QAD(Z) + 
           3*SQR(Y)*(SQR(Z) + sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
           SQR(X)*(4*SQR(Y) + 3*(SQR(Z) + sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M)))))))));
-        
-        CCTK_REAL K22 = -2*INV(SQR((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(Z))*ToReal(M))))) + 4*Y*INV(SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*SQR(Z)*SQR(pow(X,2) + pow(Y,2) + 
+          pow(Z,2))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a))*ToReal(M)*(-(pow(ToReal(a),6)*SQR(Z)) + CUB(SQR(X) + 
+          SQR(Y) + SQR(Z))*(SQR(X) + SQR(Y) + SQR(Z) + sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) + QAD(ToReal(a))*(QAD(X) + QAD(Y) + 2*SQR(X)*SQR(Y) 
+          - SQR(Z)*(SQR(Z) + sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M))) + (SQR(X) 
+          + SQR(Y) + SQR(Z))*SQR(ToReal(a))*(2*QAD(X) + 2*QAD(Y) + QAD(Z) + 
+          3*SQR(Y)*(SQR(Z) + sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
+          SQR(X)*(4*SQR(Y) + 3*(SQR(Z) + sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M))))) + ToReal(M)*(-2*INV(SQR(SQR(X) + SQR(Y) + SQR(Z) 
+          + SQR(ToReal(a))))*SQR(Z)*SQR(pow(X,2) + pow(Y,2) + 
+          pow(Z,2))*(-3*X*Y*QAD(SQR(X) + SQR(Y) + SQR(Z)) + 
+          2*CUB(ToReal(a))*pow(SQR(X) + SQR(Y) + SQR(Z),2.5)*(SQR(X) - SQR(Y)) + 
+          X*Y*pow(ToReal(a),6)*(2*SQR(X) + 2*SQR(Y) - SQR(Z)) + 
+          X*Y*QAD(ToReal(a))*(QAD(X) + QAD(Y) + 7*QAD(Z) + 8*SQR(Y)*SQR(Z) + 
+          2*SQR(X)*(SQR(Y) + 4*SQR(Z))) + X*Y*(4*SQR(X) + 4*SQR(Y) + 
+          5*SQR(Z))*SQR(pow(X,2) + pow(Y,2) + pow(Z,2))*SQR(ToReal(a)) + 
+          2*pow(ToReal(a),5)*(SQR(X) - SQR(Y))*(SQR(X) + SQR(Y) - 
+          SQR(Z))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 4*pow(SQR(X) + SQR(Y) + 
+          SQR(Z),3.5)*(SQR(X) - SQR(Y))*ToReal(a))*((SQR(X) + SQR(Y) + SQR(Z) + 
           SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M)))*pow(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
-          SQR(X)*(SQR(Y) + SQR(Z))) + 
-          SQR(Z)*SQR(ToReal(a)),-3)*sqrt(INV(pow(SQR(X) + SQR(Y) + SQR(Z),3.5) + 
-          pow(SQR(X) + SQR(Y) + SQR(Z),0.5)*QAD(ToReal(a))*SQR(Z) + (SQR(X) + 
-          SQR(Y) + SQR(Z))*SQR(ToReal(a))*(pow(SQR(X) + SQR(Y) + 
-          SQR(Z),0.5)*(SQR(X) + SQR(Y) + 2*SQR(Z)) - 2*(SQR(X) + 
-          SQR(Y))*ToReal(M)))*(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
-          SQR(X)*(SQR(Y) + SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*(pow(SQR(X) + SQR(Y) 
-          + SQR(Z),0.5)*(SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a))) + 2*(SQR(X) + 
-          SQR(Y) + SQR(Z))*ToReal(M)))*ToReal(M)*(-((SQR(X) + SQR(Y) + 
-          SQR(Z))*(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + SQR(X)*(SQR(Y) + 
-          SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*(1 + 2*INV(SQR(SQR(X) + SQR(Y) + 
-          SQR(Z) + SQR(ToReal(a))))*INV(SQR(X) + SQR(Y) + SQR(Z)*(1 + pow(SQR(X) 
-          + SQR(Y) + SQR(Z),-1)*SQR(ToReal(a))))*SQR(-(Y*sqrt(pow(X,2) + pow(Y,2) 
-          + pow(Z,2))) + X*ToReal(a))*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M))*((4*X*SQR(pow(X,2) + pow(Y,2) + 
-          pow(Z,2))*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + X*ToReal(a)) + (QAD(X) 
-          + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + SQR(X)*(SQR(Y) + SQR(Z))) + 
-          SQR(Z)*SQR(ToReal(a)))*(-((SQR(X) + SQR(Y) + 
-          SQR(Z))*(-(X*Y*INV(sqrt(SQR(X) + SQR(Y) + SQR(Z)))) + ToReal(a))) - 
-          4*X*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + X*ToReal(a))))*((SQR(X) + 
-          SQR(Y) + SQR(Z) + SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          2*(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + X*(QAD(X) + QAD(Y) + QAD(Z) + 
-          2*(SQR(Y)*SQR(Z) + SQR(X)*(SQR(Y) + SQR(Z))) + 
-          SQR(Z)*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z))*(-(Y*sqrt(SQR(X) 
-          + SQR(Y) + SQR(Z))) + X*ToReal(a))*(3*(SQR(X) + SQR(Y) + SQR(Z)) + 
-          SQR(ToReal(a)) + 4*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)))) + 
-          ToReal(M)*((pow(SQR(X) + SQR(Y) + SQR(Z),2.5)*pow(SQR(X) + SQR(Y) + 
-          SQR(Z) + SQR(ToReal(a)),-3)*SQR(-(Y*sqrt(pow(X,2) + pow(Y,2) + 
-          pow(Z,2))) + X*ToReal(a))*(pow(ToReal(a),5)*SQR(Z)*(5*SQR(X) + 
-          2*(SQR(Y) + SQR(Z))) + CUB(ToReal(a))*(pow(X,6) + QAD(X)*(4*SQR(Y) + 
-          5*SQR(Z)) + SQR(X)*(5*QAD(Y) + 8*QAD(Z) + 13*SQR(Y)*SQR(Z)) + 2*(SQR(Y) 
-          + 2*SQR(Z))*SQR(pow(Y,2) + pow(Z,2))) + X*Y*(3*pow(SQR(X) + SQR(Y) + 
-          SQR(Z),3.5) + (-5*QAD(ToReal(a))*SQR(Z) - (QAD(X) + QAD(Y) + 2*QAD(Z) + 
-          3*SQR(Y)*SQR(Z) + SQR(X)*(2*SQR(Y) + 
-          3*SQR(Z)))*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z))) - CUB(SQR(X) 
-          + SQR(Y) + SQR(Z))*(3*SQR(X) - 2*(SQR(Y) + SQR(Z)))*ToReal(a)) + 
-          Z*INV(SQR(SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a))))*SQR(pow(X,2) + 
-          pow(Y,2) + pow(Z,2))*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
-          X*ToReal(a))*(pow(SQR(X) + SQR(Y) + SQR(Z),3.5)*(-SQR(Y) + 2*(SQR(X) + 
-          SQR(Z))) + (QAD(ToReal(a))*SQR(Z)*(7*SQR(Y) + 2*(SQR(X) + SQR(Z))) + 
-          (2*pow(X,6) + 3*pow(Y,6) + 4*pow(Z,6) + 12*QAD(Z)*SQR(Y) + 
-          11*QAD(Y)*SQR(Z) + QAD(X)*(7*SQR(Y) + 8*SQR(Z)) + SQR(X)*(8*QAD(Y) + 
-          10*QAD(Z) + 19*SQR(Y)*SQR(Z)))*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z)) + X*Y*(-3*pow(ToReal(a),5)*SQR(Z) + CUB(ToReal(a))*(QAD(X) + 
-          QAD(Y) + 2*QAD(Z) + 3*SQR(Y)*SQR(Z) + SQR(X)*(2*SQR(Y) + 3*SQR(Z))) + 
-          5*CUB(SQR(X) + SQR(Y) + SQR(Z))*ToReal(a))))*((SQR(X) + SQR(Y) + SQR(Z) 
-          + SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) + 2*pow(SQR(X) + SQR(Y) + SQR(Z),2.5)*pow(SQR(X) + 
+          SQR(Y) + SQR(Z) + SQR(ToReal(a)),-3)*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) 
+          + Y*ToReal(a))*(Y*pow(ToReal(a),6)*SQR(Z)*(4*SQR(X) + SQR(Y) + SQR(Z)) 
+          + 2*X*CUB(ToReal(a))*pow(SQR(X) + SQR(Y) + SQR(Z),2.5)*(SQR(X) + SQR(Y) 
+          + 2*SQR(Z)) + Y*(-(QAD(SQR(X) + SQR(Y) + SQR(Z))*(-2*SQR(X) + SQR(Y) + 
+          SQR(Z))) + QAD(ToReal(a))*(CUB(SQR(Y) + SQR(Z)) + QAD(X)*(SQR(Y) - 
+          5*SQR(Z)) + 2*SQR(X)*(QAD(Y) - 2*QAD(Z) - SQR(Y)*SQR(Z))) - (6*QAD(X) + 
+          SQR(Z)*(SQR(Y) + SQR(Z)) + SQR(X)*(6*SQR(Y) + 8*SQR(Z)))*SQR(pow(X,2) + 
+          pow(Y,2) + pow(Z,2))*SQR(ToReal(a))) + 
+          2*X*pow(ToReal(a),5)*SQR(Z)*(3*SQR(X) - SQR(Y) + SQR(Z))*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) - 2*X*pow(SQR(X) + SQR(Y) + SQR(Z),3.5)*(SQR(X) - 
+          3*SQR(Y) - SQR(Z))*ToReal(a))*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
           SQR(Z))*ToReal(M)) - 2*INV(SQR(SQR(X) + SQR(Y) + SQR(Z) + 
           SQR(ToReal(a))))*INV(SQR(X) + SQR(Y) + SQR(Z)*(1 + pow(SQR(X) + SQR(Y) 
           + SQR(Z),-1)*SQR(ToReal(a))))*pow(SQR(X) + SQR(Y) + SQR(Z),1.5)*(QAD(X) 
-          + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + SQR(X)*(SQR(Y) + SQR(Z))) + 
+          + QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 2*SQR(X)*(SQR(Y) + SQR(Z)) + 
           SQR(Z)*SQR(ToReal(a)))*(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z)) - 
           X*ToReal(a))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          Y*ToReal(a))*((-4*X*SQR(pow(X,2) + pow(Y,2) + pow(Z,2))*(X*sqrt(SQR(X) 
-          + SQR(Y) + SQR(Z)) + Y*ToReal(a)) + (QAD(X) + QAD(Y) + QAD(Z) + 
-          2*(SQR(Y)*SQR(Z) + SQR(X)*(SQR(Y) + SQR(Z))) + 
-          SQR(Z)*SQR(ToReal(a)))*((2*SQR(X) + SQR(Y) + SQR(Z))*sqrt(SQR(X) + 
-          SQR(Y) + SQR(Z)) + 4*X*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          Y*ToReal(a))))*((SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a)))*sqrt(SQR(X) 
-          + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) - 
-          X*(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + SQR(X)*(SQR(Y) + 
-          SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + Y*ToReal(a))*(3*(SQR(X) + 
-          SQR(Y) + SQR(Z)) + SQR(ToReal(a)) + 4*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M))) - 4*X*INV(SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a)))*SQR(Z)*SQR(pow(X,2) + pow(Y,2) + 
-          pow(Z,2))*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
-          X*ToReal(a))*(-(pow(ToReal(a),6)*SQR(Z)) + CUB(SQR(X) + SQR(Y) + 
-          SQR(Z))*(SQR(X) + SQR(Y) + SQR(Z) + sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M)) + QAD(ToReal(a))*(QAD(X) + QAD(Y) + 2*SQR(X)*SQR(Y) 
-          - SQR(Z)*(SQR(Z) + sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M))) + (SQR(X) 
-          + SQR(Y) + SQR(Z))*SQR(ToReal(a))*(2*(QAD(X) + QAD(Y)) + QAD(Z) + 
-          3*SQR(Y)*(SQR(Z) + sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
-          SQR(X)*(4*SQR(Y) + 3*(SQR(Z) + sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M)))))));
+          Y*ToReal(a))*(-4*X*SQR(pow(X,2) + pow(Y,2) + pow(Z,2))*(X*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) + Y*ToReal(a))*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) + 4*X*(QAD(X) + QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 
+          2*SQR(X)*(SQR(Y) + SQR(Z)) + SQR(Z)*SQR(ToReal(a)))*(X*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) + Y*ToReal(a))*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) + (QAD(X) + QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 
+          2*SQR(X)*(SQR(Y) + SQR(Z)) + SQR(Z)*SQR(ToReal(a)))*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z))*((2*SQR(X) + SQR(Y) + SQR(Z))*((SQR(X) + SQR(Y) + 
+          SQR(Z) + SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + 
+          SQR(Y) + SQR(Z))*ToReal(M)) - X*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a))*(3*SQR(X) + 3*SQR(Y) + 3*SQR(Z) + SQR(ToReal(a)) + 
+          4*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M))))) + (SQR(X) + SQR(Y) + 
+          SQR(Z))*(QAD(X) + QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 2*SQR(X)*(SQR(Y) 
+          + SQR(Z)) + SQR(Z)*SQR(ToReal(a)))*(-((1 + 2*INV(SQR(SQR(X) + SQR(Y) + 
+          SQR(Z) + SQR(ToReal(a))))*INV(SQR(X) + SQR(Y) + SQR(Z)*(1 + pow(SQR(X) 
+          + SQR(Y) + SQR(Z),-1)*SQR(ToReal(a))))*SQR(-(Y*sqrt(pow(X,2) + pow(Y,2) 
+          + pow(Z,2))) + X*ToReal(a))*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M))*(-4*X*(QAD(X) + QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 
+          2*SQR(X)*(SQR(Y) + SQR(Z)) + SQR(Z)*SQR(ToReal(a)))*(-(Y*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z))) + X*ToReal(a))*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) + (-((SQR(X) + SQR(Y) + SQR(Z))*(QAD(X) + QAD(Y) + 
+          QAD(Z) + 2*SQR(Y)*SQR(Z) + 2*SQR(X)*(SQR(Y) + SQR(Z)) + 
+          SQR(Z)*SQR(ToReal(a)))*(-(X*Y*INV(sqrt(SQR(X) + SQR(Y) + SQR(Z)))) + 
+          ToReal(a))) + 4*X*SQR(pow(X,2) + pow(Y,2) + pow(Z,2))*(-(Y*sqrt(SQR(X) 
+          + SQR(Y) + SQR(Z))) + X*ToReal(a)))*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) + X*(QAD(X) + QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 
+          2*SQR(X)*(SQR(Y) + SQR(Z)) + SQR(Z)*SQR(ToReal(a)))*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z))*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
+          X*ToReal(a))*(3*SQR(X) + 3*SQR(Y) + 3*SQR(Z) + SQR(ToReal(a)) + 
+          4*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)))) - (1 + 2*INV(SQR(SQR(X) + 
+          SQR(Y) + SQR(Z) + SQR(ToReal(a))))*INV(SQR(X) + SQR(Y) + SQR(Z)*(1 + 
+          pow(SQR(X) + SQR(Y) + SQR(Z),-1)*SQR(ToReal(a))))*SQR(X*sqrt(pow(X,2) + 
+          pow(Y,2) + pow(Z,2)) + Y*ToReal(a))*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M))*(-4*Y*SQR(pow(X,2) + pow(Y,2) + 
+          pow(Z,2))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + Y*ToReal(a))*((SQR(X) + 
+          SQR(Y) + SQR(Z) + SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          2*(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 4*Y*(QAD(X) + QAD(Y) + QAD(Z) 
+          + 2*SQR(Y)*SQR(Z) + 2*SQR(X)*(SQR(Y) + SQR(Z)) + 
+          SQR(Z)*SQR(ToReal(a)))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a))*((SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a)))*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + (QAD(X) + 
+          QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 2*SQR(X)*(SQR(Y) + SQR(Z)) + 
+          SQR(Z)*SQR(ToReal(a)))*((SQR(X) + SQR(Y) + SQR(Z))*(X*Y*INV(sqrt(SQR(X) 
+          + SQR(Y) + SQR(Z))) + ToReal(a))*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) - Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))*(X*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) + Y*ToReal(a))*(3*SQR(X) + 3*SQR(Y) + 3*SQR(Z) + 
+          SQR(ToReal(a)) + 4*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)))))));
         
-        CCTK_REAL K32 = -(INV(SQR((SQR(X) + SQR(Y) + SQR(Z) + 
+        CCTK_REAL K31 = -(Z*INV(SQR((SQR(X) + SQR(Y) + SQR(Z) + 
           SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
           SQR(Z))*ToReal(M)))*pow(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
           SQR(X)*(SQR(Y) + SQR(Z))) + 
@@ -451,35 +409,80 @@ static void KerrSchild_initial_Body(cGH const * restrict const cctkGH, int const
           SQR(Y))*ToReal(M)))*(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
           SQR(X)*(SQR(Y) + SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*(pow(SQR(X) + SQR(Y) 
           + SQR(Z),0.5)*(SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a))) + 2*(SQR(X) + 
-          SQR(Y) + SQR(Z))*ToReal(M)))*ToReal(M)*(INV(SQR(SQR(X) + SQR(Y) + 
-          SQR(Z)*(1 + INV(SQR(X) + SQR(Y) + 
-          SQR(Z))*SQR(ToReal(a)))))*(2*Z*INV(SQR(SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a))))*SQR(pow(X,2) + pow(Y,2) + 
-          pow(Z,2))*SQR(2*pow(Y,2)*pow(Z,2) + 2*pow(X,2)*(pow(Y,2) + pow(Z,2)) + 
-          pow(Z,2)*pow(ToReal(a),2) + QAD(X) + QAD(Y) + QAD(Z))*(-(Y*sqrt(SQR(X) 
-          + SQR(Y) + SQR(Z))) + X*ToReal(a))*(-2*X*(SQR(X) + SQR(Y) + SQR(Z)*(1 + 
-          INV(SQR(X) + SQR(Y) + SQR(Z))*SQR(ToReal(a))))*(Y*sqrt(SQR(X) + SQR(Y) 
-          + SQR(Z)) - X*ToReal(a)) + (SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a)))*((SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + SQR(Y) + 
-          SQR(Z))*SQR(ToReal(a))))*(X*Y*INV(sqrt(SQR(X) + SQR(Y) + SQR(Z))) - 
-          ToReal(a)) - X*(2 - 2*INV(SQR(SQR(X) + SQR(Y) + 
-          SQR(Z)))*SQR(Z)*SQR(ToReal(a)))*(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z)) - 
-          X*ToReal(a))))*ToReal(M)*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(Y) + SQR(Z))*ToReal(M)))*ToReal(M)*(-2*INV(SQR(X) + SQR(Y) + SQR(Z) 
+          + SQR(ToReal(a)))*SQR(pow(X,2) + pow(Y,2) + pow(Z,2))*(X*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a))*ToReal(M)*(pow(ToReal(a),6)*SQR(Z)*(-SQR(X) - SQR(Y) + 
+          SQR(Z)) + CUB(SQR(X) + SQR(Y) + SQR(Z))*(QAD(X) + QAD(Y) - QAD(Z) + 
+          2*SQR(Y)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M) + 2*SQR(X)*(SQR(Y) + 
+          sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M))) + QAD(ToReal(a))*(pow(X,6) + 
+          pow(Y,6) + pow(Z,6) + QAD(X)*(3*SQR(Y) - SQR(Z)) - QAD(Y)*SQR(Z) - 
+          SQR(Y)*(QAD(Z) + 2*SQR(Z)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
+          SQR(X)*(3*QAD(Y) + SQR(Z)*(-2*SQR(Y) - SQR(Z) - 2*sqrt(SQR(X) + SQR(Y) 
+          + SQR(Z))*ToReal(M)))) + (SQR(X) + SQR(Y) + 
+          SQR(Z))*SQR(ToReal(a))*(2*pow(X,6) + 2*pow(Y,6) - pow(Z,6) + 
+          QAD(Y)*(SQR(Z) + 2*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
+          QAD(X)*(6*SQR(Y) + SQR(Z) + 2*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) 
+          - 2*SQR(Y)*(QAD(Z) + 2*SQR(Z)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) 
+          + 2*SQR(X)*(3*QAD(Y) + (SQR(Y) - SQR(Z))*(SQR(Z) + 2*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z))*ToReal(M))))) + (QAD(X) + QAD(Y) + QAD(Z) + 
+          2*SQR(Y)*SQR(Z) + 2*SQR(X)*(SQR(Y) + SQR(Z)) + 
+          SQR(Z)*SQR(ToReal(a)))*(-(X*sqrt(SQR(X) + SQR(Y) + SQR(Z))*(1 + 
+          2*INV(SQR(X) + SQR(Y) + SQR(Z) + pow(SQR(X) + SQR(Y) + 
+          SQR(Z),-1)*SQR(Z)*SQR(ToReal(a)))*INV(sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z)))*SQR(Z)*ToReal(M))*(2*(SQR(X) + SQR(Y) + SQR(Z))*(QAD(X) + 
+          QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 2*SQR(X)*(SQR(Y) + SQR(Z)) + 
+          SQR(Z)*SQR(ToReal(a)))*((SQR(X) + SQR(Y) + SQR(Z) + 
           SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M)) - 2*INV(SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(Z))*ToReal(M)) + 3*(SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*(QAD(X) + QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 
+          2*SQR(X)*(SQR(Y) + SQR(Z)) + SQR(Z)*SQR(ToReal(a)))*((SQR(X) + SQR(Y) + 
+          SQR(Z) + SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + 
+          SQR(Y) + SQR(Z))*ToReal(M)) + (SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*(4*(-SQR(X) - SQR(Y) - SQR(Z))*(SQR(X) + SQR(Y) + 
+          SQR(Z))*((SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a)))*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) - (QAD(X) + 
+          QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 2*SQR(X)*(SQR(Y) + SQR(Z)) + 
+          SQR(Z)*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z))*(3*SQR(X) + 
+          3*SQR(Y) + 3*SQR(Z) + SQR(ToReal(a)) + 4*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M))))) - (1 + 2*INV(SQR(SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a))))*INV(SQR(X) + SQR(Y) + SQR(Z)*(1 + pow(SQR(X) + SQR(Y) 
+          + SQR(Z),-1)*SQR(ToReal(a))))*SQR(X*sqrt(pow(X,2) + pow(Y,2) + 
+          pow(Z,2)) + Y*ToReal(a))*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M))*(-2*SQR(pow(X,2) + pow(Y,2) + pow(Z,2))*(2*(SQR(X) + 
+          SQR(Y) + SQR(Z)) + SQR(ToReal(a)))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a))*((SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a)))*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 4*(SQR(X) 
+          + SQR(Y) + SQR(Z))*(QAD(X) + QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 
+          2*SQR(X)*(SQR(Y) + SQR(Z)) + SQR(Z)*SQR(ToReal(a)))*(X*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) + Y*ToReal(a))*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) + pow(SQR(X) + SQR(Y) + SQR(Z),1.5)*(QAD(X) + QAD(Y) 
+          + QAD(Z) + 2*SQR(Y)*SQR(Z) + 2*SQR(X)*(SQR(Y) + SQR(Z)) + 
+          SQR(Z)*SQR(ToReal(a)))*(X*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) - (X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a))*(3*SQR(X) + 3*SQR(Y) + 3*SQR(Z) + SQR(ToReal(a)) + 
+          4*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M))))) - 2*(INV(SQR(SQR(X) + 
+          SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + SQR(Y) + 
+          SQR(Z))*SQR(ToReal(a)))))*INV(SQR(X) + SQR(Y) + SQR(Z) + 
           SQR(ToReal(a)))*pow(SQR(X) + SQR(Y) + 
-          SQR(Z),1.5)*SQR(Z)*SQR(2*pow(Y,2)*pow(Z,2) + 2*pow(X,2)*(pow(Y,2) + 
-          pow(Z,2)) + pow(Z,2)*pow(ToReal(a),2) + QAD(X) + QAD(Y) + 
-          QAD(Z))*(-2*Y*(SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + SQR(Y) + 
-          SQR(Z))*SQR(ToReal(a))))*(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z)) - 
-          X*ToReal(a)) + (SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a)))*(INV(sqrt(SQR(X) + SQR(Y) + SQR(Z)))*(SQR(X) + 2*SQR(Y) 
-          + SQR(Z))*(SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + SQR(Y) + 
-          SQR(Z))*SQR(ToReal(a)))) - Y*(2 - 2*INV(SQR(SQR(X) + SQR(Y) + 
-          SQR(Z)))*SQR(Z)*SQR(ToReal(a)))*(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z)) - 
-          X*ToReal(a))))*ToReal(M)*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(Z),1.5)*SQR(2*pow(Y,2)*pow(Z,2) + 2*pow(X,2)*(pow(Y,2) + pow(Z,2)) 
+          + pow(Z,2)*pow(ToReal(a),2) + QAD(X) + QAD(Y) + 
+          QAD(Z))*(X*INV(sqrt(SQR(X) + SQR(Y) + SQR(Z)))*SQR(Z)*(SQR(X) + SQR(Y) 
+          + SQR(Z) + SQR(ToReal(a)))*(SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + 
+          SQR(Y) + SQR(Z))*SQR(ToReal(a)))) - 2*INV(SQR(SQR(X) + SQR(Y) + 
+          SQR(Z)))*SQR(Z)*(SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*(SQR(pow(X,2) + pow(Y,2) + pow(Z,2)) + (SQR(X) + 
+          SQR(Y))*SQR(ToReal(a)))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a)) - 2*SQR(Z)*(SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + 
+          SQR(Y) + SQR(Z))*SQR(ToReal(a))))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a)) + (SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a)))*(SQR(X) + 
+          SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + SQR(Y) + 
+          SQR(Z))*SQR(ToReal(a))))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a)))*ToReal(M)*((SQR(X) + SQR(Y) + SQR(Z) + 
           SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M))) - 2*Z*INV(SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(Z))*ToReal(M)) + INV(SQR(X) + SQR(Y) + SQR(Z) + 
           SQR(ToReal(a)))*INV(SQR(X) + SQR(Y) + SQR(Z)*(1 + pow(SQR(X) + SQR(Y) + 
           SQR(Z),-1)*SQR(ToReal(a))))*(SQR(X) + SQR(Y) + SQR(Z))*(QAD(X) + QAD(Y) 
           + QAD(Z) + 2*SQR(Y)*SQR(Z) + 2*SQR(X)*(SQR(Y) + SQR(Z)) + 
@@ -498,42 +501,277 @@ static void KerrSchild_initial_Body(cGH const * restrict const cctkGH, int const
           SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
           SQR(Z))*ToReal(M)) - X*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
           Y*ToReal(a))*(3*SQR(X) + 3*SQR(Y) + 3*SQR(Z) + SQR(ToReal(a)) + 
-          4*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)))) - 4*Y*INV(SQR(X) + SQR(Y) 
-          + SQR(Z) + SQR(ToReal(a)))*SQR(Z)*SQR(pow(X,2) + pow(Y,2) + 
+          4*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M))))) + 2*INV(SQR(X) + SQR(Y) 
+          + SQR(Z) + SQR(ToReal(a)))*pow(SQR(X) + SQR(Y) + 
+          SQR(Z),2.5)*(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z)) - 
+          X*ToReal(a))*ToReal(M)*(pow(ToReal(a),5)*SQR(Z)*(4*SQR(X) + SQR(Y) + 
+          SQR(Z)) - 4*X*Y*QAD(ToReal(a))*SQR(Z)*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          2*X*Y*CUB(SQR(X) + SQR(Y) + SQR(Z))*(sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          ToReal(M)) - 2*X*Y*SQR(Z)*(SQR(X) + SQR(Y) + 
+          SQR(Z))*SQR(ToReal(a))*(sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 3*ToReal(M)) - 
+          SQR(pow(X,2) + pow(Y,2) + pow(Z,2))*ToReal(a)*(2*QAD(X) + (SQR(X) - 
+          SQR(Y) - SQR(Z))*(SQR(Y) + SQR(Z) + 2*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M))) + CUB(ToReal(a))*(QAD(X)*(SQR(Y) + 3*SQR(Z)) + 
+          SQR(X)*(2*QAD(Y) + 5*QAD(Z) + 7*SQR(Y)*SQR(Z) + 6*SQR(Z)*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z))*ToReal(M)) + (SQR(Y) + SQR(Z))*(QAD(Y) + 
+          3*SQR(Y)*SQR(Z) + 2*(QAD(Z) + SQR(Z)*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M))))) + INV(SQR(SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a))))*(-2*INV(SQR(SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + 
+          SQR(Y) + SQR(Z))*SQR(ToReal(a)))))*SQR(pow(X,2) + pow(Y,2) + 
+          pow(Z,2))*SQR(2*pow(Y,2)*pow(Z,2) + 2*pow(X,2)*(pow(Y,2) + pow(Z,2)) + 
+          pow(Z,2)*pow(ToReal(a),2) + QAD(X) + QAD(Y) + QAD(Z))*(X*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) + Y*ToReal(a))*(-2*X*(SQR(X) + SQR(Y) + SQR(Z)*(1 + 
+          INV(SQR(X) + SQR(Y) + SQR(Z))*SQR(ToReal(a))))*(X*sqrt(SQR(X) + SQR(Y) 
+          + SQR(Z)) + Y*ToReal(a)) + (SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*(INV(sqrt(SQR(X) + SQR(Y) + SQR(Z)))*(2*SQR(X) + SQR(Y) 
+          + SQR(Z))*(SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + SQR(Y) + 
+          SQR(Z))*SQR(ToReal(a)))) - X*(2 - 2*INV(SQR(SQR(X) + SQR(Y) + 
+          SQR(Z)))*SQR(Z)*SQR(ToReal(a)))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a))))*ToReal(M)*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) + 2*INV(SQR(SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) 
+          + SQR(Y) + SQR(Z))*SQR(ToReal(a)))))*SQR(pow(X,2) + pow(Y,2) + 
+          pow(Z,2))*SQR(2*pow(Y,2)*pow(Z,2) + 2*pow(X,2)*(pow(Y,2) + pow(Z,2)) + 
+          pow(Z,2)*pow(ToReal(a),2) + QAD(X) + QAD(Y) + QAD(Z))*(-(Y*sqrt(SQR(X) 
+          + SQR(Y) + SQR(Z))) + X*ToReal(a))*(-2*Y*(SQR(X) + SQR(Y) + SQR(Z)*(1 + 
+          INV(SQR(X) + SQR(Y) + SQR(Z))*SQR(ToReal(a))))*(X*sqrt(SQR(X) + SQR(Y) 
+          + SQR(Z)) + Y*ToReal(a)) + (SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*((SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + SQR(Y) + 
+          SQR(Z))*SQR(ToReal(a))))*(X*Y*INV(sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
+          ToReal(a)) - Y*(2 - 2*INV(SQR(SQR(X) + SQR(Y) + 
+          SQR(Z)))*SQR(Z)*SQR(ToReal(a)))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a))))*ToReal(M)*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) + 2*CUB(SQR(X) + SQR(Y) + SQR(Z))*(Y*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) - X*ToReal(a))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a))*ToReal(M)*(2*Y*QAD(ToReal(a))*(SQR(X) + SQR(Y) - 
+          SQR(Z))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*Y*CUB(SQR(X) + SQR(Y) + 
+          SQR(Z))*(sqrt(SQR(X) + SQR(Y) + SQR(Z)) + ToReal(M)) + 2*Y*(SQR(X) + 
+          SQR(Y) + SQR(Z))*SQR(ToReal(a))*((SQR(X) + SQR(Y))*sqrt(SQR(X) + SQR(Y) 
+          + SQR(Z)) + (2*SQR(X) + 2*SQR(Y) - SQR(Z))*ToReal(M)) + 
+          X*(pow(ToReal(a),5)*(-2*SQR(X) - 2*SQR(Y) + SQR(Z)) - SQR(pow(X,2) + 
+          pow(Y,2) + pow(Z,2))*ToReal(a)*(3*SQR(X) + 3*SQR(Y) + 3*SQR(Z) + 
+          4*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) - CUB(ToReal(a))*(3*QAD(X) 
+          + 3*QAD(Y) + 2*QAD(Z) + SQR(Y)*(5*SQR(Z) + 4*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) + SQR(X)*(6*SQR(Y) + 5*SQR(Z) + 4*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z))*ToReal(M))))))));
+        
+        CCTK_REAL K22 = -2*INV(SQR((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)))*pow(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
+          SQR(X)*(SQR(Y) + SQR(Z))) + 
+          SQR(Z)*SQR(ToReal(a)),-3)*sqrt(INV(pow(SQR(X) + SQR(Y) + SQR(Z),3.5) + 
+          pow(SQR(X) + SQR(Y) + SQR(Z),0.5)*QAD(ToReal(a))*SQR(Z) + (SQR(X) + 
+          SQR(Y) + SQR(Z))*SQR(ToReal(a))*(pow(SQR(X) + SQR(Y) + 
+          SQR(Z),0.5)*(SQR(X) + SQR(Y) + 2*SQR(Z)) - 2*(SQR(X) + 
+          SQR(Y))*ToReal(M)))*(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
+          SQR(X)*(SQR(Y) + SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*(pow(SQR(X) + SQR(Y) 
+          + SQR(Z),0.5)*(SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a))) + 2*(SQR(X) + 
+          SQR(Y) + SQR(Z))*ToReal(M)))*ToReal(M)*(-((SQR(X) + SQR(Y) + 
+          SQR(Z))*(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + SQR(X)*(SQR(Y) + 
+          SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*(1 + 2*INV(SQR(SQR(X) + SQR(Y) + 
+          SQR(Z) + SQR(ToReal(a))))*INV(SQR(X) + SQR(Y) + SQR(Z)*(1 + pow(SQR(X) 
+          + SQR(Y) + SQR(Z),-1)*SQR(ToReal(a))))*SQR(-(Y*sqrt(pow(X,2) + pow(Y,2) 
+          + pow(Z,2))) + X*ToReal(a))*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M))*((4*Y*SQR(pow(X,2) + pow(Y,2) + 
+          pow(Z,2))*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + X*ToReal(a)) + (QAD(X) 
+          + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + SQR(X)*(SQR(Y) + SQR(Z))) + 
+          SQR(Z)*SQR(ToReal(a)))*(-((-SQR(X) - 2*SQR(Y) - SQR(Z))*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z))) - 4*Y*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
+          X*ToReal(a))))*((SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a)))*sqrt(SQR(X) 
+          + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
+          Y*(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + SQR(X)*(SQR(Y) + 
+          SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + X*ToReal(a))*(3*(SQR(X) 
+          + SQR(Y) + SQR(Z)) + SQR(ToReal(a)) + 4*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)))) + ToReal(M)*((INV(SQR(SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a))))*SQR(Z)*SQR(pow(X,2) + pow(Y,2) + 
+          pow(Z,2))*(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z)) - 
+          X*ToReal(a))*(Y*(3*pow(SQR(X) + SQR(Y) + SQR(Z),3.5) + pow(SQR(X) + 
+          SQR(Y) + SQR(Z),1.5)*(SQR(X) + SQR(Y))*SQR(ToReal(a)) + 
+          QAD(ToReal(a))*(2*(SQR(X) + SQR(Y)) - 3*SQR(Z))*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))) + X*(pow(ToReal(a),5)*(-2*(SQR(X) + SQR(Y)) + SQR(Z)) - 
+          CUB(ToReal(a))*(3*(QAD(X) + QAD(Y)) + 4*QAD(Z) + 7*SQR(Y)*SQR(Z) + 
+          SQR(X)*(6*SQR(Y) + 7*SQR(Z))) - 5*CUB(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(a))) + pow(SQR(X) + SQR(Y) + SQR(Z),2.5)*pow(SQR(X) + 
+          SQR(Y) + SQR(Z) + SQR(ToReal(a)),-3)*((Y*sqrt(SQR(X) + SQR(Y) + SQR(Z)) 
+          - X*ToReal(a))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a))*(pow(ToReal(a),5)*SQR(Z)*(5*SQR(X) + 2*(SQR(Y) + SQR(Z))) 
+          + CUB(ToReal(a))*(pow(X,6) + QAD(X)*(4*SQR(Y) + 5*SQR(Z)) + 
+          SQR(X)*(5*QAD(Y) + 8*QAD(Z) + 13*SQR(Y)*SQR(Z)) + 2*(SQR(Y) + 
+          2*SQR(Z))*SQR(pow(Y,2) + pow(Z,2))) + X*Y*(3*pow(SQR(X) + SQR(Y) + 
+          SQR(Z),3.5) + (-5*QAD(ToReal(a))*SQR(Z) - (QAD(X) + QAD(Y) + 2*QAD(Z) + 
+          3*SQR(Y)*SQR(Z) + SQR(X)*(2*SQR(Y) + 
+          3*SQR(Z)))*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z))) - CUB(SQR(X) 
+          + SQR(Y) + SQR(Z))*(3*SQR(X) - 2*(SQR(Y) + SQR(Z)))*ToReal(a)) - 
+          SQR(-(Y*sqrt(pow(X,2) + pow(Y,2) + pow(Z,2))) + 
+          X*ToReal(a))*(pow(SQR(X) + SQR(Y) + SQR(Z),3.5)*(-SQR(Y) + 2*(SQR(X) + 
+          SQR(Z))) + (QAD(ToReal(a))*SQR(Z)*(7*SQR(Y) + 2*(SQR(X) + SQR(Z))) + 
+          (2*pow(X,6) + 3*pow(Y,6) + 4*pow(Z,6) + 12*QAD(Z)*SQR(Y) + 
+          11*QAD(Y)*SQR(Z) + QAD(X)*(7*SQR(Y) + 8*SQR(Z)) + SQR(X)*(8*QAD(Y) + 
+          10*QAD(Z) + 19*SQR(Y)*SQR(Z)))*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z)) + X*Y*(-3*pow(ToReal(a),5)*SQR(Z) + CUB(ToReal(a))*(QAD(X) + 
+          QAD(Y) + 2*QAD(Z) + 3*SQR(Y)*SQR(Z) + SQR(X)*(2*SQR(Y) + 3*SQR(Z))) + 
+          5*CUB(SQR(X) + SQR(Y) + SQR(Z))*ToReal(a)))))*((SQR(X) + SQR(Y) + 
+          SQR(Z) + SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + 
+          SQR(Y) + SQR(Z))*ToReal(M)) - 4*Y*INV(SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*SQR(Z)*SQR(pow(X,2) + pow(Y,2) + 
           pow(Z,2))*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
-          X*ToReal(a))*ToReal(M)*(-(pow(ToReal(a),6)*SQR(Z)) + CUB(SQR(X) + 
-          SQR(Y) + SQR(Z))*(SQR(X) + SQR(Y) + SQR(Z) + sqrt(SQR(X) + SQR(Y) + 
+          X*ToReal(a))*(-(pow(ToReal(a),6)*SQR(Z)) + CUB(SQR(X) + SQR(Y) + 
+          SQR(Z))*(SQR(X) + SQR(Y) + SQR(Z) + sqrt(SQR(X) + SQR(Y) + 
           SQR(Z))*ToReal(M)) + QAD(ToReal(a))*(QAD(X) + QAD(Y) + 2*SQR(X)*SQR(Y) 
           - SQR(Z)*(SQR(Z) + sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M))) + (SQR(X) 
-          + SQR(Y) + SQR(Z))*SQR(ToReal(a))*(2*QAD(X) + 2*QAD(Y) + QAD(Z) + 
+          + SQR(Y) + SQR(Z))*SQR(ToReal(a))*(2*(QAD(X) + QAD(Y)) + QAD(Z) + 
           3*SQR(Y)*(SQR(Z) + sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
           SQR(X)*(4*SQR(Y) + 3*(SQR(Z) + sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M))))) + (QAD(X) + QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 
-          2*SQR(X)*(SQR(Y) + SQR(Z)) + SQR(Z)*SQR(ToReal(a)))*(-((SQR(X) + SQR(Y) 
-          + SQR(Z))*(1 + 2*INV(SQR(SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(Z))*ToReal(M))))) + 2*CUB(SQR(X) + SQR(Y) + SQR(Z))*INV(SQR(SQR(X) 
+          + SQR(Y) + SQR(Z) + SQR(ToReal(a))))*(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z)) 
+          - X*ToReal(a))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a))*(2*X*Y*CUB(SQR(X) + SQR(Y) + SQR(Z))*(sqrt(SQR(X) + SQR(Y) 
+          + SQR(Z)) + ToReal(M)) + SQR(Z)*(-(pow(ToReal(a),5)*(SQR(X) + 4*SQR(Y) 
+          + SQR(Z))) - 4*X*Y*QAD(ToReal(a))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) - 
+          2*X*Y*(SQR(X) + SQR(Y) + SQR(Z))*SQR(ToReal(a))*(sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z)) + 3*ToReal(M))) - SQR(pow(X,2) + pow(Y,2) + 
+          pow(Z,2))*ToReal(a)*(QAD(X) - 2*QAD(Y) + QAD(Z) + 2*SQR(Z)*sqrt(SQR(X) 
+          + SQR(Y) + SQR(Z))*ToReal(M) - SQR(Y)*(SQR(Z) + 2*sqrt(SQR(X) + SQR(Y) 
+          + SQR(Z))*ToReal(M)) + SQR(X)*(-SQR(Y) + 2*(SQR(Z) + sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z))*ToReal(M)))) - CUB(ToReal(a))*(pow(X,6) + 
+          2*QAD(X)*(SQR(Y) + 2*SQR(Z)) + SQR(X)*(QAD(Y) + 5*QAD(Z) + 
+          7*SQR(Y)*SQR(Z) + 2*SQR(Z)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
+          SQR(Z)*(3*QAD(Y) + SQR(Y)*(5*SQR(Z) + 6*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) + 2*(QAD(Z) + SQR(Z)*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)))))));
+        
+        CCTK_REAL K32 = -(Z*INV(SQR((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)))*pow(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
+          SQR(X)*(SQR(Y) + SQR(Z))) + 
+          SQR(Z)*SQR(ToReal(a)),-3)*sqrt(INV(pow(SQR(X) + SQR(Y) + SQR(Z),3.5) + 
+          pow(SQR(X) + SQR(Y) + SQR(Z),0.5)*QAD(ToReal(a))*SQR(Z) + (SQR(X) + 
+          SQR(Y) + SQR(Z))*SQR(ToReal(a))*(pow(SQR(X) + SQR(Y) + 
+          SQR(Z),0.5)*(SQR(X) + SQR(Y) + 2*SQR(Z)) - 2*(SQR(X) + 
+          SQR(Y))*ToReal(M)))*(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
+          SQR(X)*(SQR(Y) + SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*(pow(SQR(X) + SQR(Y) 
+          + SQR(Z),0.5)*(SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a))) + 2*(SQR(X) + 
+          SQR(Y) + SQR(Z))*ToReal(M)))*ToReal(M)*(INV(SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*(-2*INV(SQR(SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + 
+          SQR(Y) + SQR(Z))*SQR(ToReal(a)))))*pow(SQR(X) + SQR(Y) + 
+          SQR(Z),1.5)*SQR(2*pow(Y,2)*pow(Z,2) + 2*pow(X,2)*(pow(Y,2) + pow(Z,2)) 
+          + pow(Z,2)*pow(ToReal(a),2) + QAD(X) + QAD(Y) + 
+          QAD(Z))*(Y*INV(sqrt(SQR(X) + SQR(Y) + SQR(Z)))*SQR(Z)*(SQR(X) + SQR(Y) 
+          + SQR(Z) + SQR(ToReal(a)))*(SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + 
+          SQR(Y) + SQR(Z))*SQR(ToReal(a)))) - 2*SQR(Z)*(SQR(X) + SQR(Y) + 
+          SQR(Z)*(1 + INV(SQR(X) + SQR(Y) + 
+          SQR(Z))*SQR(ToReal(a))))*(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z)) - 
+          X*ToReal(a)) + (SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a)))*(SQR(X) + 
+          SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + SQR(Y) + 
+          SQR(Z))*SQR(ToReal(a))))*(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z)) - 
+          X*ToReal(a)) + 2*INV(SQR(SQR(X) + SQR(Y) + SQR(Z)))*SQR(Z)*(SQR(X) + 
+          SQR(Y) + SQR(Z) + SQR(ToReal(a)))*(SQR(pow(X,2) + pow(Y,2) + pow(Z,2)) 
+          + (SQR(X) + SQR(Y))*SQR(ToReal(a)))*(-(Y*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))) + X*ToReal(a)))*ToReal(M)*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) + 2*pow(SQR(X) + SQR(Y) + 
+          SQR(Z),2.5)*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
+          X*ToReal(a))*ToReal(M)*(-3*X*Y*pow(ToReal(a),5)*SQR(Z) + pow(SQR(X) + 
+          SQR(Y) + SQR(Z),3.5)*(SQR(X) - SQR(Y) + SQR(Z)) + 
+          X*Y*CUB(ToReal(a))*(SQR(X) + SQR(Y))*(SQR(X) + SQR(Y) + SQR(Z)) + 
+          QAD(ToReal(a))*SQR(Z)*(SQR(X) + 5*SQR(Y) + SQR(Z))*sqrt(SQR(X) + SQR(Y) 
+          + SQR(Z)) + (pow(X,6) + pow(Y,6) + 2*pow(Z,6) + 7*QAD(Z)*SQR(Y) + 
+          6*QAD(Y)*SQR(Z) + QAD(X)*(3*SQR(Y) + 4*SQR(Z)) + SQR(X)*(3*QAD(Y) + 
+          5*QAD(Z) + 10*SQR(Y)*SQR(Z)))*SQR(ToReal(a))*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z)) + 3*X*Y*CUB(SQR(X) + SQR(Y) + SQR(Z))*ToReal(a) + 2*(pow(X,8) + 
+          pow(X,6)*(3*SQR(Y) + 4*SQR(Z)) + QAD(X)*(3*QAD(Y) + 6*QAD(Z) + 
+          9*SQR(Y)*SQR(Z) + SQR(Z)*SQR(ToReal(a))) + SQR(Z)*(SQR(Y) + 
+          SQR(Z))*(SQR(pow(Y,2) + pow(Z,2)) + (4*SQR(Y) + SQR(Z))*SQR(ToReal(a))) 
+          + SQR(X)*(pow(Y,6) + 6*QAD(Y)*SQR(Z) + 2*QAD(Z)*(2*SQR(Z) + 
+          SQR(ToReal(a))) + SQR(Y)*(9*QAD(Z) + 5*SQR(Z)*SQR(ToReal(a)))) + 
+          2*Y*pow(X,5)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(a) + 
+          4*Y*CUB(X)*(SQR(Y) + SQR(Z))*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(a) + 
+          2*X*Y*(QAD(Y) + QAD(Z) + SQR(Z)*(2*SQR(Y) - 
+          SQR(ToReal(a))))*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(a))*ToReal(M))) 
+          + 2*INV(SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a)))*SQR(pow(X,2) + 
+          pow(Y,2) + pow(Z,2))*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
+          X*ToReal(a))*ToReal(M)*(pow(ToReal(a),6)*SQR(Z)*(-SQR(X) - SQR(Y) + 
+          SQR(Z)) + CUB(SQR(X) + SQR(Y) + SQR(Z))*(QAD(X) + QAD(Y) - QAD(Z) + 
+          2*SQR(Y)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M) + 2*SQR(X)*(SQR(Y) + 
+          sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M))) + QAD(ToReal(a))*(pow(X,6) + 
+          pow(Y,6) + pow(Z,6) + QAD(X)*(3*SQR(Y) - SQR(Z)) - QAD(Y)*SQR(Z) - 
+          SQR(Y)*(QAD(Z) + 2*SQR(Z)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
+          SQR(X)*(3*QAD(Y) + SQR(Z)*(-2*SQR(Y) - SQR(Z) - 2*sqrt(SQR(X) + SQR(Y) 
+          + SQR(Z))*ToReal(M)))) + (SQR(X) + SQR(Y) + 
+          SQR(Z))*SQR(ToReal(a))*(2*pow(X,6) + 2*pow(Y,6) - pow(Z,6) + 
+          QAD(Y)*(SQR(Z) + 2*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
+          QAD(X)*(6*SQR(Y) + SQR(Z) + 2*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) 
+          - 2*SQR(Y)*(QAD(Z) + 2*SQR(Z)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) 
+          + 2*SQR(X)*(3*QAD(Y) + (SQR(Y) - SQR(Z))*(SQR(Z) + 2*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z))*ToReal(M))))) + INV(SQR(SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a))))*(-2*INV(SQR(SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + 
+          SQR(Y) + SQR(Z))*SQR(ToReal(a)))))*SQR(pow(X,2) + pow(Y,2) + 
+          pow(Z,2))*SQR(2*pow(Y,2)*pow(Z,2) + 2*pow(X,2)*(pow(Y,2) + pow(Z,2)) + 
+          pow(Z,2)*pow(ToReal(a),2) + QAD(X) + QAD(Y) + QAD(Z))*(X*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) + Y*ToReal(a))*(-2*X*(SQR(X) + SQR(Y) + SQR(Z)*(1 + 
+          INV(SQR(X) + SQR(Y) + SQR(Z))*SQR(ToReal(a))))*(Y*sqrt(SQR(X) + SQR(Y) 
+          + SQR(Z)) - X*ToReal(a)) + (SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*((SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + SQR(Y) + 
+          SQR(Z))*SQR(ToReal(a))))*(X*Y*INV(sqrt(SQR(X) + SQR(Y) + SQR(Z))) - 
+          ToReal(a)) - X*(2 - 2*INV(SQR(SQR(X) + SQR(Y) + 
+          SQR(Z)))*SQR(Z)*SQR(ToReal(a)))*(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z)) - 
+          X*ToReal(a))))*ToReal(M)*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) + 2*INV(SQR(SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) 
+          + SQR(Y) + SQR(Z))*SQR(ToReal(a)))))*SQR(pow(X,2) + pow(Y,2) + 
+          pow(Z,2))*SQR(2*pow(Y,2)*pow(Z,2) + 2*pow(X,2)*(pow(Y,2) + pow(Z,2)) + 
+          pow(Z,2)*pow(ToReal(a),2) + QAD(X) + QAD(Y) + QAD(Z))*(-(Y*sqrt(SQR(X) 
+          + SQR(Y) + SQR(Z))) + X*ToReal(a))*(-2*Y*(SQR(X) + SQR(Y) + SQR(Z)*(1 + 
+          INV(SQR(X) + SQR(Y) + SQR(Z))*SQR(ToReal(a))))*(Y*sqrt(SQR(X) + SQR(Y) 
+          + SQR(Z)) - X*ToReal(a)) + (SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*(INV(sqrt(SQR(X) + SQR(Y) + SQR(Z)))*(SQR(X) + 2*SQR(Y) 
+          + SQR(Z))*(SQR(X) + SQR(Y) + SQR(Z)*(1 + INV(SQR(X) + SQR(Y) + 
+          SQR(Z))*SQR(ToReal(a)))) - Y*(2 - 2*INV(SQR(SQR(X) + SQR(Y) + 
+          SQR(Z)))*SQR(Z)*SQR(ToReal(a)))*(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z)) - 
+          X*ToReal(a))))*ToReal(M)*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) + 2*CUB(SQR(X) + SQR(Y) + SQR(Z))*(Y*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) - X*ToReal(a))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a))*ToReal(M)*(Y*pow(ToReal(a),5)*(2*SQR(X) + 2*SQR(Y) - 
+          SQR(Z)) + 2*X*QAD(ToReal(a))*(SQR(X) + SQR(Y) - SQR(Z))*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) + 2*X*CUB(SQR(X) + SQR(Y) + SQR(Z))*(sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) + ToReal(M)) + 2*X*(SQR(X) + SQR(Y) + 
+          SQR(Z))*SQR(ToReal(a))*((SQR(X) + SQR(Y))*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z)) + (2*SQR(X) + 2*SQR(Y) - SQR(Z))*ToReal(M)) + Y*SQR(pow(X,2) + 
+          pow(Y,2) + pow(Z,2))*ToReal(a)*(3*SQR(X) + 3*SQR(Y) + 3*SQR(Z) + 
+          4*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
+          Y*CUB(ToReal(a))*(3*QAD(X) + 3*QAD(Y) + 2*QAD(Z) + SQR(Y)*(5*SQR(Z) + 
+          4*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + SQR(X)*(6*SQR(Y) + 
+          5*SQR(Z) + 4*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M))))) + (QAD(X) + 
+          QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 2*SQR(X)*(SQR(Y) + SQR(Z)) + 
+          SQR(Z)*SQR(ToReal(a)))*(-((1 + 2*INV(SQR(SQR(X) + SQR(Y) + SQR(Z) + 
           SQR(ToReal(a))))*INV(SQR(X) + SQR(Y) + SQR(Z)*(1 + pow(SQR(X) + SQR(Y) 
           + SQR(Z),-1)*SQR(ToReal(a))))*SQR(-(Y*sqrt(pow(X,2) + pow(Y,2) + 
           pow(Z,2))) + X*ToReal(a))*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M))*(-4*Y*(QAD(X) + QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 
-          2*SQR(X)*(SQR(Y) + SQR(Z)) + SQR(Z)*SQR(ToReal(a)))*(-(Y*sqrt(SQR(X) + 
-          SQR(Y) + SQR(Z))) + X*ToReal(a))*((SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M)) + (-((-SQR(X) - 2*SQR(Y) - SQR(Z))*(QAD(X) + QAD(Y) 
-          + QAD(Z) + 2*SQR(Y)*SQR(Z) + 2*SQR(X)*(SQR(Y) + SQR(Z)) + 
-          SQR(Z)*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
-          4*Y*SQR(pow(X,2) + pow(Y,2) + pow(Z,2))*(-(Y*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))) + X*ToReal(a)))*((SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M)) + Y*(QAD(X) + QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 
-          2*SQR(X)*(SQR(Y) + SQR(Z)) + SQR(Z)*SQR(ToReal(a)))*sqrt(SQR(X) + 
-          SQR(Y) + SQR(Z))*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
-          X*ToReal(a))*(3*SQR(X) + 3*SQR(Y) + 3*SQR(Z) + SQR(ToReal(a)) + 
-          4*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)))) - X*Z*sqrt(SQR(X) + 
-          SQR(Y) + SQR(Z))*(1 + 2*INV(SQR(X) + SQR(Y) + SQR(Z) + pow(SQR(X) + 
-          SQR(Y) + SQR(Z),-1)*SQR(Z)*SQR(ToReal(a)))*INV(sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z)))*SQR(Z)*ToReal(M))*(2*(SQR(X) + SQR(Y) + SQR(Z))*(QAD(X) + 
+          SQR(Z))*ToReal(M))*(Y*pow(SQR(X) + SQR(Y) + SQR(Z),1.5)*(QAD(X) + 
           QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 2*SQR(X)*(SQR(Y) + SQR(Z)) + 
           SQR(Z)*SQR(ToReal(a)))*((SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) + 2*SQR(pow(X,2) + pow(Y,2) + pow(Z,2))*(2*(SQR(X) + 
+          SQR(Y) + SQR(Z)) + SQR(ToReal(a)))*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) 
+          + X*ToReal(a))*((SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a)))*sqrt(SQR(X) 
+          + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) - 
+          4*(SQR(X) + SQR(Y) + SQR(Z))*(QAD(X) + QAD(Y) + QAD(Z) + 
+          2*SQR(Y)*SQR(Z) + 2*SQR(X)*(SQR(Y) + SQR(Z)) + 
+          SQR(Z)*SQR(ToReal(a)))*(-(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
+          X*ToReal(a))*((SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a)))*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + pow(SQR(X) 
+          + SQR(Y) + SQR(Z),1.5)*(QAD(X) + QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 
+          2*SQR(X)*(SQR(Y) + SQR(Z)) + SQR(Z)*SQR(ToReal(a)))*(-(Y*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z))) + X*ToReal(a))*(3*SQR(X) + 3*SQR(Y) + 3*SQR(Z) + 
+          SQR(ToReal(a)) + 4*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)))) - 
+          Y*sqrt(SQR(X) + SQR(Y) + SQR(Z))*(1 + 2*INV(SQR(X) + SQR(Y) + SQR(Z) + 
+          pow(SQR(X) + SQR(Y) + SQR(Z),-1)*SQR(Z)*SQR(ToReal(a)))*INV(sqrt(SQR(X) 
+          + SQR(Y) + SQR(Z)))*SQR(Z)*ToReal(M))*(2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*(QAD(X) + QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 2*SQR(X)*(SQR(Y) 
+          + SQR(Z)) + SQR(Z)*SQR(ToReal(a)))*((SQR(X) + SQR(Y) + SQR(Z) + 
           SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
           SQR(Z))*ToReal(M)) + 3*(SQR(X) + SQR(Y) + SQR(Z) + 
           SQR(ToReal(a)))*(QAD(X) + QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 
@@ -546,104 +784,74 @@ static void KerrSchild_initial_Body(cGH const * restrict const cctkGH, int const
           QAD(Y) + QAD(Z) + 2*SQR(Y)*SQR(Z) + 2*SQR(X)*(SQR(Y) + SQR(Z)) + 
           SQR(Z)*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z))*(3*SQR(X) + 
           3*SQR(Y) + 3*SQR(Z) + SQR(ToReal(a)) + 4*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M))))) + 2*Z*INV(SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a)))*pow(SQR(X) + SQR(Y) + SQR(Z),2.5)*(Y*sqrt(SQR(X) + 
-          SQR(Y) + SQR(Z)) - 
-          X*ToReal(a))*ToReal(M)*(pow(ToReal(a),5)*SQR(Z)*(4*SQR(X) + SQR(Y) + 
-          SQR(Z)) - 4*X*Y*QAD(ToReal(a))*SQR(Z)*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
+          SQR(Z))*ToReal(M))))) - 2*INV(SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*pow(SQR(X) + SQR(Y) + SQR(Z),2.5)*(X*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z)) + 
+          Y*ToReal(a))*ToReal(M)*(pow(ToReal(a),5)*SQR(Z)*(SQR(X) + 4*SQR(Y) + 
+          SQR(Z)) + 4*X*Y*QAD(ToReal(a))*SQR(Z)*sqrt(SQR(X) + SQR(Y) + SQR(Z)) - 
           2*X*Y*CUB(SQR(X) + SQR(Y) + SQR(Z))*(sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          ToReal(M)) - 2*X*Y*SQR(Z)*(SQR(X) + SQR(Y) + 
-          SQR(Z))*SQR(ToReal(a))*(sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 3*ToReal(M)) - 
-          SQR(pow(X,2) + pow(Y,2) + pow(Z,2))*ToReal(a)*(2*QAD(X) + (SQR(X) - 
-          SQR(Y) - SQR(Z))*(SQR(Y) + SQR(Z) + 2*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M))) + CUB(ToReal(a))*(QAD(X)*(SQR(Y) + 3*SQR(Z)) + 
-          SQR(X)*(2*QAD(Y) + 5*QAD(Z) + 7*SQR(Y)*SQR(Z) + 6*SQR(Z)*sqrt(SQR(X) + 
-          SQR(Y) + SQR(Z))*ToReal(M)) + (SQR(Y) + SQR(Z))*(QAD(Y) + 
-          3*SQR(Y)*SQR(Z) + 2*(QAD(Z) + SQR(Z)*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M))))) + 2*CUB(SQR(X) + SQR(Y) + SQR(Z))*INV(SQR(SQR(X) 
-          + SQR(Y) + SQR(Z) + SQR(ToReal(a))))*(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z)) 
-          - X*ToReal(a))*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          Y*ToReal(a))*ToReal(M)*(SQR(Z)*(-(pow(ToReal(a),5)*(SQR(X) + 4*SQR(Y) + 
-          SQR(Z))) - 4*X*Y*QAD(ToReal(a))*sqrt(SQR(X) + SQR(Y) + SQR(Z))) + 
-          2*X*Y*CUB(SQR(X) + SQR(Y) + SQR(Z))*(sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          ToReal(M)) - 2*X*Y*SQR(Z)*(SQR(X) + SQR(Y) + 
-          SQR(Z))*SQR(ToReal(a))*(sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 3*ToReal(M)) - 
+          ToReal(M)) + 2*X*Y*SQR(Z)*(SQR(X) + SQR(Y) + 
+          SQR(Z))*SQR(ToReal(a))*(sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 3*ToReal(M)) + 
           SQR(pow(X,2) + pow(Y,2) + pow(Z,2))*ToReal(a)*(QAD(X) - 2*QAD(Y) + 
           QAD(Z) + 2*SQR(Z)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M) - 
           SQR(Y)*(SQR(Z) + 2*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
           SQR(X)*(-SQR(Y) + 2*(SQR(Z) + sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M)))) - CUB(ToReal(a))*(pow(X,6) + 2*QAD(X)*(SQR(Y) + 
+          SQR(Z))*ToReal(M)))) + CUB(ToReal(a))*(pow(X,6) + 2*QAD(X)*(SQR(Y) + 
           2*SQR(Z)) + SQR(X)*(QAD(Y) + 5*QAD(Z) + 7*SQR(Y)*SQR(Z) + 
           2*SQR(Z)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + SQR(Z)*(3*QAD(Y) + 
           SQR(Y)*(5*SQR(Z) + 6*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
           2*(QAD(Z) + SQR(Z)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)))))));
         
-        CCTK_REAL K33 = -2*Z*INV(SQR((SQR(X) + SQR(Y) + SQR(Z) + 
+        CCTK_REAL K33 = -2*INV(SQR(X) + SQR(Y) + SQR(Z) + 
+          SQR(ToReal(a)))*INV(SQR((SQR(X) + SQR(Y) + SQR(Z) + 
           SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
           SQR(Z))*ToReal(M)))*pow(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
-          SQR(X)*(SQR(Y) + SQR(Z))) + 
-          SQR(Z)*SQR(ToReal(a)),-3)*sqrt(INV(pow(SQR(X) + SQR(Y) + SQR(Z),3.5) + 
-          pow(SQR(X) + SQR(Y) + SQR(Z),0.5)*QAD(ToReal(a))*SQR(Z) + (SQR(X) + 
-          SQR(Y) + SQR(Z))*SQR(ToReal(a))*(pow(SQR(X) + SQR(Y) + 
-          SQR(Z),0.5)*(SQR(X) + SQR(Y) + 2*SQR(Z)) - 2*(SQR(X) + 
-          SQR(Y))*ToReal(M)))*(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
-          SQR(X)*(SQR(Y) + SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*(pow(SQR(X) + SQR(Y) 
-          + SQR(Z),0.5)*(SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a))) + 2*(SQR(X) + 
-          SQR(Y) + SQR(Z))*ToReal(M)))*ToReal(M)*(-(Y*(QAD(X) + QAD(Y) + QAD(Z) + 
-          2*(SQR(Y)*SQR(Z) + SQR(X)*(SQR(Y) + SQR(Z))) + 
-          SQR(Z)*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z))*(1 + 2*INV(SQR(X) 
-          + SQR(Y) + SQR(Z) + pow(SQR(X) + SQR(Y) + 
-          SQR(Z),-1)*SQR(Z)*SQR(ToReal(a)))*INV(sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z)))*SQR(Z)*ToReal(M))*((SQR(X) + SQR(Y) + SQR(Z))*(4*(-SQR(X) - 
-          SQR(Y) - SQR(Z))*(SQR(X) + SQR(Y) + SQR(Z) + SQR(ToReal(a))) + 
-          2*(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + SQR(X)*(SQR(Y) + 
-          SQR(Z))) + SQR(Z)*SQR(ToReal(a))))*((SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M)) + (SQR(X) + SQR(Y) + SQR(Z) + 
-          SQR(ToReal(a)))*(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
-          SQR(X)*(SQR(Y) + SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*(3*((SQR(X) + SQR(Y) 
-          + SQR(Z) + SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 2*(SQR(X) + 
-          SQR(Y) + SQR(Z))*ToReal(M)) - sqrt(SQR(X) + SQR(Y) + SQR(Z))*(3*(SQR(X) 
-          + SQR(Y) + SQR(Z)) + SQR(ToReal(a)) + 4*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M))))) + ToReal(M)*((3*(QAD(X) + QAD(Y) + QAD(Z)) + 
-          6*(SQR(Y)*SQR(Z) + SQR(X)*(SQR(Y) + SQR(Z))) - 
-          SQR(Z)*SQR(ToReal(a)))*(Y*SQR(Z)*(SQR(X) + SQR(Y) + SQR(Z))*(SQR(X) + 
-          SQR(Y) + SQR(Z) + SQR(ToReal(a))) + X*Z*pow(SQR(X) + SQR(Y) + 
-          SQR(Z),1.5)*(Y*sqrt(SQR(X) + SQR(Y) + SQR(Z)) - X*ToReal(a)))*((SQR(X) 
-          + SQR(Y) + SQR(Z) + SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          2*(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + INV(SQR(X) + SQR(Y) + SQR(Z) 
-          + SQR(ToReal(a)))*pow(SQR(X) + SQR(Y) + SQR(Z),2.5)*(2*(-(Y*sqrt(SQR(X) 
-          + SQR(Y) + SQR(Z))) + X*ToReal(a))*(pow(SQR(X) + SQR(Y) + 
-          SQR(Z),3.5)*(SQR(X) - SQR(Y) + SQR(Z)) + (QAD(ToReal(a))*SQR(Z)*(SQR(X) 
-          + 5*SQR(Y) + SQR(Z)) + (pow(X,6) + pow(Y,6) + 2*pow(Z,6) + 
-          7*QAD(Z)*SQR(Y) + 6*QAD(Y)*SQR(Z) + QAD(X)*(3*SQR(Y) + 4*SQR(Z)) + 
-          SQR(X)*(3*QAD(Y) + 5*QAD(Z) + 
-          10*SQR(Y)*SQR(Z)))*SQR(ToReal(a)))*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          X*Y*(-3*pow(ToReal(a),5)*SQR(Z) + CUB(ToReal(a))*(SQR(X) + 
-          SQR(Y))*(SQR(X) + SQR(Y) + SQR(Z)) + 3*CUB(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(a)) + 2*(pow(X,8) + pow(X,6)*(3*SQR(Y) + 4*SQR(Z)) + 
-          QAD(X)*(3*QAD(Y) + 6*QAD(Z) + SQR(Z)*(9*SQR(Y) + SQR(ToReal(a)))) + 
-          SQR(X)*(pow(Y,6) + 6*QAD(Y)*SQR(Z) + 2*QAD(Z)*(2*SQR(Z) + 
-          SQR(ToReal(a))) + SQR(Y)*(9*QAD(Z) + 5*SQR(Z)*SQR(ToReal(a)))) + 
-          2*Y*(pow(X,5) + X*(QAD(Y) + QAD(Z) + SQR(Z)*(2*SQR(Y) - 
-          SQR(ToReal(a)))))*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(a) + (SQR(Y) + 
-          SQR(Z))*(SQR(Z)*(SQR(pow(Y,2) + pow(Z,2)) + (4*SQR(Y) + 
-          SQR(Z))*SQR(ToReal(a))) + 4*Y*CUB(X)*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(a)))*ToReal(M)) - 2*(X*sqrt(SQR(X) + SQR(Y) + SQR(Z)) + 
-          Y*ToReal(a))*(-2*X*Y*CUB(SQR(X) + SQR(Y) + SQR(Z))*(sqrt(SQR(X) + 
-          SQR(Y) + SQR(Z)) + ToReal(M)) + SQR(Z)*(pow(ToReal(a),5)*(SQR(X) + 
-          4*SQR(Y) + SQR(Z)) + X*Y*(4*QAD(ToReal(a))*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z)) + 2*(SQR(X) + SQR(Y) + SQR(Z))*SQR(ToReal(a))*(sqrt(SQR(X) + 
-          SQR(Y) + SQR(Z)) + 3*ToReal(M)))) + SQR(pow(X,2) + pow(Y,2) + 
-          pow(Z,2))*ToReal(a)*(QAD(X) - 2*QAD(Y) + QAD(Z) + 2*SQR(Z)*sqrt(SQR(X) 
-          + SQR(Y) + SQR(Z))*ToReal(M) - SQR(Y)*(SQR(Z) + 2*sqrt(SQR(X) + SQR(Y) 
-          + SQR(Z))*ToReal(M)) + SQR(X)*(-SQR(Y) + 2*(SQR(Z) + sqrt(SQR(X) + 
-          SQR(Y) + SQR(Z))*ToReal(M)))) + CUB(ToReal(a))*(pow(X,6) + 
-          2*QAD(X)*(SQR(Y) + 2*SQR(Z)) + SQR(X)*(QAD(Y) + 5*QAD(Z) + 
-          SQR(Z)*(7*SQR(Y) + 2*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M))) + 
-          SQR(Z)*(3*QAD(Y) + SQR(Y)*(5*SQR(Z) + 6*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M)) + 2*(QAD(Z) + SQR(Z)*sqrt(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(M))))))));
+          SQR(X)*(SQR(Y) + SQR(Z))) + SQR(Z)*SQR(ToReal(a)),-3)*(SQR(X) + SQR(Y) 
+          + SQR(Z))*sqrt(INV(pow(SQR(X) + SQR(Y) + SQR(Z),3.5) + pow(SQR(X) + 
+          SQR(Y) + SQR(Z),0.5)*QAD(ToReal(a))*SQR(Z) + (SQR(X) + SQR(Y) + 
+          SQR(Z))*SQR(ToReal(a))*(pow(SQR(X) + SQR(Y) + SQR(Z),0.5)*(SQR(X) + 
+          SQR(Y) + 2*SQR(Z)) - 2*(SQR(X) + SQR(Y))*ToReal(M)))*(QAD(X) + QAD(Y) + 
+          QAD(Z) + 2*(SQR(Y)*SQR(Z) + SQR(X)*(SQR(Y) + SQR(Z))) + 
+          SQR(Z)*SQR(ToReal(a)))*(pow(SQR(X) + SQR(Y) + SQR(Z),0.5)*(SQR(X) + 
+          SQR(Y) + SQR(Z) + SQR(ToReal(a))) + 2*(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)))*ToReal(M)*(-(pow(SQR(X) + SQR(Y) + 
+          SQR(Z),6)*(QAD(X) + QAD(Y) + 2*SQR(Y)*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M) + 2*SQR(X)*(SQR(Y) + sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) - SQR(Z)*(SQR(Z) + 2*SQR(ToReal(M)) + 3*sqrt(SQR(X) 
+          + SQR(Y) + SQR(Z))*ToReal(M)))) - pow(ToReal(a),6)*(SQR(X) + SQR(Y) + 
+          SQR(Z))*(pow(X,8) + pow(Y,8) - 3*QAD(Y)*QAD(Z) + 2*pow(Y,6)*SQR(Z) + 
+          2*pow(X,6)*(2*SQR(Y) + SQR(Z)) + QAD(X)*(6*QAD(Y) - 3*QAD(Z) + 
+          6*SQR(Y)*SQR(Z)) + 2*pow(Z,6)*(SQR(Z) + SQR(ToReal(M)) + 3*sqrt(SQR(X) 
+          + SQR(Y) + SQR(Z))*ToReal(M)) - 2*QAD(Z)*SQR(Y)*(SQR(Z) + 
+          2*SQR(ToReal(M)) + 5*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
+          2*SQR(X)*(2*pow(Y,6) + 3*QAD(Y)*SQR(Z) + QAD(Z)*(-3*SQR(Y) - SQR(Z) - 
+          2*SQR(ToReal(M)) - 5*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)))) - 
+          QAD(SQR(X) + SQR(Y) + SQR(Z))*SQR(ToReal(a))*(3*pow(X,6) + 3*pow(Y,6) + 
+          QAD(Y)*(3*SQR(Z) + 4*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
+          QAD(X)*(9*SQR(Y) + 3*SQR(Z) + 4*sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) - SQR(Y)*SQR(Z)*(3*SQR(Z) + 6*SQR(ToReal(M)) + 
+          4*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) - QAD(Z)*(3*SQR(Z) + 
+          2*SQR(ToReal(M)) + 6*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
+          SQR(X)*(9*QAD(Y) - SQR(Z)*(3*SQR(Z) + 6*SQR(ToReal(M)) + 4*sqrt(SQR(X) 
+          + SQR(Y) + SQR(Z))*ToReal(M)) + SQR(Y)*(6*SQR(Z) + 8*sqrt(SQR(X) + 
+          SQR(Y) + SQR(Z))*ToReal(M)))) + QAD(Z)*(pow(ToReal(a),10)*(SQR(X) + 
+          SQR(Y) - SQR(Z)) + pow(ToReal(a),8)*(3*QAD(X) + 3*QAD(Y) + 
+          4*SQR(Y)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M) + SQR(X)*(6*SQR(Y) + 
+          4*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) - 3*(QAD(Z) + 
+          SQR(Z)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)))) - 
+          QAD(ToReal(a))*SQR(pow(X,2) + pow(Y,2) + pow(Z,2))*(3*pow(X,8) + 
+          3*pow(Y,8) + 2*pow(Z,6)*(-SQR(Z) + SQR(ToReal(M))) + 
+          2*pow(Y,6)*(3*SQR(Z) + sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
+          2*pow(X,6)*(6*SQR(Y) + 3*SQR(Z) + sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) - 2*QAD(Z)*SQR(Y)*(3*SQR(Z) + 4*SQR(ToReal(M)) + 
+          6*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) - QAD(Y)*(QAD(Z) + 
+          SQR(Z)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + QAD(X)*(18*QAD(Y) - 
+          SQR(Z)*(SQR(Z) + sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) + 
+          6*SQR(Y)*(3*SQR(Z) + sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M))) + 
+          2*SQR(X)*(6*pow(Y,6) + 3*QAD(Y)*(3*SQR(Z) + sqrt(SQR(X) + SQR(Y) + 
+          SQR(Z))*ToReal(M)) - QAD(Z)*(3*SQR(Z) + 4*SQR(ToReal(M)) + 
+          6*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)) - SQR(Y)*(QAD(Z) + 
+          SQR(Z)*sqrt(SQR(X) + SQR(Y) + SQR(Z))*ToReal(M)))));
         
         CCTK_REAL betap1 = 2*INV(QAD(X) + QAD(Y) + QAD(Z) + 2*(SQR(Y)*SQR(Z) + 
           SQR(X)*(SQR(Y) + SQR(Z))) + SQR(Z)*SQR(ToReal(a)))*INV((SQR(X) + SQR(Y) 

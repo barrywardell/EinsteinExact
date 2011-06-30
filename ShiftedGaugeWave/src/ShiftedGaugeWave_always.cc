@@ -140,14 +140,11 @@ static void ShiftedGaugeWave_always_Body(cGH const * restrict const cctkGH, int 
         
         CCTK_REAL G33 = 1;
         
-        CCTK_REAL K11 = Pi*Cos(2*Pi*(X - cctk_time)*INV(ToReal(period)))*INV(sqrt(1 
-          + Sin(2*Pi*(X - 
-          cctk_time)*INV(ToReal(period)))*ToReal(amp)))*INV(ToReal(period))*ToReal(amp)*(3 
-          + 2*Sin(2*Pi*(X - cctk_time)*INV(ToReal(period)))*ToReal(amp));
-        
-        CCTK_REAL K21 = -(Pi*Cos(2*Pi*(X - 
+        CCTK_REAL K11 = -(Pi*Cos(2*Pi*(X - 
           cctk_time)*INV(ToReal(period)))*INV(sqrt(1 + Sin(2*Pi*(X - 
           cctk_time)*INV(ToReal(period)))*ToReal(amp)))*INV(ToReal(period))*ToReal(amp));
+        
+        CCTK_REAL K21 = 0;
         
         CCTK_REAL K31 = 0;
         
