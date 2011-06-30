@@ -15,12 +15,12 @@ SetEnhancedTimes[False];
 (* Register all the tensors that will be used with TensorTools *)
 Map[DefineTensor, 
 {
-  beta, dtbeta, g, k, Jac, xx, XX, G, K
+  beta, dtbeta, g, k, Jac, xx, XX, betap, dtbetap, G, K
 }];
 
 Map[AssertSymmetricDecreasing, 
 {
-  g[la,lb], k[la,lb]
+  g[la,lb], k[la,lb], G[la,lb], K[la,lb]
 }];
 
 
@@ -45,7 +45,7 @@ admGroups =
 
 shorthands = 
 {
-  Jac[ui,lj], xx[ui], XX[ui], X, Y, Z, G[li,lj], K[li,lk]
+  Jac[ui,lj], xx[ui], XX[ui], X, Y, Z, betap[ui], dtbetap[ui], G[li,lj], K[li,lk]
 };
 
 (**************************************************************************************)
@@ -89,22 +89,29 @@ Rpsi =
 Rot = FullSimplify[Rpsi.Rtheta.Rphi];
 
 idThorn[spacetime_] :=
-  Module[{m, fourMetric, threeMetric, lapse, shift, extrinsicCurvature, calc, calculations, parameters},
+  Module[{m, fourMetric, invFourMetric, threeMetric, lapse, shift,
+          extrinsicCurvature, calc, calculations, parameters, coords},
   m = GetMetric[spacetime];
-  If[("Coordinates" /. m) =!= {t, x, y, z},
+  coords = ("Coordinates" /. m) /. {x -> X, y -> Y, z -> Z};
+  If[coords =!= {t, X, Y, Z},
     Throw["Error, only metrics in Cartesian coordinates are supported"];
   ];
 
   parameters = ("Parameters" /. m)/. "Parameters" -> {};
   fourMetric = ("Metric" /. m) /. {x -> X, y -> Y, z -> Z};
 
+  invFourMetric = Simplify[Inverse[fourMetric]];
+  lapse = Simplify[1/Sqrt[-invFourMetric[[1,1]]]];
+  shift = Simplify[lapse^2 invFourMetric[[1, 2;;4]]];
   threeMetric = fourMetric[[2;;4, 2;;4]];
-  lapse = -fourMetric[[1,1]]; (* from inverse metric *)
-  shift = fourMetric[[1, 2;;4]]; (* from inverse metric *)
-  extrinsicCurvature = - 1/2 D[threeMetric, t] / Sqrt[lapse]; (* shift terms *)
+  extrinsicCurvature = Simplify[Table[- 1/(2 lapse) (D[threeMetric[[i,j]], t]
+    - Sum[D[threeMetric[[i,j]], coords[[k]]] shift[[k]], {k, 3}]
+    - Sum[threeMetric[[i, k]] D[shift[[k]], coords[[j]]], {k, 3}]
+    - Sum[threeMetric[[k, j]] D[shift[[k]], coords[[i]]], {k, 3}]),
+    {j, 3}, {i, 3}]];
 
   calc[when_] := {
-    Name -> spacetime <> when, (* rename *)
+    Name -> spacetime <> "_" <> when,
     Switch[when,
       "initial", Schedule -> {"in ADMBase_PostInitial"},
       "always",  Schedule -> {"at ANALYSIS"},
@@ -125,16 +132,17 @@ idThorn[spacetime_] :=
       Y -> XX[2],
       Z -> XX[3],
 
-      Table[Symbol["G"<>ToString[i]<>ToString[j]] -> threeMetric[[i, j]], {j, 3}, {i, 3}],
-      Table[Symbol["K"<>ToString[i]<>ToString[j]] -> extrinsicCurvature[[i, j]], {j, 3}, {i, 3}],
-      alp -> lapse,
-      Table[Symbol["beta"<>ToString[i]] -> shift[[i]], {i, 3}],
+      Table[Symbol["G"<>ToString[i]<>ToString[j]] -> threeMetric[[i, j]], {j, 3}, {i, j, 3}],
+      Table[Symbol["K"<>ToString[i]<>ToString[j]] -> extrinsicCurvature[[i,j]], {j, 3}, {i, j, 3}],
+      Table[Symbol["betap"<>ToString[i]] -> shift[[i]], {i, 3}],
+      Table[Symbol["dtbetap"<>ToString[i]] -> D[shift[[i]], t], {i, 3}],
 
       g[li,lj] -> Jac[um,li] Jac[un,lj] G[lm,ln],
       k[li,lj] -> Jac[um,li] Jac[un,lj] K[lm,ln],
-      beta[ui] -> Jac[lj,ui] betap[uj]
+      alp -> lapse,
+      beta[ui] -> Jac[lj,ui] betap[uj],
       dtalp -> D[alp, t],
-      Table[Symbol["dtbeta"<>ToString[i]] -> D[shift[[i]], t], {i, 3}]
+      dtbeta[ui] -> Jac[lj,ui] dtbetap[uj]
     }
   };
 
@@ -151,6 +159,9 @@ idThorn[spacetime_] :=
     InheritedImplementations -> {"admbase"}];
 ];
 
-spacetimes = {"GaugeWave", "KerrSchild", "Minkowski"};
+spacetimes = {"GaugeWave", "KerrSchild", "Minkowski", "ShiftedGaugeWave"};
 
 idThorn /@ spacetimes;
+
+
+
