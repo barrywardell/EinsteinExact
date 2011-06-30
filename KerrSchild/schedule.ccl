@@ -1,0 +1,55 @@
+# File produced by Kranc
+
+
+schedule KerrSchild_Startup at STARTUP
+{
+  LANG: C
+  OPTIONS: meta
+} "create banner"
+
+schedule KerrSchild_RegisterVars in MoL_Register
+{
+  LANG: C
+  OPTIONS: meta
+} "Register Variables for MoL"
+
+schedule KerrSchild_RegisterSymmetries in SymmetryRegister
+{
+  LANG: C
+  OPTIONS: meta
+} "register symmetries"
+
+
+if (CCTK_EQUALS(when, "initial"))
+{
+  schedule KerrSchild_initial in ADMBase_PostInitial
+  {
+    LANG: C
+  } "KerrSchild_initial"
+}
+
+
+if (CCTK_EQUALS(when, "always"))
+{
+  schedule KerrSchild_always at ANALYSIS
+  {
+    LANG: C
+  } "KerrSchild_always"
+}
+
+schedule KerrSchild_SelectBoundConds in MoL_PostStep
+{
+  LANG: C
+  OPTIONS: level
+} "select boundary conditions"
+
+schedule KerrSchild_CheckBoundaries at BASEGRID
+{
+  LANG: C
+  OPTIONS: meta
+} "check boundaries treatment"
+
+schedule group ApplyBCs as KerrSchild_ApplyBCs in MoL_PostStep after KerrSchild_SelectBoundConds
+{
+  # no language specified
+} "Apply boundary conditions controlled by thorn Boundary"

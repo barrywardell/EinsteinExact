@@ -1,0 +1,55 @@
+# File produced by Kranc
+
+
+schedule ShiftedGaugeWave_Startup at STARTUP
+{
+  LANG: C
+  OPTIONS: meta
+} "create banner"
+
+schedule ShiftedGaugeWave_RegisterVars in MoL_Register
+{
+  LANG: C
+  OPTIONS: meta
+} "Register Variables for MoL"
+
+schedule ShiftedGaugeWave_RegisterSymmetries in SymmetryRegister
+{
+  LANG: C
+  OPTIONS: meta
+} "register symmetries"
+
+
+if (CCTK_EQUALS(when, "initial"))
+{
+  schedule ShiftedGaugeWave_initial in ADMBase_PostInitial
+  {
+    LANG: C
+  } "ShiftedGaugeWave_initial"
+}
+
+
+if (CCTK_EQUALS(when, "always"))
+{
+  schedule ShiftedGaugeWave_always at ANALYSIS
+  {
+    LANG: C
+  } "ShiftedGaugeWave_always"
+}
+
+schedule ShiftedGaugeWave_SelectBoundConds in MoL_PostStep
+{
+  LANG: C
+  OPTIONS: level
+} "select boundary conditions"
+
+schedule ShiftedGaugeWave_CheckBoundaries at BASEGRID
+{
+  LANG: C
+  OPTIONS: meta
+} "check boundaries treatment"
+
+schedule group ApplyBCs as ShiftedGaugeWave_ApplyBCs in MoL_PostStep after ShiftedGaugeWave_SelectBoundConds
+{
+  # no language specified
+} "Apply boundary conditions controlled by thorn Boundary"

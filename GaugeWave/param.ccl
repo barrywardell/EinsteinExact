@@ -1,0 +1,96 @@
+# File produced by Kranc
+
+
+shares: GenericFD
+
+
+
+shares: MethodOfLines
+
+USES CCTK_INT MoL_Num_Evolved_Vars
+
+restricted:
+CCTK_INT verbose "verbose" STEERABLE=ALWAYS
+{
+  *:* :: ""
+} 0
+
+restricted:
+CCTK_REAL theta "theta"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL phi "phi"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL psi "psi"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL amp "amp"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL period "period"
+{
+  "*:*" :: ""
+} 0
+
+private:
+KEYWORD when "when"
+{
+  "initial" :: "initial"
+  "always" :: "always"
+} "initial"
+
+restricted:
+CCTK_INT GaugeWave_MaxNumEvolvedVars "Number of evolved variables used by this thorn" ACCUMULATOR-BASE=MethodofLines::MoL_Num_Evolved_Vars STEERABLE=RECOVER
+{
+  0:0 :: "Number of evolved variables used by this thorn"
+} 0
+
+restricted:
+CCTK_INT timelevels "Number of active timelevels" STEERABLE=RECOVER
+{
+  0:3 :: ""
+} 3
+
+restricted:
+CCTK_INT rhs_timelevels "Number of active RHS timelevels" STEERABLE=RECOVER
+{
+  0:3 :: ""
+} 1
+
+restricted:
+CCTK_INT GaugeWave_initial_calc_every "GaugeWave_initial_calc_every" STEERABLE=ALWAYS
+{
+  *:* :: ""
+} 1
+
+restricted:
+CCTK_INT GaugeWave_always_calc_every "GaugeWave_always_calc_every" STEERABLE=ALWAYS
+{
+  *:* :: ""
+} 1
+
+restricted:
+CCTK_INT GaugeWave_initial_calc_offset "GaugeWave_initial_calc_offset" STEERABLE=ALWAYS
+{
+  *:* :: ""
+} 0
+
+restricted:
+CCTK_INT GaugeWave_always_calc_offset "GaugeWave_always_calc_offset" STEERABLE=ALWAYS
+{
+  *:* :: ""
+} 0
+

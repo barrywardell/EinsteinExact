@@ -1,0 +1,55 @@
+# File produced by Kranc
+
+
+schedule Minkowski_Startup at STARTUP
+{
+  LANG: C
+  OPTIONS: meta
+} "create banner"
+
+schedule Minkowski_RegisterVars in MoL_Register
+{
+  LANG: C
+  OPTIONS: meta
+} "Register Variables for MoL"
+
+schedule Minkowski_RegisterSymmetries in SymmetryRegister
+{
+  LANG: C
+  OPTIONS: meta
+} "register symmetries"
+
+
+if (CCTK_EQUALS(when, "initial"))
+{
+  schedule Minkowski_initial in ADMBase_PostInitial
+  {
+    LANG: C
+  } "Minkowski_initial"
+}
+
+
+if (CCTK_EQUALS(when, "always"))
+{
+  schedule Minkowski_always at ANALYSIS
+  {
+    LANG: C
+  } "Minkowski_always"
+}
+
+schedule Minkowski_SelectBoundConds in MoL_PostStep
+{
+  LANG: C
+  OPTIONS: level
+} "select boundary conditions"
+
+schedule Minkowski_CheckBoundaries at BASEGRID
+{
+  LANG: C
+  OPTIONS: meta
+} "check boundaries treatment"
+
+schedule group ApplyBCs as Minkowski_ApplyBCs in MoL_PostStep after Minkowski_SelectBoundConds
+{
+  # no language specified
+} "Apply boundary conditions controlled by thorn Boundary"

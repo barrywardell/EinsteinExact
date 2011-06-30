@@ -1,3 +1,0 @@
-# File produced by Kranc
-
-SRCS = Startup.cc RegisterMoL.cc RegisterSymmetries.cc gauge_wave_initial.cc gauge_wave_always.cc Boundaries.cc 
