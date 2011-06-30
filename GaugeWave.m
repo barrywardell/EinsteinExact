@@ -132,11 +132,13 @@ idThorn[spacetime_] :=
       Y -> XX[2],
       Z -> XX[3],
 
-      Table[Symbol["G"<>ToString[i]<>ToString[j]] -> threeMetric[[i, j]], {j, 3}, {i, j, 3}],
-      Table[Symbol["K"<>ToString[i]<>ToString[j]] -> extrinsicCurvature[[i,j]], {j, 3}, {i, j, 3}],
-      Table[Symbol["betap"<>ToString[i]] -> shift[[i]], {i, 3}],
-      Table[Symbol["dtbetap"<>ToString[i]] -> D[shift[[i]], t], {i, 3}],
+      (* Compute unrotated variables *)
+      Table[G[i,j]-> threeMetric[[i, j]], {j, 3}, {i, j, 3}],
+      Table[K[i,j] -> extrinsicCurvature[[i,j]], {j, 3}, {i, j, 3}],
+      Table[betap[i] -> shift[[i]], {i, 3}],
+      Table[dtbetap[i] -> D[shift[[i]], t], {i, 3}],
 
+      (* Computed rotated versions *)
       g[li,lj] -> Jac[um,li] Jac[un,lj] G[lm,ln],
       k[li,lj] -> Jac[um,li] Jac[un,lj] K[lm,ln],
       alp -> lapse,
