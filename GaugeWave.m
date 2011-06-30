@@ -90,12 +90,13 @@ Rot = FullSimplify[Rpsi.Rtheta.Rphi];
 
 idThorn[spacetime_] :=
   Module[{m, fourMetric, invFourMetric, threeMetric, lapse, shift,
-          extrinsicCurvature, calc, calculations, parameters, coords},
+          extrinsicCurvature, calc, calculations, parameters, coords, spatialCoords},
   m = GetMetric[spacetime];
   coords = ("Coordinates" /. m) /. {x -> X, y -> Y, z -> Z};
   If[coords =!= {t, X, Y, Z},
     Throw["Error, only metrics in Cartesian coordinates are supported"];
   ];
+  spatialCoords = coords[[2;;]];
 
   parameters = ("Parameters" /. m)/. "Parameters" -> {};
   fourMetric = ("Metric" /. m) /. {x -> X, y -> Y, z -> Z};
@@ -105,9 +106,9 @@ idThorn[spacetime_] :=
   shift = Simplify[lapse^2 invFourMetric[[1, 2;;4]]];
   threeMetric = fourMetric[[2;;4, 2;;4]];
   extrinsicCurvature = Simplify[Table[- 1/(2 lapse) (D[threeMetric[[i,j]], t]
-    - Sum[D[threeMetric[[i,j]], coords[[k]]] shift[[k]], {k, 3}]
-    - Sum[threeMetric[[i, k]] D[shift[[k]], coords[[j]]], {k, 3}]
-    - Sum[threeMetric[[k, j]] D[shift[[k]], coords[[i]]], {k, 3}]),
+    - Sum[D[threeMetric[[i,j]], spatialCoords[[k]]] shift[[k]], {k, 3}]
+    - Sum[threeMetric[[i, k]] D[shift[[k]], spatialCoords[[j]]], {k, 3}]
+    - Sum[threeMetric[[k, j]] D[shift[[k]], spatialCoords[[i]]], {k, 3}]),
     {j, 3}, {i, 3}]];
 
   calc[when_] := {
