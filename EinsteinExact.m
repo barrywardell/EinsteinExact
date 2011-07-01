@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* A gauge wave exact solution thorn *)
+(* An exact solutions thorn *)
 
 Get["KrancThorn`"];
 Needs["Metrics`"];
