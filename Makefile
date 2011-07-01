@@ -1,5 +1,5 @@
 all:
-			../Kranc/Bin/kranc GaugeWave.m
+			../Kranc/Bin/kranc EinsteinExact.m
 
 clean:
 	rm -rf thorns/*
