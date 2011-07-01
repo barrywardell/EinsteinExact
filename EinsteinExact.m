@@ -88,9 +88,15 @@ Rpsi =
 
 Rot = FullSimplify[Rpsi.Rtheta.Rphi];
 
+makeKrancFriendly[var_Symbol] := var;
+makeKrancFriendly[var_[x___]] :=Symbol[ToString[var]<>( StringJoin@@(ToString/@{x}))];
+makeKrancFriendly[Derivative[y___][var_][x___]] :=Symbol["d"<>( StringJoin@@(ToString/@{y}))<>ToString[var]<>( StringJoin@@(ToString/@{x}))];
+makeKrancFriendly[x_] := x;
+
 idThorn[spacetime_] :=
   Module[{m, fourMetric, invFourMetric, threeMetric, lapse, shift,
-          extrinsicCurvature, calc, calculations, parameters, coords, spatialCoords},
+          extrinsicCurvature, calc, calculations, parameters, coords, spatialCoords,
+          metricShorthands, shortVars, krancShortVars, dShorthands, extraShorthands},
   m = GetMetric[spacetime];
   coords = ("Coordinates" /. m) /. {x -> X, y -> Y, z -> Z};
   If[coords =!= {t, X, Y, Z},
@@ -98,9 +104,15 @@ idThorn[spacetime_] :=
   ];
   spatialCoords = coords[[2;;]];
 
-  parameters = ("Parameters" /. m)/. "Parameters" -> {};
-  fourMetric = ("Metric" /. m) /. {x -> X, y -> Y, z -> Z};
+  (* Deal with shorthands - create new equations for all shorthands and their derivatives *)
+  metricShorthands = (("Shorthands" /. m) /. "Shorthands" -> {}) /. {x -> X, y -> Y, z -> Z};
+  shortVars = Flatten[{metricShorthands[[All,1]], D[metricShorthands[[All,1]], #]& /@ coords}];
+  krancShortVars = (# -> makeKrancFriendly[#]) & /@ shortVars;
+  dShorthands = Simplify[Flatten[D[metricShorthands, #]& /@ coords]];
+  extraShorthands = (Join[metricShorthands, dShorthands]//. krancShortVars)/. (0->0) -> Sequence[];
 
+  (* Compute lapse, shift, three metric and extrinsic curvature *)
+  fourMetric = ("Metric" /. m) /. {x -> X, y -> Y, z -> Z};
   invFourMetric = Simplify[Inverse[fourMetric]];
   lapse = Simplify[1/Sqrt[-invFourMetric[[1,1]]]];
   shift = Simplify[lapse^2 invFourMetric[[1, 2;;4]]];
@@ -111,6 +123,15 @@ idThorn[spacetime_] :=
     - Sum[threeMetric[[k, j]] D[shift[[k]], spatialCoords[[i]]], {k, 3}]),
     {j, 3}, {i, 3}]];
 
+  (* Replace any shorthands with Kranc-friendly versions *)
+  lapse = lapse //. krancShortVars;
+  shift = shift //. krancShortVars;
+  threeMetric = threeMetric //. krancShortVars;
+  extrinsicCurvature = extrinsicCurvature //. krancShortVars;
+
+  (* Get any necessary spacetime parameters *)
+  parameters = ("Parameters" /. m)/. "Parameters" -> {};
+
   calc[when_] := {
     Name -> spacetime <> "_" <> when,
     Switch[when,
@@ -119,7 +140,7 @@ idThorn[spacetime_] :=
       _, Throw["Unrecognised scheduling keyword"]],
 
     ConditionalOnKeyword -> {"when", when},
-    Shorthands -> shorthands,
+    Shorthands -> Join[shorthands, extraShorthands[[All,1]]],
     Equations -> Flatten@
     {
       xx[1] -> x,
@@ -132,6 +153,9 @@ idThorn[spacetime_] :=
       X -> XX[1],
       Y -> XX[2],
       Z -> XX[3],
+
+      (* Add any shorthand equations *)
+      extraShorthands,
 
       (* Compute unrotated variables *)
       Table[G[i,j]-> threeMetric[[i, j]], {j, 3}, {i, j, 3}],
