@@ -22,7 +22,7 @@ schedule Minkowski_RegisterSymmetries in SymmetryRegister
 
 if (CCTK_EQUALS(when, "initial"))
 {
-  schedule Minkowski_initial in ADMBase_PostInitial
+  schedule Minkowski_initial in ADMBase_InitialData
   {
     LANG: C
   } "Minkowski_initial"

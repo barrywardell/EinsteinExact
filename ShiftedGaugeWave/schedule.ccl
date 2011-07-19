@@ -22,7 +22,7 @@ schedule ShiftedGaugeWave_RegisterSymmetries in SymmetryRegister
 
 if (CCTK_EQUALS(when, "initial"))
 {
-  schedule ShiftedGaugeWave_initial in ADMBase_PostInitial
+  schedule ShiftedGaugeWave_initial in ADMBase_InitialData
   {
     LANG: C
   } "ShiftedGaugeWave_initial"

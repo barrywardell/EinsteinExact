@@ -22,7 +22,7 @@ schedule KerrSchild_RegisterSymmetries in SymmetryRegister
 
 if (CCTK_EQUALS(when, "initial"))
 {
-  schedule KerrSchild_initial in ADMBase_PostInitial
+  schedule KerrSchild_initial in ADMBase_InitialData
   {
     LANG: C
   } "KerrSchild_initial"
