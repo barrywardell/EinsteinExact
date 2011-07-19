@@ -135,7 +135,7 @@ idThorn[spacetime_] :=
   calc[when_] := {
     Name -> spacetime <> "_" <> when,
     Switch[when,
-      "initial", Schedule -> {"in ADMBase_PostInitial"},
+      "initial", Schedule -> {"in ADMBase_InitialData"},
       "always",  Schedule -> {"at ANALYSIS"},
       _, Throw["Unrecognised scheduling keyword"]],
 
