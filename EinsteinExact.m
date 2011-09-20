@@ -59,13 +59,6 @@ realParameters =
   {Name -> psi, Default -> 0}
 };
 
-keywordParameters =
-{
-  {Name -> "when",
-   AllowedValues -> {"initial", "always"},
-   Default -> "initial"}
-};
-
 k11=kxx; k21=kxy; k22=kyy; k31=kxz; k32=kyz; k33=kzz;
 g11=gxx; g21=gxy; g22=gyy; g31=gxz; g32=gyz; g33=gzz;
 beta1=betax; beta2=betay; beta3=betaz;
@@ -96,7 +89,9 @@ makeKrancFriendly[x_] := x;
 idThorn[spacetime_] :=
   Module[{m, fourMetric, invFourMetric, threeMetric, lapse, shift,
           extrinsicCurvature, calc, calculations, parameters, coords, spatialCoords,
-          metricShorthands, shortVars, krancShortVars, dShorthands, extraShorthands},
+          metricShorthands, shortVars, krancShortVars, dShorthands, extraShorthands,
+          extendedKeywordParameters},
+  Print["Generating thorn for ", spacetime];
   m = GetMetric[spacetime];
   coords = ("Coordinates" /. m) /. {x -> X, y -> Y, z -> Z};
   If[coords =!= {t, X, Y, Z},
@@ -132,6 +127,12 @@ idThorn[spacetime_] :=
   (* Get any necessary spacetime parameters *)
   parameters = ("Parameters" /. m)/. "Parameters" -> {};
 
+  extendedKeywordParameters =
+    Table[{Name -> paramName, AllowedValues -> {spacetime}},
+      {paramName, {"ADMBase::initial_data", "ADMBase::initial_lapse", "ADMBase::initial_shift",
+                   "ADMBase::initial_dtlapse", "ADMBase::initial_dtshift",
+                   "ADMBase::evolution_method"}}];
+
   calc[when_] := {
     Name -> spacetime <> "_" <> when,
     Switch[when,
@@ -139,7 +140,13 @@ idThorn[spacetime_] :=
       "always",  Schedule -> {"at ANALYSIS"},
       _, Throw["Unrecognised scheduling keyword"]],
 
-    ConditionalOnKeyword -> {"when", when},
+    ConditionalOnKeyword ->
+      {Switch[when,
+         "initial", "initial_data",
+         "always", "evolution_method",
+         _, Throw["Unrecognised scheduling keyword"]],
+       spacetime},
+
     Shorthands -> Join[shorthands, extraShorthands[[All,1]]],
     Equations -> Flatten@
     {
@@ -166,6 +173,10 @@ idThorn[spacetime_] :=
       (* Computed rotated versions *)
       g[li,lj] -> Jac[um,li] Jac[un,lj] G[lm,ln],
       k[li,lj] -> Jac[um,li] Jac[un,lj] K[lm,ln],
+
+      (* TODO: set these only if initial_lapse etc are set to
+         <spacetime>.  This is not supported by Kranc at the
+         moment. *)
       alp -> lapse,
       beta[ui] -> Jac[lj,ui] betap[uj],
       dtalp -> D[alp, t],
@@ -182,7 +193,7 @@ idThorn[spacetime_] :=
   CreateKrancThornTT[admGroups, "thorns", spacetime,
     Calculations -> calculations,
     RealParameters -> Join[realParameters, parameters],
-    KeywordParameters -> keywordParameters,
+    ExtendedKeywordParameters -> extendedKeywordParameters,
     InheritedImplementations -> {"admbase"}];
 ];
 
