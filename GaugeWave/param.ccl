@@ -1,6 +1,46 @@
 # File produced by Kranc
 
 
+shares: ADMBase
+
+
+EXTENDS CCTK_KEYWORD initial_data "initial_data"
+{
+  GaugeWave :: ""
+} 
+
+
+EXTENDS CCTK_KEYWORD initial_lapse "initial_lapse"
+{
+  GaugeWave :: ""
+} 
+
+
+EXTENDS CCTK_KEYWORD initial_shift "initial_shift"
+{
+  GaugeWave :: ""
+} 
+
+
+EXTENDS CCTK_KEYWORD initial_dtlapse "initial_dtlapse"
+{
+  GaugeWave :: ""
+} 
+
+
+EXTENDS CCTK_KEYWORD initial_dtshift "initial_dtshift"
+{
+  GaugeWave :: ""
+} 
+
+
+EXTENDS CCTK_KEYWORD evolution_method "evolution_method"
+{
+  GaugeWave :: ""
+} 
+
+
+
 shares: GenericFD
 
 
@@ -44,13 +84,6 @@ CCTK_REAL period "period"
 {
   "*:*" :: ""
 } 0
-
-private:
-KEYWORD when "when"
-{
-  "initial" :: "initial"
-  "always" :: "always"
-} "initial"
 
 restricted:
 CCTK_INT GaugeWave_MaxNumEvolvedVars "Number of evolved variables used by this thorn" ACCUMULATOR-BASE=MethodofLines::MoL_Num_Evolved_Vars STEERABLE=RECOVER

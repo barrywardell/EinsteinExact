@@ -20,7 +20,7 @@ schedule ShiftedGaugeWave_RegisterSymmetries in SymmetryRegister
 } "register symmetries"
 
 
-if (CCTK_EQUALS(when, "initial"))
+if (CCTK_EQUALS(initial_data, "ShiftedGaugeWave"))
 {
   schedule ShiftedGaugeWave_initial in ADMBase_InitialData
   {
@@ -29,7 +29,7 @@ if (CCTK_EQUALS(when, "initial"))
 }
 
 
-if (CCTK_EQUALS(when, "always"))
+if (CCTK_EQUALS(evolution_method, "ShiftedGaugeWave"))
 {
   schedule ShiftedGaugeWave_always at ANALYSIS
   {

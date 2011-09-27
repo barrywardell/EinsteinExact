@@ -20,7 +20,7 @@ schedule KerrSchild_RegisterSymmetries in SymmetryRegister
 } "register symmetries"
 
 
-if (CCTK_EQUALS(when, "initial"))
+if (CCTK_EQUALS(initial_data, "KerrSchild"))
 {
   schedule KerrSchild_initial in ADMBase_InitialData
   {
@@ -29,7 +29,7 @@ if (CCTK_EQUALS(when, "initial"))
 }
 
 
-if (CCTK_EQUALS(when, "always"))
+if (CCTK_EQUALS(evolution_method, "KerrSchild"))
 {
   schedule KerrSchild_always at ANALYSIS
   {

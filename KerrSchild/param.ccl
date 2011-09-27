@@ -1,6 +1,46 @@
 # File produced by Kranc
 
 
+shares: ADMBase
+
+
+EXTENDS CCTK_KEYWORD initial_data "initial_data"
+{
+  KerrSchild :: ""
+} 
+
+
+EXTENDS CCTK_KEYWORD initial_lapse "initial_lapse"
+{
+  KerrSchild :: ""
+} 
+
+
+EXTENDS CCTK_KEYWORD initial_shift "initial_shift"
+{
+  KerrSchild :: ""
+} 
+
+
+EXTENDS CCTK_KEYWORD initial_dtlapse "initial_dtlapse"
+{
+  KerrSchild :: ""
+} 
+
+
+EXTENDS CCTK_KEYWORD initial_dtshift "initial_dtshift"
+{
+  KerrSchild :: ""
+} 
+
+
+EXTENDS CCTK_KEYWORD evolution_method "evolution_method"
+{
+  KerrSchild :: ""
+} 
+
+
+
 shares: GenericFD
 
 
@@ -44,13 +84,6 @@ CCTK_REAL a "a"
 {
   "*:*" :: ""
 } 0
-
-private:
-KEYWORD when "when"
-{
-  "initial" :: "initial"
-  "always" :: "always"
-} "initial"
 
 restricted:
 CCTK_INT KerrSchild_MaxNumEvolvedVars "Number of evolved variables used by this thorn" ACCUMULATOR-BASE=MethodofLines::MoL_Num_Evolved_Vars STEERABLE=RECOVER
