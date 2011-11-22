@@ -1,0 +1,268 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      9177,        259]
+NotebookOptionsPosition[      8412,        231]
+NotebookOutlinePosition[      8791,        248]
+CellTagsIndexPosition[      8748,        245]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell["\<\
+Compare EinsteinExact against Exact. Check that Exact converges with time \
+spacing to EinsteinExact at the appropriate order for the ShiftedGauge wave.\
+\>", "Text",
+ CellChangeTimes->{{3.530958848292109*^9, 3.5309589109386387`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"<<", "nrmma`"}]], "Input",
+ CellChangeTimes->{{3.519903160621409*^9, 3.519903161730212*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"runs", "=", 
+   RowBox[{"{", 
+    RowBox[{"\"\<gw_a\>\"", ",", "\"\<gw_b\>\"", ",", "\"\<gw_c\>\""}], 
+    "}"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.519903164424334*^9, 3.519903184075289*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"exact", "=", "\"\<gw_ee\>\""}], ";"}]], "Input",
+ CellChangeTimes->{{3.5199031848479443`*^9, 3.519903193170588*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"vars", "=", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<A.h5\>\"", ",", "\"\<alpha.h5\>\"", ",", "\"\<At11.h5\>\"", ",", 
+     "\"\<At12.h5\>\"", ",", "\"\<At13.h5\>\"", ",", "\"\<At22.h5\>\"", ",", 
+     "\"\<At23.h5\>\"", ",", "\"\<At33.h5\>\"", ",", "\"\<B1.h5\>\"", ",", 
+     "\"\<B2.h5\>\"", ",", "\"\<B3.h5\>\"", ",", "\"\<beta1.h5\>\"", ",", 
+     "\"\<beta2.h5\>\"", ",", "\"\<beta3.h5\>\"", ",", "\"\<cA.h5\>\"", ",", 
+     "\"\<cS.h5\>\"", ",", "\"\<cXt1.h5\>\"", ",", "\"\<cXt2.h5\>\"", ",", 
+     "\"\<cXt3.h5\>\"", ",", "\"\<gt11.h5\>\"", ",", "\"\<gt12.h5\>\"", ",", 
+     "\"\<gt13.h5\>\"", ",", "\"\<gt22.h5\>\"", ",", "\"\<gt23.h5\>\"", ",", 
+     "\"\<gt33.h5\>\"", ",", "\"\<gxx.h5\>\"", ",", "\"\<kxx.h5\>\"", ",", 
+     "\"\<phi.h5\>\"", ",", "\"\<trK.h5\>\"", ",", "\"\<Xt1.h5\>\"", ",", 
+     "\"\<Xt2.h5\>\"", ",", "\"\<Xt3.h5\>\""}], "}"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5199034131047783`*^9, 3.519903416889655*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"var", "=", 
+   RowBox[{"vars", "[", 
+    RowBox[{"[", "3", "]"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5199032774548397`*^9, 3.51990327835429*^9}, {
+   3.5199034191304493`*^9, 3.5199034421109047`*^9}, {3.519904520020604*^9, 
+   3.519904520913316*^9}, 3.5309589243234158`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"a", ",", "b", ",", "c"}], "}"}], "=", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ReadGridFunction", "[", 
+      RowBox[{"#", ",", "var", ",", "0"}], "]"}], "&"}], "/@", "runs"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.519903488970511*^9, 3.5199035415259113`*^9}, {
+   3.519903636213273*^9, 3.5199036369709377`*^9}, {3.519904353310334*^9, 
+   3.519904389898715*^9}, {3.519909484287778*^9, 3.5199094853665047`*^9}, {
+   3.5199095212554197`*^9, 3.519909521798422*^9}, 3.5309589337555437`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"e", "=", 
+   RowBox[{"ReadGridFunction", "[", 
+    RowBox[{"exact", ",", "var", ",", "0"}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.519903488970511*^9, 3.5199035415259113`*^9}, {
+   3.519903636213273*^9, 3.5199036369709377`*^9}, {3.519904353310334*^9, 
+   3.519904389898715*^9}, {3.519904614032406*^9, 3.5199046283918056`*^9}, {
+   3.5199094878796053`*^9, 3.5199094889340143`*^9}, {3.519909533787546*^9, 
+   3.519909534101815*^9}, 3.5309589373237133`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"erra", "=", 
+   RowBox[{"a", "-", "e"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.519904399640905*^9, 3.519904440538219*^9}, {
+   3.5199045725399437`*^9, 3.519904576388836*^9}, 3.519904635593296*^9, 
+   3.530958939987067*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"errb", " ", "=", " ", 
+   RowBox[{"b", "-", "e"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5199044427819567`*^9, 3.5199044445059443`*^9}, {
+   3.519904579290349*^9, 3.5199045832575893`*^9}, {3.519904640954444*^9, 
+   3.519904641496757*^9}, 3.53095894262722*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"errc", " ", "=", " ", 
+   RowBox[{"c", "-", "e"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5199044427819567`*^9, 3.5199044445059443`*^9}, {
+   3.519904579290349*^9, 3.5199045832575893`*^9}, {3.519904640954444*^9, 
+   3.519904641496757*^9}, {3.519905062714349*^9, 3.519905071145355*^9}, 
+   3.530958945250445*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"re", "=", 
+   RowBox[{"RichardsonExtrapolate", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"b", ",", " ", "c"}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"1", "/", "2"}], " ", 
+        SuperscriptBox["10", 
+         RowBox[{"-", "4"}]]}], ",", " ", 
+       RowBox[{
+        RowBox[{"1", "/", "4"}], " ", 
+        SuperscriptBox["10", 
+         RowBox[{"-", "4"}]]}]}], "}"}], ",", " ", "4"}], "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.519908143935498*^9, 3.519908178380909*^9}, {
+   3.519908481696101*^9, 3.5199084821675663`*^9}, 3.53095895232399*^9}],
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"Show", "[", 
+    RowBox[{"MapThread", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"DataRegionPlot", "[", 
+        RowBox[{
+         RowBox[{"SliceData", "[", 
+          RowBox[{"#1", ",", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", "2"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"x", ",", "y"}], "}"}]}], "]"}], ",", 
+         RowBox[{"Joined", "\[Rule]", "True"}], ",", 
+         RowBox[{"PlotStyle", "\[Rule]", "#2"}]}], "]"}], "&"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"erra", ",", 
+          RowBox[{"16", "errb"}], ",", 
+          RowBox[{
+           SuperscriptBox["16", "2"], "errc"}]}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"Black", ",", 
+          RowBox[{"Directive", "[", 
+           RowBox[{"Red", ",", "Dashed"}], "]"}], ",", 
+          RowBox[{"Directive", "[", 
+           RowBox[{"Green", ",", "Dotted"}], "]"}]}], "}"}]}], "}"}]}], "]"}],
+     "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "0", ",", "0.9", ",", "0.1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y", ",", "0", ",", "0.9", ",", "0.1"}], "}"}]}], "]"}]], "Input",\
+
+ CellChangeTimes->{{3.519904446834179*^9, 3.519904504035001*^9}, {
+  3.519904541059483*^9, 3.519904541482696*^9}, {3.5199045870772657`*^9, 
+  3.519904587858831*^9}, {3.519904666245124*^9, 3.519904819020446*^9}, {
+  3.519904927654499*^9, 3.5199049986615887`*^9}, {3.519905053487686*^9, 
+  3.51990509299723*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"Show", "[", 
+    RowBox[{"MapThread", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"DataRegionPlot", "[", 
+        RowBox[{
+         RowBox[{"SliceData", "[", 
+          RowBox[{"#1", ",", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", "2"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"x", ",", "y"}], "}"}]}], "]"}], ",", 
+         RowBox[{"Joined", "\[Rule]", "True"}], ",", 
+         RowBox[{"PlotStyle", "\[Rule]", "#2"}], ",", 
+         RowBox[{"PlotRange", "\[Rule]", 
+          RowBox[{
+           SuperscriptBox["10", 
+            RowBox[{"-", "13"}]], 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"-", "1"}], ",", "1"}], "}"}]}]}]}], "]"}], "&"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"a", "-", "e"}], ",", 
+          RowBox[{"b", "-", "e"}], ",", 
+          RowBox[{"c", "-", "e"}], ",", 
+          RowBox[{"re", "-", "e"}]}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"Black", ",", 
+          RowBox[{"Directive", "[", 
+           RowBox[{"Red", ",", "Dashed"}], "]"}], ",", 
+          RowBox[{"Directive", "[", 
+           RowBox[{"Green", ",", "Dotted"}], "]"}], ",", "Yellow"}], "}"}]}], 
+       "}"}]}], "]"}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "0", ",", "0.9", ",", "0.1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y", ",", "0", ",", "0.9", ",", "0.1"}], "}"}]}], "]"}]], "Input",\
+
+ CellChangeTimes->{{3.519908497813396*^9, 3.5199085413630133`*^9}, {
+  3.519909322603485*^9, 3.5199094220266542`*^9}}]
+},
+WindowSize->{1056, 711},
+WindowMargins->{{Automatic, 60}, {Automatic, 20}},
+ShowSelection->True,
+FrontEndVersion->"8.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (February 23, \
+2011)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 244, 4, 26, "Text"],
+Cell[804, 26, 116, 2, 27, "Input"],
+Cell[923, 30, 233, 6, 27, "Input"],
+Cell[1159, 38, 151, 3, 27, "Input"],
+Cell[1313, 43, 984, 16, 58, "Input"],
+Cell[2300, 61, 321, 7, 27, "Input"],
+Cell[2624, 70, 556, 13, 27, "Input"],
+Cell[3183, 85, 498, 9, 27, "Input"],
+Cell[3684, 96, 260, 6, 27, "Input"],
+Cell[3947, 104, 297, 6, 27, "Input"],
+Cell[4247, 112, 348, 7, 27, "Input"],
+Cell[4598, 121, 646, 19, 33, "Input"],
+Cell[5247, 142, 1528, 40, 73, "Input"],
+Cell[6778, 184, 1630, 45, 73, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)

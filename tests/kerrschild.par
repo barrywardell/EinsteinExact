@@ -1,0 +1,124 @@
+
+ActiveThorns = "CoordBase SymBase Boundary NanChecker CartGrid3d Time MoL CarpetIOBasic CarpetIOScalar IOUtil CarpetIOHDF5 HDF5 Carpet CarpetLib CarpetReduce CarpetInterp CarpetSlab CarpetIOASCII ADMBase StaticConformal SpaceMask Slab Periodic KerrSchild GenericFD CoordGauge ADMCoupling LoopControl ML_BSSN ML_BSSN_Helper GenericFD TMuNuBase SphericalSurface ADMMacros TimerReport"
+
+ADMBase::evolution_method         = "ML_BSSN"
+ADMBase::lapse_evolution_method   = "ML_BSSN"
+ADMBase::shift_evolution_method   = "ML_BSSN"
+ADMBase::dtlapse_evolution_method = "ML_BSSN"
+ADMBase::dtshift_evolution_method = "ML_BSSN"
+
+# We use the BBH gauge to ensure it is regression-tested.  Also, there
+# is no harmonic shift in McLachlan
+ML_BSSN::harmonicN           = 1      # 1+log
+ML_BSSN::harmonicF           = 2.0    # 1+log
+ML_BSSN::ShiftGammaCoeff     = 0.75
+ML_BSSN::BetaDriver          = 1.0
+ML_BSSN::LapseAdvectionCoeff = 1.0
+ML_BSSN::ShiftAdvectionCoeff = 1.0
+
+ML_BSSN::MinimumLapse        = 1.0e-8
+ML_BSSN::conformalMethod = 1 # 1 for W, 0 for phi
+#ML_BSSN::my_initial_boundary_condition = "extrapolate-gammas"
+ML_BSSN::my_rhs_boundary_condition     = "static"
+
+ML_BSSN::EpsDiss             = 0.1
+
+Boundary::radpower                     = 2
+
+#############################################################
+# Grid
+#############################################################
+
+CoordBase::domainsize                   = minmax
+
+CoordBase::boundary_size_x_lower        = 3
+CoordBase::boundary_size_y_lower        = 3
+CoordBase::boundary_size_z_lower        = 3
+CoordBase::boundary_shiftout_x_lower    = 1
+CoordBase::boundary_shiftout_y_lower    = 1
+CoordBase::boundary_shiftout_z_lower    = 1
+
+CoordBase::boundary_size_x_upper        = 3
+CoordBase::boundary_size_y_upper        = 3
+CoordBase::boundary_size_z_upper        = 3
+CoordBase::boundary_shiftout_x_upper    = 0
+CoordBase::boundary_shiftout_y_upper    = 0
+CoordBase::boundary_shiftout_z_upper    = 0
+
+CartGrid3D::type                        = "coordbase"
+CartGrid3D::domain                      = "full"
+CartGrid3D::avoid_origin                = "no"
+
+Periodic::periodic = "yes"
+
+CoordBase::xmin                         = 0
+CoordBase::ymin                         = 0
+CoordBase::zmin                         = 0
+
+CoordBase::xmax                         = 1
+CoordBase::ymax                         = 1
+CoordBase::zmax                         = 1
+
+CoordBase::dx                           = 0.1
+CoordBase::dy                           = 0.1
+CoordBase::dz                           = 0.1
+
+#############################################################
+# Carpet
+#############################################################
+
+Carpet::ghost_size                      = 3
+Carpet::domain_from_coordbase           = "yes"
+Carpet::init_3_timelevels               = "no"
+Carpet::poison_new_timelevels           = yes
+
+#############################################################
+# Timers
+#############################################################
+
+# Do not commit these as testsuite output as they will change on
+# different machines.  They are useful for performance monitoring in
+# automated build and test systems.
+TimerReport::output_all_timers_readable = yes
+TimerReport::n_top_timers               = 40
+TimerReport::output_schedule_timers     = no
+
+#############################################################
+# Time integration
+#############################################################
+
+Cactus::terminate                         = "iteration"
+Cactus::cctk_itlast                       = 8
+# Use 0.5 for RK4 and 0.25 for ICN
+Time::dtfac                           = 0.5
+
+MethodOfLines::ode_method             = "RK4"
+MethodOfLines::MoL_Intermediate_Steps = 4
+
+#MethodOfLines::ode_method             = "generic"
+#MethodOfLines::generic_type             = "RK"
+#MethodOfLines::MoL_Intermediate_Steps = 1
+
+MethodOfLines::MoL_Num_Scratch_Levels = 1
+MethodOfLines::MoL_NaN_Check          = "no"
+MethodOfLines::initial_data_is_crap   = "no"
+
+#############################################################
+# Initial data
+#############################################################
+
+KerrSchild::a = 0.5
+KerrSchild::M = 1.0
+
+#############################################################
+# Output
+#############################################################
+
+IO::out_dir                   = $parfile
+IO::out_fileinfo              = "none"
+IO::parfile_write             = "no"
+CarpetIOBasic::outInfo_every        = 1
+CarpetIOBasic::outInfo_vars         = "ADMBase::alp"
+
+IOHDF5::out_every          = 8
+IOHDF5::out_vars           = "ADMBase::gxx ADMBase::kxx ML_BSSN::ML_cons_detg ML_BSSN::ML_cons_Gamma ML_BSSN::ML_cons_traceA ML_BSSN::ML_curv ML_BSSN::ML_dtlapse ML_BSSN::ML_dtshift ML_BSSN::ML_Gamma ML_BSSN::ML_lapse ML_BSSN::ML_log_confac ML_BSSN::ML_metric ML_BSSN::ML_shift ML_BSSN::ML_trace_curv"
