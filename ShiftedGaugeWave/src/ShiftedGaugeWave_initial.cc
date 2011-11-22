@@ -84,6 +84,7 @@ static void ShiftedGaugeWave_initial_Body(cGH const * restrict const cctkGH, int
         
         /* Assign local copies of grid functions */
         
+        CCTK_REAL alpL = alp[index];
         CCTK_REAL xL = x[index];
         CCTK_REAL yL = y[index];
         CCTK_REAL zL = z[index];
@@ -140,9 +141,9 @@ static void ShiftedGaugeWave_initial_Body(cGH const * restrict const cctkGH, int
         
         CCTK_REAL G33 = 1;
         
-        CCTK_REAL K11 = -(Pi*Cos(2*Pi*(X - 
-          cctk_time)*INV(ToReal(period)))*INV(sqrt(1 + Sin(2*Pi*(X - 
-          cctk_time)*INV(ToReal(period)))*ToReal(amp)))*INV(ToReal(period))*ToReal(amp));
+        CCTK_REAL K11 = -(Pi*Cos(2*Pi*(-X + 
+          cctk_time)*INV(ToReal(period)))*INV(alpL)*INV(ToReal(period) + Sin(2*Pi*(X - 
+          cctk_time)*pow(ToReal(period),-1))*ToReal(amp)*ToReal(period))*ToReal(amp));
         
         CCTK_REAL K21 = 0;
         
@@ -162,7 +163,7 @@ static void ShiftedGaugeWave_initial_Body(cGH const * restrict const cctkGH, int
         
         CCTK_REAL betap3 = 0;
         
-        CCTK_REAL dtbetap1 = 2*Pi*Cos(2*Pi*(X - 
+        CCTK_REAL dtbetap1 = 2*Pi*Cos(2*Pi*(-X + 
           cctk_time)*INV(ToReal(period)))*INV(SQR(1 + Sin(2*Pi*(X - 
           cctk_time)*INV(ToReal(period)))*ToReal(amp)))*INV(ToReal(period))*ToReal(amp);
         
@@ -212,7 +213,7 @@ static void ShiftedGaugeWave_initial_Body(cGH const * restrict const cctkGH, int
         CCTK_REAL kzzL = 2*(Jac13*(Jac23*K21 + Jac33*K31) + Jac23*Jac33*K32) + 
           K11*SQR(Jac13) + K22*SQR(Jac23) + K33*SQR(Jac33);
         
-        CCTK_REAL alpL = INV(sqrt(1 + Sin(2*Pi*(X - 
+        alpL = INV(sqrt(1 + Sin(2*Pi*(X - 
           cctk_time)*INV(ToReal(period)))*ToReal(amp)));
         
         CCTK_REAL betaxL = betap1*Jac11 + betap2*Jac21 + betap3*Jac31;
@@ -221,7 +222,9 @@ static void ShiftedGaugeWave_initial_Body(cGH const * restrict const cctkGH, int
         
         CCTK_REAL betazL = betap1*Jac13 + betap2*Jac23 + betap3*Jac33;
         
-        CCTK_REAL dtalpL = 0;
+        CCTK_REAL dtalpL = Pi*Cos(2*Pi*(-X + 
+          cctk_time)*INV(ToReal(period)))*INV(ToReal(period))*pow(1 + Sin(2*Pi*(X - 
+          cctk_time)*INV(ToReal(period)))*ToReal(amp),-1.5)*ToReal(amp);
         
         CCTK_REAL dtbetaxL = dtbetap1*Jac11 + dtbetap2*Jac21 + dtbetap3*Jac31;
         
