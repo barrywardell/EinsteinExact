@@ -98,45 +98,74 @@ makeKrancFriendly[x_] := x;
 (* Create a Kranc thorn for a named spacetime *)
 (**************************************************************************************)
 idThorn[spacetime_] :=
-  Module[{m, fourMetric, invFourMetric, threeMetric, lapse, shift,
-          extrinsicCurvature, calc, calculations, parameters, coords, spatialCoords,
-          metricShorthands, shortVars, krancShortVars, dShorthands, extraShorthands,
-          extendedKeywordParameters},
+  Module[{coordRule, coords, spatialCoords, fourMetric, invFourMetric,
+          shorthandEquations, shorthandVars, dShorthands, simplifyhints, tf, cf, simpopts,
+          threeMetric, lapse, shift, extrinsicCurvature, dtlapse, dtshift,
+          krancShortVars, kranctf, parameters, extendedKeywordParameters, calc,
+          calculations},
+
   Print["Generating thorn for ", spacetime];
-  m = GetMetric[spacetime];
-  coords = ("Coordinates" /. m) /. {x -> X, y -> Y, z -> Z};
+
+  (* Load the spacetime: coordinates, metric, inverse metric *)
+  coordRule = {x -> X, y -> Y, z -> Z, None -> {}};
+
+  coords = MetricProperty[spacetime, "Coordinates"] /. coordRule;
   If[coords =!= {t, X, Y, Z},
     Throw["Error, only metrics in Cartesian coordinates are supported"];
   ];
   spatialCoords = coords[[2;;]];
 
-  (* Deal with shorthands - create new equations for all shorthands and their derivatives *)
-  metricShorthands = (("Shorthands" /. m) /. "Shorthands" -> {}) /. {x -> X, y -> Y, z -> Z};
-  shortVars = Flatten[{metricShorthands[[All,1]], D[metricShorthands[[All,1]], #]& /@ coords}];
-  krancShortVars = (# -> makeKrancFriendly[#]) & /@ shortVars;
-  dShorthands = Simplify[Flatten[D[metricShorthands, #]& /@ coords]];
-  extraShorthands = (Join[metricShorthands, dShorthands]//. krancShortVars)/. (0->0) -> Sequence[];
+  fourMetric = MetricProperty[spacetime, "Metric"]/. coordRule;
+  invFourMetric = MetricProperty[spacetime, "InverseMetric"] /. coordRule;
+
+  (* Create new equations for all shorthands and get rules for their derivatives *)
+  shorthandEquations = MetricProperty[spacetime, "Shorthands"] /. coordRule;
+  shorthandVars = shorthandEquations[[All,1]];
+
+  (* Use simplification hints if provided by the metric to create TransformationFunctions for Simplify *)
+  simplifyhints = MetricProperty[spacetime, "SimplifyHints"] /. coordRule;
+  tf = {Automatic, Sequence@@(Function[{expr}, expr /. #] & /@
+    Flatten[({simplifyhints, shorthandEquations, Reverse /@ shorthandEquations})])};
+
+  (* Don't overcount the complexity of shorthand variables. They should really only be 1 leaf. *)
+  cf = Function[{e}, LeafCount[e] + Apply[Plus, Map[Count[e, Blank[Head[#]], {0, Infinity}] (1 - LeafCount[#])&, shorthandVars]]];
+
+  (* We pass both transformation and complexity functions to Simplify *)
+  simpopts = Sequence[TransformationFunctions -> tf, ComplexityFunction -> cf];
+
+  (* Get simplified expressions for the derivatives of the shorthands *)
+  dShorthands = Simplify[Flatten[D[shorthandEquations, #] & /@ coords], simpopts] /. (0->0) -> Sequence[];
+
+  (* If the inverse four metric is not provided then compute it *)
+  If[invFourMetric === {},
+    invFourMetric = Simplify[Inverse[fourMetric], simpopts];
+  ];
 
   (* Compute lapse, shift, three metric and extrinsic curvature *)
-  fourMetric = ("Metric" /. m) /. {x -> X, y -> Y, z -> Z};
-  invFourMetric = Simplify[Inverse[fourMetric]];
-  lapse = Simplify[1/Sqrt[-invFourMetric[[1,1]]]];
-  shift = Simplify[lapse^2 invFourMetric[[1, 2;;4]]];
-  threeMetric = fourMetric[[2;;4, 2;;4]];
-  extrinsicCurvature = Simplify[Table[- 1/(2 lapse) (D[threeMetric[[i,j]], t]
-    - Sum[D[threeMetric[[i,j]], spatialCoords[[k]]] shift[[k]], {k, 3}]
-    - Sum[threeMetric[[i, k]] D[shift[[k]], spatialCoords[[j]]], {k, 3}]
-    - Sum[threeMetric[[k, j]] D[shift[[k]], spatialCoords[[i]]], {k, 3}]),
-    {j, 3}, {i, 3}]];
+  lapse = 1/Sqrt[-invFourMetric[[1, 1]]];
+  shift = Simplify[lapse^2 invFourMetric[[1, 2 ;; 4]], simpopts];
+  threeMetric = fourMetric[[2 ;; 4, 2 ;; 4]];
+  extrinsicCurvature = -1/(2 alp) Simplify[Table[
+     (D[threeMetric[[i, j]], t] -
+       Sum[D[threeMetric[[i, j]], spatialCoords[[k]]] shift[[k]], {k, 3}] -
+       Sum[threeMetric[[i, k]] D[shift[[k]], spatialCoords[[j]]], {k, 3}] -
+       Sum[threeMetric[[k, j]] D[shift[[k]], spatialCoords[[i]]], {k, 3}]) /. dShorthands,
+    {j, 3}, {i, 3}], simpopts];
+
+  (* Create Kranc-friencly names for shorthands and corresponding transformation functions *)
+  krancShortVars = (# -> makeKrancFriendly[#]) & /@ shorthandVars;
+  kranctf = tf /. krancShortVars;
 
   (* Replace any shorthands with Kranc-friendly versions *)
-  lapse = lapse //. krancShortVars;
-  shift = shift //. krancShortVars;
-  threeMetric = threeMetric //. krancShortVars;
-  extrinsicCurvature = extrinsicCurvature //. krancShortVars;
+  lapse = lapse /. krancShortVars;
+  shift = shift /. krancShortVars;
+  threeMetric = threeMetric /. krancShortVars;
+  extrinsicCurvature = extrinsicCurvature /. krancShortVars;
+  shorthandEquations = shorthandEquations /. krancShortVars;
+  shorthandVars = shorthandVars /. krancShortVars;
 
   (* Get any necessary spacetime parameters *)
-  parameters = ("Parameters" /. m)/. "Parameters" -> {};
+  parameters = MetricProperty[spacetime, "Parameters"] /. None -> {};
 
   extendedKeywordParameters =
     Table[{Name -> paramName, AllowedValues -> {spacetime}},
@@ -158,7 +187,7 @@ idThorn[spacetime_] :=
          _, Throw["Unrecognised scheduling keyword"]],
        spacetime},
 
-    Shorthands -> Join[shorthands, extraShorthands[[All,1]]],
+    Shorthands -> Join[shorthands, shorthandVars],
     Equations -> Flatten@
     {
       xx[1] -> x,
@@ -173,7 +202,7 @@ idThorn[spacetime_] :=
       Z -> XX[3],
 
       (* Add any shorthand equations *)
-      extraShorthands,
+      shorthandEquations,
 
       (* Compute unrotated variables *)
       Table[G[i,j]-> threeMetric[[i, j]], {j, 3}, {i, j, 3}],
