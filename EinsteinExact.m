@@ -64,6 +64,11 @@ g11=gxx; g21=gxy; g22=gyy; g31=gxz; g32=gyz; g33=gzz;
 beta1=betax; beta2=betay; beta3=betaz;
 dtbeta1=dtbetax; dtbeta2=dtbetay; dtbeta3=dtbetaz;
 
+
+(**************************************************************************************)
+(* Rotation matrices *)
+(**************************************************************************************)
+
 Rphi =
  {{Cos[phi], Sin[phi], 0},
   {-Sin[phi], Cos[phi], 0},
@@ -81,11 +86,17 @@ Rpsi =
 
 Rot = FullSimplify[Rpsi.Rtheta.Rphi];
 
+(**************************************************************************************)
+(* Some helper functions *)
+(**************************************************************************************)
 makeKrancFriendly[var_Symbol] := var;
 makeKrancFriendly[var_[x___]] :=Symbol[ToString[var]<>( StringJoin@@(ToString/@{x}))];
 makeKrancFriendly[Derivative[y___][var_][x___]] :=Symbol["d"<>( StringJoin@@(ToString/@{y}))<>ToString[var]<>( StringJoin@@(ToString/@{x}))];
 makeKrancFriendly[x_] := x;
 
+(**************************************************************************************)
+(* Create a Kranc thorn for a named spacetime *)
+(**************************************************************************************)
 idThorn[spacetime_] :=
   Module[{m, fourMetric, invFourMetric, threeMetric, lapse, shift,
           extrinsicCurvature, calc, calculations, parameters, coords, spatialCoords,
