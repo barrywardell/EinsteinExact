@@ -210,6 +210,11 @@ idThorn[spacetime_] :=
       shorthandEquations,
 
       (* Compute rotated components *)
+      (* TODO: set these only if initial_lapse etc are set to
+         <spacetime>.  This is not supported by Kranc at the
+         moment. *)
+      alp -> lapse,
+      dtalp -> dtlapse,
       Table[G[i,j]-> threeMetric[[i, j]], {j, 3}, {i, j, 3}],
       Table[K[i,j] -> extrinsicCurvature[[i,j]], {j, 3}, {i, j, 3}],
       Table[betap[i] -> shift[[i]], {i, 3}],
@@ -218,13 +223,7 @@ idThorn[spacetime_] :=
       (* Rotate back to Cactus components *)
       g[li,lj] -> Jac[um,li] Jac[un,lj] G[lm,ln],
       k[li,lj] -> Jac[um,li] Jac[un,lj] K[lm,ln],
-
-      (* TODO: set these only if initial_lapse etc are set to
-         <spacetime>.  This is not supported by Kranc at the
-         moment. *)
-      alp -> lapse,
       beta[ui] -> InvJac[ui,lj] betap[uj],
-      dtalp -> dtlapse,
       dtbeta[ui] -> InvJac[ui,lj] dtbetap[uj]
     }
   };
