@@ -15,7 +15,7 @@ SetEnhancedTimes[False];
 (* Register all the tensors that will be used with TensorTools *)
 Map[DefineTensor, 
 {
-  beta, dtbeta, g, k, Jac, xx, XX, betap, dtbetap, G, K
+  beta, dtbeta, g, k, Jac, InvJac, xx, XX, betap, dtbetap, G, K
 }];
 
 Map[AssertSymmetricDecreasing, 
@@ -45,7 +45,7 @@ admGroups =
 
 shorthands = 
 {
-  Jac[ui,lj], xx[ui], XX[ui], X, Y, Z, betap[ui], dtbetap[ui], G[li,lj], K[li,lk]
+  Jac[ui,lj], InvJac[ui,lj], xx[ui], XX[ui], X, Y, Z, betap[ui], dtbetap[ui], G[li,lj], K[li,lk]
 };
 
 (**************************************************************************************)
@@ -196,8 +196,11 @@ idThorn[spacetime_] :=
       xx[2] -> y,
       xx[3] -> z,
 
+      (* The inverse of the rotation matrix is just its transpose *)
       Table[Jac[i,j] -> Rot[[i,j]], {i,1,3}, {j,1,3}],
+      Table[InvJac[i,j] -> Jac[j,i], {i,1,3}, {j,1,3}],
 
+      (* We compute the everything in the rotated coordinates *)
       XX[ui] -> Jac[ui,lj] xx[uj],
       X -> XX[1],
       Y -> XX[2],
@@ -206,13 +209,13 @@ idThorn[spacetime_] :=
       (* Add any shorthand equations *)
       shorthandEquations,
 
-      (* Compute unrotated variables *)
+      (* Compute rotated components *)
       Table[G[i,j]-> threeMetric[[i, j]], {j, 3}, {i, j, 3}],
       Table[K[i,j] -> extrinsicCurvature[[i,j]], {j, 3}, {i, j, 3}],
       Table[betap[i] -> shift[[i]], {i, 3}],
       Table[dtbetap[i] -> dtshift[[i]], {i, 3}],
 
-      (* Computed rotated versions *)
+      (* Rotate back to Cactus components *)
       g[li,lj] -> Jac[um,li] Jac[un,lj] G[lm,ln],
       k[li,lj] -> Jac[um,li] Jac[un,lj] K[lm,ln],
 
@@ -220,9 +223,9 @@ idThorn[spacetime_] :=
          <spacetime>.  This is not supported by Kranc at the
          moment. *)
       alp -> lapse,
-      beta[ui] -> Jac[lj,ui] betap[uj],
+      beta[ui] -> InvJac[ui,lj] betap[uj],
       dtalp -> dtlapse,
-      dtbeta[ui] -> Jac[lj,ui] dtbetap[uj]
+      dtbeta[ui] -> InvJac[ui,lj] dtbetap[uj]
     }
   };
 
