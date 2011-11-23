@@ -12,5 +12,7 @@ extern "C" void Minkowski_RegisterVars(CCTK_ARGUMENTS)
   CCTK_INT ierr = 0;
   
   /* Register all the evolved grid functions with MoL */
+  
+  /* Register all the evolved Array functions with MoL */
   return;
 }

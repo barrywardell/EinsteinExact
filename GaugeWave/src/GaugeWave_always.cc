@@ -20,7 +20,7 @@
 #define SQR(x) ((x) * (x))
 #define CUB(x) ((x) * (x) * (x))
 
-static void GaugeWave_always_Body(cGH const * restrict const cctkGH, int const dir, int const face, CCTK_REAL const normal[3], CCTK_REAL const tangentA[3], CCTK_REAL const tangentB[3], int const min[3], int const max[3], int const n_subblock_gfs, CCTK_REAL * restrict const subblock_gfs[])
+static void GaugeWave_always_Body(cGH const * restrict const cctkGH, int const dir, int const face, CCTK_REAL const normal[3], CCTK_REAL const tangentA[3], CCTK_REAL const tangentB[3], int const imin[3], int const imax[3], int const n_subblock_gfs, CCTK_REAL * restrict const subblock_gfs[])
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
@@ -31,20 +31,6 @@ static void GaugeWave_always_Body(cGH const * restrict const cctkGH, int const d
   // CCTK_INT index = INITVALUE;
   
   /* Declare finite differencing variables */
-  
-  if (verbose > 1)
-  {
-    CCTK_VInfo(CCTK_THORNSTRING,"Entering GaugeWave_always_Body");
-  }
-  
-  if (cctk_iteration % GaugeWave_always_calc_every != GaugeWave_always_calc_offset)
-  {
-    return;
-  }
-  
-  const char *groups[] = {"admbase::curv","admbase::dtlapse","admbase::dtshift","admbase::lapse","admbase::metric","admbase::shift","grid::coordinates"};
-  GenericFD_AssertGroupStorage(cctkGH, "GaugeWave_always", 7, groups);
-  
   
   /* Include user-supplied include files */
   
@@ -59,6 +45,7 @@ static void GaugeWave_always_Body(cGH const * restrict const cctkGH, int const d
   CCTK_REAL const dy = ToReal(CCTK_DELTA_SPACE(1));
   CCTK_REAL const dz = ToReal(CCTK_DELTA_SPACE(2));
   CCTK_REAL const dt = ToReal(CCTK_DELTA_TIME);
+  CCTK_REAL const t = ToReal(cctk_time);
   CCTK_REAL const dxi = INV(dx);
   CCTK_REAL const dyi = INV(dy);
   CCTK_REAL const dzi = INV(dz);
@@ -73,14 +60,22 @@ static void GaugeWave_always_Body(cGH const * restrict const cctkGH, int const d
   
   /* Initialize predefined quantities */
   
+  /* Assign local copies of arrays functions */
+  
+  
+  
+  /* Calculate temporaries and arrays functions */
+  
+  /* Copy local copies back to grid functions */
+  
   /* Loop over the grid points */
-  for (k = min[2]; k < max[2]; k++)
+  for (k = imin[2]; k < imax[2]; k++)
   {
-    for (j = min[1]; j < max[1]; j++)
+    for (j = imin[1]; j < imax[1]; j++)
     {
-      for (i = min[0]; i < max[0]; i++)
+      for (i = imin[0]; i < imax[0]; i++)
       {
-         int  const  index  =  CCTK_GFINDEX3D(cctkGH,i,j,k) ;
+        int const index = CCTK_GFINDEX3D(cctkGH,i,j,k);
         
         /* Assign local copies of grid functions */
         
@@ -124,9 +119,34 @@ static void GaugeWave_always_Body(cGH const * restrict const cctkGH, int const d
         
         CCTK_REAL Jac33 = Cos(ToReal(theta));
         
+        CCTK_REAL InvJac11 = Jac11;
+        
+        CCTK_REAL InvJac12 = Jac21;
+        
+        CCTK_REAL InvJac13 = Jac31;
+        
+        CCTK_REAL InvJac21 = Jac12;
+        
+        CCTK_REAL InvJac22 = Jac22;
+        
+        CCTK_REAL InvJac23 = Jac32;
+        
+        CCTK_REAL InvJac31 = Jac13;
+        
+        CCTK_REAL InvJac32 = Jac23;
+        
+        CCTK_REAL InvJac33 = Jac33;
+        
         CCTK_REAL XX1 = Jac11*xx1 + Jac12*xx2 + Jac13*xx3;
         
         CCTK_REAL X = XX1;
+        
+        alpL = INV(sqrt(INV(1 - Sin(2*Pi*(X - 
+          cctk_time)*pow(ToReal(period),-1))*ToReal(amp))));
+        
+        CCTK_REAL dtalpL = Pi*Cos(2*Pi*(-X + 
+          cctk_time)*INV(ToReal(period)))*INV(ToReal(period))*sqrt(INV(1 + Sin(2*Pi*(-X 
+          + cctk_time)*pow(ToReal(period),-1))*ToReal(amp)))*ToReal(amp);
         
         CCTK_REAL G11 = 1 - Sin(2*Pi*(X - 
           cctk_time)*INV(ToReal(period)))*ToReal(amp);
@@ -208,24 +228,23 @@ static void GaugeWave_always_Body(cGH const * restrict const cctkGH, int const d
         CCTK_REAL kzzL = 2*(Jac13*(Jac23*K21 + Jac33*K31) + Jac23*Jac33*K32) + 
           K11*SQR(Jac13) + K22*SQR(Jac23) + K33*SQR(Jac33);
         
-        alpL = INV(sqrt(INV(1 - Sin(2*Pi*(X - 
-          cctk_time)*pow(ToReal(period),-1))*ToReal(amp))));
+        CCTK_REAL betaxL = betap1*InvJac11 + betap2*InvJac12 + 
+          betap3*InvJac13;
         
-        CCTK_REAL betaxL = betap1*Jac11 + betap2*Jac21 + betap3*Jac31;
+        CCTK_REAL betayL = betap1*InvJac21 + betap2*InvJac22 + 
+          betap3*InvJac23;
         
-        CCTK_REAL betayL = betap1*Jac12 + betap2*Jac22 + betap3*Jac32;
+        CCTK_REAL betazL = betap1*InvJac31 + betap2*InvJac32 + 
+          betap3*InvJac33;
         
-        CCTK_REAL betazL = betap1*Jac13 + betap2*Jac23 + betap3*Jac33;
+        CCTK_REAL dtbetaxL = dtbetap1*InvJac11 + dtbetap2*InvJac12 + 
+          dtbetap3*InvJac13;
         
-        CCTK_REAL dtalpL = Pi*Cos(2*Pi*(-X + 
-          cctk_time)*INV(ToReal(period)))*INV(ToReal(period))*sqrt(INV(1 + 
-          Sin(2*Pi*(-X + cctk_time)*pow(ToReal(period),-1))*ToReal(amp)))*ToReal(amp);
+        CCTK_REAL dtbetayL = dtbetap1*InvJac21 + dtbetap2*InvJac22 + 
+          dtbetap3*InvJac23;
         
-        CCTK_REAL dtbetaxL = dtbetap1*Jac11 + dtbetap2*Jac21 + dtbetap3*Jac31;
-        
-        CCTK_REAL dtbetayL = dtbetap1*Jac12 + dtbetap2*Jac22 + dtbetap3*Jac32;
-        
-        CCTK_REAL dtbetazL = dtbetap1*Jac13 + dtbetap2*Jac23 + dtbetap3*Jac33;
+        CCTK_REAL dtbetazL = dtbetap1*InvJac31 + dtbetap2*InvJac32 + 
+          dtbetap3*InvJac33;
         
         /* Copy local copies back to grid functions */
         alp[index] = alpL;
@@ -258,5 +277,25 @@ extern "C" void GaugeWave_always(CCTK_ARGUMENTS)
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
   
+  
+  if (verbose > 1)
+  {
+    CCTK_VInfo(CCTK_THORNSTRING,"Entering GaugeWave_always_Body");
+  }
+  
+  if (cctk_iteration % GaugeWave_always_calc_every != GaugeWave_always_calc_offset)
+  {
+    return;
+  }
+  
+  const char *groups[] = {"admbase::curv","admbase::dtlapse","admbase::dtshift","admbase::lapse","admbase::metric","admbase::shift","grid::coordinates"};
+  GenericFD_AssertGroupStorage(cctkGH, "GaugeWave_always", 7, groups);
+  
+  
   GenericFD_LoopOverEverything(cctkGH, &GaugeWave_always_Body);
+  
+  if (verbose > 1)
+  {
+    CCTK_VInfo(CCTK_THORNSTRING,"Leaving GaugeWave_always_Body");
+  }
 }
