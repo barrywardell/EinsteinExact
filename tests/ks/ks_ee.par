@@ -1,0 +1,104 @@
+ActiveThorns = "
+  ADMBase
+  Boundary
+  Carpet
+  CarpetIOHDF5
+  CarpetLib
+  CartGrid3D
+  CoordBase
+  GenericFD
+  HDF5
+  IOUtil
+  KerrSchild
+  SymBase
+  Periodic
+  Slab
+"
+
+#############################################################
+# Grid
+#############################################################
+
+CoordBase::domainsize                   = minmax
+
+CartGrid3D::type                        = "coordbase"
+CartGrid3D::domain                      = "full"
+CartGrid3D::avoid_origin                = "no"
+
+Periodic::periodic = "yes"
+
+CoordBase::xmin                         = 3
+CoordBase::ymin                         = 3
+CoordBase::zmin                         = 3
+
+CoordBase::xmax                         = 4
+CoordBase::ymax                         = 4
+CoordBase::zmax                         = 4
+
+CoordBase::dx                           = 0.1
+CoordBase::dy                           = 0.1
+CoordBase::dz                           = 0.1
+
+CoordBase::boundary_size_x_lower        = 1
+CoordBase::boundary_size_y_lower        = 1
+CoordBase::boundary_size_z_lower        = 1
+
+CoordBase::boundary_size_x_upper        = 1
+CoordBase::boundary_size_y_upper        = 1
+CoordBase::boundary_size_z_upper        = 1
+
+#############################################################
+# Carpet
+#############################################################
+
+Carpet::ghost_size                      = 1
+Carpet::domain_from_coordbase           = "yes"
+Carpet::init_3_timelevels               = "no"
+Carpet::poison_new_timelevels           = yes
+
+#############################################################
+# Time integration
+#############################################################
+
+Cactus::terminate                         = "iteration"
+Cactus::cctk_itlast                       = 0
+
+#############################################################
+# Initial data
+#############################################################
+
+ADMBase::initial_data                = "KerrSchild"
+ADMBase::initial_lapse               = "KerrSchild"
+ADMBase::initial_shift               = "KerrSchild"
+ADMBase::initial_dtlapse             = "KerrSchild"
+ADMBase::initial_dtshift             = "KerrSchild"
+
+KerrSchild::M = 1
+KerrSchild::a = 0.7
+
+#############################################################
+# Output
+#############################################################
+
+IO::out_dir                   = $parfile
+IO::out_fileinfo              = "none"
+
+IOHDF5::out_every          = 8
+IOHDF5::out_vars           = "
+  ADMBase::gxx
+  ADMBase::gxy
+  ADMBase::gxz
+  ADMBase::gyy
+  ADMBase::gyz
+  ADMBase::gzz
+  ADMBase::kxx
+  ADMBase::kxy
+  ADMBase::kxz
+  ADMBase::kyy
+  ADMBase::kyz
+  ADMBase::kzz
+  ADMBase::lapse
+  ADMBase::dtlapse
+  ADMBase::shift
+  ADMBase::dtshift
+  "

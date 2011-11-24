@@ -1,0 +1,114 @@
+ActiveThorns = "
+  ADMBase
+  Boundary
+  Carpet
+  CarpetIOHDF5
+  CarpetLib
+  CartGrid3D
+  CoordBase
+  GenericFD
+  HDF5
+  IOUtil
+  SymBase
+  Periodic
+  ShiftedGaugeWave
+  Slab
+"
+
+#############################################################
+# Grid
+#############################################################
+
+CoordBase::domainsize                   = minmax
+
+CartGrid3D::type                        = "coordbase"
+CartGrid3D::domain                      = "full"
+CartGrid3D::avoid_origin                = "no"
+
+Periodic::periodic = "yes"
+
+CoordBase::xmin                         = 0
+CoordBase::ymin                         = 0
+CoordBase::zmin                         = 0
+
+CoordBase::xmax                         = 1
+CoordBase::ymax                         = 1
+CoordBase::zmax                         = 1
+
+CoordBase::dx                           = 0.1
+CoordBase::dy                           = 0.1
+CoordBase::dz                           = 0.1
+
+CoordBase::boundary_size_x_lower        = 1
+CoordBase::boundary_size_y_lower        = 1
+CoordBase::boundary_size_z_lower        = 1
+CoordBase::boundary_shiftout_x_lower    = 1
+CoordBase::boundary_shiftout_y_lower    = 1
+CoordBase::boundary_shiftout_z_lower    = 1
+
+CoordBase::boundary_size_x_upper        = 1
+CoordBase::boundary_size_y_upper        = 1
+CoordBase::boundary_size_z_upper        = 1
+CoordBase::boundary_shiftout_x_upper    = 0
+CoordBase::boundary_shiftout_y_upper    = 0
+CoordBase::boundary_shiftout_z_upper    = 0
+
+#############################################################
+# Carpet
+#############################################################
+
+Carpet::ghost_size                      = 1
+Carpet::domain_from_coordbase           = "yes"
+Carpet::init_3_timelevels               = "no"
+Carpet::poison_new_timelevels           = yes
+
+#############################################################
+# Time integration
+#############################################################
+
+Cactus::terminate                         = "iteration"
+Cactus::cctk_itlast                       = 0
+
+#############################################################
+# Initial data
+#############################################################
+
+ADMBase::initial_data             = "ShiftedGaugeWave"
+ADMBase::initial_lapse            = "ShiftedGaugeWave"
+ADMBase::initial_shift            = "ShiftedGaugeWave"
+ADMBase::initial_dtlapse          = "ShiftedGaugeWave"
+ADMBase::initial_dtshift          = "ShiftedGaugeWave"
+
+ShiftedGaugeWave::amp = 0.1
+ShiftedGaugeWave::period = 0.577350269189626
+
+ShiftedGaugeWave::psi = -1.9216757376671543544
+ShiftedGaugeWave::theta = 0.66214523564555227398
+ShiftedGaugeWave::phi = 1.2199169159226388841
+
+#############################################################
+# Output
+#############################################################
+
+IO::out_dir                   = $parfile
+IO::out_fileinfo              = "none"
+
+IOHDF5::out_every          = 8
+IOHDF5::out_vars           = "
+  ADMBase::gxx
+  ADMBase::gxy
+  ADMBase::gxz
+  ADMBase::gyy
+  ADMBase::gyz
+  ADMBase::gzz
+  ADMBase::kxx
+  ADMBase::kxy
+  ADMBase::kxz
+  ADMBase::kyy
+  ADMBase::kyz
+  ADMBase::kzz
+  ADMBase::lapse
+  ADMBase::dtlapse
+  ADMBase::shift
+  ADMBase::dtshift
+  "

@@ -1,0 +1,115 @@
+ActiveThorns = "
+  ADMBase
+  ADMCoupling
+  ADMMacros
+  Boundary
+  Carpet
+  CarpetIOHDF5
+  CarpetLib
+  CarpetReduce
+  CartGrid3D
+  CoordBase
+  GenericFD
+  HDF5
+  IOUtil
+  LoopControl
+  ML_ADMConstraints_MP_O2
+  MoL
+  Periodic
+  ShiftedGaugeWave
+  Slab
+  StaticConformal
+  SymBase
+  TmunuBase
+"
+
+################################################################################
+# Grid structure
+################################################################################
+
+CoordBase::domainsize                   = minmax
+
+CartGrid3D::type                        = "coordbase"
+CartGrid3D::domain                      = "full"
+CartGrid3D::avoid_origin                = "no"
+
+Periodic::periodic = "yes"
+
+CoordBase::xmin                         = 0
+CoordBase::ymin                         = 0
+CoordBase::zmin                         = 0
+
+CoordBase::xmax                         = 1
+CoordBase::ymax                         = 1
+CoordBase::zmax                         = 1
+
+CoordBase::dx                           = 0.05
+CoordBase::dy                           = 0.05
+CoordBase::dz                           = 0.05
+
+CoordBase::boundary_size_x_lower        = 1
+CoordBase::boundary_size_y_lower        = 1
+CoordBase::boundary_size_z_lower        = 1
+CoordBase::boundary_shiftout_x_lower    = 1
+CoordBase::boundary_shiftout_y_lower    = 1
+CoordBase::boundary_shiftout_z_lower    = 1
+
+CoordBase::boundary_size_x_upper        = 1
+CoordBase::boundary_size_y_upper        = 1
+CoordBase::boundary_size_z_upper        = 1
+CoordBase::boundary_shiftout_x_upper    = 0
+CoordBase::boundary_shiftout_y_upper    = 0
+CoordBase::boundary_shiftout_z_upper    = 0
+
+#############################################################
+# Carpet
+#############################################################
+
+Carpet::ghost_size                      = 1
+Carpet::domain_from_coordbase           = "yes"
+Carpet::init_3_timelevels               = "no"
+Carpet::poison_new_timelevels           = yes
+
+################################################################################
+# Initial data
+################################################################################
+
+ADMBase::initial_data             = "ShiftedGaugeWave"
+ADMBase::initial_lapse            = "ShiftedGaugeWave"
+ADMBase::initial_shift            = "ShiftedGaugeWave"
+ADMBase::initial_dtlapse          = "ShiftedGaugeWave"
+ADMBase::initial_dtshift          = "ShiftedGaugeWave"
+
+ShiftedGaugeWave::amp = 0.1
+ShiftedGaugeWave::period = 0.577350269189626
+
+ShiftedGaugeWave::psi = -1.9216757376671543544
+ShiftedGaugeWave::theta = 0.66214523564555227398
+ShiftedGaugeWave::phi = 1.2199169159226388841
+
+################################################################################
+# Time integration
+################################################################################
+
+MethodOfLines::ode_method             = "generic"
+MethodOfLines::generic_type           = "RK"
+MethodOfLines::MoL_Intermediate_Steps = 1
+MethodOfLines::MoL_Num_Scratch_Levels = 1
+
+################################################################################
+# Output
+################################################################################
+
+IO::out_dir                             = $parfile
+
+IOHDF5::out_every                       = 1
+IOHDF5::out_vars                        = "
+  ML_ADMConstraints_MP_O2::ML_Ham
+"
+
+################################################################################
+# Run termination
+################################################################################
+
+Cactus::terminate                               = iteration
+Cactus::cctk_itlast                             = 0

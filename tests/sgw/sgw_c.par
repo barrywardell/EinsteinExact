@@ -1,0 +1,123 @@
+ActiveThorns = "
+  ADMBase
+  ADMCoupling
+  Boundary
+  Carpet
+  CarpetIOHDF5
+  CarpetLib
+  CartGrid3D
+  CoordBase
+  CoordGauge
+  Exact
+  GenericFD
+  HDF5
+  IOUtil
+  SymBase
+  Periodic
+  Slab
+  StaticConformal
+"
+
+#############################################################
+# Grid
+#############################################################
+
+CoordBase::domainsize                   = minmax
+
+CartGrid3D::type                        = "coordbase"
+CartGrid3D::domain                      = "full"
+CartGrid3D::avoid_origin                = "no"
+
+Periodic::periodic = "yes"
+
+CoordBase::xmin                         = 0
+CoordBase::ymin                         = 0
+CoordBase::zmin                         = 0
+
+CoordBase::xmax                         = 1
+CoordBase::ymax                         = 1
+CoordBase::zmax                         = 1
+
+CoordBase::dx                           = 0.1
+CoordBase::dy                           = 0.1
+CoordBase::dz                           = 0.1
+
+CoordBase::boundary_size_x_lower        = 1
+CoordBase::boundary_size_y_lower        = 1
+CoordBase::boundary_size_z_lower        = 1
+CoordBase::boundary_shiftout_x_lower    = 1
+CoordBase::boundary_shiftout_y_lower    = 1
+CoordBase::boundary_shiftout_z_lower    = 1
+
+CoordBase::boundary_size_x_upper        = 1
+CoordBase::boundary_size_y_upper        = 1
+CoordBase::boundary_size_z_upper        = 1
+CoordBase::boundary_shiftout_x_upper    = 0
+CoordBase::boundary_shiftout_y_upper    = 0
+CoordBase::boundary_shiftout_z_upper    = 0
+
+#############################################################
+# Carpet
+#############################################################
+
+Carpet::ghost_size                      = 1
+Carpet::domain_from_coordbase           = "yes"
+Carpet::init_3_timelevels               = "no"
+Carpet::poison_new_timelevels           = yes
+
+#############################################################
+# Time integration
+#############################################################
+
+Cactus::terminate                         = "iteration"
+Cactus::cctk_itlast                       = 0
+
+#############################################################
+# Initial data
+#############################################################
+
+ADMBase::initial_data = "exact"
+ADMBase::initial_lapse = "exact"
+ADMBase::initial_shift = "exact"
+ADMBase::initial_dtlapse = "exact"
+ADMBase::initial_dtshift = "exact"
+
+Exact::exact_model = "Minkowski/shifted gauge wave"
+Exact::Minkowski_gauge_wave__what_fn = "sin"
+Exact::Minkowski_gauge_wave__amplitude = 0.1
+Exact::Minkowski_gauge_wave__omega = 1
+Exact::Minkowski_gauge_wave__lambda = 0.577350269189626
+
+Exact::rotation_euler_psi = -1.9216757376671543544
+Exact::rotation_euler_theta = 0.66214523564555227398
+Exact::rotation_euler_phi = 1.2199169159226388841
+
+Exact::exact_order = 4
+Exact::exact_eps = 0.25e-2 # This is large to ensure regression tests are insensitive to roundoff
+
+#############################################################
+# Output
+#############################################################
+
+IO::out_dir                   = $parfile
+IO::out_fileinfo              = "none"
+
+IOHDF5::out_every          = 8
+IOHDF5::out_vars           = "
+  ADMBase::gxx
+  ADMBase::gxy
+  ADMBase::gxz
+  ADMBase::gyy
+  ADMBase::gyz
+  ADMBase::gzz
+  ADMBase::kxx
+  ADMBase::kxy
+  ADMBase::kxz
+  ADMBase::kyy
+  ADMBase::kyz
+  ADMBase::kzz
+  ADMBase::lapse
+  ADMBase::dtlapse
+  ADMBase::shift
+  ADMBase::dtshift
+  "

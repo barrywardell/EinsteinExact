@@ -1,0 +1,103 @@
+ActiveThorns = "
+  ADMBase
+  ADMCoupling
+  ADMMacros
+  Boundary
+  Carpet
+  CarpetIOHDF5
+  CarpetLib
+  CarpetReduce
+  CartGrid3D
+  CoordBase
+  GenericFD
+  HDF5
+  IOUtil
+  KerrSchild
+  LoopControl
+  ML_ADMConstraints_MP_O2
+  MoL
+  Periodic
+  Slab
+  StaticConformal
+  SymBase
+  TmunuBase
+"
+
+################################################################################
+# Grid structure
+################################################################################
+
+CoordBase::domainsize                   = minmax
+
+CartGrid3D::type                        = "coordbase"
+CartGrid3D::domain                      = "full"
+CartGrid3D::avoid_origin                = "no"
+
+CoordBase::xmin                         = 3
+CoordBase::ymin                         = 3
+CoordBase::zmin                         = 3
+
+CoordBase::xmax                         = 4
+CoordBase::ymax                         = 4
+CoordBase::zmax                         = 4
+
+CoordBase::dx                           = 0.025
+CoordBase::dy                           = 0.025
+CoordBase::dz                           = 0.025
+
+CoordBase::boundary_size_x_lower        = 1
+CoordBase::boundary_size_y_lower        = 1
+CoordBase::boundary_size_z_lower        = 1
+
+CoordBase::boundary_size_x_upper        = 1
+CoordBase::boundary_size_y_upper        = 1
+CoordBase::boundary_size_z_upper        = 1
+
+#############################################################
+# Carpet
+#############################################################
+
+Carpet::ghost_size                      = 1
+Carpet::domain_from_coordbase           = "yes"
+Carpet::init_3_timelevels               = "no"
+Carpet::poison_new_timelevels           = yes
+
+################################################################################
+# Initial data
+################################################################################
+
+ADMBase::initial_data                = "KerrSchild"
+ADMBase::initial_lapse               = "KerrSchild"
+ADMBase::initial_shift               = "KerrSchild"
+ADMBase::initial_dtlapse             = "KerrSchild"
+ADMBase::initial_dtshift             = "KerrSchild"
+
+KerrSchild::M = 1
+KerrSchild::a = 0.7
+
+################################################################################
+# Time integration
+################################################################################
+
+MethodOfLines::ode_method             = "generic"
+MethodOfLines::generic_type           = "RK"
+MethodOfLines::MoL_Intermediate_Steps = 1
+MethodOfLines::MoL_Num_Scratch_Levels = 1
+
+################################################################################
+# Output
+################################################################################
+
+IO::out_dir                             = $parfile
+
+IOHDF5::out_every                       = 1
+IOHDF5::out_vars                        = "
+  ML_ADMConstraints_MP_O2::ML_Ham
+"
+
+################################################################################
+# Run termination
+################################################################################
+
+Cactus::terminate                               = iteration
+Cactus::cctk_itlast                             = 0

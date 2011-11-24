@@ -1,0 +1,977 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     42558,        968]
+NotebookOptionsPosition[     41416,        924]
+NotebookOutlinePosition[     41793,        941]
+CellTagsIndexPosition[     41750,        938]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\<\
+Correctness tests for KerrSchild thorn\
+\>", "Title",
+ CellChangeTimes->{{3.530958848292109*^9, 3.5309589109386387`*^9}, {
+  3.531061120940783*^9, 3.531061133845853*^9}, {3.531061178551152*^9, 
+  3.531061191585826*^9}, {3.531156775438092*^9, 3.5311567937862997`*^9}, {
+  3.531161664308936*^9, 3.531161666200267*^9}}],
+
+Cell[BoxData[
+ RowBox[{"<<", "nrmma`"}]], "Input",
+ CellChangeTimes->{{3.519903160621409*^9, 3.519903161730212*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAllMemos", "[", "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.531061421557942*^9, 3.531061424933073*^9}, {
+  3.531160578396344*^9, 3.5311605786926413`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Compare with Exact", "Section",
+ CellChangeTimes->{{3.5311568042993717`*^9, 3.531156807505908*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"runs", "=", 
+   RowBox[{"{", 
+    RowBox[{"\"\<ks_a\>\"", ",", "\"\<ks_b\>\"", ",", "\"\<ks_c\>\""}], 
+    "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"einsteinexact", "=", "\"\<ks_ee\>\""}], ";"}]}], "Input",
+ CellChangeTimes->{{3.519903164424334*^9, 3.519903184075289*^9}, 
+   3.531157314250596*^9, {3.5311601905500174`*^9, 3.531160196828238*^9}, {
+   3.5311626729903593`*^9, 3.531162683222332*^9}, 3.531167915154129*^9}],
+
+Cell[CellGroupData[{
+
+Cell["Check non-finite differenced variables are identical", "Subsection",
+ CellChangeTimes->{{3.531061147899919*^9, 3.5310611596987753`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"vars", "=", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<alp.h5\>\"", ",", "\"\<dtalp.h5\>\"", ",", "\"\<betax.h5\>\"", ",", 
+     "\"\<betay.h5\>\"", ",", "\"\<betaz.h5\>\"", ",", "\"\<dtbetax.h5\>\"", 
+     ",", "\"\<dtbetay.h5\>\"", ",", "\"\<dtbetaz.h5\>\"", ",", 
+     "\"\<gxx.h5\>\"", ",", "\"\<gxy.h5\>\"", ",", "\"\<gxz.h5\>\"", ",", 
+     "\"\<gyy.h5\>\"", ",", "\"\<gyz.h5\>\"", ",", "\"\<gzz.h5\>\""}], 
+    "}"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5199034131047783`*^9, 3.519903416889655*^9}, {
+  3.531061279274747*^9, 3.5310613855207*^9}, {3.5310629525891457`*^9, 
+  3.531062986579565*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"compare", "[", "var_", "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"e", ",", "ee", ",", "eeu"}], "}"}], ",", "\[IndentingNewLine]", 
+    
+    RowBox[{
+     RowBox[{"e", "=", 
+      RowBox[{"ReadGridFunction", "[", 
+       RowBox[{
+        RowBox[{"runs", "[", 
+         RowBox[{"[", "1", "]"}], "]"}], ",", "var", ",", "0"}], "]"}]}], ";",
+      "\[IndentingNewLine]", 
+     RowBox[{"ee", "=", 
+      RowBox[{"ReadGridFunction", "[", 
+       RowBox[{"einsteinexact", ",", "var", ",", "0"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Manipulate", "[", 
+      RowBox[{
+       RowBox[{"Show", "[", 
+        RowBox[{"MapThread", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"DataRegionPlot", "[", 
+            RowBox[{
+             RowBox[{"SliceData", "[", 
+              RowBox[{"#1", ",", 
+               RowBox[{"{", 
+                RowBox[{"1", ",", "2"}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"x", ",", "y"}], "}"}]}], "]"}], ",", 
+             RowBox[{"Joined", "\[Rule]", "True"}], ",", 
+             RowBox[{"PlotStyle", "\[Rule]", "#2"}]}], "]"}], "&"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"e", ",", "ee"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"Red", ",", 
+              RowBox[{"Directive", "[", 
+               RowBox[{"Black", ",", "Dotted"}], "]"}]}], "}"}]}], "}"}]}], 
+         "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", "3.1", ",", "3.9", ",", "0.1"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", "3.1", ",", "3.9", ",", "0.1"}], "}"}]}], "]"}]}]}],
+    "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.531061556743009*^9, 3.5310615910294456`*^9}, {
+   3.5311428789353437`*^9, 3.531142879875379*^9}, {3.53114629009309*^9, 
+   3.531146328629365*^9}, {3.531157358836376*^9, 3.531157381260005*^9}, {
+   3.531162778802568*^9, 3.5311627836038923`*^9}, {3.531162884025337*^9, 
+   3.531162913933599*^9}, {3.531162946005837*^9, 3.531162946179438*^9}, {
+   3.531163221478444*^9, 3.5311632271658077`*^9}, 3.531167421339678*^9, {
+   3.5311679194904757`*^9, 3.5311679532415037`*^9}, {3.53116799588245*^9, 
+   3.531168011184965*^9}}],
+
+Cell[BoxData[
+ RowBox[{"compare", "/@", "vars"}]], "Input",
+ CellChangeTimes->{{3.5311628973582582`*^9, 3.531162901243793*^9}, {
+  3.531163258504738*^9, 3.53116326167701*^9}}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Check that Exact agrees with EinsteinExact for finite differenced variables\
+\>", "Subsection",
+ CellChangeTimes->{{3.5310611674937067`*^9, 3.531061218713623*^9}, {
+  3.53116346153863*^9, 3.531163470812902*^9}}],
+
+Cell["\<\
+Because Kerr-Schild is stationary, we can expect Exact to calculate the \
+extrinsic curvature to within roundoff.\
+\>", "Text",
+ CellChangeTimes->{{3.5311634894713984`*^9, 3.531163525739457*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"fdvars", " ", "=", " ", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<kxx.h5\>\"", ",", " ", "\"\<kxy.h5\>\"", ",", " ", "\"\<kxz.h5\>\"", 
+     ",", " ", "\"\<kyy.h5\>\"", ",", " ", "\"\<kyz.h5\>\"", ",", " ", 
+     "\"\<kzz.h5\>\""}], "}"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5311568374712257`*^9, 3.531156837473555*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"comparefd", "[", "var_", "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "a", ",", "b", ",", "c", ",", "ee", ",", "erra", ",", "errb", ",", 
+      "errc"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"a", ",", " ", "b", ",", " ", "c"}], "}"}], " ", "=", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"ReadGridFunction", "[", 
+         RowBox[{"#", ",", " ", "var", ",", " ", "0"}], "]"}], " ", "&"}], 
+       " ", "/@", " ", "runs"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"ee", " ", "=", " ", 
+      RowBox[{"ReadGridFunction", "[", 
+       RowBox[{"einsteinexact", ",", " ", "var", ",", " ", "0"}], "]"}]}], 
+     ";", "\[IndentingNewLine]", 
+     RowBox[{"erra", " ", "=", " ", 
+      RowBox[{"a", " ", "-", " ", "ee"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"errb", " ", "=", " ", 
+      RowBox[{"b", " ", "-", " ", "ee"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"errc", " ", "=", " ", 
+      RowBox[{"c", " ", "-", " ", "ee"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Manipulate", "[", 
+      RowBox[{
+       RowBox[{"Show", "[", 
+        RowBox[{"MapThread", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"DataRegionPlot", "[", 
+            RowBox[{
+             RowBox[{"SliceData", "[", 
+              RowBox[{"#1", ",", 
+               RowBox[{"{", 
+                RowBox[{"1", ",", "2"}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"x", ",", "y"}], "}"}]}], "]"}], ",", 
+             RowBox[{"Joined", "\[Rule]", "True"}], ",", 
+             RowBox[{"PlotStyle", "\[Rule]", "#2"}]}], "]"}], "&"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"erra", ",", 
+              RowBox[{"16", "errb"}], ",", 
+              RowBox[{
+               SuperscriptBox["16", "2"], "errc"}]}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"Red", ",", 
+              RowBox[{"Directive", "[", 
+               RowBox[{"Black", ",", "Dotted"}], "]"}], ",", 
+              RowBox[{"Directive", "[", 
+               RowBox[{"Blue", ",", "Dashed"}], "]"}]}], "}"}]}], "}"}]}], 
+         "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", "3.1", ",", "3.9", ",", "0.1"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", "3.1", ",", "3.9", ",", "0.1"}], "}"}]}], "]"}]}]}],
+    "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.5311574448027163`*^9, 3.531157489704266*^9}, {
+  3.53115754915976*^9, 3.531157619241531*^9}, {3.5311633135262203`*^9, 
+  3.531163362067676*^9}, {3.5311681056837397`*^9, 3.531168114776187*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"comparefd", "/@", "vars"}]], "Input",
+ CellChangeTimes->{{3.531157491322133*^9, 3.531157501040324*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   TagBox[
+    StyleBox[
+     DynamicModuleBox[{$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1, 
+      Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+      Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ =
+       1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+        Hold[$CellContext`x$$], 3.1, 3.9, 0.1}, {
+        Hold[$CellContext`y$$], 3.1, 3.9, 0.1}}, Typeset`size$$ = {
+      360., {106., 110.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+      Typeset`skipInitDone$$ = True, $CellContext`x$131191$$ = 
+      0, $CellContext`y$131192$$ = 0}, 
+      DynamicBox[Manipulate`ManipulateBoxes[
+       1, StandardForm, 
+        "Variables" :> {$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1}, 
+        "ControllerVariables" :> {
+          Hold[$CellContext`x$$, $CellContext`x$131191$$, 0], 
+          Hold[$CellContext`y$$, $CellContext`y$131192$$, 0]}, 
+        "OtherVariables" :> {
+         Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+          Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+          Typeset`specs$$, Typeset`size$$, Typeset`update$$, 
+          Typeset`initDone$$, Typeset`skipInitDone$$}, "Body" :> Show[
+          MapThread[DataRegion`DataRegionPlot[
+            
+            DataRegion`SliceData[#, {1, 
+             2}, {$CellContext`x$$, $CellContext`y$$}], Joined -> True, 
+            PlotStyle -> #2]& , {{$CellContext`erra$129245, 
+             16 $CellContext`errb$129245, 16^2 $CellContext`errc$129245}, {
+            Red, 
+             Directive[Black, Dotted], 
+             Directive[Blue, Dashed]}}]], 
+        "Specifications" :> {{$CellContext`x$$, 3.1, 3.9, 
+           0.1}, {$CellContext`y$$, 3.1, 3.9, 0.1}}, "Options" :> {}, 
+        "DefaultOptions" :> {}],
+       ImageSizeCache->{403., {162., 168.}},
+       SingleEvaluation->True],
+      Deinitialization:>None,
+      DynamicModuleValues:>{},
+      SynchronousInitialization->True,
+      UnsavedVariables:>{Typeset`initDone$$},
+      UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+     Deployed->True,
+     StripOnInput->False],
+    Manipulate`InterpretManipulate[1]], ",", 
+   TagBox[
+    StyleBox[
+     DynamicModuleBox[{$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1, 
+      Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+      Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ =
+       1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+        Hold[$CellContext`x$$], 3.1, 3.9, 0.1}, {
+        Hold[$CellContext`y$$], 3.1, 3.9, 0.1}}, Typeset`size$$ = {
+      360., {95., 100.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+      Typeset`skipInitDone$$ = True, $CellContext`x$131211$$ = 
+      0, $CellContext`y$131212$$ = 0}, 
+      DynamicBox[Manipulate`ManipulateBoxes[
+       1, StandardForm, 
+        "Variables" :> {$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1}, 
+        "ControllerVariables" :> {
+          Hold[$CellContext`x$$, $CellContext`x$131211$$, 0], 
+          Hold[$CellContext`y$$, $CellContext`y$131212$$, 0]}, 
+        "OtherVariables" :> {
+         Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+          Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+          Typeset`specs$$, Typeset`size$$, Typeset`update$$, 
+          Typeset`initDone$$, Typeset`skipInitDone$$}, "Body" :> Show[
+          MapThread[DataRegion`DataRegionPlot[
+            
+            DataRegion`SliceData[#, {1, 
+             2}, {$CellContext`x$$, $CellContext`y$$}], Joined -> True, 
+            PlotStyle -> #2]& , {{$CellContext`erra$129384, 
+             16 $CellContext`errb$129384, 16^2 $CellContext`errc$129384}, {
+            Red, 
+             Directive[Black, Dotted], 
+             Directive[Blue, Dashed]}}]], 
+        "Specifications" :> {{$CellContext`x$$, 3.1, 3.9, 
+           0.1}, {$CellContext`y$$, 3.1, 3.9, 0.1}}, "Options" :> {}, 
+        "DefaultOptions" :> {}],
+       ImageSizeCache->{403., {151., 157.}},
+       SingleEvaluation->True],
+      Deinitialization:>None,
+      DynamicModuleValues:>{},
+      SynchronousInitialization->True,
+      UnsavedVariables:>{Typeset`initDone$$},
+      UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+     Deployed->True,
+     StripOnInput->False],
+    Manipulate`InterpretManipulate[1]], ",", 
+   TagBox[
+    StyleBox[
+     DynamicModuleBox[{$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1, 
+      Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+      Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ =
+       1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+        Hold[$CellContext`x$$], 3.1, 3.9, 0.1}, {
+        Hold[$CellContext`y$$], 3.1, 3.9, 0.1}}, Typeset`size$$ = {
+      360., {97., 101.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+      Typeset`skipInitDone$$ = True, $CellContext`x$131231$$ = 
+      0, $CellContext`y$131232$$ = 0}, 
+      DynamicBox[Manipulate`ManipulateBoxes[
+       1, StandardForm, 
+        "Variables" :> {$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1}, 
+        "ControllerVariables" :> {
+          Hold[$CellContext`x$$, $CellContext`x$131231$$, 0], 
+          Hold[$CellContext`y$$, $CellContext`y$131232$$, 0]}, 
+        "OtherVariables" :> {
+         Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+          Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+          Typeset`specs$$, Typeset`size$$, Typeset`update$$, 
+          Typeset`initDone$$, Typeset`skipInitDone$$}, "Body" :> Show[
+          MapThread[DataRegion`DataRegionPlot[
+            
+            DataRegion`SliceData[#, {1, 
+             2}, {$CellContext`x$$, $CellContext`y$$}], Joined -> True, 
+            PlotStyle -> #2]& , {{$CellContext`erra$129523, 
+             16 $CellContext`errb$129523, 16^2 $CellContext`errc$129523}, {
+            Red, 
+             Directive[Black, Dotted], 
+             Directive[Blue, Dashed]}}]], 
+        "Specifications" :> {{$CellContext`x$$, 3.1, 3.9, 
+           0.1}, {$CellContext`y$$, 3.1, 3.9, 0.1}}, "Options" :> {}, 
+        "DefaultOptions" :> {}],
+       ImageSizeCache->{403., {153., 159.}},
+       SingleEvaluation->True],
+      Deinitialization:>None,
+      DynamicModuleValues:>{},
+      SynchronousInitialization->True,
+      UnsavedVariables:>{Typeset`initDone$$},
+      UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+     Deployed->True,
+     StripOnInput->False],
+    Manipulate`InterpretManipulate[1]], ",", 
+   TagBox[
+    StyleBox[
+     DynamicModuleBox[{$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1, 
+      Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+      Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ =
+       1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+        Hold[$CellContext`x$$], 3.1, 3.9, 0.1}, {
+        Hold[$CellContext`y$$], 3.1, 3.9, 0.1}}, Typeset`size$$ = {
+      360., {96., 101.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+      Typeset`skipInitDone$$ = True, $CellContext`x$131251$$ = 
+      0, $CellContext`y$131252$$ = 0}, 
+      DynamicBox[Manipulate`ManipulateBoxes[
+       1, StandardForm, 
+        "Variables" :> {$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1}, 
+        "ControllerVariables" :> {
+          Hold[$CellContext`x$$, $CellContext`x$131251$$, 0], 
+          Hold[$CellContext`y$$, $CellContext`y$131252$$, 0]}, 
+        "OtherVariables" :> {
+         Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+          Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+          Typeset`specs$$, Typeset`size$$, Typeset`update$$, 
+          Typeset`initDone$$, Typeset`skipInitDone$$}, "Body" :> Show[
+          MapThread[DataRegion`DataRegionPlot[
+            
+            DataRegion`SliceData[#, {1, 
+             2}, {$CellContext`x$$, $CellContext`y$$}], Joined -> True, 
+            PlotStyle -> #2]& , {{$CellContext`erra$129662, 
+             16 $CellContext`errb$129662, 16^2 $CellContext`errc$129662}, {
+            Red, 
+             Directive[Black, Dotted], 
+             Directive[Blue, Dashed]}}]], 
+        "Specifications" :> {{$CellContext`x$$, 3.1, 3.9, 
+           0.1}, {$CellContext`y$$, 3.1, 3.9, 0.1}}, "Options" :> {}, 
+        "DefaultOptions" :> {}],
+       ImageSizeCache->{403., {152., 158.}},
+       SingleEvaluation->True],
+      Deinitialization:>None,
+      DynamicModuleValues:>{},
+      SynchronousInitialization->True,
+      UnsavedVariables:>{Typeset`initDone$$},
+      UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+     Deployed->True,
+     StripOnInput->False],
+    Manipulate`InterpretManipulate[1]], ",", 
+   TagBox[
+    StyleBox[
+     DynamicModuleBox[{$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1, 
+      Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+      Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ =
+       1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+        Hold[$CellContext`x$$], 3.1, 3.9, 0.1}, {
+        Hold[$CellContext`y$$], 3.1, 3.9, 0.1}}, Typeset`size$$ = {
+      360., {96., 101.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+      Typeset`skipInitDone$$ = True, $CellContext`x$131271$$ = 
+      0, $CellContext`y$131272$$ = 0}, 
+      DynamicBox[Manipulate`ManipulateBoxes[
+       1, StandardForm, 
+        "Variables" :> {$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1}, 
+        "ControllerVariables" :> {
+          Hold[$CellContext`x$$, $CellContext`x$131271$$, 0], 
+          Hold[$CellContext`y$$, $CellContext`y$131272$$, 0]}, 
+        "OtherVariables" :> {
+         Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+          Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+          Typeset`specs$$, Typeset`size$$, Typeset`update$$, 
+          Typeset`initDone$$, Typeset`skipInitDone$$}, "Body" :> Show[
+          MapThread[DataRegion`DataRegionPlot[
+            
+            DataRegion`SliceData[#, {1, 
+             2}, {$CellContext`x$$, $CellContext`y$$}], Joined -> True, 
+            PlotStyle -> #2]& , {{$CellContext`erra$129801, 
+             16 $CellContext`errb$129801, 16^2 $CellContext`errc$129801}, {
+            Red, 
+             Directive[Black, Dotted], 
+             Directive[Blue, Dashed]}}]], 
+        "Specifications" :> {{$CellContext`x$$, 3.1, 3.9, 
+           0.1}, {$CellContext`y$$, 3.1, 3.9, 0.1}}, "Options" :> {}, 
+        "DefaultOptions" :> {}],
+       ImageSizeCache->{403., {152., 158.}},
+       SingleEvaluation->True],
+      Deinitialization:>None,
+      DynamicModuleValues:>{},
+      SynchronousInitialization->True,
+      UnsavedVariables:>{Typeset`initDone$$},
+      UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+     Deployed->True,
+     StripOnInput->False],
+    Manipulate`InterpretManipulate[1]], ",", 
+   TagBox[
+    StyleBox[
+     DynamicModuleBox[{$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1, 
+      Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+      Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ =
+       1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+        Hold[$CellContext`x$$], 3.1, 3.9, 0.1}, {
+        Hold[$CellContext`y$$], 3.1, 3.9, 0.1}}, Typeset`size$$ = {
+      360., {95., 100.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+      Typeset`skipInitDone$$ = True, $CellContext`x$131291$$ = 
+      0, $CellContext`y$131292$$ = 0}, 
+      DynamicBox[Manipulate`ManipulateBoxes[
+       1, StandardForm, 
+        "Variables" :> {$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1}, 
+        "ControllerVariables" :> {
+          Hold[$CellContext`x$$, $CellContext`x$131291$$, 0], 
+          Hold[$CellContext`y$$, $CellContext`y$131292$$, 0]}, 
+        "OtherVariables" :> {
+         Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+          Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+          Typeset`specs$$, Typeset`size$$, Typeset`update$$, 
+          Typeset`initDone$$, Typeset`skipInitDone$$}, "Body" :> Show[
+          MapThread[DataRegion`DataRegionPlot[
+            
+            DataRegion`SliceData[#, {1, 
+             2}, {$CellContext`x$$, $CellContext`y$$}], Joined -> True, 
+            PlotStyle -> #2]& , {{$CellContext`erra$129940, 
+             16 $CellContext`errb$129940, 16^2 $CellContext`errc$129940}, {
+            Red, 
+             Directive[Black, Dotted], 
+             Directive[Blue, Dashed]}}]], 
+        "Specifications" :> {{$CellContext`x$$, 3.1, 3.9, 
+           0.1}, {$CellContext`y$$, 3.1, 3.9, 0.1}}, "Options" :> {}, 
+        "DefaultOptions" :> {}],
+       ImageSizeCache->{403., {151., 157.}},
+       SingleEvaluation->True],
+      Deinitialization:>None,
+      DynamicModuleValues:>{},
+      SynchronousInitialization->True,
+      UnsavedVariables:>{Typeset`initDone$$},
+      UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+     Deployed->True,
+     StripOnInput->False],
+    Manipulate`InterpretManipulate[1]], ",", 
+   TagBox[
+    StyleBox[
+     DynamicModuleBox[{$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1, 
+      Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+      Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ =
+       1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+        Hold[$CellContext`x$$], 3.1, 3.9, 0.1}, {
+        Hold[$CellContext`y$$], 3.1, 3.9, 0.1}}, Typeset`size$$ = {
+      360., {95., 100.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+      Typeset`skipInitDone$$ = True, $CellContext`x$131311$$ = 
+      0, $CellContext`y$131312$$ = 0}, 
+      DynamicBox[Manipulate`ManipulateBoxes[
+       1, StandardForm, 
+        "Variables" :> {$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1}, 
+        "ControllerVariables" :> {
+          Hold[$CellContext`x$$, $CellContext`x$131311$$, 0], 
+          Hold[$CellContext`y$$, $CellContext`y$131312$$, 0]}, 
+        "OtherVariables" :> {
+         Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+          Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+          Typeset`specs$$, Typeset`size$$, Typeset`update$$, 
+          Typeset`initDone$$, Typeset`skipInitDone$$}, "Body" :> Show[
+          MapThread[DataRegion`DataRegionPlot[
+            
+            DataRegion`SliceData[#, {1, 
+             2}, {$CellContext`x$$, $CellContext`y$$}], Joined -> True, 
+            PlotStyle -> #2]& , {{$CellContext`erra$130079, 
+             16 $CellContext`errb$130079, 16^2 $CellContext`errc$130079}, {
+            Red, 
+             Directive[Black, Dotted], 
+             Directive[Blue, Dashed]}}]], 
+        "Specifications" :> {{$CellContext`x$$, 3.1, 3.9, 
+           0.1}, {$CellContext`y$$, 3.1, 3.9, 0.1}}, "Options" :> {}, 
+        "DefaultOptions" :> {}],
+       ImageSizeCache->{403., {151., 157.}},
+       SingleEvaluation->True],
+      Deinitialization:>None,
+      DynamicModuleValues:>{},
+      SynchronousInitialization->True,
+      UnsavedVariables:>{Typeset`initDone$$},
+      UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+     Deployed->True,
+     StripOnInput->False],
+    Manipulate`InterpretManipulate[1]], ",", 
+   TagBox[
+    StyleBox[
+     DynamicModuleBox[{$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1, 
+      Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+      Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ =
+       1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+        Hold[$CellContext`x$$], 3.1, 3.9, 0.1}, {
+        Hold[$CellContext`y$$], 3.1, 3.9, 0.1}}, Typeset`size$$ = {
+      360., {95., 100.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+      Typeset`skipInitDone$$ = True, $CellContext`x$131331$$ = 
+      0, $CellContext`y$131332$$ = 0}, 
+      DynamicBox[Manipulate`ManipulateBoxes[
+       1, StandardForm, 
+        "Variables" :> {$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1}, 
+        "ControllerVariables" :> {
+          Hold[$CellContext`x$$, $CellContext`x$131331$$, 0], 
+          Hold[$CellContext`y$$, $CellContext`y$131332$$, 0]}, 
+        "OtherVariables" :> {
+         Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+          Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+          Typeset`specs$$, Typeset`size$$, Typeset`update$$, 
+          Typeset`initDone$$, Typeset`skipInitDone$$}, "Body" :> Show[
+          MapThread[DataRegion`DataRegionPlot[
+            
+            DataRegion`SliceData[#, {1, 
+             2}, {$CellContext`x$$, $CellContext`y$$}], Joined -> True, 
+            PlotStyle -> #2]& , {{$CellContext`erra$130218, 
+             16 $CellContext`errb$130218, 16^2 $CellContext`errc$130218}, {
+            Red, 
+             Directive[Black, Dotted], 
+             Directive[Blue, Dashed]}}]], 
+        "Specifications" :> {{$CellContext`x$$, 3.1, 3.9, 
+           0.1}, {$CellContext`y$$, 3.1, 3.9, 0.1}}, "Options" :> {}, 
+        "DefaultOptions" :> {}],
+       ImageSizeCache->{403., {151., 157.}},
+       SingleEvaluation->True],
+      Deinitialization:>None,
+      DynamicModuleValues:>{},
+      SynchronousInitialization->True,
+      UnsavedVariables:>{Typeset`initDone$$},
+      UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+     Deployed->True,
+     StripOnInput->False],
+    Manipulate`InterpretManipulate[1]], ",", 
+   TagBox[
+    StyleBox[
+     DynamicModuleBox[{$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1, 
+      Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+      Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ =
+       1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+        Hold[$CellContext`x$$], 3.1, 3.9, 0.1}, {
+        Hold[$CellContext`y$$], 3.1, 3.9, 0.1}}, Typeset`size$$ = {
+      360., {95., 99.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+      Typeset`skipInitDone$$ = True, $CellContext`x$131351$$ = 
+      0, $CellContext`y$131352$$ = 0}, 
+      DynamicBox[Manipulate`ManipulateBoxes[
+       1, StandardForm, 
+        "Variables" :> {$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1}, 
+        "ControllerVariables" :> {
+          Hold[$CellContext`x$$, $CellContext`x$131351$$, 0], 
+          Hold[$CellContext`y$$, $CellContext`y$131352$$, 0]}, 
+        "OtherVariables" :> {
+         Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+          Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+          Typeset`specs$$, Typeset`size$$, Typeset`update$$, 
+          Typeset`initDone$$, Typeset`skipInitDone$$}, "Body" :> Show[
+          MapThread[DataRegion`DataRegionPlot[
+            
+            DataRegion`SliceData[#, {1, 
+             2}, {$CellContext`x$$, $CellContext`y$$}], Joined -> True, 
+            PlotStyle -> #2]& , {{$CellContext`erra$130357, 
+             16 $CellContext`errb$130357, 16^2 $CellContext`errc$130357}, {
+            Red, 
+             Directive[Black, Dotted], 
+             Directive[Blue, Dashed]}}]], 
+        "Specifications" :> {{$CellContext`x$$, 3.1, 3.9, 
+           0.1}, {$CellContext`y$$, 3.1, 3.9, 0.1}}, "Options" :> {}, 
+        "DefaultOptions" :> {}],
+       ImageSizeCache->{403., {151., 157.}},
+       SingleEvaluation->True],
+      Deinitialization:>None,
+      DynamicModuleValues:>{},
+      SynchronousInitialization->True,
+      UnsavedVariables:>{Typeset`initDone$$},
+      UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+     Deployed->True,
+     StripOnInput->False],
+    Manipulate`InterpretManipulate[1]], ",", 
+   TagBox[
+    StyleBox[
+     DynamicModuleBox[{$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1, 
+      Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+      Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ =
+       1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+        Hold[$CellContext`x$$], 3.1, 3.9, 0.1}, {
+        Hold[$CellContext`y$$], 3.1, 3.9, 0.1}}, Typeset`size$$ = {
+      360., {94., 98.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+      Typeset`skipInitDone$$ = True, $CellContext`x$131371$$ = 
+      0, $CellContext`y$131372$$ = 0}, 
+      DynamicBox[Manipulate`ManipulateBoxes[
+       1, StandardForm, 
+        "Variables" :> {$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1}, 
+        "ControllerVariables" :> {
+          Hold[$CellContext`x$$, $CellContext`x$131371$$, 0], 
+          Hold[$CellContext`y$$, $CellContext`y$131372$$, 0]}, 
+        "OtherVariables" :> {
+         Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+          Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+          Typeset`specs$$, Typeset`size$$, Typeset`update$$, 
+          Typeset`initDone$$, Typeset`skipInitDone$$}, "Body" :> Show[
+          MapThread[DataRegion`DataRegionPlot[
+            
+            DataRegion`SliceData[#, {1, 
+             2}, {$CellContext`x$$, $CellContext`y$$}], Joined -> True, 
+            PlotStyle -> #2]& , {{$CellContext`erra$130496, 
+             16 $CellContext`errb$130496, 16^2 $CellContext`errc$130496}, {
+            Red, 
+             Directive[Black, Dotted], 
+             Directive[Blue, Dashed]}}]], 
+        "Specifications" :> {{$CellContext`x$$, 3.1, 3.9, 
+           0.1}, {$CellContext`y$$, 3.1, 3.9, 0.1}}, "Options" :> {}, 
+        "DefaultOptions" :> {}],
+       ImageSizeCache->{403., {150., 156.}},
+       SingleEvaluation->True],
+      Deinitialization:>None,
+      DynamicModuleValues:>{},
+      SynchronousInitialization->True,
+      UnsavedVariables:>{Typeset`initDone$$},
+      UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+     Deployed->True,
+     StripOnInput->False],
+    Manipulate`InterpretManipulate[1]], ",", 
+   TagBox[
+    StyleBox[
+     DynamicModuleBox[{$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1, 
+      Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+      Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ =
+       1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+        Hold[$CellContext`x$$], 3.1, 3.9, 0.1}, {
+        Hold[$CellContext`y$$], 3.1, 3.9, 0.1}}, Typeset`size$$ = {
+      360., {95., 100.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+      Typeset`skipInitDone$$ = True, $CellContext`x$131391$$ = 
+      0, $CellContext`y$131392$$ = 0}, 
+      DynamicBox[Manipulate`ManipulateBoxes[
+       1, StandardForm, 
+        "Variables" :> {$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1}, 
+        "ControllerVariables" :> {
+          Hold[$CellContext`x$$, $CellContext`x$131391$$, 0], 
+          Hold[$CellContext`y$$, $CellContext`y$131392$$, 0]}, 
+        "OtherVariables" :> {
+         Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+          Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+          Typeset`specs$$, Typeset`size$$, Typeset`update$$, 
+          Typeset`initDone$$, Typeset`skipInitDone$$}, "Body" :> Show[
+          MapThread[DataRegion`DataRegionPlot[
+            
+            DataRegion`SliceData[#, {1, 
+             2}, {$CellContext`x$$, $CellContext`y$$}], Joined -> True, 
+            PlotStyle -> #2]& , {{$CellContext`erra$130635, 
+             16 $CellContext`errb$130635, 16^2 $CellContext`errc$130635}, {
+            Red, 
+             Directive[Black, Dotted], 
+             Directive[Blue, Dashed]}}]], 
+        "Specifications" :> {{$CellContext`x$$, 3.1, 3.9, 
+           0.1}, {$CellContext`y$$, 3.1, 3.9, 0.1}}, "Options" :> {}, 
+        "DefaultOptions" :> {}],
+       ImageSizeCache->{403., {151., 157.}},
+       SingleEvaluation->True],
+      Deinitialization:>None,
+      DynamicModuleValues:>{},
+      SynchronousInitialization->True,
+      UnsavedVariables:>{Typeset`initDone$$},
+      UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+     Deployed->True,
+     StripOnInput->False],
+    Manipulate`InterpretManipulate[1]], ",", 
+   TagBox[
+    StyleBox[
+     DynamicModuleBox[{$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1, 
+      Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+      Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ =
+       1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+        Hold[$CellContext`x$$], 3.1, 3.9, 0.1}, {
+        Hold[$CellContext`y$$], 3.1, 3.9, 0.1}}, Typeset`size$$ = {
+      360., {106., 110.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+      Typeset`skipInitDone$$ = True, $CellContext`x$131411$$ = 
+      0, $CellContext`y$131412$$ = 0}, 
+      DynamicBox[Manipulate`ManipulateBoxes[
+       1, StandardForm, 
+        "Variables" :> {$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1}, 
+        "ControllerVariables" :> {
+          Hold[$CellContext`x$$, $CellContext`x$131411$$, 0], 
+          Hold[$CellContext`y$$, $CellContext`y$131412$$, 0]}, 
+        "OtherVariables" :> {
+         Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+          Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+          Typeset`specs$$, Typeset`size$$, Typeset`update$$, 
+          Typeset`initDone$$, Typeset`skipInitDone$$}, "Body" :> Show[
+          MapThread[DataRegion`DataRegionPlot[
+            
+            DataRegion`SliceData[#, {1, 
+             2}, {$CellContext`x$$, $CellContext`y$$}], Joined -> True, 
+            PlotStyle -> #2]& , {{$CellContext`erra$130774, 
+             16 $CellContext`errb$130774, 16^2 $CellContext`errc$130774}, {
+            Red, 
+             Directive[Black, Dotted], 
+             Directive[Blue, Dashed]}}]], 
+        "Specifications" :> {{$CellContext`x$$, 3.1, 3.9, 
+           0.1}, {$CellContext`y$$, 3.1, 3.9, 0.1}}, "Options" :> {}, 
+        "DefaultOptions" :> {}],
+       ImageSizeCache->{403., {162., 168.}},
+       SingleEvaluation->True],
+      Deinitialization:>None,
+      DynamicModuleValues:>{},
+      SynchronousInitialization->True,
+      UnsavedVariables:>{Typeset`initDone$$},
+      UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+     Deployed->True,
+     StripOnInput->False],
+    Manipulate`InterpretManipulate[1]], ",", 
+   TagBox[
+    StyleBox[
+     DynamicModuleBox[{$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1, 
+      Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+      Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ =
+       1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+        Hold[$CellContext`x$$], 3.1, 3.9, 0.1}, {
+        Hold[$CellContext`y$$], 3.1, 3.9, 0.1}}, Typeset`size$$ = {
+      360., {96., 101.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+      Typeset`skipInitDone$$ = True, $CellContext`x$131431$$ = 
+      0, $CellContext`y$131432$$ = 0}, 
+      DynamicBox[Manipulate`ManipulateBoxes[
+       1, StandardForm, 
+        "Variables" :> {$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1}, 
+        "ControllerVariables" :> {
+          Hold[$CellContext`x$$, $CellContext`x$131431$$, 0], 
+          Hold[$CellContext`y$$, $CellContext`y$131432$$, 0]}, 
+        "OtherVariables" :> {
+         Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+          Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+          Typeset`specs$$, Typeset`size$$, Typeset`update$$, 
+          Typeset`initDone$$, Typeset`skipInitDone$$}, "Body" :> Show[
+          MapThread[DataRegion`DataRegionPlot[
+            
+            DataRegion`SliceData[#, {1, 
+             2}, {$CellContext`x$$, $CellContext`y$$}], Joined -> True, 
+            PlotStyle -> #2]& , {{$CellContext`erra$130913, 
+             16 $CellContext`errb$130913, 16^2 $CellContext`errc$130913}, {
+            Red, 
+             Directive[Black, Dotted], 
+             Directive[Blue, Dashed]}}]], 
+        "Specifications" :> {{$CellContext`x$$, 3.1, 3.9, 
+           0.1}, {$CellContext`y$$, 3.1, 3.9, 0.1}}, "Options" :> {}, 
+        "DefaultOptions" :> {}],
+       ImageSizeCache->{403., {152., 158.}},
+       SingleEvaluation->True],
+      Deinitialization:>None,
+      DynamicModuleValues:>{},
+      SynchronousInitialization->True,
+      UnsavedVariables:>{Typeset`initDone$$},
+      UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+     Deployed->True,
+     StripOnInput->False],
+    Manipulate`InterpretManipulate[1]], ",", 
+   TagBox[
+    StyleBox[
+     DynamicModuleBox[{$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1, 
+      Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+      Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ =
+       1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+        Hold[$CellContext`x$$], 3.1, 3.9, 0.1}, {
+        Hold[$CellContext`y$$], 3.1, 3.9, 0.1}}, Typeset`size$$ = {
+      360., {95., 99.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+      Typeset`skipInitDone$$ = True, $CellContext`x$131451$$ = 
+      0, $CellContext`y$131452$$ = 0}, 
+      DynamicBox[Manipulate`ManipulateBoxes[
+       1, StandardForm, 
+        "Variables" :> {$CellContext`x$$ = 3.1, $CellContext`y$$ = 3.1}, 
+        "ControllerVariables" :> {
+          Hold[$CellContext`x$$, $CellContext`x$131451$$, 0], 
+          Hold[$CellContext`y$$, $CellContext`y$131452$$, 0]}, 
+        "OtherVariables" :> {
+         Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+          Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+          Typeset`specs$$, Typeset`size$$, Typeset`update$$, 
+          Typeset`initDone$$, Typeset`skipInitDone$$}, "Body" :> Show[
+          MapThread[DataRegion`DataRegionPlot[
+            
+            DataRegion`SliceData[#, {1, 
+             2}, {$CellContext`x$$, $CellContext`y$$}], Joined -> True, 
+            PlotStyle -> #2]& , {{$CellContext`erra$131052, 
+             16 $CellContext`errb$131052, 16^2 $CellContext`errc$131052}, {
+            Red, 
+             Directive[Black, Dotted], 
+             Directive[Blue, Dashed]}}]], 
+        "Specifications" :> {{$CellContext`x$$, 3.1, 3.9, 
+           0.1}, {$CellContext`y$$, 3.1, 3.9, 0.1}}, "Options" :> {}, 
+        "DefaultOptions" :> {}],
+       ImageSizeCache->{403., {151., 157.}},
+       SingleEvaluation->True],
+      Deinitialization:>None,
+      DynamicModuleValues:>{},
+      SynchronousInitialization->True,
+      UnsavedVariables:>{Typeset`initDone$$},
+      UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+     Deployed->True,
+     StripOnInput->False],
+    Manipulate`InterpretManipulate[1]]}], "}"}]], "Output",
+ CellChangeTimes->{3.531168117859291*^9}]
+}, Open  ]]
+}, Closed]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Constraints", "Section",
+ CellChangeTimes->{{3.531156912401309*^9, 3.531156914926556*^9}, 
+   3.531157199177333*^9}],
+
+Cell["\<\
+Check Hamiltonian constraint converges to 0 at second order\
+\>", "Text",
+ CellChangeTimes->{{3.531157207865058*^9, 3.531157220830373*^9}, {
+  3.531159837812834*^9, 3.531159838359754*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"low", "=", 
+     RowBox[{"SliceData", "[", 
+      RowBox[{
+       RowBox[{"ReadGridFunction", "[", 
+        RowBox[{"\"\<ks_constraints_low\>\"", ",", "\"\<H.h5\>\"", ",", "0"}],
+         "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "2"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", "y"}], "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"high", "=", 
+     RowBox[{"SliceData", "[", 
+      RowBox[{
+       RowBox[{"ReadGridFunction", "[", 
+        RowBox[{
+        "\"\<ks_constraints_high\>\"", ",", "\"\<H.h5\>\"", ",", "0"}], "]"}],
+        ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "2"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", "y"}], "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"ListLinePlot", "[", 
+     RowBox[{"{", 
+      RowBox[{"low", ",", 
+       RowBox[{
+        SuperscriptBox["2", "2"], "high"}]}], "}"}], "]"}]}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "3.1", ",", "3.9", ",", "0.1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y", ",", "3.1", ",", "3.9", ",", "0.1"}], "}"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.5311570660890093`*^9, 3.531157140222055*^9}, {
+  3.531157178013579*^9, 3.531157185396863*^9}, {3.5311572250288773`*^9, 
+  3.531157232391789*^9}, {3.53115823086595*^9, 3.531158234503853*^9}, {
+  3.53115885988942*^9, 3.5311588618612843`*^9}, {3.531159766900539*^9, 
+  3.5311597724846163`*^9}, {3.5311598140441027`*^9, 3.531159821194521*^9}, {
+  3.531160148178564*^9, 3.5311601567946787`*^9}, {3.531161675343328*^9, 
+  3.531161718773031*^9}, {3.531161766157268*^9, 3.531161769732429*^9}, {
+  3.531161823909376*^9, 3.531161825672138*^9}, {3.531161956136239*^9, 
+  3.531161990008203*^9}, {3.531162193730103*^9, 3.531162195031426*^9}, {
+  3.531162229258862*^9, 3.531162230534749*^9}, {3.531162289590208*^9, 
+  3.531162291056078*^9}}]
+}, Closed]]
+}, Open  ]]
+},
+WindowSize->{1239, 756},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+ShowSelection->True,
+FrontEndVersion->"8.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (February 23, \
+2011)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 326, 6, 76, "Title"],
+Cell[908, 30, 116, 2, 27, "Input"],
+Cell[1027, 34, 196, 4, 27, "Input"],
+Cell[CellGroupData[{
+Cell[1248, 42, 105, 1, 67, "Section"],
+Cell[1356, 45, 458, 10, 43, "Input"],
+Cell[CellGroupData[{
+Cell[1839, 59, 142, 1, 34, "Subsection"],
+Cell[1984, 62, 641, 13, 43, "Input"],
+Cell[2628, 77, 2311, 56, 103, "Input"],
+Cell[4942, 135, 175, 3, 27, "Input"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[5154, 143, 221, 4, 26, "Subsection"],
+Cell[5378, 149, 205, 4, 26, "Text"],
+Cell[5586, 155, 359, 8, 27, "Input"],
+Cell[5948, 165, 2715, 65, 168, "Input"],
+Cell[CellGroupData[{
+Cell[8688, 234, 127, 2, 27, "Input"],
+Cell[8818, 238, 30194, 619, 2369, "Output"]
+}, Open  ]]
+}, Closed]]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[39073, 864, 122, 2, 37, "Section"],
+Cell[39198, 868, 198, 4, 26, "Text"],
+Cell[39399, 874, 1989, 46, 104, "Input"]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)

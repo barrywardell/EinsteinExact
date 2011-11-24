@@ -1,0 +1,343 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     11727,        334]
+NotebookOptionsPosition[     10704,        294]
+NotebookOutlinePosition[     11081,        311]
+CellTagsIndexPosition[     11038,        308]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\<\
+Correctness tests for ShiftedGaugeWave thorn\
+\>", "Title",
+ CellChangeTimes->{{3.530958848292109*^9, 3.5309589109386387`*^9}, {
+  3.531061120940783*^9, 3.531061133845853*^9}, {3.531061178551152*^9, 
+  3.531061191585826*^9}, {3.531156775438092*^9, 3.5311567937862997`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"<<", "nrmma`"}]], "Input",
+ CellChangeTimes->{{3.519903160621409*^9, 3.519903161730212*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAllMemos", "[", "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.531061421557942*^9, 3.531061424933073*^9}, {
+  3.531160578396344*^9, 3.5311605786926413`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Compare with Exact", "Section",
+ CellChangeTimes->{{3.5311568042993717`*^9, 3.531156807505908*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"runs", "=", 
+   RowBox[{"{", 
+    RowBox[{"\"\<sgw_a\>\"", ",", "\"\<sgw_b\>\"", ",", "\"\<sgw_c\>\""}], 
+    "}"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"einsteinexact", "=", "\"\<sgw_ee\>\""}], ";"}]}], "Input",
+ CellChangeTimes->{{3.519903164424334*^9, 3.519903184075289*^9}, 
+   3.531157314250596*^9, {3.5311601905500174`*^9, 3.531160196828238*^9}, 
+   3.5311676793030577`*^9}],
+
+Cell[CellGroupData[{
+
+Cell["Check non-finite differenced variables are identical", "Subsection",
+ CellChangeTimes->{{3.531061147899919*^9, 3.5310611596987753`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"vars", "=", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<alp.h5\>\"", ",", "\"\<dtalp.h5\>\"", ",", "\"\<betax.h5\>\"", ",", 
+     "\"\<betay.h5\>\"", ",", "\"\<betaz.h5\>\"", ",", "\"\<dtbetax.h5\>\"", 
+     ",", "\"\<dtbetay.h5\>\"", ",", "\"\<dtbetaz.h5\>\"", ",", 
+     "\"\<gxx.h5\>\"", ",", "\"\<gxy.h5\>\"", ",", "\"\<gxz.h5\>\"", ",", 
+     "\"\<gyy.h5\>\"", ",", "\"\<gyz.h5\>\"", ",", "\"\<gzz.h5\>\""}], 
+    "}"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5199034131047783`*^9, 3.519903416889655*^9}, {
+  3.531061279274747*^9, 3.5310613855207*^9}, {3.5310629525891457`*^9, 
+  3.531062986579565*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"compare", "[", "var_", "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"e", ",", "ee", ",", "eeu"}], "}"}], ",", "\[IndentingNewLine]", 
+    
+    RowBox[{
+     RowBox[{"e", "=", 
+      RowBox[{"ReadGridFunction", "[", 
+       RowBox[{
+        RowBox[{"runs", "[", 
+         RowBox[{"[", "1", "]"}], "]"}], ",", "var", ",", "0"}], "]"}]}], ";",
+      "\[IndentingNewLine]", 
+     RowBox[{"ee", "=", 
+      RowBox[{"ReadGridFunction", "[", 
+       RowBox[{"einsteinexact", ",", "var", ",", "0"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Manipulate", "[", 
+      RowBox[{
+       RowBox[{"Show", "[", 
+        RowBox[{"MapThread", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"DataRegionPlot", "[", 
+            RowBox[{
+             RowBox[{"SliceData", "[", 
+              RowBox[{"#1", ",", 
+               RowBox[{"{", 
+                RowBox[{"1", ",", "2"}], "}"}], ",", 
+               RowBox[{"{", 
+                RowBox[{"x", ",", "y"}], "}"}]}], "]"}], ",", 
+             RowBox[{"Joined", "\[Rule]", "True"}], ",", 
+             RowBox[{"PlotStyle", "\[Rule]", "#2"}]}], "]"}], "&"}], ",", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"e", ",", "ee"}], "}"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"Red", ",", 
+              RowBox[{"Directive", "[", 
+               RowBox[{"Black", ",", "Dotted"}], "]"}]}], "}"}]}], "}"}]}], 
+         "]"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", "0", ",", "0.9", ",", "0.1"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", "0", ",", "0.9", ",", "0.1"}], "}"}]}], "]"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.531061556743009*^9, 3.5310615910294456`*^9}, {
+   3.5311428789353437`*^9, 3.531142879875379*^9}, {3.53114629009309*^9, 
+   3.531146328629365*^9}, {3.531157358836376*^9, 3.531157381260005*^9}, 
+   3.531167485912817*^9, {3.531167682910501*^9, 3.531167690177828*^9}, 
+   3.5311681734708567`*^9}],
+
+Cell[BoxData[
+ RowBox[{"compare", "/@", "vars"}]], "Input",
+ CellChangeTimes->{{3.531061599439163*^9, 3.5310616055204782`*^9}, {
+  3.531157363574985*^9, 3.531157379596312*^9}}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Check that Exact converges with time spacing to EinsteinExact at the \
+appropriate order (4th)\
+\>", "Subsection",
+ CellChangeTimes->{{3.5310611674937067`*^9, 3.531061218713623*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"fdvars", " ", "=", " ", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<kxx.h5\>\"", ",", " ", "\"\<kxy.h5\>\"", ",", " ", "\"\<kxz.h5\>\"", 
+     ",", " ", "\"\<kyy.h5\>\"", ",", " ", "\"\<kyz.h5\>\"", ",", " ", 
+     "\"\<kzz.h5\>\""}], "}"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.5311568374712257`*^9, 3.531156837473555*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"comparefd", "[", "var_", "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "a", ",", "b", ",", "c", ",", "ee", ",", "erra", ",", "errb", ",", 
+      "errc"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"a", ",", " ", "b", ",", " ", "c"}], "}"}], " ", "=", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"ReadGridFunction", "[", 
+         RowBox[{"#", ",", " ", "var", ",", " ", "0"}], "]"}], " ", "&"}], 
+       " ", "/@", " ", "runs"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"ee", " ", "=", " ", 
+      RowBox[{"ReadGridFunction", "[", 
+       RowBox[{"einsteinexact", ",", " ", "var", ",", " ", "0"}], "]"}]}], 
+     ";", "\[IndentingNewLine]", 
+     RowBox[{"erra", " ", "=", " ", 
+      RowBox[{"a", " ", "-", " ", "ee"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"errb", " ", "=", " ", 
+      RowBox[{"b", " ", "-", " ", "ee"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"errc", " ", "=", " ", 
+      RowBox[{"c", " ", "-", " ", "ee"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Manipulate", "[", 
+      RowBox[{
+       RowBox[{"Show", "[", 
+        RowBox[{
+         RowBox[{"MapThread", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"DataRegionPlot", "[", 
+             RowBox[{
+              RowBox[{"SliceData", "[", 
+               RowBox[{"#1", ",", 
+                RowBox[{"{", 
+                 RowBox[{"1", ",", "2"}], "}"}], ",", 
+                RowBox[{"{", 
+                 RowBox[{"x", ",", "y"}], "}"}]}], "]"}], ",", 
+              RowBox[{"Joined", "\[Rule]", "True"}], ",", 
+              RowBox[{"PlotStyle", "\[Rule]", "#2"}]}], "]"}], "&"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"erra", ",", 
+               RowBox[{"16", "errb"}], ",", 
+               RowBox[{
+                SuperscriptBox["16", "2"], "errc"}]}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"Red", ",", 
+               RowBox[{"Directive", "[", 
+                RowBox[{"Black", ",", "Dotted"}], "]"}], ",", 
+               RowBox[{"Directive", "[", 
+                RowBox[{"Blue", ",", "Dotted"}], "]"}]}], "}"}]}], "}"}]}], 
+          "]"}], ",", 
+         RowBox[{"PlotRange", "\[Rule]", 
+          RowBox[{"3", " ", 
+           SuperscriptBox["10", 
+            RowBox[{"-", "6"}]], 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"-", "1"}], ",", "1"}], "}"}]}]}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", "0", ",", "0.9", ",", "0.1"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"y", ",", "0", ",", "0.9", ",", "0.1"}], "}"}]}], "]"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.5311574448027163`*^9, 3.531157489704266*^9}, {
+  3.53115754915976*^9, 3.531157619241531*^9}, {3.531167723893016*^9, 
+  3.531167734756468*^9}, {3.531168191889633*^9, 3.531168197771633*^9}}],
+
+Cell[BoxData[
+ RowBox[{"comparefd", "/@", "vars"}]], "Input",
+ CellChangeTimes->{{3.531157491322133*^9, 3.531157501040324*^9}}]
+}, Closed]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Constraints", "Section",
+ CellChangeTimes->{{3.531156912401309*^9, 3.531156914926556*^9}, 
+   3.531157199177333*^9}],
+
+Cell["\<\
+Check Hamiltonian constraint converges to 0 at second order\
+\>", "Text",
+ CellChangeTimes->{{3.531157207865058*^9, 3.531157220830373*^9}, {
+  3.531159837812834*^9, 3.531159838359754*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"low", "=", 
+     RowBox[{"SliceData", "[", 
+      RowBox[{
+       RowBox[{"ReadGridFunction", "[", 
+        RowBox[{
+        "\"\<sgw_constraints_low\>\"", ",", "\"\<H.h5\>\"", ",", "0", ",", 
+         RowBox[{"StripGhostZones", "\[Rule]", "False"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "2"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", "y"}], "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"high", "=", 
+     RowBox[{"SliceData", "[", 
+      RowBox[{
+       RowBox[{"ReadGridFunction", "[", 
+        RowBox[{
+        "\"\<sgw_constraints_high\>\"", ",", "\"\<H.h5\>\"", ",", "0", ",", 
+         RowBox[{"StripGhostZones", "\[Rule]", "False"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "2"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", "y"}], "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"ListLinePlot", "[", 
+     RowBox[{"{", 
+      RowBox[{"low", ",", 
+       RowBox[{
+        SuperscriptBox["2", "2"], "high"}]}], "}"}], "]"}]}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "0.1", ",", "0.8", ",", "0.1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"y", ",", "0.1", ",", "0.8", ",", "0.1"}], "}"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.5311570660890093`*^9, 3.531157140222055*^9}, {
+  3.531157178013579*^9, 3.531157185396863*^9}, {3.5311572250288773`*^9, 
+  3.531157232391789*^9}, {3.53115823086595*^9, 3.531158234503853*^9}, {
+  3.53115885988942*^9, 3.5311588618612843`*^9}, {3.531159766900539*^9, 
+  3.5311597724846163`*^9}, {3.5311598140441027`*^9, 3.531159821194521*^9}, {
+  3.531160148178564*^9, 3.5311601567946787`*^9}}]
+}, Closed]]
+}, Open  ]]
+},
+WindowSize->{1239, 756},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+ShowSelection->True,
+FrontEndVersion->"8.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (February 23, \
+2011)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 283, 5, 76, "Title"],
+Cell[865, 29, 116, 2, 27, "Input"],
+Cell[984, 33, 196, 4, 27, "Input"],
+Cell[CellGroupData[{
+Cell[1205, 41, 105, 1, 67, "Section"],
+Cell[1313, 44, 416, 10, 43, "Input"],
+Cell[CellGroupData[{
+Cell[1754, 58, 142, 1, 34, "Subsection"],
+Cell[1899, 61, 641, 13, 43, "Input"],
+Cell[2543, 76, 2082, 53, 103, "Input"],
+Cell[4628, 131, 176, 3, 27, "Input"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[4841, 139, 192, 4, 26, "Subsection"],
+Cell[5036, 145, 359, 8, 27, "Input"],
+Cell[5398, 155, 2999, 73, 168, "Input"],
+Cell[8400, 230, 127, 2, 27, "Input"]
+}, Closed]]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[8576, 238, 122, 2, 37, "Section"],
+Cell[8701, 242, 198, 4, 26, "Text"],
+Cell[8902, 248, 1774, 42, 104, "Input"]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
