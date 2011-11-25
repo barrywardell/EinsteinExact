@@ -18,6 +18,8 @@
 *)
 
 Get["KrancThorn`"];
+
+PrependTo[$Path, "."];
 Needs["Metrics`"];
 
 SetEnhancedTimes[False];

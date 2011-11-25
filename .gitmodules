@@ -4,3 +4,6 @@
 	upstreamurl = ../EinsteinExact
 	upstreamtype = git
 	revision = master_thorns
+[submodule "Metrics"]
+	path = Metrics
+	url = git://github.com/barrywardell/Metrics
