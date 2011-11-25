@@ -32,7 +32,7 @@ SetEnhancedTimes[False];
 (* Register all the tensors that will be used with TensorTools *)
 Map[DefineTensor, 
 {
-  beta, dtbeta, g, k, shiftadd, Jac, InvJac, xx, XX, betap, dtbetap, G, K
+  beta, dtbeta, g, k, position, shiftadd, Jac, InvJac, xx, XX, betap, dtbetap, G, K
 }];
 
 Map[AssertSymmetricDecreasing, 
@@ -62,7 +62,7 @@ admGroups =
 
 shorthands = 
 {
-  shiftadd[ui], Jac[ui,lj], InvJac[ui,lj], xx[ui], XX[ui], X, Y, Z, betap[ui], dtbetap[ui], G[li,lj], K[li,lk]
+  position[ui], shiftadd[ui], Jac[ui,lj], InvJac[ui,lj], xx[ui], XX[ui], T, X, Y, Z, betap[ui], dtbetap[ui], G[li,lj], K[li,lk]
 };
 
 (**************************************************************************************)
@@ -71,12 +71,19 @@ shorthands =
 
 realParameters =
 {
-  {Name -> theta, Default -> 0},
-  {Name -> phi, Default -> 0},
-  {Name -> psi, Default -> 0},
+  (* Position at which the origin of the spacetime should be located *)
+  {Name -> positiont, Default -> 0},
+  {Name -> positionx, Default -> 0},
+  {Name -> positiony, Default -> 0},
+  {Name -> positionz, Default -> 0},
+  (* Shift that should be added to the metric *)
   {Name -> shiftaddx, Default -> 0},
   {Name -> shiftaddy, Default -> 0},
-  {Name -> shiftaddz, Default -> 0}
+  {Name -> shiftaddz, Default -> 0},
+  (* Angles by which the spacetime should be rotated *)
+  {Name -> theta, Default -> 0},
+  {Name -> phi, Default -> 0},
+  {Name -> psi, Default -> 0}
 };
 
 k11=kxx; k21=kxy; k22=kyy; k31=kxz; k32=kyz; k33=kzz;
@@ -127,10 +134,10 @@ idThorn[spacetime_, thorn_] :=
   Print["Generating thorn ", thorn, " for ", spacetime, " spacetime."];
 
   (* Load the spacetime: coordinates, metric, inverse metric *)
-  coordRule = {x -> X, y -> Y, z -> Z, None -> {}};
+  coordRule = {t -> T, x -> X, y -> Y, z -> Z, None -> {}};
 
   coords = MetricProperty[spacetime, "Coordinates"] /. coordRule;
-  If[coords =!= {t, X, Y, Z},
+  If[coords =!= {T, X, Y, Z},
     Throw["Error, only metrics in Cartesian coordinates are supported"];
   ];
   spatialCoords = coords[[2;;]];
@@ -163,13 +170,13 @@ idThorn[spacetime_, thorn_] :=
   shift = Simplify[lapse^2 invFourMetric[[1, 2 ;; 4]], simpopts];
   threeMetric = fourMetric[[2 ;; 4, 2 ;; 4]];
   extrinsicCurvature = -1/(2 alp) Simplify[Table[
-     (D[threeMetric[[i, j]], t] -
+     (D[threeMetric[[i, j]], T] -
        Sum[D[threeMetric[[i, j]], spatialCoords[[k]]] shift[[k]], {k, 3}] -
        Sum[threeMetric[[i, k]] D[shift[[k]], spatialCoords[[j]]], {k, 3}] -
        Sum[threeMetric[[k, j]] D[shift[[k]], spatialCoords[[i]]], {k, 3}]) /. dShorthands,
     {j, 3}, {i, 3}], simpopts];
-  dtlapse = Simplify[D[lapse, t] /. dShorthands, simpopts];
-  dtshift = Simplify[D[shift, t] /. dShorthands, simpopts];
+  dtlapse = Simplify[D[lapse, T] /. dShorthands, simpopts];
+  dtshift = Simplify[D[shift, T] /. dShorthands, simpopts];
 
   (* Create Kranc-friencly names for shorthands and corresponding transformation functions *)
   krancShortVars = (# -> makeKrancFriendly[#]) & /@ shorthandVars;
@@ -215,6 +222,11 @@ idThorn[spacetime_, thorn_] :=
       xx[2] -> y,
       xx[3] -> z,
 
+      (* Position of origin *)
+      position[1] -> positionx,
+      position[2] -> positiony,
+      position[3] -> positionz,
+
       (* Additional shift vector *)
       shiftadd[1] -> shiftaddx,
       shiftadd[2] -> shiftaddy,
@@ -224,8 +236,9 @@ idThorn[spacetime_, thorn_] :=
       Table[Jac[i,j] -> Rot[[i,j]], {i,1,3}, {j,1,3}],
       Table[InvJac[i,j] -> Jac[j,i], {i,1,3}, {j,1,3}],
 
-      (* We compute the everything in the rotated coordinates *)
-      XX[ui] -> Jac[ui,lj] (xx[uj] - shiftadd[uj] t),
+      (* We compute everything in the rotated *)
+      T -> t - positiont,
+      XX[ui] -> Jac[ui,lj] (xx[uj] - position[uj] - shiftadd[uj] T),
       X -> XX[1],
       Y -> XX[2],
       Z -> XX[3],
