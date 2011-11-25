@@ -21,6 +21,12 @@ The EinsteinExact thorns are designed to work with Cactus as part of the
 EinsteinToolkit. All requirements are therefore already included with the
 EinsteinToolkit.
 
+The script which generates the thorns requires the Kranc and Metrics
+Mathematica packages to be installed. Kranc is included with the Einstein
+Toolkit and the Metrics package may bet obtained using
+
+git clone --recursive git://github.com/barrywardell/Metrics
+
 Installation
 ------------
 The generated code for the thorns is provided in the master_thorns branch.
