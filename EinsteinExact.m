@@ -32,7 +32,7 @@ SetEnhancedTimes[False];
 (* Register all the tensors that will be used with TensorTools *)
 Map[DefineTensor, 
 {
-  beta, dtbeta, g, k, Jac, InvJac, xx, XX, betap, dtbetap, G, K
+  beta, dtbeta, g, k, shiftadd, Jac, InvJac, xx, XX, betap, dtbetap, G, K
 }];
 
 Map[AssertSymmetricDecreasing, 
@@ -62,7 +62,7 @@ admGroups =
 
 shorthands = 
 {
-  Jac[ui,lj], InvJac[ui,lj], xx[ui], XX[ui], X, Y, Z, betap[ui], dtbetap[ui], G[li,lj], K[li,lk]
+  shiftadd[ui], Jac[ui,lj], InvJac[ui,lj], xx[ui], XX[ui], X, Y, Z, betap[ui], dtbetap[ui], G[li,lj], K[li,lk]
 };
 
 (**************************************************************************************)
@@ -73,7 +73,10 @@ realParameters =
 {
   {Name -> theta, Default -> 0},
   {Name -> phi, Default -> 0},
-  {Name -> psi, Default -> 0}
+  {Name -> psi, Default -> 0},
+  {Name -> shiftaddx, Default -> 0},
+  {Name -> shiftaddy, Default -> 0},
+  {Name -> shiftaddz, Default -> 0}
 };
 
 k11=kxx; k21=kxy; k22=kyy; k31=kxz; k32=kyz; k33=kzz;
@@ -212,12 +215,17 @@ idThorn[spacetime_, thorn_] :=
       xx[2] -> y,
       xx[3] -> z,
 
+      (* Additional shift vector *)
+      shiftadd[1] -> shiftaddx,
+      shiftadd[2] -> shiftaddy,
+      shiftadd[3] -> shiftaddz,
+
       (* The inverse of the rotation matrix is just its transpose *)
       Table[Jac[i,j] -> Rot[[i,j]], {i,1,3}, {j,1,3}],
       Table[InvJac[i,j] -> Jac[j,i], {i,1,3}, {j,1,3}],
 
       (* We compute the everything in the rotated coordinates *)
-      XX[ui] -> Jac[ui,lj] xx[uj],
+      XX[ui] -> Jac[ui,lj] (xx[uj] - shiftadd[uj] t),
       X -> XX[1],
       Y -> XX[2],
       Z -> XX[3],
@@ -239,7 +247,7 @@ idThorn[spacetime_, thorn_] :=
       (* Rotate back to Cactus components *)
       g[li,lj] -> Jac[um,li] Jac[un,lj] G[lm,ln],
       k[li,lj] -> Jac[um,li] Jac[un,lj] K[lm,ln],
-      beta[ui] -> InvJac[ui,lj] betap[uj],
+      beta[ui] -> InvJac[ui,lj] betap[uj] + shiftadd[ui],
       dtbeta[ui] -> InvJac[ui,lj] dtbetap[uj]
     }
   };
