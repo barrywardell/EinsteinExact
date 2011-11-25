@@ -1,0 +1,62 @@
+===============================================================================
+ EinsteinExact
+===============================================================================
+ Copyright 2011 Barry Wardell and Ian Hinder
+
+EinsteinExact is an arrangement of Cactus thorns which provide exact solutions
+of Einstein's equations.
+===============================================================================
+
+
+Getting the arrangement
+-----------------------
+The latest version of EinsteinExactwill always be available from the project
+git repository:
+
+git clone --recursive git://github.com/barrywardell/EinsteinExact
+
+Requirements
+------------
+The EinsteinExact thorns are designed to work with Cactus as part of the
+EinsteinToolkit. All requirements are therefore already included with the
+EinsteinToolkit.
+
+Installation
+------------
+The generated code for the thorns is provided in the master_thorns branch.
+Check this branch out into your Cactus arrangements directory.
+
+To regenerate the code, checkout the master branch and run 'make' from
+within the checkout.
+
+Changelog
+---------
+ 25 Nov  2011: Initial release
+
+License
+-------
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Authors
+-------
+
+Barry Wardell
+Ian Hinder
+
+Max Planck Institute for Gravitational Physics / Albert Einstein Institute
+Am Muehlenberg 1
+14476 Potsdam
+Germany
+
+http://numrel.aei.mpg.de
