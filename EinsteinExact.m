@@ -165,8 +165,8 @@ idThorn[spacetime_] :=
        Sum[threeMetric[[i, k]] D[shift[[k]], spatialCoords[[j]]], {k, 3}] -
        Sum[threeMetric[[k, j]] D[shift[[k]], spatialCoords[[i]]], {k, 3}]) /. dShorthands,
     {j, 3}, {i, 3}], simpopts];
-  dtlapse = Simplify[D[lapse, t], simpopts];
-  dtshift = Simplify[D[shift, t], simpopts];
+  dtlapse = Simplify[D[lapse, t] /. dShorthands, simpopts];
+  dtshift = Simplify[D[shift, t] /. dShorthands, simpopts];
 
   (* Create Kranc-friencly names for shorthands and corresponding transformation functions *)
   krancShortVars = (# -> makeKrancFriendly[#]) & /@ shorthandVars;
@@ -175,6 +175,8 @@ idThorn[spacetime_] :=
   (* Replace any shorthands with Kranc-friendly versions *)
   lapse = lapse /. krancShortVars;
   shift = shift /. krancShortVars;
+  dtlapse = dtlapse /. krancShortVars;
+  dtshift = dtshift /. krancShortVars;
   threeMetric = threeMetric /. krancShortVars;
   extrinsicCurvature = extrinsicCurvature /. krancShortVars;
   shorthandEquations = shorthandEquations /. krancShortVars;
