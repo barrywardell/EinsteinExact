@@ -255,7 +255,7 @@ idThorn[spacetime_] :=
     InheritedImplementations -> {"admbase"}];
 ];
 
-spacetimes = {"GaugeWave", "KerrSchild", "Minkowski", "ShiftedGaugeWave"};
+spacetimes = {"GaugeWave", "KerrSchild", "Minkowski", "ShiftedGaugeWave", "Vaidya"};
 
 idThorn /@ spacetimes;
 
