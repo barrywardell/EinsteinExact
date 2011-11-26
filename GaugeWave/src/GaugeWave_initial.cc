@@ -144,9 +144,9 @@ static void GaugeWave_initial_Body(cGH const * restrict const cctkGH, int const 
         alpL = INV(sqrt(INV(1 - Sin(2*Pi*(X - 
           cctk_time)*pow(ToReal(period),-1))*ToReal(amp))));
         
-        CCTK_REAL dtalpL = Pi*Cos(2*Pi*(-X + 
-          cctk_time)*INV(ToReal(period)))*INV(ToReal(period))*sqrt(INV(1 + Sin(2*Pi*(-X 
-          + cctk_time)*pow(ToReal(period),-1))*ToReal(amp)))*ToReal(amp);
+        CCTK_REAL dtalpL = Pi*Cos(2*Pi*(X - 
+          cctk_time)*INV(ToReal(period)))*INV(ToReal(period))*sqrt(INV(1 - Sin(2*Pi*(X 
+          - cctk_time)*pow(ToReal(period),-1))*ToReal(amp)))*ToReal(amp);
         
         CCTK_REAL G11 = 1 - Sin(2*Pi*(X - 
           cctk_time)*INV(ToReal(period)))*ToReal(amp);
@@ -161,7 +161,7 @@ static void GaugeWave_initial_Body(cGH const * restrict const cctkGH, int const 
         
         CCTK_REAL G33 = 1;
         
-        CCTK_REAL K11 = -(Pi*Cos(2*Pi*(-X + 
+        CCTK_REAL K11 = -(Pi*Cos(2*Pi*(X - 
           cctk_time)*INV(ToReal(period)))*INV(alpL)*INV(ToReal(period))*ToReal(amp));
         
         CCTK_REAL K21 = 0;

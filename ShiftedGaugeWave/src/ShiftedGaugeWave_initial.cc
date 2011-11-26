@@ -144,7 +144,7 @@ static void ShiftedGaugeWave_initial_Body(cGH const * restrict const cctkGH, int
         alpL = INV(sqrt(1 + Sin(2*Pi*(X - 
           cctk_time)*INV(ToReal(period)))*ToReal(amp)));
         
-        CCTK_REAL dtalpL = Pi*Cos(2*Pi*(-X + 
+        CCTK_REAL dtalpL = Pi*Cos(2*Pi*(X - 
           cctk_time)*INV(ToReal(period)))*INV(ToReal(period))*pow(1 + Sin(2*Pi*(X - 
           cctk_time)*INV(ToReal(period)))*ToReal(amp),-1.5)*ToReal(amp);
         
@@ -161,7 +161,7 @@ static void ShiftedGaugeWave_initial_Body(cGH const * restrict const cctkGH, int
         
         CCTK_REAL G33 = 1;
         
-        CCTK_REAL K11 = -(Pi*Cos(2*Pi*(-X + 
+        CCTK_REAL K11 = -(Pi*Cos(2*Pi*(X - 
           cctk_time)*INV(ToReal(period)))*INV(alpL)*INV(ToReal(period) + Sin(2*Pi*(X - 
           cctk_time)*pow(ToReal(period),-1))*ToReal(amp)*ToReal(period))*ToReal(amp));
         
@@ -183,7 +183,7 @@ static void ShiftedGaugeWave_initial_Body(cGH const * restrict const cctkGH, int
         
         CCTK_REAL betap3 = 0;
         
-        CCTK_REAL dtbetap1 = 2*Pi*Cos(2*Pi*(-X + 
+        CCTK_REAL dtbetap1 = 2*Pi*Cos(2*Pi*(X - 
           cctk_time)*INV(ToReal(period)))*INV(SQR(1 + Sin(2*Pi*(X - 
           cctk_time)*INV(ToReal(period)))*ToReal(amp)))*INV(ToReal(period))*ToReal(amp);
         
