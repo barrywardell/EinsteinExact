@@ -144,11 +144,8 @@ idThorn[spacetime_] :=
   tf = {Automatic, Sequence@@(Function[{expr}, expr /. #] & /@
     Flatten[({simplifyhints, shorthandEquations, Reverse /@ shorthandEquations})])};
 
-  (* Don't overcount the complexity of shorthand variables. They should really only be 1 leaf. *)
-  cf = Function[{e}, LeafCount[e] + Apply[Plus, Map[Count[e, Blank[Head[#]], {0, Infinity}] (1 - LeafCount[#])&, shorthandVars]]];
-
-  (* We pass both transformation and complexity functions to Simplify *)
-  simpopts = Sequence[TransformationFunctions -> tf, ComplexityFunction -> cf];
+  (* We pass the transformation functions to Simplify *)
+  simpopts = TransformationFunctions -> tf;
 
   (* Get simplified expressions for the derivatives of the shorthands *)
   dShorthands = Simplify[Flatten[D[shorthandEquations, #] & /@ coords], simpopts] /. (0->0) -> Sequence[];
