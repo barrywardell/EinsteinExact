@@ -151,148 +151,88 @@ static void Vaidya_initial_Body(cGH const * restrict const cctkGH, int const dir
         
         CCTK_REAL rXYZ = sqrt(SQR(X) + SQR(Y) + SQR(Z));
         
-        alpL = INV(sqrt(INV(rXYZ)*(rXYZ + 2*(1 + SQR(Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))))*ToReal(M))));
+        CCTK_REAL mtXYZ = (1 + SQR(Tanh(INV(ToReal(M))*(cctk_time + sqrt(pow(X,2) + 
+          pow(Y,2) + pow(Z,2)))*ToReal(dM))))*ToReal(M);
         
-        CCTK_REAL dtalpL = -2*INV(rL(X,Y,Z))*pow(INV(rL(X,Y,Z))*(rL(X,Y,Z) + 
-          2*(1 + SQR(Tanh(INV(ToReal(M))*(cctk_time + 
-          rL(X,Y,Z))*ToReal(dM))))*ToReal(M)),-1.5)*SQR(Sech(INV(ToReal(M))*(cctk_time 
-          + rL(X,Y,Z))*ToReal(dM)))*Tanh(INV(ToReal(M))*(cctk_time + 
-          rL(X,Y,Z))*ToReal(dM))*ToReal(dM);
+        alpL = INV(sqrt(pow(rXYZ,-3)*(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + SQR(Y) + 
+          SQR(Z)))));
         
-        CCTK_REAL G11 = pow(SQR(X) + SQR(Y) + SQR(Z),-1.5)*(pow(SQR(X) + 
-          SQR(Y) + SQR(Z),1.5) + 2*SQR(X)*(ToReal(M) + SQR(Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*ToReal(M)));
+        CCTK_REAL dtalpL = -2*pow(rXYZ,-3)*pow((CUB(rXYZ) + 2*mtXYZ*(SQR(X) + 
+          SQR(Y) + SQR(Z)))/Power(rXYZ,3),-1.5)*(SQR(X) + SQR(Y) + 
+          SQR(Z))*SQR(Sech((rXYZ + cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM);
         
-        CCTK_REAL G21 = 2*X*Y*pow(SQR(X) + SQR(Y) + SQR(Z),-1.5)*(1 + 
-          SQR(Tanh((rXYZ + cctk_time)*INV(ToReal(M))*ToReal(dM))))*ToReal(M);
+        CCTK_REAL G11 = 1 + 2*mtXYZ*pow(rXYZ,-3)*SQR(X);
         
-        CCTK_REAL G31 = 2*X*Z*pow(SQR(X) + SQR(Y) + SQR(Z),-1.5)*(1 + 
-          SQR(Tanh((rXYZ + cctk_time)*INV(ToReal(M))*ToReal(dM))))*ToReal(M);
+        CCTK_REAL G21 = 2*mtXYZ*X*Y*pow(rXYZ,-3);
         
-        CCTK_REAL G22 = pow(SQR(X) + SQR(Y) + SQR(Z),-1.5)*(pow(SQR(X) + 
-          SQR(Y) + SQR(Z),1.5) + 2*SQR(Y)*(ToReal(M) + SQR(Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*ToReal(M)));
+        CCTK_REAL G31 = 2*mtXYZ*X*Z*pow(rXYZ,-3);
         
-        CCTK_REAL G32 = 2*Y*Z*pow(SQR(X) + SQR(Y) + SQR(Z),-1.5)*(1 + 
-          SQR(Tanh((rXYZ + cctk_time)*INV(ToReal(M))*ToReal(dM))))*ToReal(M);
+        CCTK_REAL G22 = 1 + 2*mtXYZ*pow(rXYZ,-3)*SQR(Y);
         
-        CCTK_REAL G33 = pow(SQR(X) + SQR(Y) + SQR(Z),-1.5)*(pow(SQR(X) + 
-          SQR(Y) + SQR(Z),1.5) + 2*SQR(Z)*(ToReal(M) + SQR(Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*ToReal(M)));
+        CCTK_REAL G32 = 2*mtXYZ*Y*Z*pow(rXYZ,-3);
         
-        CCTK_REAL K11 = -0.5*INV(alpL)*INV(SQR(rXYZ + 2*(1 + SQR(Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))))*ToReal(M)))*pow(Sech((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)),6)*pow(SQR(X) + SQR(Y) + 
-          SQR(Z),-3)*(SQR(X)*(-4*(SQR(X) + SQR(Y) + SQR(Z))*SQR(Cosh(2*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*SQR(ToReal(M)) - 
-          SQR(rXYZ)*(-3*(SQR(ToReal(M)) + Cosh(4*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*SQR(ToReal(M))) + Sinh(2*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(dM))) + Cosh(2*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*SQR(Cosh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*(-3*CUB(rXYZ)*(SQR(X) + SQR(Y) + 
-          SQR(Z)) + rXYZ*(5*QAD(X) + 6*SQR(X)*(SQR(Y) + SQR(Z)) + SQR(pow(Y,2) + 
-          pow(Z,2))))*ToReal(M))*(rXYZ + Cosh(2*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*(rXYZ + 4*ToReal(M)));
+        CCTK_REAL G33 = 1 + 2*mtXYZ*pow(rXYZ,-3)*SQR(Z);
         
-        CCTK_REAL K21 = X*Y*INV(alpL)*INV(rXYZ + 2*(1 + SQR(Tanh((rXYZ + 
-          cctk_time)*pow(ToReal(M),-1)*ToReal(dM))))*ToReal(M))*pow(SQR(X) + SQR(Y) + 
-          SQR(Z),-3)*QAD(Sech((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*(SQR(rXYZ)*(-3*(SQR(ToReal(M)) + 
-          Cosh(4*(rXYZ + cctk_time)*INV(ToReal(M))*ToReal(dM))*SQR(ToReal(M))) + 
-          Sinh(2*(rXYZ + cctk_time)*INV(ToReal(M))*ToReal(dM))*(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(dM)) + (SQR(X) + SQR(Y) + SQR(Z))*(4*SQR(Cosh(2*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*SQR(ToReal(M)) - 4*rXYZ*Cosh(2*(rXYZ 
-          + cctk_time)*INV(ToReal(M))*ToReal(dM))*SQR(Cosh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*ToReal(M)));
+        CCTK_REAL K11 = -2*INV(alpL)*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + SQR(Y) 
+          + SQR(Z)))*pow(rXYZ,-4)*(mtXYZ*(-pow(rXYZ,5) + SQR(X)*(2*CUB(rXYZ) + 
+          mtXYZ*(SQR(X) + SQR(Y) + SQR(Z)))) - QAD(rXYZ)*SQR(X)*SQR(Sech((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
         
-        CCTK_REAL K31 = X*Z*INV(alpL)*INV(rXYZ + 2*(1 + SQR(Tanh((rXYZ + 
-          cctk_time)*pow(ToReal(M),-1)*ToReal(dM))))*ToReal(M))*pow(SQR(X) + SQR(Y) + 
-          SQR(Z),-3)*QAD(Sech((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*(SQR(rXYZ)*(-3*(SQR(ToReal(M)) + 
-          Cosh(4*(rXYZ + cctk_time)*INV(ToReal(M))*ToReal(dM))*SQR(ToReal(M))) + 
-          Sinh(2*(rXYZ + cctk_time)*INV(ToReal(M))*ToReal(dM))*(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(dM)) + (SQR(X) + SQR(Y) + SQR(Z))*(4*SQR(Cosh(2*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*SQR(ToReal(M)) - 4*rXYZ*Cosh(2*(rXYZ 
-          + cctk_time)*INV(ToReal(M))*ToReal(dM))*SQR(Cosh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*ToReal(M)));
+        CCTK_REAL K21 = -2*X*Y*INV(alpL)*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + 
+          SQR(Y) + SQR(Z)))*pow(rXYZ,-4)*(mtXYZ*(2*CUB(rXYZ) + mtXYZ*(SQR(X) + 
+          SQR(Y) + SQR(Z))) - QAD(rXYZ)*SQR(Sech((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
         
-        CCTK_REAL K22 = INV(alpL)*INV(SQR(rXYZ + 2*(ToReal(M) + SQR(Tanh((rXYZ 
-          + cctk_time)*INV(ToReal(M))*ToReal(dM)))*ToReal(M))))*pow(Sech((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)),6)*pow(SQR(X) + SQR(Y) + 
-          SQR(Z),-3)*(rXYZ*SQR(Cosh((rXYZ + cctk_time)*INV(ToReal(M))*ToReal(dM))) + 
-          2*Cosh(2*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(M))*(SQR(Y)*(4*(SQR(X) + SQR(Y) 
-          + SQR(Z))*SQR(Cosh(2*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*SQR(ToReal(M)) + 
-          SQR(rXYZ)*(-3*(SQR(ToReal(M)) + Cosh(4*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*SQR(ToReal(M))) + Sinh(2*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(dM))) + rXYZ*Cosh(2*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*(3*SQR(rXYZ) - SQR(X) - 5*SQR(Y) - 
-          SQR(Z))*(SQR(X) + SQR(Y) + SQR(Z))*SQR(Cosh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*ToReal(M));
+        CCTK_REAL K31 = -2*X*Z*INV(alpL)*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + 
+          SQR(Y) + SQR(Z)))*pow(rXYZ,-4)*(mtXYZ*(2*CUB(rXYZ) + mtXYZ*(SQR(X) + 
+          SQR(Y) + SQR(Z))) - QAD(rXYZ)*SQR(Sech((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
         
-        CCTK_REAL K32 = Y*Z*INV(alpL)*INV(rXYZ + 2*(1 + SQR(Tanh((rXYZ + 
-          cctk_time)*pow(ToReal(M),-1)*ToReal(dM))))*ToReal(M))*pow(SQR(X) + SQR(Y) + 
-          SQR(Z),-3)*QAD(Sech((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*(SQR(rXYZ)*(-3*(SQR(ToReal(M)) + 
-          Cosh(4*(rXYZ + cctk_time)*INV(ToReal(M))*ToReal(dM))*SQR(ToReal(M))) + 
-          Sinh(2*(rXYZ + cctk_time)*INV(ToReal(M))*ToReal(dM))*(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(dM)) + (SQR(X) + SQR(Y) + SQR(Z))*(4*SQR(Cosh(2*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*SQR(ToReal(M)) - 4*rXYZ*Cosh(2*(rXYZ 
-          + cctk_time)*INV(ToReal(M))*ToReal(dM))*SQR(Cosh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*ToReal(M)));
+        CCTK_REAL K22 = -2*INV(alpL)*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + SQR(Y) 
+          + SQR(Z)))*pow(rXYZ,-4)*(mtXYZ*(-pow(rXYZ,5) + SQR(Y)*(2*CUB(rXYZ) + 
+          mtXYZ*(SQR(X) + SQR(Y) + SQR(Z)))) - QAD(rXYZ)*SQR(Y)*SQR(Sech((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
         
-        CCTK_REAL K33 = INV(alpL)*INV(SQR(rXYZ + 2*(ToReal(M) + SQR(Tanh((rXYZ 
-          + cctk_time)*INV(ToReal(M))*ToReal(dM)))*ToReal(M))))*pow(Sech((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)),6)*pow(SQR(X) + SQR(Y) + 
-          SQR(Z),-3)*(rXYZ*SQR(Cosh((rXYZ + cctk_time)*INV(ToReal(M))*ToReal(dM))) + 
-          2*Cosh(2*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(M))*(SQR(Z)*(4*(SQR(X) + SQR(Y) 
-          + SQR(Z))*SQR(Cosh(2*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*SQR(ToReal(M)) + 
-          SQR(rXYZ)*(-3*(SQR(ToReal(M)) + Cosh(4*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*SQR(ToReal(M))) + Sinh(2*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*(SQR(X) + SQR(Y) + 
-          SQR(Z))*ToReal(dM))) + rXYZ*Cosh(2*(rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*(3*SQR(rXYZ) - SQR(X) - SQR(Y) - 
-          5*SQR(Z))*(SQR(X) + SQR(Y) + SQR(Z))*SQR(Cosh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*ToReal(M));
+        CCTK_REAL K32 = -2*Y*Z*INV(alpL)*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + 
+          SQR(Y) + SQR(Z)))*pow(rXYZ,-4)*(mtXYZ*(2*CUB(rXYZ) + mtXYZ*(SQR(X) + 
+          SQR(Y) + SQR(Z))) - QAD(rXYZ)*SQR(Sech((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
         
-        CCTK_REAL betap1 = 2*rXYZ*X*INV(SQR(X) + SQR(Y) + SQR(Z))*INV(rXYZ + 
-          2*(1 + SQR(Tanh((rXYZ + 
-          cctk_time)*pow(ToReal(M),-1)*ToReal(dM))))*ToReal(M))*(1 + SQR(Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))))*ToReal(M);
+        CCTK_REAL K33 = -2*INV(alpL)*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + SQR(Y) 
+          + SQR(Z)))*pow(rXYZ,-4)*(mtXYZ*(-pow(rXYZ,5) + SQR(Z)*(2*CUB(rXYZ) + 
+          mtXYZ*(SQR(X) + SQR(Y) + SQR(Z)))) - QAD(rXYZ)*SQR(Z)*SQR(Sech((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
         
-        CCTK_REAL betap2 = 2*rXYZ*Y*INV(SQR(X) + SQR(Y) + SQR(Z))*INV(rXYZ + 
-          2*(1 + SQR(Tanh((rXYZ + 
-          cctk_time)*pow(ToReal(M),-1)*ToReal(dM))))*ToReal(M))*(1 + SQR(Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))))*ToReal(M);
+        CCTK_REAL betap1 = 2*mtXYZ*rXYZ*X*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + 
+          SQR(Y) + SQR(Z)));
         
-        CCTK_REAL betap3 = 2*rXYZ*Z*INV(SQR(X) + SQR(Y) + SQR(Z))*INV(rXYZ + 
-          2*(1 + SQR(Tanh((rXYZ + 
-          cctk_time)*pow(ToReal(M),-1)*ToReal(dM))))*ToReal(M))*(1 + SQR(Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))))*ToReal(M);
+        CCTK_REAL betap2 = 2*mtXYZ*rXYZ*Y*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + 
+          SQR(Y) + SQR(Z)));
         
-        CCTK_REAL dtbetap1 = 4*X*INV(SQR(X) + SQR(Y) + 
-          SQR(Z))*INV(SQR(rL(X,Y,Z) + 2*(1 + SQR(Tanh(INV(ToReal(M))*(cctk_time + 
-          rL(X,Y,Z))*ToReal(dM))))*ToReal(M)))*SQR(rL(X,Y,Z))*SQR(Sech(INV(ToReal(M))*(cctk_time 
-          + rL(X,Y,Z))*ToReal(dM)))*Tanh(INV(ToReal(M))*(cctk_time + 
-          rL(X,Y,Z))*ToReal(dM))*ToReal(dM);
+        CCTK_REAL betap3 = 2*mtXYZ*rXYZ*Z*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + 
+          SQR(Y) + SQR(Z)));
         
-        CCTK_REAL dtbetap2 = 4*Y*INV(SQR(X) + SQR(Y) + 
-          SQR(Z))*INV(SQR(rL(X,Y,Z) + 2*(1 + SQR(Tanh(INV(ToReal(M))*(cctk_time + 
-          rL(X,Y,Z))*ToReal(dM))))*ToReal(M)))*SQR(rL(X,Y,Z))*SQR(Sech(INV(ToReal(M))*(cctk_time 
-          + rL(X,Y,Z))*ToReal(dM)))*Tanh(INV(ToReal(M))*(cctk_time + 
-          rL(X,Y,Z))*ToReal(dM))*ToReal(dM);
+        CCTK_REAL dtbetap1 = 4*X*INV(SQR(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + SQR(Y) 
+          + SQR(Z))))*QAD(rXYZ)*SQR(Sech((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM);
         
-        CCTK_REAL dtbetap3 = 4*Z*INV(SQR(X) + SQR(Y) + 
-          SQR(Z))*INV(SQR(rL(X,Y,Z) + 2*(1 + SQR(Tanh(INV(ToReal(M))*(cctk_time + 
-          rL(X,Y,Z))*ToReal(dM))))*ToReal(M)))*SQR(rL(X,Y,Z))*SQR(Sech(INV(ToReal(M))*(cctk_time 
-          + rL(X,Y,Z))*ToReal(dM)))*Tanh(INV(ToReal(M))*(cctk_time + 
-          rL(X,Y,Z))*ToReal(dM))*ToReal(dM);
+        CCTK_REAL dtbetap2 = 4*Y*INV(SQR(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + SQR(Y) 
+          + SQR(Z))))*QAD(rXYZ)*SQR(Sech((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM);
+        
+        CCTK_REAL dtbetap3 = 4*Z*INV(SQR(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + SQR(Y) 
+          + SQR(Z))))*QAD(rXYZ)*SQR(Sech((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM);
         
         CCTK_REAL gxxL = 2*(G32*Jac21*Jac31 + Jac11*(G21*Jac21 + G31*Jac31)) + 
           G11*SQR(Jac11) + G22*SQR(Jac21) + G33*SQR(Jac31);
