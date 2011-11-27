@@ -114,14 +114,14 @@ makeKrancFriendly[x_] := x;
 (**************************************************************************************)
 (* Create a Kranc thorn for a named spacetime *)
 (**************************************************************************************)
-idThorn[spacetime_] :=
+idThorn[spacetime_, thorn_] :=
   Module[{coordRule, coords, spatialCoords, fourMetric, invFourMetric,
           shorthandEquations, shorthandVars, dShorthands, simplifyhints, tf, cf, simpopts,
           threeMetric, lapse, shift, extrinsicCurvature, dtlapse, dtshift,
           krancShortVars, kranctf, parameters, extendedKeywordParameters, calc,
           calculations},
 
-  Print["Generating thorn for ", spacetime];
+  Print["Generating thorn ", thorn, " for ", spacetime, " spacetime."];
 
   (* Load the spacetime: coordinates, metric, inverse metric *)
   coordRule = {x -> X, y -> Y, z -> Z, None -> {}};
@@ -186,13 +186,13 @@ idThorn[spacetime_] :=
   parameters = MetricProperty[spacetime, "Parameters"] /. None -> {};
 
   extendedKeywordParameters =
-    Table[{Name -> paramName, AllowedValues -> {spacetime}},
+    Table[{Name -> paramName, AllowedValues -> {thorn}},
       {paramName, {"ADMBase::initial_data", "ADMBase::initial_lapse", "ADMBase::initial_shift",
                    "ADMBase::initial_dtlapse", "ADMBase::initial_dtshift",
                    "ADMBase::evolution_method"}}];
 
   calc[when_] := {
-    Name -> spacetime <> "_" <> when,
+    Name -> thorn <> "_" <> when,
     Switch[when,
       "initial", Schedule -> {"in ADMBase_InitialData"},
       "always",  Schedule -> {"at ANALYSIS"},
@@ -203,7 +203,7 @@ idThorn[spacetime_] :=
          "initial", "initial_data",
          "always", "evolution_method",
          _, Throw["Unrecognised scheduling keyword"]],
-       spacetime},
+       thorn},
 
     Shorthands -> Join[shorthands, shorthandVars],
     Equations -> Flatten@
@@ -250,7 +250,7 @@ idThorn[spacetime_] :=
     calc["always"]
   };
 
-  CreateKrancThornTT[admGroups, "thorns", spacetime,
+  CreateKrancThornTT[admGroups, "thorns", thorn,
     Calculations -> calculations,
     RealParameters -> Join[realParameters, parameters],
     ExtendedKeywordParameters -> extendedKeywordParameters,
@@ -258,8 +258,9 @@ idThorn[spacetime_] :=
 ];
 
 spacetimes = {"GaugeWave", "KerrSchild", "Minkowski", "ShiftedGaugeWave", "Vaidya"};
+thorns     = {"GaugeWave", "KerrSchild", "Minkowski", "ShiftedGaugeWave", "Vaidya2"};
 
-idThorn /@ spacetimes;
+MapThread[idThorn, {spacetimes, thorns}];
 
 
 
