@@ -1,6 +1,6 @@
 # File produced by Kranc
 
-implements: Vaidya
+implements: Vaidya2
 
 inherits:   admbase Grid GenericFD Boundary
 

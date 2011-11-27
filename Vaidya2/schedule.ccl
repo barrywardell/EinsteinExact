@@ -1,0 +1,55 @@
+# File produced by Kranc
+
+
+schedule Vaidya2_Startup at STARTUP
+{
+  LANG: C
+  OPTIONS: meta
+} "create banner"
+
+schedule Vaidya2_RegisterVars in MoL_Register
+{
+  LANG: C
+  OPTIONS: meta
+} "Register Variables for MoL"
+
+schedule Vaidya2_RegisterSymmetries in SymmetryRegister
+{
+  LANG: C
+  OPTIONS: meta
+} "register symmetries"
+
+
+if (CCTK_EQUALS(initial_data, "Vaidya2"))
+{
+  schedule Vaidya2_initial in ADMBase_InitialData
+  {
+    LANG: C
+  } "Vaidya2_initial"
+}
+
+
+if (CCTK_EQUALS(evolution_method, "Vaidya2"))
+{
+  schedule Vaidya2_always at ANALYSIS
+  {
+    LANG: C
+  } "Vaidya2_always"
+}
+
+schedule Vaidya2_SelectBoundConds in MoL_PostStep
+{
+  LANG: C
+  OPTIONS: level
+} "select boundary conditions"
+
+schedule Vaidya2_CheckBoundaries at BASEGRID
+{
+  LANG: C
+  OPTIONS: meta
+} "check boundaries treatment"
+
+schedule group ApplyBCs as Vaidya2_ApplyBCs in MoL_PostStep after Vaidya2_SelectBoundConds
+{
+  # no language specified
+} "Apply boundary conditions controlled by thorn Boundary"

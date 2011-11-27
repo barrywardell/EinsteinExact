@@ -6,37 +6,37 @@ shares: ADMBase
 
 EXTENDS CCTK_KEYWORD initial_data "initial_data"
 {
-  Vaidya :: ""
+  Vaidya2 :: ""
 } 
 
 
 EXTENDS CCTK_KEYWORD initial_lapse "initial_lapse"
 {
-  Vaidya :: ""
+  Vaidya2 :: ""
 } 
 
 
 EXTENDS CCTK_KEYWORD initial_shift "initial_shift"
 {
-  Vaidya :: ""
+  Vaidya2 :: ""
 } 
 
 
 EXTENDS CCTK_KEYWORD initial_dtlapse "initial_dtlapse"
 {
-  Vaidya :: ""
+  Vaidya2 :: ""
 } 
 
 
 EXTENDS CCTK_KEYWORD initial_dtshift "initial_dtshift"
 {
-  Vaidya :: ""
+  Vaidya2 :: ""
 } 
 
 
 EXTENDS CCTK_KEYWORD evolution_method "evolution_method"
 {
-  Vaidya :: ""
+  Vaidya2 :: ""
 } 
 
 
@@ -54,6 +54,48 @@ restricted:
 CCTK_INT verbose "verbose" STEERABLE=ALWAYS
 {
   *:* :: ""
+} 0
+
+restricted:
+CCTK_REAL positiont "positiont"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL positionx "positionx"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL positiony "positiony"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL positionz "positionz"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL shiftaddx "shiftaddx"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL shiftaddy "shiftaddy"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL shiftaddz "shiftaddz"
+{
+  "*:*" :: ""
 } 0
 
 restricted:
@@ -87,13 +129,13 @@ CCTK_REAL dM "dM"
 } 0
 
 restricted:
-CCTK_INT Vaidya_MaxNumEvolvedVars "Number of evolved variables used by this thorn" ACCUMULATOR-BASE=MethodofLines::MoL_Num_Evolved_Vars STEERABLE=RECOVER
+CCTK_INT Vaidya2_MaxNumEvolvedVars "Number of evolved variables used by this thorn" ACCUMULATOR-BASE=MethodofLines::MoL_Num_Evolved_Vars STEERABLE=RECOVER
 {
   0:0 :: "Number of evolved variables used by this thorn"
 } 0
 
 restricted:
-CCTK_INT Vaidya_MaxNumArrayEvolvedVars "Number of Array evolved variables used by this thorn" ACCUMULATOR-BASE=MethodofLines::MoL_Num_ArrayEvolved_Vars STEERABLE=RECOVER
+CCTK_INT Vaidya2_MaxNumArrayEvolvedVars "Number of Array evolved variables used by this thorn" ACCUMULATOR-BASE=MethodofLines::MoL_Num_ArrayEvolved_Vars STEERABLE=RECOVER
 {
   0:0 :: "Number of Array evolved variables used by this thorn"
 } 0
@@ -111,25 +153,25 @@ CCTK_INT rhs_timelevels "Number of active RHS timelevels" STEERABLE=RECOVER
 } 1
 
 restricted:
-CCTK_INT Vaidya_initial_calc_every "Vaidya_initial_calc_every" STEERABLE=ALWAYS
+CCTK_INT Vaidya2_initial_calc_every "Vaidya2_initial_calc_every" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 1
 
 restricted:
-CCTK_INT Vaidya_always_calc_every "Vaidya_always_calc_every" STEERABLE=ALWAYS
+CCTK_INT Vaidya2_always_calc_every "Vaidya2_always_calc_every" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 1
 
 restricted:
-CCTK_INT Vaidya_initial_calc_offset "Vaidya_initial_calc_offset" STEERABLE=ALWAYS
+CCTK_INT Vaidya2_initial_calc_offset "Vaidya2_initial_calc_offset" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 0
 
 restricted:
-CCTK_INT Vaidya_always_calc_offset "Vaidya_always_calc_offset" STEERABLE=ALWAYS
+CCTK_INT Vaidya2_always_calc_offset "Vaidya2_always_calc_offset" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 0

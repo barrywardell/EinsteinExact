@@ -1,3 +1,0 @@
-# File produced by Kranc
-
-SRCS = Startup.cc RegisterMoL.cc RegisterSymmetries.cc Vaidya_initial.cc Vaidya_always.cc Boundaries.cc 

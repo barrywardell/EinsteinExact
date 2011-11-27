@@ -4,7 +4,7 @@
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 
-extern "C" void Vaidya_RegisterVars(CCTK_ARGUMENTS)
+extern "C" void Vaidya2_RegisterVars(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;

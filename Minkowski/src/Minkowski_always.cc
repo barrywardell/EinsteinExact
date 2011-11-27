@@ -86,6 +86,12 @@ static void Minkowski_always_Body(cGH const * restrict const cctkGH, int const d
         /* Precompute derivatives */
         
         /* Calculate temporaries and grid functions */
+        CCTK_REAL shiftadd1 = ToReal(shiftaddx);
+        
+        CCTK_REAL shiftadd2 = ToReal(shiftaddy);
+        
+        CCTK_REAL shiftadd3 = ToReal(shiftaddz);
+        
         CCTK_REAL Jac11 = Cos(ToReal(phi))*Cos(ToReal(psi)) - 
           Cos(ToReal(theta))*Sin(ToReal(phi))*Sin(ToReal(psi));
         
@@ -209,14 +215,14 @@ static void Minkowski_always_Body(cGH const * restrict const cctkGH, int const d
         CCTK_REAL kzzL = 2*(Jac13*(Jac23*K21 + Jac33*K31) + Jac23*Jac33*K32) + 
           K11*SQR(Jac13) + K22*SQR(Jac23) + K33*SQR(Jac33);
         
-        CCTK_REAL betaxL = betap1*InvJac11 + betap2*InvJac12 + 
-          betap3*InvJac13;
+        CCTK_REAL betaxL = betap1*InvJac11 + betap2*InvJac12 + betap3*InvJac13 
+          + shiftadd1;
         
-        CCTK_REAL betayL = betap1*InvJac21 + betap2*InvJac22 + 
-          betap3*InvJac23;
+        CCTK_REAL betayL = betap1*InvJac21 + betap2*InvJac22 + betap3*InvJac23 
+          + shiftadd2;
         
-        CCTK_REAL betazL = betap1*InvJac31 + betap2*InvJac32 + 
-          betap3*InvJac33;
+        CCTK_REAL betazL = betap1*InvJac31 + betap2*InvJac32 + betap3*InvJac33 
+          + shiftadd3;
         
         CCTK_REAL dtbetaxL = dtbetap1*InvJac11 + dtbetap2*InvJac12 + 
           dtbetap3*InvJac13;

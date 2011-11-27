@@ -5,7 +5,7 @@
 #include "cctk_Parameters.h"
 #include "Symmetry.h"
 
-extern "C" void Vaidya_RegisterSymmetries(CCTK_ARGUMENTS)
+extern "C" void Vaidya2_RegisterSymmetries(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;

@@ -20,7 +20,7 @@
 #define SQR(x) ((x) * (x))
 #define CUB(x) ((x) * (x) * (x))
 
-static void Vaidya_always_Body(cGH const * restrict const cctkGH, int const dir, int const face, CCTK_REAL const normal[3], CCTK_REAL const tangentA[3], CCTK_REAL const tangentB[3], int const imin[3], int const imax[3], int const n_subblock_gfs, CCTK_REAL * restrict const subblock_gfs[])
+static void Vaidya2_initial_Body(cGH const * restrict const cctkGH, int const dir, int const face, CCTK_REAL const normal[3], CCTK_REAL const tangentA[3], CCTK_REAL const tangentB[3], int const imin[3], int const imax[3], int const n_subblock_gfs, CCTK_REAL * restrict const subblock_gfs[])
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
@@ -96,6 +96,18 @@ static void Vaidya_always_Body(cGH const * restrict const cctkGH, int const dir,
         
         CCTK_REAL xx3 = zL;
         
+        CCTK_REAL position1 = ToReal(positionx);
+        
+        CCTK_REAL position2 = ToReal(positiony);
+        
+        CCTK_REAL position3 = ToReal(positionz);
+        
+        CCTK_REAL shiftadd1 = ToReal(shiftaddx);
+        
+        CCTK_REAL shiftadd2 = ToReal(shiftaddy);
+        
+        CCTK_REAL shiftadd3 = ToReal(shiftaddz);
+        
         CCTK_REAL Jac11 = Cos(ToReal(phi))*Cos(ToReal(psi)) - 
           Cos(ToReal(theta))*Sin(ToReal(phi))*Sin(ToReal(psi));
         
@@ -137,11 +149,19 @@ static void Vaidya_always_Body(cGH const * restrict const cctkGH, int const dir,
         
         CCTK_REAL InvJac33 = Jac33;
         
-        CCTK_REAL XX1 = Jac11*xx1 + Jac12*xx2 + Jac13*xx3;
+        CCTK_REAL T = cctk_time - ToReal(positiont);
         
-        CCTK_REAL XX2 = Jac21*xx1 + Jac22*xx2 + Jac23*xx3;
+        CCTK_REAL XX1 = -(Jac11*(position1 + shiftadd1*T - xx1)) - 
+          Jac12*(position2 + shiftadd2*T - xx2) - Jac13*(position3 + shiftadd3*T 
+          - xx3);
         
-        CCTK_REAL XX3 = Jac31*xx1 + Jac32*xx2 + Jac33*xx3;
+        CCTK_REAL XX2 = -(Jac21*(position1 + shiftadd1*T - xx1)) - 
+          Jac22*(position2 + shiftadd2*T - xx2) - Jac23*(position3 + shiftadd3*T 
+          - xx3);
+        
+        CCTK_REAL XX3 = -(Jac31*(position1 + shiftadd1*T - xx1)) - 
+          Jac32*(position2 + shiftadd2*T - xx2) - Jac33*(position3 + shiftadd3*T 
+          - xx3);
         
         CCTK_REAL X = XX1;
         
@@ -151,88 +171,88 @@ static void Vaidya_always_Body(cGH const * restrict const cctkGH, int const dir,
         
         CCTK_REAL rXYZ = sqrt(SQR(X) + SQR(Y) + SQR(Z));
         
-        CCTK_REAL mtXYZ = (1 + SQR(Tanh(INV(ToReal(M))*(cctk_time + sqrt(pow(X,2) + 
+        CCTK_REAL mTXYZ = (1 + SQR(Tanh(INV(ToReal(M))*(T + sqrt(pow(X,2) + 
           pow(Y,2) + pow(Z,2)))*ToReal(dM))))*ToReal(M);
         
-        alpL = INV(sqrt(pow(rXYZ,-3)*(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + SQR(Y) + 
+        alpL = INV(sqrt(pow(rXYZ,-3)*(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + SQR(Y) + 
           SQR(Z)))));
         
-        CCTK_REAL dtalpL = -2*pow(rXYZ,-3)*pow((CUB(rXYZ) + 2*mtXYZ*(SQR(X) + 
+        CCTK_REAL dtalpL = -2*pow(rXYZ,-3)*pow((CUB(rXYZ) + 2*mTXYZ*(SQR(X) + 
           SQR(Y) + SQR(Z)))/Power(rXYZ,3),-1.5)*(SQR(X) + SQR(Y) + 
-          SQR(Z))*SQR(Sech((rXYZ + cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM);
+          SQR(Z))*SQR(Sech((rXYZ + T)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM);
         
-        CCTK_REAL G11 = 1 + 2*mtXYZ*pow(rXYZ,-3)*SQR(X);
+        CCTK_REAL G11 = 1 + 2*mTXYZ*pow(rXYZ,-3)*SQR(X);
         
-        CCTK_REAL G21 = 2*mtXYZ*X*Y*pow(rXYZ,-3);
+        CCTK_REAL G21 = 2*mTXYZ*X*Y*pow(rXYZ,-3);
         
-        CCTK_REAL G31 = 2*mtXYZ*X*Z*pow(rXYZ,-3);
+        CCTK_REAL G31 = 2*mTXYZ*X*Z*pow(rXYZ,-3);
         
-        CCTK_REAL G22 = 1 + 2*mtXYZ*pow(rXYZ,-3)*SQR(Y);
+        CCTK_REAL G22 = 1 + 2*mTXYZ*pow(rXYZ,-3)*SQR(Y);
         
-        CCTK_REAL G32 = 2*mtXYZ*Y*Z*pow(rXYZ,-3);
+        CCTK_REAL G32 = 2*mTXYZ*Y*Z*pow(rXYZ,-3);
         
-        CCTK_REAL G33 = 1 + 2*mtXYZ*pow(rXYZ,-3)*SQR(Z);
+        CCTK_REAL G33 = 1 + 2*mTXYZ*pow(rXYZ,-3)*SQR(Z);
         
-        CCTK_REAL K11 = -2*INV(alpL)*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + SQR(Y) 
-          + SQR(Z)))*pow(rXYZ,-4)*(mtXYZ*(-pow(rXYZ,5) + SQR(X)*(2*CUB(rXYZ) + 
-          mtXYZ*(SQR(X) + SQR(Y) + SQR(Z)))) - QAD(rXYZ)*SQR(X)*SQR(Sech((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
+        CCTK_REAL K11 = -2*INV(alpL)*INV(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + SQR(Y) 
+          + SQR(Z)))*pow(rXYZ,-4)*(mTXYZ*(-pow(rXYZ,5) + SQR(X)*(2*CUB(rXYZ) + 
+          mTXYZ*(SQR(X) + SQR(Y) + SQR(Z)))) - QAD(rXYZ)*SQR(X)*SQR(Sech((rXYZ + 
+          T)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
         
-        CCTK_REAL K21 = -2*X*Y*INV(alpL)*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + 
-          SQR(Y) + SQR(Z)))*pow(rXYZ,-4)*(mtXYZ*(2*CUB(rXYZ) + mtXYZ*(SQR(X) + 
+        CCTK_REAL K21 = -2*X*Y*INV(alpL)*INV(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + 
+          SQR(Y) + SQR(Z)))*pow(rXYZ,-4)*(mTXYZ*(2*CUB(rXYZ) + mTXYZ*(SQR(X) + 
           SQR(Y) + SQR(Z))) - QAD(rXYZ)*SQR(Sech((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
+          T)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
         
-        CCTK_REAL K31 = -2*X*Z*INV(alpL)*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + 
-          SQR(Y) + SQR(Z)))*pow(rXYZ,-4)*(mtXYZ*(2*CUB(rXYZ) + mtXYZ*(SQR(X) + 
+        CCTK_REAL K31 = -2*X*Z*INV(alpL)*INV(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + 
+          SQR(Y) + SQR(Z)))*pow(rXYZ,-4)*(mTXYZ*(2*CUB(rXYZ) + mTXYZ*(SQR(X) + 
           SQR(Y) + SQR(Z))) - QAD(rXYZ)*SQR(Sech((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
+          T)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
         
-        CCTK_REAL K22 = -2*INV(alpL)*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + SQR(Y) 
-          + SQR(Z)))*pow(rXYZ,-4)*(mtXYZ*(-pow(rXYZ,5) + SQR(Y)*(2*CUB(rXYZ) + 
-          mtXYZ*(SQR(X) + SQR(Y) + SQR(Z)))) - QAD(rXYZ)*SQR(Y)*SQR(Sech((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
+        CCTK_REAL K22 = -2*INV(alpL)*INV(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + SQR(Y) 
+          + SQR(Z)))*pow(rXYZ,-4)*(mTXYZ*(-pow(rXYZ,5) + SQR(Y)*(2*CUB(rXYZ) + 
+          mTXYZ*(SQR(X) + SQR(Y) + SQR(Z)))) - QAD(rXYZ)*SQR(Y)*SQR(Sech((rXYZ + 
+          T)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
         
-        CCTK_REAL K32 = -2*Y*Z*INV(alpL)*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + 
-          SQR(Y) + SQR(Z)))*pow(rXYZ,-4)*(mtXYZ*(2*CUB(rXYZ) + mtXYZ*(SQR(X) + 
+        CCTK_REAL K32 = -2*Y*Z*INV(alpL)*INV(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + 
+          SQR(Y) + SQR(Z)))*pow(rXYZ,-4)*(mTXYZ*(2*CUB(rXYZ) + mTXYZ*(SQR(X) + 
           SQR(Y) + SQR(Z))) - QAD(rXYZ)*SQR(Sech((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
+          T)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
         
-        CCTK_REAL K33 = -2*INV(alpL)*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + SQR(Y) 
-          + SQR(Z)))*pow(rXYZ,-4)*(mtXYZ*(-pow(rXYZ,5) + SQR(Z)*(2*CUB(rXYZ) + 
-          mtXYZ*(SQR(X) + SQR(Y) + SQR(Z)))) - QAD(rXYZ)*SQR(Z)*SQR(Sech((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
+        CCTK_REAL K33 = -2*INV(alpL)*INV(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + SQR(Y) 
+          + SQR(Z)))*pow(rXYZ,-4)*(mTXYZ*(-pow(rXYZ,5) + SQR(Z)*(2*CUB(rXYZ) + 
+          mTXYZ*(SQR(X) + SQR(Y) + SQR(Z)))) - QAD(rXYZ)*SQR(Z)*SQR(Sech((rXYZ + 
+          T)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
         
-        CCTK_REAL betap1 = 2*mtXYZ*rXYZ*X*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + 
+        CCTK_REAL betap1 = 2*mTXYZ*rXYZ*X*INV(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + 
           SQR(Y) + SQR(Z)));
         
-        CCTK_REAL betap2 = 2*mtXYZ*rXYZ*Y*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + 
+        CCTK_REAL betap2 = 2*mTXYZ*rXYZ*Y*INV(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + 
           SQR(Y) + SQR(Z)));
         
-        CCTK_REAL betap3 = 2*mtXYZ*rXYZ*Z*INV(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + 
+        CCTK_REAL betap3 = 2*mTXYZ*rXYZ*Z*INV(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + 
           SQR(Y) + SQR(Z)));
         
-        CCTK_REAL dtbetap1 = 4*X*INV(SQR(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + SQR(Y) 
+        CCTK_REAL dtbetap1 = 4*X*INV(SQR(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + SQR(Y) 
           + SQR(Z))))*QAD(rXYZ)*SQR(Sech((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM);
+          T)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM);
         
-        CCTK_REAL dtbetap2 = 4*Y*INV(SQR(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + SQR(Y) 
+        CCTK_REAL dtbetap2 = 4*Y*INV(SQR(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + SQR(Y) 
           + SQR(Z))))*QAD(rXYZ)*SQR(Sech((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM);
+          T)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM);
         
-        CCTK_REAL dtbetap3 = 4*Z*INV(SQR(CUB(rXYZ) + 2*mtXYZ*(SQR(X) + SQR(Y) 
+        CCTK_REAL dtbetap3 = 4*Z*INV(SQR(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + SQR(Y) 
           + SQR(Z))))*QAD(rXYZ)*SQR(Sech((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
-          cctk_time)*INV(ToReal(M))*ToReal(dM))*ToReal(dM);
+          T)*INV(ToReal(M))*ToReal(dM)))*Tanh((rXYZ + 
+          T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM);
         
         CCTK_REAL gxxL = 2*(G32*Jac21*Jac31 + Jac11*(G21*Jac21 + G31*Jac31)) + 
           G11*SQR(Jac11) + G22*SQR(Jac21) + G33*SQR(Jac31);
@@ -276,14 +296,14 @@ static void Vaidya_always_Body(cGH const * restrict const cctkGH, int const dir,
         CCTK_REAL kzzL = 2*(Jac13*(Jac23*K21 + Jac33*K31) + Jac23*Jac33*K32) + 
           K11*SQR(Jac13) + K22*SQR(Jac23) + K33*SQR(Jac33);
         
-        CCTK_REAL betaxL = betap1*InvJac11 + betap2*InvJac12 + 
-          betap3*InvJac13;
+        CCTK_REAL betaxL = betap1*InvJac11 + betap2*InvJac12 + betap3*InvJac13 
+          + shiftadd1;
         
-        CCTK_REAL betayL = betap1*InvJac21 + betap2*InvJac22 + 
-          betap3*InvJac23;
+        CCTK_REAL betayL = betap1*InvJac21 + betap2*InvJac22 + betap3*InvJac23 
+          + shiftadd2;
         
-        CCTK_REAL betazL = betap1*InvJac31 + betap2*InvJac32 + 
-          betap3*InvJac33;
+        CCTK_REAL betazL = betap1*InvJac31 + betap2*InvJac32 + betap3*InvJac33 
+          + shiftadd3;
         
         CCTK_REAL dtbetaxL = dtbetap1*InvJac11 + dtbetap2*InvJac12 + 
           dtbetap3*InvJac13;
@@ -320,7 +340,7 @@ static void Vaidya_always_Body(cGH const * restrict const cctkGH, int const dir,
   }
 }
 
-extern "C" void Vaidya_always(CCTK_ARGUMENTS)
+extern "C" void Vaidya2_initial(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
@@ -328,22 +348,22 @@ extern "C" void Vaidya_always(CCTK_ARGUMENTS)
   
   if (verbose > 1)
   {
-    CCTK_VInfo(CCTK_THORNSTRING,"Entering Vaidya_always_Body");
+    CCTK_VInfo(CCTK_THORNSTRING,"Entering Vaidya2_initial_Body");
   }
   
-  if (cctk_iteration % Vaidya_always_calc_every != Vaidya_always_calc_offset)
+  if (cctk_iteration % Vaidya2_initial_calc_every != Vaidya2_initial_calc_offset)
   {
     return;
   }
   
   const char *groups[] = {"admbase::curv","admbase::dtlapse","admbase::dtshift","admbase::lapse","admbase::metric","admbase::shift","grid::coordinates"};
-  GenericFD_AssertGroupStorage(cctkGH, "Vaidya_always", 7, groups);
+  GenericFD_AssertGroupStorage(cctkGH, "Vaidya2_initial", 7, groups);
   
   
-  GenericFD_LoopOverEverything(cctkGH, &Vaidya_always_Body);
+  GenericFD_LoopOverEverything(cctkGH, &Vaidya2_initial_Body);
   
   if (verbose > 1)
   {
-    CCTK_VInfo(CCTK_THORNSTRING,"Leaving Vaidya_always_Body");
+    CCTK_VInfo(CCTK_THORNSTRING,"Leaving Vaidya2_initial_Body");
   }
 }

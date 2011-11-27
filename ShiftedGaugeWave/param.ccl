@@ -57,6 +57,48 @@ CCTK_INT verbose "verbose" STEERABLE=ALWAYS
 } 0
 
 restricted:
+CCTK_REAL positiont "positiont"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL positionx "positionx"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL positiony "positiony"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL positionz "positionz"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL shiftaddx "shiftaddx"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL shiftaddy "shiftaddy"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL shiftaddz "shiftaddz"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
 CCTK_REAL theta "theta"
 {
   "*:*" :: ""

@@ -17,7 +17,7 @@
 /* are currently applied in separate functions      */
 
 
-extern "C" void Vaidya_CheckBoundaries(CCTK_ARGUMENTS)
+extern "C" void Vaidya2_CheckBoundaries(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
@@ -25,7 +25,7 @@ extern "C" void Vaidya_CheckBoundaries(CCTK_ARGUMENTS)
   return;
 }
 
-extern "C" void Vaidya_SelectBoundConds(CCTK_ARGUMENTS)
+extern "C" void Vaidya2_SelectBoundConds(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;

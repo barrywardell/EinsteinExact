@@ -96,6 +96,18 @@ static void GaugeWave_always_Body(cGH const * restrict const cctkGH, int const d
         
         CCTK_REAL xx3 = zL;
         
+        CCTK_REAL position1 = ToReal(positionx);
+        
+        CCTK_REAL position2 = ToReal(positiony);
+        
+        CCTK_REAL position3 = ToReal(positionz);
+        
+        CCTK_REAL shiftadd1 = ToReal(shiftaddx);
+        
+        CCTK_REAL shiftadd2 = ToReal(shiftaddy);
+        
+        CCTK_REAL shiftadd3 = ToReal(shiftaddz);
+        
         CCTK_REAL Jac11 = Cos(ToReal(phi))*Cos(ToReal(psi)) - 
           Cos(ToReal(theta))*Sin(ToReal(phi))*Sin(ToReal(psi));
         
@@ -137,19 +149,23 @@ static void GaugeWave_always_Body(cGH const * restrict const cctkGH, int const d
         
         CCTK_REAL InvJac33 = Jac33;
         
-        CCTK_REAL XX1 = Jac11*xx1 + Jac12*xx2 + Jac13*xx3;
+        CCTK_REAL T = cctk_time - ToReal(positiont);
+        
+        CCTK_REAL XX1 = -(Jac11*(position1 + shiftadd1*T - xx1)) - 
+          Jac12*(position2 + shiftadd2*T - xx2) - Jac13*(position3 + shiftadd3*T 
+          - xx3);
         
         CCTK_REAL X = XX1;
         
-        alpL = INV(sqrt(INV(1 - Sin(2*Pi*(X - 
-          cctk_time)*pow(ToReal(period),-1))*ToReal(amp))));
+        alpL = INV(sqrt(INV(1 - Sin(2*Pi*(-T + 
+          X)*pow(ToReal(period),-1))*ToReal(amp))));
         
-        CCTK_REAL dtalpL = Pi*Cos(2*Pi*(X - 
-          cctk_time)*INV(ToReal(period)))*INV(ToReal(period))*sqrt(INV(1 - Sin(2*Pi*(X 
-          - cctk_time)*pow(ToReal(period),-1))*ToReal(amp)))*ToReal(amp);
+        CCTK_REAL dtalpL = Pi*Cos(2*Pi*(-T + 
+          X)*INV(ToReal(period)))*INV(ToReal(period))*sqrt(INV(1 - Sin(2*Pi*(-T + 
+          X)*pow(ToReal(period),-1))*ToReal(amp)))*ToReal(amp);
         
-        CCTK_REAL G11 = 1 - Sin(2*Pi*(X - 
-          cctk_time)*INV(ToReal(period)))*ToReal(amp);
+        CCTK_REAL G11 = 1 - Sin(2*Pi*(-T + 
+          X)*INV(ToReal(period)))*ToReal(amp);
         
         CCTK_REAL G21 = 0;
         
@@ -161,8 +177,8 @@ static void GaugeWave_always_Body(cGH const * restrict const cctkGH, int const d
         
         CCTK_REAL G33 = 1;
         
-        CCTK_REAL K11 = -(Pi*Cos(2*Pi*(X - 
-          cctk_time)*INV(ToReal(period)))*INV(alpL)*INV(ToReal(period))*ToReal(amp));
+        CCTK_REAL K11 = -(Pi*Cos(2*Pi*(-T + 
+          X)*INV(ToReal(period)))*INV(alpL)*INV(ToReal(period))*ToReal(amp));
         
         CCTK_REAL K21 = 0;
         
@@ -228,14 +244,14 @@ static void GaugeWave_always_Body(cGH const * restrict const cctkGH, int const d
         CCTK_REAL kzzL = 2*(Jac13*(Jac23*K21 + Jac33*K31) + Jac23*Jac33*K32) + 
           K11*SQR(Jac13) + K22*SQR(Jac23) + K33*SQR(Jac33);
         
-        CCTK_REAL betaxL = betap1*InvJac11 + betap2*InvJac12 + 
-          betap3*InvJac13;
+        CCTK_REAL betaxL = betap1*InvJac11 + betap2*InvJac12 + betap3*InvJac13 
+          + shiftadd1;
         
-        CCTK_REAL betayL = betap1*InvJac21 + betap2*InvJac22 + 
-          betap3*InvJac23;
+        CCTK_REAL betayL = betap1*InvJac21 + betap2*InvJac22 + betap3*InvJac23 
+          + shiftadd2;
         
-        CCTK_REAL betazL = betap1*InvJac31 + betap2*InvJac32 + 
-          betap3*InvJac33;
+        CCTK_REAL betazL = betap1*InvJac31 + betap2*InvJac32 + betap3*InvJac33 
+          + shiftadd3;
         
         CCTK_REAL dtbetaxL = dtbetap1*InvJac11 + dtbetap2*InvJac12 + 
           dtbetap3*InvJac13;

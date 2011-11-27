@@ -96,6 +96,18 @@ static void KerrSchild_always_Body(cGH const * restrict const cctkGH, int const 
         
         CCTK_REAL xx3 = zL;
         
+        CCTK_REAL position1 = ToReal(positionx);
+        
+        CCTK_REAL position2 = ToReal(positiony);
+        
+        CCTK_REAL position3 = ToReal(positionz);
+        
+        CCTK_REAL shiftadd1 = ToReal(shiftaddx);
+        
+        CCTK_REAL shiftadd2 = ToReal(shiftaddy);
+        
+        CCTK_REAL shiftadd3 = ToReal(shiftaddz);
+        
         CCTK_REAL Jac11 = Cos(ToReal(phi))*Cos(ToReal(psi)) - 
           Cos(ToReal(theta))*Sin(ToReal(phi))*Sin(ToReal(psi));
         
@@ -137,11 +149,19 @@ static void KerrSchild_always_Body(cGH const * restrict const cctkGH, int const 
         
         CCTK_REAL InvJac33 = Jac33;
         
-        CCTK_REAL XX1 = Jac11*xx1 + Jac12*xx2 + Jac13*xx3;
+        CCTK_REAL T = cctk_time - ToReal(positiont);
         
-        CCTK_REAL XX2 = Jac21*xx1 + Jac22*xx2 + Jac23*xx3;
+        CCTK_REAL XX1 = -(Jac11*(position1 + shiftadd1*T - xx1)) - 
+          Jac12*(position2 + shiftadd2*T - xx2) - Jac13*(position3 + shiftadd3*T 
+          - xx3);
         
-        CCTK_REAL XX3 = Jac31*xx1 + Jac32*xx2 + Jac33*xx3;
+        CCTK_REAL XX2 = -(Jac21*(position1 + shiftadd1*T - xx1)) - 
+          Jac22*(position2 + shiftadd2*T - xx2) - Jac23*(position3 + shiftadd3*T 
+          - xx3);
+        
+        CCTK_REAL XX3 = -(Jac31*(position1 + shiftadd1*T - xx1)) - 
+          Jac32*(position2 + shiftadd2*T - xx2) - Jac33*(position3 + shiftadd3*T 
+          - xx3);
         
         CCTK_REAL X = XX1;
         
@@ -595,14 +615,14 @@ static void KerrSchild_always_Body(cGH const * restrict const cctkGH, int const 
         CCTK_REAL kzzL = 2*(Jac13*(Jac23*K21 + Jac33*K31) + Jac23*Jac33*K32) + 
           K11*SQR(Jac13) + K22*SQR(Jac23) + K33*SQR(Jac33);
         
-        CCTK_REAL betaxL = betap1*InvJac11 + betap2*InvJac12 + 
-          betap3*InvJac13;
+        CCTK_REAL betaxL = betap1*InvJac11 + betap2*InvJac12 + betap3*InvJac13 
+          + shiftadd1;
         
-        CCTK_REAL betayL = betap1*InvJac21 + betap2*InvJac22 + 
-          betap3*InvJac23;
+        CCTK_REAL betayL = betap1*InvJac21 + betap2*InvJac22 + betap3*InvJac23 
+          + shiftadd2;
         
-        CCTK_REAL betazL = betap1*InvJac31 + betap2*InvJac32 + 
-          betap3*InvJac33;
+        CCTK_REAL betazL = betap1*InvJac31 + betap2*InvJac32 + betap3*InvJac33 
+          + shiftadd3;
         
         CCTK_REAL dtbetaxL = dtbetap1*InvJac11 + dtbetap2*InvJac12 + 
           dtbetap3*InvJac13;
