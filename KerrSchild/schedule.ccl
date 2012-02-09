@@ -7,12 +7,6 @@ schedule KerrSchild_Startup at STARTUP
   OPTIONS: meta
 } "create banner"
 
-schedule KerrSchild_RegisterVars in MoL_Register
-{
-  LANG: C
-  OPTIONS: meta
-} "Register Variables for MoL"
-
 schedule KerrSchild_RegisterSymmetries in SymmetryRegister
 {
   LANG: C
@@ -25,6 +19,14 @@ if (CCTK_EQUALS(initial_data, "KerrSchild"))
   schedule KerrSchild_initial in ADMBase_InitialData
   {
     LANG: C
+    READS:    admbase::lapse
+    READS:    grid::coordinates
+    WRITES:   admbase::curv
+    WRITES:   admbase::dtlapse
+    WRITES:   admbase::dtshift
+    WRITES:   admbase::lapse
+    WRITES:   admbase::metric
+    WRITES:   admbase::shift
   } "KerrSchild_initial"
 }
 
@@ -34,6 +36,14 @@ if (CCTK_EQUALS(evolution_method, "KerrSchild"))
   schedule KerrSchild_always at ANALYSIS
   {
     LANG: C
+    READS:    admbase::lapse
+    READS:    grid::coordinates
+    WRITES:   admbase::curv
+    WRITES:   admbase::dtlapse
+    WRITES:   admbase::dtshift
+    WRITES:   admbase::lapse
+    WRITES:   admbase::metric
+    WRITES:   admbase::shift
   } "KerrSchild_always"
 }
 
@@ -48,6 +58,12 @@ schedule KerrSchild_CheckBoundaries at BASEGRID
   LANG: C
   OPTIONS: meta
 } "check boundaries treatment"
+
+schedule KerrSchild_RegisterVars in MoL_Register
+{
+  LANG: C
+  OPTIONS: meta
+} "Register Variables for MoL"
 
 schedule group ApplyBCs as KerrSchild_ApplyBCs in MoL_PostStep after KerrSchild_SelectBoundConds
 {

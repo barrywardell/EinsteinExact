@@ -7,12 +7,6 @@ schedule GaugeWave_Startup at STARTUP
   OPTIONS: meta
 } "create banner"
 
-schedule GaugeWave_RegisterVars in MoL_Register
-{
-  LANG: C
-  OPTIONS: meta
-} "Register Variables for MoL"
-
 schedule GaugeWave_RegisterSymmetries in SymmetryRegister
 {
   LANG: C
@@ -25,6 +19,14 @@ if (CCTK_EQUALS(initial_data, "GaugeWave"))
   schedule GaugeWave_initial in ADMBase_InitialData
   {
     LANG: C
+    READS:    admbase::lapse
+    READS:    grid::coordinates
+    WRITES:   admbase::curv
+    WRITES:   admbase::dtlapse
+    WRITES:   admbase::dtshift
+    WRITES:   admbase::lapse
+    WRITES:   admbase::metric
+    WRITES:   admbase::shift
   } "GaugeWave_initial"
 }
 
@@ -34,6 +36,14 @@ if (CCTK_EQUALS(evolution_method, "GaugeWave"))
   schedule GaugeWave_always at ANALYSIS
   {
     LANG: C
+    READS:    admbase::lapse
+    READS:    grid::coordinates
+    WRITES:   admbase::curv
+    WRITES:   admbase::dtlapse
+    WRITES:   admbase::dtshift
+    WRITES:   admbase::lapse
+    WRITES:   admbase::metric
+    WRITES:   admbase::shift
   } "GaugeWave_always"
 }
 
@@ -48,6 +58,12 @@ schedule GaugeWave_CheckBoundaries at BASEGRID
   LANG: C
   OPTIONS: meta
 } "check boundaries treatment"
+
+schedule GaugeWave_RegisterVars in MoL_Register
+{
+  LANG: C
+  OPTIONS: meta
+} "Register Variables for MoL"
 
 schedule group ApplyBCs as GaugeWave_ApplyBCs in MoL_PostStep after GaugeWave_SelectBoundConds
 {

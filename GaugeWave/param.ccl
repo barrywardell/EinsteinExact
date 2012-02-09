@@ -153,6 +153,12 @@ CCTK_INT rhs_timelevels "Number of active RHS timelevels" STEERABLE=RECOVER
 } 1
 
 restricted:
+CCTK_INT other_timelevels "Number of active timelevels for non-evolved grid functions" STEERABLE=RECOVER
+{
+  0:3 :: ""
+} 1
+
+restricted:
 CCTK_INT GaugeWave_initial_calc_every "GaugeWave_initial_calc_every" STEERABLE=ALWAYS
 {
   *:* :: ""
