@@ -278,8 +278,8 @@ idThorn[spacetime_, thorn_] :=
     InheritedImplementations -> {"admbase"}];
 ];
 
-spacetimes = {"GaugeWave", "KerrSchild", "Minkowski", "ShiftedGaugeWave", "Vaidya"};
-thorns     = {"GaugeWave", "KerrSchild", "Minkowski", "ShiftedGaugeWave", "Vaidya2"};
+spacetimes = {"GaugeWave", "KerrSchild", "Minkowski", "ShiftedGaugeWave", "Vaidya", "ModifiedSchwarzschildBL"};
+thorns     = {"GaugeWave", "KerrSchild", "Minkowski", "ShiftedGaugeWave", "Vaidya2", "ModifiedSchwarzschildBL"};
 
 MapThread[idThorn, {spacetimes, thorns}];
 
