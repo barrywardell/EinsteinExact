@@ -275,7 +275,9 @@ idThorn[spacetime_, thorn_] :=
     Calculations -> calculations,
     RealParameters -> Join[realParameters, parameters],
     ExtendedKeywordParameters -> extendedKeywordParameters,
-    InheritedImplementations -> {"admbase"}];
+    InheritedImplementations -> {"admbase"},
+    CSE -> True,
+    UseLoopControl -> True];
 ];
 
 spacetimes = {"GaugeWave", "KerrSchild", "Minkowski", "ShiftedGaugeWave", "Vaidya", "ModifiedSchwarzschildBL"};
