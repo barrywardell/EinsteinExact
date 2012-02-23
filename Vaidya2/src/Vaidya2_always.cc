@@ -103,28 +103,35 @@ static void Vaidya2_always_Body(cGH const * restrict const cctkGH, int const dir
     
     CCTK_REAL shiftadd3 = ToReal(shiftaddz);
     
-    CCTK_REAL Jac11 = cos(ToReal(phi))*cos(ToReal(psi)) - 
-      cos(ToReal(theta))*sin(ToReal(phi))*sin(ToReal(psi));
+    CCTK_REAL csetemp0 = cos(ToReal(phi));
     
-    CCTK_REAL Jac12 = cos(ToReal(psi))*sin(ToReal(phi)) + 
-      cos(ToReal(phi))*cos(ToReal(theta))*sin(ToReal(psi));
+    CCTK_REAL csetemp1 = cos(ToReal(psi));
     
-    CCTK_REAL Jac13 = sin(ToReal(psi))*sin(ToReal(theta));
+    CCTK_REAL csetemp2 = cos(ToReal(theta));
     
-    CCTK_REAL Jac21 = 
-      -(cos(ToReal(psi))*cos(ToReal(theta))*sin(ToReal(phi))) - 
-      cos(ToReal(phi))*sin(ToReal(psi));
+    CCTK_REAL csetemp3 = sin(ToReal(phi));
     
-    CCTK_REAL Jac22 = cos(ToReal(phi))*cos(ToReal(psi))*cos(ToReal(theta)) 
-      - sin(ToReal(phi))*sin(ToReal(psi));
+    CCTK_REAL csetemp4 = sin(ToReal(psi));
     
-    CCTK_REAL Jac23 = cos(ToReal(psi))*sin(ToReal(theta));
+    CCTK_REAL Jac11 = csetemp0*csetemp1 - csetemp2*csetemp3*csetemp4;
     
-    CCTK_REAL Jac31 = sin(ToReal(phi))*sin(ToReal(theta));
+    CCTK_REAL Jac12 = csetemp1*csetemp3 + csetemp0*csetemp2*csetemp4;
     
-    CCTK_REAL Jac32 = -(cos(ToReal(phi))*sin(ToReal(theta)));
+    CCTK_REAL csetemp5 = sin(ToReal(theta));
     
-    CCTK_REAL Jac33 = cos(ToReal(theta));
+    CCTK_REAL Jac13 = csetemp4*csetemp5;
+    
+    CCTK_REAL Jac21 = -(csetemp1*csetemp2*csetemp3) - csetemp0*csetemp4;
+    
+    CCTK_REAL Jac22 = csetemp0*csetemp1*csetemp2 - csetemp3*csetemp4;
+    
+    CCTK_REAL Jac23 = csetemp1*csetemp5;
+    
+    CCTK_REAL Jac31 = csetemp3*csetemp5;
+    
+    CCTK_REAL Jac32 = -(csetemp0*csetemp5);
+    
+    CCTK_REAL Jac33 = csetemp2;
     
     CCTK_REAL InvJac11 = Jac11;
     
@@ -146,17 +153,20 @@ static void Vaidya2_always_Body(cGH const * restrict const cctkGH, int const dir
     
     CCTK_REAL T = t - ToReal(positiont);
     
-    CCTK_REAL XX1 = -(Jac11*(position1 + shiftadd1*T - xx1)) - 
-      Jac12*(position2 + shiftadd2*T - xx2) - Jac13*(position3 + shiftadd3*T 
-      - xx3);
+    CCTK_REAL csetemp6 = -(shiftadd1*T);
     
-    CCTK_REAL XX2 = -(Jac21*(position1 + shiftadd1*T - xx1)) - 
-      Jac22*(position2 + shiftadd2*T - xx2) - Jac23*(position3 + shiftadd3*T 
-      - xx3);
+    CCTK_REAL csetemp7 = -(shiftadd2*T);
     
-    CCTK_REAL XX3 = -(Jac31*(position1 + shiftadd1*T - xx1)) - 
-      Jac32*(position2 + shiftadd2*T - xx2) - Jac33*(position3 + shiftadd3*T 
-      - xx3);
+    CCTK_REAL csetemp8 = -(shiftadd3*T);
+    
+    CCTK_REAL XX1 = Jac11*(csetemp6 - position1 + xx1) + Jac12*(csetemp7 - 
+      position2 + xx2) + Jac13*(csetemp8 - position3 + xx3);
+    
+    CCTK_REAL XX2 = Jac21*(csetemp6 - position1 + xx1) + Jac22*(csetemp7 - 
+      position2 + xx2) + Jac23*(csetemp8 - position3 + xx3);
+    
+    CCTK_REAL XX3 = Jac31*(csetemp6 - position1 + xx1) + Jac32*(csetemp7 - 
+      position2 + xx2) + Jac33*(csetemp8 - position3 + xx3);
     
     CCTK_REAL X = XX1;
     
@@ -164,93 +174,114 @@ static void Vaidya2_always_Body(cGH const * restrict const cctkGH, int const dir
     
     CCTK_REAL Z = XX3;
     
-    CCTK_REAL rXYZ = sqrt(SQR(X) + SQR(Y) + SQR(Z));
+    CCTK_REAL csetemp9 = SQR(X);
     
-    CCTK_REAL mTXYZ = (1 + SQR(tanh(INV(ToReal(M))*(T + sqrt(SQR(X) + 
-      SQR(Y) + SQR(Z)))*ToReal(dM))))*ToReal(M);
+    CCTK_REAL csetemp10 = SQR(Y);
     
-    alpL = INV(sqrt(INV(CUB(rXYZ))*(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + SQR(Y) + 
-      SQR(Z)))));
+    CCTK_REAL csetemp11 = SQR(Z);
     
-    CCTK_REAL dtalpL = -2*INV(CUB(rXYZ))*pow(INV(CUB(rXYZ))*(CUB(rXYZ) + 
-      2*mTXYZ*(SQR(X) + SQR(Y) + SQR(Z))),-1.5)*(SQR(X) + SQR(Y) + 
-      SQR(Z))*SQR(INV(cosh((rXYZ + T)*INV(ToReal(M))*ToReal(dM))))*tanh((rXYZ 
-      + T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM);
+    CCTK_REAL rXYZ = sqrt(csetemp10 + csetemp11 + csetemp9);
     
-    CCTK_REAL G11 = 1 + 2*mTXYZ*INV(CUB(rXYZ))*SQR(X);
+    CCTK_REAL csetemp12 = INV(ToReal(M));
     
-    CCTK_REAL G21 = 2*mTXYZ*X*Y*INV(CUB(rXYZ));
+    CCTK_REAL mTXYZ = (1 + SQR(tanh(csetemp12*(T + sqrt(csetemp10 + 
+      csetemp11 + csetemp9))*ToReal(dM))))*ToReal(M);
     
-    CCTK_REAL G31 = 2*mTXYZ*X*Z*INV(CUB(rXYZ));
+    CCTK_REAL csetemp13 = INV(CUB(rXYZ));
     
-    CCTK_REAL G22 = 1 + 2*mTXYZ*INV(CUB(rXYZ))*SQR(Y);
+    CCTK_REAL csetemp14 = CUB(rXYZ);
     
-    CCTK_REAL G32 = 2*mTXYZ*Y*Z*INV(CUB(rXYZ));
+    alpL = INV(sqrt(csetemp13*(csetemp14 + 2*(csetemp10 + csetemp11 + 
+      csetemp9)*mTXYZ)));
     
-    CCTK_REAL G33 = 1 + 2*mTXYZ*INV(CUB(rXYZ))*SQR(Z);
+    CCTK_REAL csetemp15 = rXYZ + T;
     
-    CCTK_REAL K11 = -2*INV(alpL*QAD(rXYZ)*(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + 
-      SQR(Y) + SQR(Z))))*(mTXYZ*(-pow(rXYZ,5) + SQR(X)*(2*CUB(rXYZ) + 
-      mTXYZ*(SQR(X) + SQR(Y) + SQR(Z)))) - QAD(rXYZ)*SQR(X*INV(cosh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))))*tanh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
+    CCTK_REAL dtalpL = -2*csetemp13*(csetemp10 + csetemp11 + 
+      csetemp9)*pow(csetemp13*(csetemp14 + 2*(csetemp10 + csetemp11 + 
+      csetemp9)*mTXYZ),-1.5)*SQR(INV(cosh(csetemp12*csetemp15*ToReal(dM))))*tanh(csetemp12*csetemp15*ToReal(dM))*ToReal(dM);
     
-    CCTK_REAL K21 = -2*X*Y*INV(alpL*QAD(rXYZ)*(CUB(rXYZ) + 
-      2*mTXYZ*(SQR(X) + SQR(Y) + SQR(Z))))*(mTXYZ*(2*CUB(rXYZ) + 
-      mTXYZ*(SQR(X) + SQR(Y) + SQR(Z))) - QAD(rXYZ)*SQR(INV(cosh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))))*tanh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
+    CCTK_REAL G11 = 1 + 2*csetemp13*csetemp9*mTXYZ;
     
-    CCTK_REAL K31 = -2*X*Z*INV(alpL*QAD(rXYZ)*(CUB(rXYZ) + 
-      2*mTXYZ*(SQR(X) + SQR(Y) + SQR(Z))))*(mTXYZ*(2*CUB(rXYZ) + 
-      mTXYZ*(SQR(X) + SQR(Y) + SQR(Z))) - QAD(rXYZ)*SQR(INV(cosh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))))*tanh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
+    CCTK_REAL G21 = 2*csetemp13*mTXYZ*X*Y;
     
-    CCTK_REAL K22 = -2*INV(alpL*QAD(rXYZ)*(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + 
-      SQR(Y) + SQR(Z))))*(mTXYZ*(-pow(rXYZ,5) + SQR(Y)*(2*CUB(rXYZ) + 
-      mTXYZ*(SQR(X) + SQR(Y) + SQR(Z)))) - QAD(rXYZ)*SQR(Y*INV(cosh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))))*tanh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
+    CCTK_REAL G31 = 2*csetemp13*mTXYZ*X*Z;
     
-    CCTK_REAL K32 = -2*Y*Z*INV(alpL*QAD(rXYZ)*(CUB(rXYZ) + 
-      2*mTXYZ*(SQR(X) + SQR(Y) + SQR(Z))))*(mTXYZ*(2*CUB(rXYZ) + 
-      mTXYZ*(SQR(X) + SQR(Y) + SQR(Z))) - QAD(rXYZ)*SQR(INV(cosh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))))*tanh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
+    CCTK_REAL G22 = 1 + 2*csetemp10*csetemp13*mTXYZ;
     
-    CCTK_REAL K33 = -2*INV(alpL*QAD(rXYZ)*(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + 
-      SQR(Y) + SQR(Z))))*(mTXYZ*(-pow(rXYZ,5) + SQR(Z)*(2*CUB(rXYZ) + 
-      mTXYZ*(SQR(X) + SQR(Y) + SQR(Z)))) - QAD(rXYZ)*SQR(Z*INV(cosh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))))*tanh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM));
+    CCTK_REAL G32 = 2*csetemp13*mTXYZ*Y*Z;
     
-    CCTK_REAL betap1 = 2*mTXYZ*rXYZ*X*INV(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + 
-      SQR(Y) + SQR(Z)));
+    CCTK_REAL G33 = 1 + 2*csetemp11*csetemp13*mTXYZ;
     
-    CCTK_REAL betap2 = 2*mTXYZ*rXYZ*Y*INV(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + 
-      SQR(Y) + SQR(Z)));
+    CCTK_REAL csetemp16 = INV(alpL);
     
-    CCTK_REAL betap3 = 2*mTXYZ*rXYZ*Z*INV(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + 
-      SQR(Y) + SQR(Z)));
+    CCTK_REAL csetemp17 = INV(QAD(rXYZ));
     
-    CCTK_REAL dtbetap1 = 4*X*INV(SQR(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + SQR(Y) 
-      + SQR(Z))))*QAD(rXYZ)*SQR(INV(cosh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))))*tanh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM);
+    CCTK_REAL csetemp18 = pow(rXYZ,5);
     
-    CCTK_REAL dtbetap2 = 4*Y*INV(SQR(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + SQR(Y) 
-      + SQR(Z))))*QAD(rXYZ)*SQR(INV(cosh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))))*tanh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM);
+    CCTK_REAL csetemp19 = SQR(mTXYZ);
     
-    CCTK_REAL dtbetap3 = 4*Z*INV(SQR(CUB(rXYZ) + 2*mTXYZ*(SQR(X) + SQR(Y) 
-      + SQR(Z))))*QAD(rXYZ)*SQR(INV(cosh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))))*tanh((rXYZ + 
-      T)*INV(ToReal(M))*ToReal(dM))*ToReal(dM);
+    CCTK_REAL csetemp20 = QAD(rXYZ);
     
-    CCTK_REAL gxxL = 2*(G32*Jac21*Jac31 + Jac11*(G21*Jac21 + G31*Jac31)) + 
-      G11*SQR(Jac11) + G22*SQR(Jac21) + G33*SQR(Jac31);
+    CCTK_REAL K11 = -2*csetemp16*csetemp17*INV(csetemp14 + 2*(csetemp10 + 
+      csetemp11 + csetemp9)*mTXYZ)*(-((csetemp18 - 
+      2*csetemp14*csetemp9)*mTXYZ) + csetemp9*(csetemp19*(csetemp10 + 
+      csetemp11 + csetemp9) - 
+      csetemp20*SQR(INV(cosh(csetemp12*csetemp15*ToReal(dM))))*tanh(csetemp12*csetemp15*ToReal(dM))*ToReal(dM)));
+    
+    CCTK_REAL K21 = -2*csetemp16*csetemp17*X*Y*INV(csetemp14 + 
+      2*(csetemp10 + csetemp11 + csetemp9)*mTXYZ)*(csetemp19*(csetemp10 + 
+      csetemp11 + csetemp9) + 2*csetemp14*mTXYZ - 
+      csetemp20*SQR(INV(cosh(csetemp12*csetemp15*ToReal(dM))))*tanh(csetemp12*csetemp15*ToReal(dM))*ToReal(dM));
+    
+    CCTK_REAL K31 = -2*csetemp16*csetemp17*X*Z*INV(csetemp14 + 
+      2*(csetemp10 + csetemp11 + csetemp9)*mTXYZ)*(csetemp19*(csetemp10 + 
+      csetemp11 + csetemp9) + 2*csetemp14*mTXYZ - 
+      csetemp20*SQR(INV(cosh(csetemp12*csetemp15*ToReal(dM))))*tanh(csetemp12*csetemp15*ToReal(dM))*ToReal(dM));
+    
+    CCTK_REAL K22 = -2*csetemp16*csetemp17*INV(csetemp14 + 2*(csetemp10 + 
+      csetemp11 + csetemp9)*mTXYZ)*((2*csetemp10*csetemp14 - csetemp18)*mTXYZ 
+      + csetemp10*(csetemp19*(csetemp10 + csetemp11 + csetemp9) - 
+      csetemp20*SQR(INV(cosh(csetemp12*csetemp15*ToReal(dM))))*tanh(csetemp12*csetemp15*ToReal(dM))*ToReal(dM)));
+    
+    CCTK_REAL K32 = -2*csetemp16*csetemp17*Y*Z*INV(csetemp14 + 
+      2*(csetemp10 + csetemp11 + csetemp9)*mTXYZ)*(csetemp19*(csetemp10 + 
+      csetemp11 + csetemp9) + 2*csetemp14*mTXYZ - 
+      csetemp20*SQR(INV(cosh(csetemp12*csetemp15*ToReal(dM))))*tanh(csetemp12*csetemp15*ToReal(dM))*ToReal(dM));
+    
+    CCTK_REAL K33 = -2*csetemp16*csetemp17*INV(csetemp14 + 2*(csetemp10 + 
+      csetemp11 + csetemp9)*mTXYZ)*((2*csetemp11*csetemp14 - csetemp18)*mTXYZ 
+      + csetemp11*(csetemp19*(csetemp10 + csetemp11 + csetemp9) - 
+      csetemp20*SQR(INV(cosh(csetemp12*csetemp15*ToReal(dM))))*tanh(csetemp12*csetemp15*ToReal(dM))*ToReal(dM)));
+    
+    CCTK_REAL betap1 = 2*mTXYZ*rXYZ*X*INV(csetemp14 + 2*(csetemp10 + 
+      csetemp11 + csetemp9)*mTXYZ);
+    
+    CCTK_REAL betap2 = 2*mTXYZ*rXYZ*Y*INV(csetemp14 + 2*(csetemp10 + 
+      csetemp11 + csetemp9)*mTXYZ);
+    
+    CCTK_REAL betap3 = 2*mTXYZ*rXYZ*Z*INV(csetemp14 + 2*(csetemp10 + 
+      csetemp11 + csetemp9)*mTXYZ);
+    
+    CCTK_REAL dtbetap1 = 4*csetemp20*X*INV(SQR(csetemp14 + 2*(csetemp10 + 
+      csetemp11 + 
+      csetemp9)*mTXYZ))*SQR(INV(cosh(csetemp12*csetemp15*ToReal(dM))))*tanh(csetemp12*csetemp15*ToReal(dM))*ToReal(dM);
+    
+    CCTK_REAL dtbetap2 = 4*csetemp20*Y*INV(SQR(csetemp14 + 2*(csetemp10 + 
+      csetemp11 + 
+      csetemp9)*mTXYZ))*SQR(INV(cosh(csetemp12*csetemp15*ToReal(dM))))*tanh(csetemp12*csetemp15*ToReal(dM))*ToReal(dM);
+    
+    CCTK_REAL dtbetap3 = 4*csetemp20*Z*INV(SQR(csetemp14 + 2*(csetemp10 + 
+      csetemp11 + 
+      csetemp9)*mTXYZ))*SQR(INV(cosh(csetemp12*csetemp15*ToReal(dM))))*tanh(csetemp12*csetemp15*ToReal(dM))*ToReal(dM);
+    
+    CCTK_REAL csetemp21 = SQR(Jac11);
+    
+    CCTK_REAL csetemp22 = SQR(Jac21);
+    
+    CCTK_REAL csetemp23 = SQR(Jac31);
+    
+    CCTK_REAL gxxL = csetemp21*G11 + csetemp22*G22 + csetemp23*G33 + 
+      2*(G32*Jac21*Jac31 + Jac11*(G21*Jac21 + G31*Jac31));
     
     CCTK_REAL gxyL = Jac12*(G11*Jac11 + G21*Jac21 + G31*Jac31) + 
       Jac22*(G21*Jac11 + G22*Jac21 + G32*Jac31) + (G31*Jac11 + G32*Jac21 + 
@@ -260,18 +291,30 @@ static void Vaidya2_always_Body(cGH const * restrict const cctkGH, int const dir
       Jac23*(G21*Jac11 + G22*Jac21 + G32*Jac31) + (G31*Jac11 + G32*Jac21 + 
       G33*Jac31)*Jac33;
     
-    CCTK_REAL gyyL = 2*(G32*Jac22*Jac32 + Jac12*(G21*Jac22 + G31*Jac32)) + 
-      G11*SQR(Jac12) + G22*SQR(Jac22) + G33*SQR(Jac32);
+    CCTK_REAL csetemp24 = SQR(Jac12);
+    
+    CCTK_REAL csetemp25 = SQR(Jac22);
+    
+    CCTK_REAL csetemp26 = SQR(Jac32);
+    
+    CCTK_REAL gyyL = csetemp24*G11 + csetemp25*G22 + csetemp26*G33 + 
+      2*(G32*Jac22*Jac32 + Jac12*(G21*Jac22 + G31*Jac32));
     
     CCTK_REAL gyzL = Jac13*(G11*Jac12 + G21*Jac22 + G31*Jac32) + 
       Jac23*(G21*Jac12 + G22*Jac22 + G32*Jac32) + (G31*Jac12 + G32*Jac22 + 
       G33*Jac32)*Jac33;
     
-    CCTK_REAL gzzL = 2*(G32*Jac23*Jac33 + Jac13*(G21*Jac23 + G31*Jac33)) + 
-      G11*SQR(Jac13) + G22*SQR(Jac23) + G33*SQR(Jac33);
+    CCTK_REAL csetemp27 = SQR(Jac13);
     
-    CCTK_REAL kxxL = 2*(Jac11*(Jac21*K21 + Jac31*K31) + Jac21*Jac31*K32) + 
-      K11*SQR(Jac11) + K22*SQR(Jac21) + K33*SQR(Jac31);
+    CCTK_REAL csetemp28 = SQR(Jac23);
+    
+    CCTK_REAL csetemp29 = SQR(Jac33);
+    
+    CCTK_REAL gzzL = csetemp27*G11 + csetemp28*G22 + csetemp29*G33 + 
+      2*(G32*Jac23*Jac33 + Jac13*(G21*Jac23 + G31*Jac33));
+    
+    CCTK_REAL kxxL = csetemp21*K11 + csetemp22*K22 + 2*(Jac11*(Jac21*K21 + 
+      Jac31*K31) + Jac21*Jac31*K32) + csetemp23*K33;
     
     CCTK_REAL kxyL = Jac11*(Jac12*K11 + Jac22*K21 + Jac32*K31) + 
       Jac21*(Jac12*K21 + Jac22*K22 + Jac32*K32) + Jac31*(Jac12*K31 + 
@@ -281,15 +324,15 @@ static void Vaidya2_always_Body(cGH const * restrict const cctkGH, int const dir
       Jac21*(Jac13*K21 + Jac23*K22 + Jac33*K32) + Jac31*(Jac13*K31 + 
       Jac23*K32 + Jac33*K33);
     
-    CCTK_REAL kyyL = 2*(Jac12*(Jac22*K21 + Jac32*K31) + Jac22*Jac32*K32) + 
-      K11*SQR(Jac12) + K22*SQR(Jac22) + K33*SQR(Jac32);
+    CCTK_REAL kyyL = csetemp24*K11 + csetemp25*K22 + 2*(Jac12*(Jac22*K21 + 
+      Jac32*K31) + Jac22*Jac32*K32) + csetemp26*K33;
     
     CCTK_REAL kyzL = Jac12*(Jac13*K11 + Jac23*K21 + Jac33*K31) + 
       Jac22*(Jac13*K21 + Jac23*K22 + Jac33*K32) + Jac32*(Jac13*K31 + 
       Jac23*K32 + Jac33*K33);
     
-    CCTK_REAL kzzL = 2*(Jac13*(Jac23*K21 + Jac33*K31) + Jac23*Jac33*K32) + 
-      K11*SQR(Jac13) + K22*SQR(Jac23) + K33*SQR(Jac33);
+    CCTK_REAL kzzL = csetemp27*K11 + csetemp28*K22 + 2*(Jac13*(Jac23*K21 + 
+      Jac33*K31) + Jac23*Jac33*K32) + csetemp29*K33;
     
     CCTK_REAL betaxL = betap1*InvJac11 + betap2*InvJac12 + betap3*InvJac13 
       + shiftadd1;

@@ -103,28 +103,35 @@ static void KerrSchild_initial_Body(cGH const * restrict const cctkGH, int const
     
     CCTK_REAL shiftadd3 = ToReal(shiftaddz);
     
-    CCTK_REAL Jac11 = cos(ToReal(phi))*cos(ToReal(psi)) - 
-      cos(ToReal(theta))*sin(ToReal(phi))*sin(ToReal(psi));
+    CCTK_REAL csetemp0 = cos(ToReal(phi));
     
-    CCTK_REAL Jac12 = cos(ToReal(psi))*sin(ToReal(phi)) + 
-      cos(ToReal(phi))*cos(ToReal(theta))*sin(ToReal(psi));
+    CCTK_REAL csetemp1 = cos(ToReal(psi));
     
-    CCTK_REAL Jac13 = sin(ToReal(psi))*sin(ToReal(theta));
+    CCTK_REAL csetemp2 = cos(ToReal(theta));
     
-    CCTK_REAL Jac21 = 
-      -(cos(ToReal(psi))*cos(ToReal(theta))*sin(ToReal(phi))) - 
-      cos(ToReal(phi))*sin(ToReal(psi));
+    CCTK_REAL csetemp3 = sin(ToReal(phi));
     
-    CCTK_REAL Jac22 = cos(ToReal(phi))*cos(ToReal(psi))*cos(ToReal(theta)) 
-      - sin(ToReal(phi))*sin(ToReal(psi));
+    CCTK_REAL csetemp4 = sin(ToReal(psi));
     
-    CCTK_REAL Jac23 = cos(ToReal(psi))*sin(ToReal(theta));
+    CCTK_REAL Jac11 = csetemp0*csetemp1 - csetemp2*csetemp3*csetemp4;
     
-    CCTK_REAL Jac31 = sin(ToReal(phi))*sin(ToReal(theta));
+    CCTK_REAL Jac12 = csetemp1*csetemp3 + csetemp0*csetemp2*csetemp4;
     
-    CCTK_REAL Jac32 = -(cos(ToReal(phi))*sin(ToReal(theta)));
+    CCTK_REAL csetemp5 = sin(ToReal(theta));
     
-    CCTK_REAL Jac33 = cos(ToReal(theta));
+    CCTK_REAL Jac13 = csetemp4*csetemp5;
+    
+    CCTK_REAL Jac21 = -(csetemp1*csetemp2*csetemp3) - csetemp0*csetemp4;
+    
+    CCTK_REAL Jac22 = csetemp0*csetemp1*csetemp2 - csetemp3*csetemp4;
+    
+    CCTK_REAL Jac23 = csetemp1*csetemp5;
+    
+    CCTK_REAL Jac31 = csetemp3*csetemp5;
+    
+    CCTK_REAL Jac32 = -(csetemp0*csetemp5);
+    
+    CCTK_REAL Jac33 = csetemp2;
     
     CCTK_REAL InvJac11 = Jac11;
     
@@ -146,17 +153,20 @@ static void KerrSchild_initial_Body(cGH const * restrict const cctkGH, int const
     
     CCTK_REAL T = t - ToReal(positiont);
     
-    CCTK_REAL XX1 = -(Jac11*(position1 + shiftadd1*T - xx1)) - 
-      Jac12*(position2 + shiftadd2*T - xx2) - Jac13*(position3 + shiftadd3*T 
-      - xx3);
+    CCTK_REAL csetemp6 = -(shiftadd1*T);
     
-    CCTK_REAL XX2 = -(Jac21*(position1 + shiftadd1*T - xx1)) - 
-      Jac22*(position2 + shiftadd2*T - xx2) - Jac23*(position3 + shiftadd3*T 
-      - xx3);
+    CCTK_REAL csetemp7 = -(shiftadd2*T);
     
-    CCTK_REAL XX3 = -(Jac31*(position1 + shiftadd1*T - xx1)) - 
-      Jac32*(position2 + shiftadd2*T - xx2) - Jac33*(position3 + shiftadd3*T 
-      - xx3);
+    CCTK_REAL csetemp8 = -(shiftadd3*T);
+    
+    CCTK_REAL XX1 = Jac11*(csetemp6 - position1 + xx1) + Jac12*(csetemp7 - 
+      position2 + xx2) + Jac13*(csetemp8 - position3 + xx3);
+    
+    CCTK_REAL XX2 = Jac21*(csetemp6 - position1 + xx1) + Jac22*(csetemp7 - 
+      position2 + xx2) + Jac23*(csetemp8 - position3 + xx3);
+    
+    CCTK_REAL XX3 = Jac31*(csetemp6 - position1 + xx1) + Jac32*(csetemp7 - 
+      position2 + xx2) + Jac33*(csetemp8 - position3 + xx3);
     
     CCTK_REAL X = XX1;
     
@@ -164,387 +174,538 @@ static void KerrSchild_initial_Body(cGH const * restrict const cctkGH, int const
     
     CCTK_REAL Z = XX3;
     
-    CCTK_REAL rXYZ = INV(sqrt(2))*sqrt(SQR(X) + SQR(Y) + SQR(Z) - 
-      SQR(ToReal(a)) + sqrt(SQR(SQR(X) + SQR(Y) + SQR(Z) - SQR(ToReal(a))) + 
-      4*SQR(Z*ToReal(a))));
+    CCTK_REAL csetemp9 = SQR(ToReal(a));
     
-    alpL = INV(sqrt(1 + 2*CUB(rXYZ)*INV(QAD(rXYZ) + 
-      SQR(Z*ToReal(a)))*ToReal(M)));
+    CCTK_REAL csetemp10 = SQR(X);
+    
+    CCTK_REAL csetemp11 = SQR(Y);
+    
+    CCTK_REAL csetemp12 = SQR(Z);
+    
+    CCTK_REAL rXYZ = INV(sqrt(2))*sqrt(csetemp10 + csetemp11 + csetemp12 - 
+      csetemp9 + sqrt(4*csetemp12*csetemp9 + SQR(csetemp10 + csetemp11 + 
+      csetemp12 - csetemp9)));
+    
+    CCTK_REAL csetemp13 = CUB(rXYZ);
+    
+    CCTK_REAL csetemp14 = QAD(rXYZ);
+    
+    alpL = INV(sqrt(1 + 2*csetemp13*INV(csetemp14 + 
+      csetemp12*csetemp9)*ToReal(M)));
     
     CCTK_REAL dtalpL = 0;
     
-    CCTK_REAL G11 = 1 + 2*CUB(rXYZ)*INV(SQR(SQR(rXYZ) + 
-      SQR(ToReal(a)))*(QAD(rXYZ) + SQR(Z*ToReal(a))))*SQR(rXYZ*X + 
-      Y*ToReal(a))*ToReal(M);
+    CCTK_REAL csetemp15 = SQR(rXYZ);
     
-    CCTK_REAL G21 = 2*CUB(rXYZ)*INV(SQR(SQR(rXYZ) + 
-      SQR(ToReal(a)))*(QAD(rXYZ) + SQR(Z*ToReal(a))))*(rXYZ*Y - 
-      X*ToReal(a))*(rXYZ*X + Y*ToReal(a))*ToReal(M);
+    CCTK_REAL csetemp16 = rXYZ*X;
     
-    CCTK_REAL G31 = 2*Z*INV((SQR(rXYZ) + SQR(ToReal(a)))*(QAD(rXYZ) + 
-      SQR(Z*ToReal(a))))*SQR(rXYZ)*(rXYZ*X + Y*ToReal(a))*ToReal(M);
+    CCTK_REAL csetemp17 = Y*ToReal(a);
     
-    CCTK_REAL G22 = 1 + 2*CUB(rXYZ)*INV(SQR(SQR(rXYZ) + 
-      SQR(ToReal(a)))*(QAD(rXYZ) + SQR(Z*ToReal(a))))*SQR(-(rXYZ*Y) + 
-      X*ToReal(a))*ToReal(M);
+    CCTK_REAL G11 = 1 + 2*csetemp13*INV((csetemp14 + 
+      csetemp12*csetemp9)*SQR(csetemp15 + csetemp9))*SQR(csetemp16 + 
+      csetemp17)*ToReal(M);
     
-    CCTK_REAL G32 = 2*Z*INV((SQR(rXYZ) + SQR(ToReal(a)))*(QAD(rXYZ) + 
-      SQR(Z*ToReal(a))))*SQR(rXYZ)*(rXYZ*Y - X*ToReal(a))*ToReal(M);
+    CCTK_REAL csetemp18 = X*ToReal(a);
     
-    CCTK_REAL G33 = 1 + 2*rXYZ*INV(QAD(rXYZ) + 
-      SQR(Z*ToReal(a)))*SQR(Z)*ToReal(M);
+    CCTK_REAL csetemp19 = -csetemp18;
     
-    CCTK_REAL K11 = -2*CUB(rXYZ)*INV(alpL*QAD(SQR(rXYZ) + 
-      SQR(ToReal(a)))*SQR(QAD(rXYZ) + SQR(Z*ToReal(a)))*SQR(QAD(rXYZ) + 
-      SQR(Z*ToReal(a)) + 2*CUB(rXYZ)*ToReal(M))*sqrt(SQR(SQR(X) + SQR(Y) + 
-      SQR(Z) - SQR(ToReal(a))) + 
-      4*SQR(Z*ToReal(a))))*ToReal(M)*(CUB(rXYZ)*(-((rXYZ*Y - 
-      X*ToReal(a))*(rXYZ*X + Y*ToReal(a))*(-3*X*Y*pow(rXYZ,7) + 
-      2*pow(ToReal(a),7)*SQR(Z) + 5*rXYZ*X*Y*QAD(ToReal(a))*SQR(Z) + 
-      CUB(ToReal(a))*SQR(rXYZ)*(6*QAD(rXYZ) + SQR(rXYZ)*(-2*SQR(X) - 3*SQR(Y) 
-      + 2*SQR(Z)) - SQR(Z)*(2*SQR(X) + 3*SQR(Y) + 2*SQR(Z))) + 
-      pow(ToReal(a),5)*(2*QAD(rXYZ) + (-2*SQR(X) + SQR(Y) - 2*SQR(Z))*SQR(Z) 
-      + 6*SQR(rXYZ*Z)) + X*Y*CUB(rXYZ)*(SQR(rXYZ) + SQR(Z))*SQR(ToReal(a)) + 
-      pow(rXYZ,6)*(4*SQR(rXYZ) - 2*SQR(X) - 7*SQR(Y) - 2*SQR(Z))*ToReal(a))) 
-      - SQR(rXYZ*X + Y*ToReal(a))*(3*X*Y*pow(ToReal(a),5)*SQR(Z) + 
-      2*rXYZ*pow(ToReal(a),6)*SQR(Z) + pow(rXYZ,7)*(4*SQR(rXYZ) - 5*SQR(X) - 
-      2*(SQR(Y) + SQR(Z))) + rXYZ*QAD(ToReal(a))*(2*QAD(rXYZ) + 
-      SQR(Z)*(3*SQR(X) - 2*(SQR(Y) + SQR(Z))) + 6*SQR(rXYZ*Z)) + 
-      CUB(rXYZ)*(6*QAD(rXYZ) - SQR(rXYZ)*(SQR(X) + 2*SQR(Y) - 2*SQR(Z)) - 
-      SQR(Z)*(SQR(X) + 2*(SQR(Y) + SQR(Z))))*SQR(ToReal(a)) + 
-      X*Y*(-(CUB(ToReal(a))*SQR(rXYZ)*(SQR(rXYZ) + SQR(Z))) - 
-      5*pow(rXYZ,6)*ToReal(a))))*ToReal(M)*(QAD(rXYZ) + SQR(Z*ToReal(a)) + 
-      2*CUB(rXYZ)*ToReal(M)) + (rXYZ*X + 
-      Y*ToReal(a))*ToReal(M)*(4*rXYZ*X*CUB(SQR(rXYZ) + 
-      SQR(ToReal(a)))*SQR(Z)*(QAD(rXYZ) + SQR(Z*ToReal(a)))*(QAD(rXYZ) - 
-      SQR(Z*ToReal(a)) + CUB(rXYZ)*ToReal(M)) - SQR(Z*(SQR(rXYZ) + 
-      SQR(ToReal(a))))*(-3*X*pow(rXYZ,7) + 
-      Y*CUB(ToReal(a))*SQR(rXYZ)*(-5*SQR(rXYZ) + 2*SQR(X) + 2*SQR(Y) + 
-      SQR(Z)) + QAD(ToReal(a))*(-2*X*CUB(rXYZ) + 5*rXYZ*X*SQR(Z)) + 
-      pow(ToReal(a),5)*(-2*Y*SQR(rXYZ) + 3*Y*SQR(Z)) + 
-      X*CUB(rXYZ)*(-3*SQR(rXYZ) + 2*SQR(X) + 2*SQR(Y) + 
-      3*SQR(Z))*SQR(ToReal(a)) - 5*Y*pow(rXYZ,6)*ToReal(a))*(QAD(rXYZ) + 
-      SQR(Z*ToReal(a)) + 2*CUB(rXYZ)*ToReal(M))) + (QAD(rXYZ) + 
-      SQR(Z*ToReal(a)))*(pow(rXYZ,8) + pow(ToReal(a),6)*SQR(Z) + 
-      QAD(ToReal(a))*(QAD(rXYZ) + 2*SQR(rXYZ*Z)) + 
-      2*pow(rXYZ,5)*SQR(X)*ToReal(M) + 4*X*Y*QAD(rXYZ)*ToReal(a)*ToReal(M) + 
-      CUB(rXYZ)*SQR(ToReal(a))*(2*CUB(rXYZ) + rXYZ*SQR(Z) + 
-      2*SQR(Y)*ToReal(M)))*(-2*pow(rXYZ,9) + X*Y*(-3*pow(ToReal(a),5)*SQR(Z) 
-      - CUB(ToReal(a))*SQR(rXYZ*Z)) + pow(rXYZ,7)*(3*SQR(X) + SQR(Y) + SQR(Z) 
-      - 3*SQR(ToReal(a))) + rXYZ*QAD(ToReal(a))*SQR(Z)*(-3*SQR(X) + SQR(Y) + 
-      SQR(Z) - SQR(ToReal(a))) + CUB(rXYZ)*(-SQR(X) + SQR(Y) + SQR(Z) - 
-      3*SQR(ToReal(a)))*SQR(Z*ToReal(a)) - 4*pow(rXYZ,8)*ToReal(M) + 
-      pow(rXYZ,5)*ToReal(a)*(-CUB(ToReal(a)) + (SQR(X) + SQR(Y) - 
-      SQR(Z))*ToReal(a) + 4*X*Y*ToReal(M)) + pow(rXYZ,6)*(3*X*Y*ToReal(a) + 
-      2*(2*SQR(X) + SQR(Y) + SQR(Z))*ToReal(M) - 6*SQR(ToReal(a))*ToReal(M)) 
-      + QAD(rXYZ)*SQR(ToReal(a))*(X*Y*ToReal(a) + 2*(SQR(Y) + 
-      SQR(Z))*ToReal(M) - 2*SQR(ToReal(a))*ToReal(M))) + 
-      2*CUB(rXYZ)*(QAD(rXYZ) + SQR(Z*ToReal(a)))*(rXYZ*Y - 
-      X*ToReal(a))*(rXYZ*X + 
-      Y*ToReal(a))*ToReal(M)*(-4*rXYZ*X*Y*QAD(ToReal(a))*SQR(Z) + 
-      pow(ToReal(a),5)*SQR(Z)*(2*SQR(X) - SQR(Y) - SQR(Z) + SQR(ToReal(a))) + 
-      CUB(ToReal(a))*SQR(rXYZ*Z)*(-SQR(Y) - SQR(Z) + 3*SQR(ToReal(a))) + 
-      2*pow(rXYZ,8)*ToReal(a) + 2*pow(rXYZ,5)*(-3*SQR(X) - SQR(Y) - SQR(Z) + 
-      3*SQR(ToReal(a)))*ToReal(a)*ToReal(M) + 
-      QAD(rXYZ)*SQR(ToReal(a))*(CUB(ToReal(a)) + (-2*SQR(X) - SQR(Y) + 
-      SQR(Z))*ToReal(a) - 2*X*Y*ToReal(M)) + pow(rXYZ,6)*(3*CUB(ToReal(a)) - 
-      (4*SQR(X) + SQR(Y) + SQR(Z))*ToReal(a) + 2*X*Y*ToReal(M)) + 
-      2*pow(rXYZ,7)*(X*Y + 2*ToReal(a)*ToReal(M)) + 
-      2*CUB(rXYZ)*SQR(ToReal(a))*(-(X*Y*SQR(Z)) + (CUB(ToReal(a)) - (SQR(X) + 
-      SQR(Y) + SQR(Z))*ToReal(a))*ToReal(M))));
+    CCTK_REAL csetemp20 = rXYZ*Y;
     
-    CCTK_REAL K21 = CUB(rXYZ)*INV(alpL*QAD(SQR(rXYZ) + 
-      SQR(ToReal(a)))*SQR(QAD(rXYZ) + SQR(Z*ToReal(a)))*SQR(QAD(rXYZ) + 
-      SQR(Z*ToReal(a)) + 2*CUB(rXYZ)*ToReal(M))*sqrt(SQR(SQR(X) + SQR(Y) + 
-      SQR(Z) - SQR(ToReal(a))) + 
-      4*SQR(Z*ToReal(a))))*ToReal(M)*(3*pow(Z,6)*pow(ToReal(a),13)*(-SQR(X) + 
-      SQR(Y)) + QAD(Z)*(2*X*Y*pow(ToReal(a),12)*(SQR(Z)*(4*rXYZ - 
-      3*ToReal(M)) + 2*SQR(rXYZ)*ToReal(M)) + rXYZ*pow(ToReal(a),11)*(SQR(X) 
-      - SQR(Y))*(-5*CUB(rXYZ) - 7*rXYZ*SQR(Z) + 4*(SQR(rXYZ) - 
-      3*SQR(Z))*ToReal(M))) + (SQR(X) - 
-      SQR(Y))*(pow(rXYZ,14)*ToReal(a)*(3*QAD(rXYZ) - 4*(8*SQR(rXYZ) - 
-      9*(SQR(X) + SQR(Y) + SQR(Z)))*SQR(ToReal(M)) - 4*rXYZ*(3*SQR(rXYZ) - 
-      5*(SQR(X) + SQR(Y) + SQR(Z)))*ToReal(M)) - 
-      pow(rXYZ,8)*pow(ToReal(a),5)*(-(SQR(rXYZ)*(5*QAD(rXYZ) + QAD(Z) + 
-      9*SQR(rXYZ*Z))) + 4*(4*QAD(rXYZ) + SQR(Z)*(3*SQR(X) + 3*SQR(Y) + 
-      SQR(Z)) - 5*SQR(rXYZ*Z))*SQR(ToReal(M)) + 2*rXYZ*(2*QAD(rXYZ) + 
-      2*(SQR(X) + SQR(Y) - 3*SQR(Z))*SQR(Z) - SQR(rXYZ)*(SQR(X) + SQR(Y) + 
-      4*SQR(Z)))*ToReal(M)) + CUB(ToReal(a))*pow(rXYZ,10)*(7*pow(rXYZ,6) + 
-      5*QAD(rXYZ)*SQR(Z) + 4*(-12*QAD(rXYZ) + 3*SQR(Z)*(SQR(X) + SQR(Y) + 
-      SQR(Z)) + SQR(rXYZ)*(5*SQR(X) + 5*SQR(Y) + 11*SQR(Z)))*SQR(ToReal(M)) + 
-      2*rXYZ*(-8*QAD(rXYZ) + 10*SQR(Z)*(SQR(X) + SQR(Y) + SQR(Z)) + 
-      SQR(rXYZ)*(7*SQR(X) + 7*SQR(Y) + 10*SQR(Z)))*ToReal(M)) - 
-      CUB(rXYZ)*pow(ToReal(a),9)*SQR(Z)*(pow(rXYZ,5) + 5*rXYZ*QAD(Z) + 
-      9*CUB(rXYZ)*SQR(Z) + (-8*CUB(rXYZ) + 12*rXYZ*SQR(Z))*SQR(ToReal(M)) + 
-      (-4*QAD(rXYZ) + 2*SQR(Z)*(5*SQR(X) + 5*SQR(Y) + 16*SQR(Z)) - 
-      4*SQR(rXYZ*Z))*ToReal(M)) - pow(rXYZ,5)*pow(ToReal(a),7)*(-pow(rXYZ,7) 
-      - 3*pow(rXYZ,5)*SQR(Z) + rXYZ*SQR(Z)*(QAD(Z) + 4*(2*SQR(X) + 2*SQR(Y) + 
-      7*SQR(Z))*SQR(ToReal(M))) + CUB(rXYZ)*(3*QAD(Z) - 20*SQR(Z*ToReal(M))) 
-      - 12*QAD(rXYZ)*SQR(Z)*ToReal(M) + 2*QAD(Z)*(9*SQR(X) + 9*SQR(Y) + 
-      10*SQR(Z))*ToReal(M) + 8*(SQR(X) + SQR(Y) + 
-      SQR(Z))*SQR(rXYZ*Z)*ToReal(M))) + X*Y*(-2*pow(rXYZ,15)*(2*QAD(rXYZ) - 
-      2*(8*SQR(rXYZ) - 9*(SQR(X) + SQR(Y) + SQR(Z)))*SQR(ToReal(M)) + 
-      rXYZ*(-6*SQR(rXYZ) + 11*(SQR(X) + SQR(Y) + SQR(Z)))*ToReal(M)) + 
-      4*pow(ToReal(a),10)*SQR(rXYZ*Z)*(5*rXYZ*QAD(Z) + 4*CUB(rXYZ)*SQR(Z) + 
-      (2*CUB(rXYZ) - 3*rXYZ*SQR(Z))*SQR(ToReal(M)) + (QAD(rXYZ) + 
-      SQR(Z)*(-SQR(X) - SQR(Y) + SQR(Z)) + SQR(rXYZ*Z))*ToReal(M)) + 
-      2*(pow(ToReal(a),8)*QAD(rXYZ)*SQR(Z)*(4*pow(rXYZ,5) + 
-      18*CUB(rXYZ)*SQR(Z) + rXYZ*(8*QAD(Z) + 2*(3*SQR(rXYZ) - 2*(SQR(X) + 
-      SQR(Y) + 2*SQR(Z)))*SQR(ToReal(M))) + (3*QAD(rXYZ) - 
-      2*SQR(rXYZ)*(SQR(X) + SQR(Y) - SQR(Z)) + SQR(Z)*(5*(SQR(X) + SQR(Y)) + 
-      24*SQR(Z)))*ToReal(M)) + pow(rXYZ,8)*QAD(ToReal(a))*(-2*pow(rXYZ,7) + 
-      2*(CUB(rXYZ)*QAD(Z) + rXYZ*(-8*QAD(rXYZ) + 2*SQR(Z)*(3*(SQR(X) + 
-      SQR(Y)) + 2*SQR(Z)) + SQR(rXYZ)*(5*(SQR(X) + SQR(Y)) + 
-      6*SQR(Z)))*SQR(ToReal(M))) + 3*(-2*pow(rXYZ,6) + QAD(rXYZ)*(SQR(X) + 
-      SQR(Y)) + QAD(Z)*(SQR(X) + SQR(Y) + SQR(Z)) + 2*(3*(SQR(X) + SQR(Y)) + 
-      2*SQR(Z))*SQR(rXYZ*Z))*ToReal(M))) - 
-      4*(pow(rXYZ,11)*SQR(ToReal(a))*(QAD(rXYZ)*(2*SQR(rXYZ) + SQR(Z)) + 
-      (-4*QAD(rXYZ) + 3*SQR(Z)*(SQR(X) + SQR(Y) + SQR(Z)) + 
-      SQR(rXYZ)*(-4*(SQR(X) + SQR(Y)) + 2*SQR(Z)))*SQR(ToReal(M)) + 
-      rXYZ*(-QAD(rXYZ) + 4*SQR(Z)*(SQR(X) + SQR(Y) + SQR(Z)) + 
-      2*SQR(rXYZ*Z))*ToReal(M)) + 
-      pow(rXYZ,6)*pow(ToReal(a),6)*(rXYZ*(-(SQR(Z)*(3*QAD(rXYZ) + QAD(Z) + 
-      6*SQR(rXYZ*Z))) + (4*QAD(rXYZ) + (SQR(X) + SQR(Y) - 
-      6*SQR(Z))*SQR(Z))*SQR(ToReal(M))) + (pow(rXYZ,6) + 3*QAD(rXYZ)*SQR(Z) - 
-      QAD(Z)*(9*SQR(X) + 9*SQR(Y) + 11*SQR(Z)) - (4*SQR(X) + 4*SQR(Y) + 
-      11*SQR(Z))*SQR(rXYZ*Z))*ToReal(M)))));
+    CCTK_REAL G21 = 2*csetemp13*(csetemp16 + csetemp17)*(csetemp19 + 
+      csetemp20)*INV((csetemp14 + csetemp12*csetemp9)*SQR(csetemp15 + 
+      csetemp9))*ToReal(M);
     
-    CCTK_REAL K31 = rXYZ*Z*INV(alpL*CUB(SQR(rXYZ) + 
-      SQR(ToReal(a)))*SQR(QAD(rXYZ) + SQR(Z*ToReal(a)))*SQR(QAD(rXYZ) + 
-      SQR(Z*ToReal(a)) + 2*CUB(rXYZ)*ToReal(M))*sqrt(SQR(SQR(X) + SQR(Y) + 
-      SQR(Z) - SQR(ToReal(a))) + 
-      4*SQR(Z*ToReal(a))))*ToReal(M)*(Y*(pow(ToReal(a),13)*(3*pow(Z,6) - 
-      2*QAD(Z)*SQR(rXYZ)) - pow(rXYZ,14)*ToReal(a)*(3*QAD(rXYZ) - 
-      4*(8*SQR(rXYZ) - 9*(SQR(X) + SQR(Y) + SQR(Z)))*SQR(ToReal(M)) - 
-      4*rXYZ*(3*SQR(rXYZ) - 5*(SQR(X) + SQR(Y) + SQR(Z)))*ToReal(M)) + 
-      rXYZ*pow(ToReal(a),11)*SQR(Z)*(-4*pow(rXYZ,5) - 3*CUB(rXYZ)*SQR(Z) + 
-      rXYZ*SQR(Z)*(2*SQR(X) + 2*SQR(Y) + 9*SQR(Z)) + 8*QAD(Z)*ToReal(M) - 
-      4*SQR(rXYZ*Z)*ToReal(M)) + CUB(rXYZ)*pow(ToReal(a),9)*(-2*pow(rXYZ,7) - 
-      15*pow(rXYZ,5)*SQR(Z) + CUB(rXYZ)*SQR(Z)*(4*SQR(X) + 4*SQR(Y) + 
-      3*SQR(Z)) + rXYZ*QAD(Z)*(4*SQR(X) + 4*SQR(Y) + 9*SQR(Z) + 
-      4*SQR(ToReal(M))) + 2*QAD(Z)*(5*SQR(X) + 5*SQR(Y) + 
-      12*SQR(Z))*ToReal(M) - 4*(SQR(X) + SQR(Y) + 
-      4*SQR(Z))*SQR(rXYZ*Z)*ToReal(M)) - 
-      CUB(ToReal(a))*pow(rXYZ,10)*(QAD(rXYZ)*(11*SQR(rXYZ) - 2*SQR(X) - 
-      2*SQR(Y) + 3*SQR(Z)) + 4*(-16*QAD(rXYZ) + 3*SQR(Z)*(SQR(X) + SQR(Y) + 
-      SQR(Z)) + 3*SQR(rXYZ)*(3*SQR(X) + 3*SQR(Y) + 5*SQR(Z)))*SQR(ToReal(M)) 
-      + 2*rXYZ*(-12*QAD(rXYZ) + 3*SQR(rXYZ)*(5*SQR(X) + 5*SQR(Y) + 6*SQR(Z)) 
-      - 2*(QAD(X) + QAD(Y) - 4*QAD(Z) + SQR(X)*(2*SQR(Y) - 3*SQR(Z)) - 
-      3*SQR(Y*Z)))*ToReal(M)) + 
-      pow(rXYZ,5)*pow(ToReal(a),7)*(rXYZ*(-9*pow(rXYZ,6) + 
-      QAD(rXYZ)*(2*SQR(X) + 2*SQR(Y) - 21*SQR(Z)) + QAD(Z)*(2*SQR(X) + 
-      2*SQR(Y) + 3*SQR(Z)) + (8*SQR(X) + 8*SQR(Y) + 7*SQR(Z))*SQR(rXYZ*Z)) + 
-      4*rXYZ*(2*QAD(rXYZ) + QAD(Z) - SQR(rXYZ*Z))*SQR(ToReal(M)) + 
-      (4*pow(rXYZ,6) - 4*QAD(rXYZ)*(SQR(X) + SQR(Y) + 2*SQR(Z)) - 8*(SQR(X) + 
-      SQR(Y) + 3*SQR(Z))*SQR(rXYZ*Z) + 2*SQR(Z)*(2*QAD(X) + 2*QAD(Y) + 
-      10*QAD(Z) + SQR(X)*(4*SQR(Y) + 11*SQR(Z)) + 11*SQR(Y*Z)))*ToReal(M)) + 
-      pow(rXYZ,7)*pow(ToReal(a),5)*(CUB(rXYZ)*(-15*QAD(rXYZ) + 
-      SQR(rXYZ)*(4*SQR(X) + 4*SQR(Y) - 13*SQR(Z)) + SQR(Z)*(4*SQR(X) + 
-      4*SQR(Y) + 3*SQR(Z))) + 4*rXYZ*(10*QAD(rXYZ) - SQR(Z)*(SQR(X) + SQR(Y) 
-      + 3*SQR(Z)) - SQR(rXYZ)*(2*SQR(X) + 2*SQR(Y) + 
-      7*SQR(Z)))*SQR(ToReal(M)) + 2*(8*pow(rXYZ,6) - 3*QAD(rXYZ)*(3*SQR(X) + 
-      3*SQR(Y) + 4*SQR(Z)) + 2*SQR(rXYZ)*(QAD(X) + QAD(Y) - 7*QAD(Z) + 
-      2*SQR(X)*(SQR(Y) - SQR(Z)) - 2*SQR(Y*Z)) + 2*SQR(Z*(SQR(X) + SQR(Y) + 
-      SQR(Z))))*ToReal(M))) + X*(-2*(pow(ToReal(a),12)*QAD(Z)*(CUB(rXYZ) - 
-      3*rXYZ*SQR(Z)) + pow(rXYZ,15)*(2*QAD(rXYZ) - 2*(8*SQR(rXYZ) - 9*(SQR(X) 
-      + SQR(Y) + SQR(Z)))*SQR(ToReal(M)) + rXYZ*(-6*SQR(rXYZ) + 11*(SQR(X) + 
-      SQR(Y) + SQR(Z)))*ToReal(M)) + 
-      pow(rXYZ,11)*SQR(ToReal(a))*(QAD(rXYZ)*(7*SQR(rXYZ) - SQR(X) - SQR(Y) + 
-      SQR(Z)) + (-32*QAD(rXYZ) + 6*(SQR(Z)*(SQR(X) + SQR(Y) + SQR(Z)) + 
-      SQR(rXYZ)*(3*(SQR(X) + SQR(Y)) + 5*SQR(Z))))*SQR(ToReal(M)) + 
-      rXYZ*(-12*QAD(rXYZ) + SQR(rXYZ)*(17*(SQR(X) + SQR(Y)) + 21*SQR(Z)) - 
-      2*(QAD(X) + QAD(Y) - 3*QAD(Z) + 2*SQR(X)*(SQR(Y) - SQR(Z)) - 
-      2*SQR(Y*Z)))*ToReal(M)) + pow(ToReal(a),8)*QAD(rXYZ)*(pow(rXYZ,7) + 
-      SQR(Z)*(7*pow(rXYZ,5) - CUB(rXYZ)*(2*SQR(X) + 2*SQR(Y) + 9*SQR(Z))) + 
-      2*(SQR(X) + SQR(Y) + 3*SQR(Z))*SQR(rXYZ*Z)*ToReal(M) + 
-      QAD(Z)*(-(rXYZ*(2*SQR(X) + 2*SQR(Y) + 9*SQR(Z) + 2*SQR(ToReal(M)))) - 
-      (8*SQR(X) + 8*SQR(Y) + 21*SQR(Z))*ToReal(M)))) + 
-      2*(pow(rXYZ,8)*QAD(ToReal(a))*(-(CUB(rXYZ)*(SQR(rXYZ) + 
-      SQR(Z))*(9*SQR(rXYZ) - 2*(SQR(X) + SQR(Y) + 2*SQR(Z)))) + 
-      2*rXYZ*(10*QAD(rXYZ) - SQR(Z)*(SQR(X) + SQR(Y) + 3*SQR(Z)) - 
-      SQR(rXYZ)*(2*SQR(X) + 2*SQR(Y) + 7*SQR(Z)))*SQR(ToReal(M)) + 
-      (8*pow(rXYZ,6) + 2*SQR(rXYZ)*(QAD(X) + QAD(Y) - 4*QAD(Z) + 2*SQR(X*Y)) 
-      - 5*QAD(rXYZ)*(2*(SQR(X) + SQR(Y)) + 3*SQR(Z)) + SQR(Z)*(2*(QAD(X) + 
-      QAD(Y)) + 5*QAD(Z) + SQR(X)*(4*SQR(Y) + 7*SQR(Z)) + 
-      7*SQR(Y*Z)))*ToReal(M)) + 
-      pow(rXYZ,6)*pow(ToReal(a),6)*(rXYZ*(-5*pow(rXYZ,6) + QAD(rXYZ)*(SQR(X) 
-      + SQR(Y) - 9*SQR(Z)) + QAD(Z)*(SQR(X) + SQR(Y) + 3*SQR(Z)) + (4*(SQR(X) 
-      + SQR(Y)) + 11*SQR(Z))*SQR(rXYZ*Z) + 2*(2*QAD(rXYZ) + QAD(Z) - 
-      SQR(rXYZ*Z))*SQR(ToReal(M))) + (2*pow(rXYZ,6) - QAD(rXYZ)*(2*(SQR(X) + 
-      SQR(Y)) + 5*SQR(Z)) - 2*(SQR(X) + SQR(Y) + 3*SQR(Z))*SQR(rXYZ*Z) + 
-      SQR(Z)*(2*(QAD(X) + QAD(Y)) + 19*QAD(Z) + SQR(X)*(4*SQR(Y) + 17*SQR(Z)) 
-      + 17*SQR(Y*Z)))*ToReal(M)) + 
-      pow(ToReal(a),10)*SQR(rXYZ*Z)*(SQR(Z)*(CUB(rXYZ) + rXYZ*(SQR(X) + 
-      SQR(Y) + 9*SQR(Z))) + 7*QAD(Z)*ToReal(M) - 2*(pow(rXYZ,5) + 
-      SQR(rXYZ*Z)*ToReal(M))))));
+    CCTK_REAL G31 = 2*csetemp15*(csetemp16 + csetemp17)*Z*INV((csetemp15 + 
+      csetemp9)*(csetemp14 + csetemp12*csetemp9))*ToReal(M);
     
-    CCTK_REAL K22 = -2*CUB(rXYZ)*INV(alpL*QAD(SQR(rXYZ) + 
-      SQR(ToReal(a)))*SQR(QAD(rXYZ) + SQR(Z*ToReal(a)))*SQR(QAD(rXYZ) + 
-      SQR(Z*ToReal(a)) + 2*CUB(rXYZ)*ToReal(M))*sqrt(SQR(SQR(X) + SQR(Y) + 
-      SQR(Z) - SQR(ToReal(a))) + 4*SQR(Z*ToReal(a))))*ToReal(M)*((QAD(rXYZ) + 
-      SQR(Z*ToReal(a)))*(-2*pow(rXYZ,9) + X*Y*(3*pow(ToReal(a),5)*SQR(Z) + 
-      CUB(ToReal(a))*SQR(rXYZ*Z)) + pow(rXYZ,7)*(SQR(X) + 3*SQR(Y) + SQR(Z) - 
-      3*SQR(ToReal(a))) + rXYZ*QAD(ToReal(a))*SQR(Z)*(SQR(X) - 3*SQR(Y) + 
-      SQR(Z) - SQR(ToReal(a))) + CUB(rXYZ)*(SQR(X) - SQR(Y) + SQR(Z) - 
-      3*SQR(ToReal(a)))*SQR(Z*ToReal(a)) - 4*pow(rXYZ,8)*ToReal(M) - 
-      pow(rXYZ,5)*ToReal(a)*(CUB(ToReal(a)) - (SQR(X) + SQR(Y) - 
-      SQR(Z))*ToReal(a) + 4*X*Y*ToReal(M)) + pow(rXYZ,6)*(-3*X*Y*ToReal(a) + 
-      (2*(SQR(X) + 2*SQR(Y) + SQR(Z)) - 6*SQR(ToReal(a)))*ToReal(M)) + 
-      QAD(rXYZ)*SQR(ToReal(a))*(-(X*Y*ToReal(a)) + (2*(SQR(X) + SQR(Z)) - 
-      2*SQR(ToReal(a)))*ToReal(M)))*(pow(rXYZ,8) + pow(ToReal(a),6)*SQR(Z) + 
-      QAD(ToReal(a))*(QAD(rXYZ) + 2*SQR(rXYZ*Z)) + (2*pow(rXYZ,5)*SQR(Y) - 
-      4*X*Y*QAD(rXYZ)*ToReal(a))*ToReal(M) + 
-      CUB(rXYZ)*SQR(ToReal(a))*(rXYZ*SQR(Z) + 2*(CUB(rXYZ) + 
-      SQR(X)*ToReal(M)))) + ToReal(M)*((-(SQR(Z*(SQR(rXYZ) + 
-      SQR(ToReal(a))))*(-(rXYZ*Y) + X*ToReal(a))*(Y*(3*pow(rXYZ,7) + 
-      rXYZ*QAD(ToReal(a))*(2*SQR(rXYZ) - 5*SQR(Z)) + CUB(rXYZ)*(3*SQR(rXYZ) - 
-      2*(SQR(X) + SQR(Y)) - 3*SQR(Z))*SQR(ToReal(a))) + 
-      X*(CUB(ToReal(a))*SQR(rXYZ)*(-5*SQR(rXYZ) + 2*(SQR(X) + SQR(Y)) + 
-      SQR(Z)) + pow(ToReal(a),5)*(-2*SQR(rXYZ) + 3*SQR(Z)) - 
-      5*pow(rXYZ,6)*ToReal(a)))) + CUB(rXYZ)*((rXYZ*Y - X*ToReal(a))*(rXYZ*X 
-      + Y*ToReal(a))*(pow(ToReal(a),5)*SQR(Z)*(SQR(X) - 2*(SQR(Y) + SQR(Z)) + 
-      2*SQR(ToReal(a))) + CUB(ToReal(a))*(SQR(rXYZ*Z)*(-3*SQR(X) - 2*(SQR(Y) 
-      + SQR(Z)) + 6*SQR(ToReal(a))) + QAD(rXYZ)*(-3*SQR(X) - 2*SQR(Y) + 
-      2*(SQR(Z) + SQR(ToReal(a))))) + X*Y*(3*pow(rXYZ,7) - 
-      5*rXYZ*QAD(ToReal(a))*SQR(Z) - pow(rXYZ,5)*SQR(ToReal(a)) - 
-      CUB(rXYZ)*SQR(Z*ToReal(a))) + (4*pow(rXYZ,8) + pow(rXYZ,6)*(-7*SQR(X) - 
-      2*(SQR(Y) + SQR(Z)) + 6*SQR(ToReal(a))))*ToReal(a)) - SQR(-(rXYZ*Y) + 
-      X*ToReal(a))*(pow(rXYZ,7)*(4*SQR(rXYZ) - 5*SQR(Y) - 2*(SQR(X) + 
-      SQR(Z))) + rXYZ*(2*pow(ToReal(a),6)*SQR(Z) + 
-      QAD(ToReal(a))*(2*QAD(rXYZ) + SQR(Z)*(3*SQR(Y) - 2*(SQR(X) + SQR(Z))) + 
-      6*SQR(rXYZ*Z))) + CUB(rXYZ)*(6*QAD(rXYZ) - SQR(rXYZ)*(2*SQR(X) + SQR(Y) 
-      - 2*SQR(Z)) - SQR(Z)*(2*SQR(X) + SQR(Y) + 2*SQR(Z)))*SQR(ToReal(a)) + 
-      X*Y*(-3*pow(ToReal(a),5)*SQR(Z) + CUB(ToReal(a))*SQR(rXYZ)*(SQR(rXYZ) + 
-      SQR(Z)) + 5*pow(rXYZ,6)*ToReal(a)))))*(QAD(rXYZ) + SQR(Z*ToReal(a)) + 
-      2*CUB(rXYZ)*ToReal(M)) + (QAD(rXYZ) + SQR(Z*ToReal(a)))*(rXYZ*Y - 
-      X*ToReal(a))*(4*rXYZ*Y*CUB(SQR(rXYZ) + 
-      SQR(ToReal(a)))*SQR(Z)*(QAD(rXYZ) - SQR(Z*ToReal(a)) + 
-      CUB(rXYZ)*ToReal(M)) + 2*CUB(rXYZ)*(rXYZ*X + 
-      Y*ToReal(a))*((-pow(ToReal(a),7) - 4*rXYZ*X*Y*QAD(ToReal(a)))*SQR(Z) + 
-      pow(ToReal(a),5)*(-QAD(rXYZ) + SQR(Z)*(SQR(X) - 2*SQR(Y) + SQR(Z)) - 
-      3*SQR(rXYZ*Z) - 2*CUB(rXYZ)*ToReal(M)) + 
-      CUB(ToReal(a))*SQR(rXYZ)*(-3*QAD(rXYZ) + SQR(rXYZ)*(SQR(X) + 2*SQR(Y) - 
-      SQR(Z)) + SQR(Z)*(SQR(X) + SQR(Z)) + 2*rXYZ*(-3*SQR(rXYZ) + SQR(X) + 
-      SQR(Y) + SQR(Z))*ToReal(M)) + pow(rXYZ,5)*ToReal(a)*(rXYZ*(-2*SQR(rXYZ) 
-      + SQR(X) + 4*SQR(Y) + SQR(Z)) + 2*(-2*SQR(rXYZ) + SQR(X) + 3*SQR(Y) + 
-      SQR(Z))*ToReal(M)) + X*Y*(2*pow(rXYZ,6)*(rXYZ + ToReal(M)) - 
-      2*CUB(rXYZ)*SQR(ToReal(a))*(SQR(Z) + rXYZ*ToReal(M)))))));
+    CCTK_REAL G22 = 1 + 2*csetemp13*INV((csetemp14 + 
+      csetemp12*csetemp9)*SQR(csetemp15 + csetemp9))*SQR(csetemp19 + 
+      csetemp20)*ToReal(M);
     
-    CCTK_REAL K32 = rXYZ*Z*INV(alpL*CUB(SQR(rXYZ) + 
-      SQR(ToReal(a)))*SQR(QAD(rXYZ) + SQR(Z*ToReal(a)))*SQR(QAD(rXYZ) + 
-      SQR(Z*ToReal(a)) + 2*CUB(rXYZ)*ToReal(M))*sqrt(SQR(SQR(X) + SQR(Y) + 
-      SQR(Z) - SQR(ToReal(a))) + 
-      4*SQR(Z*ToReal(a))))*ToReal(M)*(QAD(Z)*(X*pow(ToReal(a),13)*(2*SQR(rXYZ) 
-      - 3*SQR(Z)) - 2*Y*pow(ToReal(a),12)*(CUB(rXYZ) - 3*rXYZ*SQR(Z))) + 
-      Y*(-2*pow(rXYZ,15)*(2*QAD(rXYZ) - 2*(8*SQR(rXYZ) - 9*(SQR(X) + SQR(Y) + 
-      SQR(Z)))*SQR(ToReal(M)) + rXYZ*(-6*SQR(rXYZ) + 11*(SQR(X) + SQR(Y) + 
-      SQR(Z)))*ToReal(M)) + 2*pow(ToReal(a),10)*SQR(rXYZ*Z)*(-2*pow(rXYZ,5) + 
-      CUB(rXYZ)*SQR(Z) + rXYZ*SQR(Z)*(SQR(X) + SQR(Y) + 9*SQR(Z)) + 
-      7*QAD(Z)*ToReal(M) - 2*SQR(rXYZ*Z)*ToReal(M))) + 
-      X*(pow(rXYZ,14)*ToReal(a)*(3*QAD(rXYZ) - 4*(8*SQR(rXYZ) - 9*(SQR(X) + 
-      SQR(Y) + SQR(Z)))*SQR(ToReal(M)) - 4*rXYZ*(3*SQR(rXYZ) - 5*(SQR(X) + 
-      SQR(Y) + SQR(Z)))*ToReal(M)) + 
-      rXYZ*pow(ToReal(a),11)*SQR(Z)*(4*pow(rXYZ,5) + SQR(Z)*(3*CUB(rXYZ) - 
-      rXYZ*(2*SQR(X) + 2*SQR(Y) + 9*SQR(Z))) - 8*QAD(Z)*ToReal(M) + 
-      4*SQR(rXYZ*Z)*ToReal(M))) + 
-      2*(Y*pow(rXYZ,8)*QAD(ToReal(a))*(-(CUB(rXYZ)*(SQR(rXYZ) + 
-      SQR(Z))*(9*SQR(rXYZ) - 2*(SQR(X) + SQR(Y) + 2*SQR(Z)))) + 
-      2*rXYZ*(10*QAD(rXYZ) - SQR(Z)*(SQR(X) + SQR(Y) + 3*SQR(Z)) - 
-      SQR(rXYZ)*(2*SQR(X) + 2*SQR(Y) + 7*SQR(Z)))*SQR(ToReal(M)) + 
-      (8*pow(rXYZ,6) + 2*SQR(rXYZ)*(QAD(X) + QAD(Y) - 4*QAD(Z) + 2*SQR(X*Y)) 
-      - 5*QAD(rXYZ)*(2*SQR(X) + 2*SQR(Y) + 3*SQR(Z)) + SQR(Z)*(2*QAD(X) + 
-      2*QAD(Y) + 5*QAD(Z) + SQR(X)*(4*SQR(Y) + 7*SQR(Z)) + 
-      7*SQR(Y*Z)))*ToReal(M)) + 
-      Y*pow(rXYZ,6)*pow(ToReal(a),6)*(rXYZ*(-5*pow(rXYZ,6) + 
-      QAD(rXYZ)*(SQR(X) + SQR(Y) - 9*SQR(Z)) + QAD(Z)*(SQR(X) + SQR(Y) + 
-      3*SQR(Z)) + (4*SQR(X) + 4*SQR(Y) + 11*SQR(Z))*SQR(rXYZ*Z)) + 
-      2*rXYZ*(2*QAD(rXYZ) + QAD(Z) - SQR(rXYZ*Z))*SQR(ToReal(M)) + 
-      (2*pow(rXYZ,6) - QAD(rXYZ)*(2*SQR(X) + 2*SQR(Y) + 5*SQR(Z)) - 2*(SQR(X) 
-      + SQR(Y) + 3*SQR(Z))*SQR(rXYZ*Z) + SQR(Z)*(2*QAD(X) + 2*QAD(Y) + 
-      19*QAD(Z) + SQR(X)*(4*SQR(Y) + 17*SQR(Z)) + 17*SQR(Y*Z)))*ToReal(M))) + 
-      X*(-(pow(rXYZ,5)*pow(ToReal(a),7)*(rXYZ*(-9*pow(rXYZ,6) + 
-      QAD(rXYZ)*(2*SQR(X) + 2*SQR(Y) - 21*SQR(Z)) + QAD(Z)*(2*SQR(X) + 
-      2*SQR(Y) + 3*SQR(Z)) + (8*SQR(X) + 8*SQR(Y) + 7*SQR(Z))*SQR(rXYZ*Z)) + 
-      4*rXYZ*(2*QAD(rXYZ) + QAD(Z) - SQR(rXYZ*Z))*SQR(ToReal(M)) + 
-      (4*pow(rXYZ,6) - 4*QAD(rXYZ)*(SQR(X) + SQR(Y) + 2*SQR(Z)) - 8*(SQR(X) + 
-      SQR(Y) + 3*SQR(Z))*SQR(rXYZ*Z) + 2*SQR(Z)*(2*QAD(X) + 2*QAD(Y) + 
-      10*QAD(Z) + SQR(X)*(4*SQR(Y) + 11*SQR(Z)) + 11*SQR(Y*Z)))*ToReal(M))) - 
-      pow(rXYZ,7)*pow(ToReal(a),5)*(CUB(rXYZ)*(-15*QAD(rXYZ) + 
-      SQR(rXYZ)*(4*SQR(X) + 4*SQR(Y) - 13*SQR(Z)) + SQR(Z)*(4*SQR(X) + 
-      4*SQR(Y) + 3*SQR(Z))) + 4*rXYZ*(10*QAD(rXYZ) - SQR(Z)*(SQR(X) + SQR(Y) 
-      + 3*SQR(Z)) - SQR(rXYZ)*(2*SQR(X) + 2*SQR(Y) + 
-      7*SQR(Z)))*SQR(ToReal(M)) + 2*(8*pow(rXYZ,6) - 3*QAD(rXYZ)*(3*SQR(X) + 
-      3*SQR(Y) + 4*SQR(Z)) + 2*SQR(rXYZ)*(QAD(X) + QAD(Y) - 7*QAD(Z) + 
-      2*SQR(X)*(SQR(Y) - SQR(Z)) - 2*SQR(Y*Z)) + 2*SQR(Z*(SQR(X) + SQR(Y) + 
-      SQR(Z))))*ToReal(M))) + 
-      X*(CUB(ToReal(a))*pow(rXYZ,10)*(QAD(rXYZ)*(11*SQR(rXYZ) - 2*SQR(X) - 
-      2*SQR(Y) + 3*SQR(Z)) + 4*(-16*QAD(rXYZ) + 3*SQR(Z)*(SQR(X) + SQR(Y) + 
-      SQR(Z)) + 3*SQR(rXYZ)*(3*SQR(X) + 3*SQR(Y) + 5*SQR(Z)))*SQR(ToReal(M)) 
-      + 2*rXYZ*(-12*QAD(rXYZ) + 3*SQR(rXYZ)*(5*SQR(X) + 5*SQR(Y) + 6*SQR(Z)) 
-      - 2*(QAD(X) + QAD(Y) - 4*QAD(Z) + SQR(X)*(2*SQR(Y) - 3*SQR(Z)) - 
-      3*SQR(Y*Z)))*ToReal(M)) + CUB(rXYZ)*pow(ToReal(a),9)*(2*pow(rXYZ,7) + 
-      SQR(Z)*(15*pow(rXYZ,5) - CUB(rXYZ)*(4*SQR(X) + 4*SQR(Y) + 3*SQR(Z))) + 
-      4*(SQR(X) + SQR(Y) + 4*SQR(Z))*SQR(rXYZ*Z)*ToReal(M) + 
-      QAD(Z)*(-(rXYZ*(4*SQR(X) + 4*SQR(Y) + 9*SQR(Z) + 4*SQR(ToReal(M)))) - 
-      2*(5*SQR(X) + 5*SQR(Y) + 12*SQR(Z))*ToReal(M)))) - 
-      2*(Y*pow(rXYZ,11)*SQR(ToReal(a))*(QAD(rXYZ)*(7*SQR(rXYZ) - SQR(X) - 
-      SQR(Y) + SQR(Z)) + (-32*QAD(rXYZ) + 6*SQR(Z)*(SQR(X) + SQR(Y) + SQR(Z)) 
-      + 6*SQR(rXYZ)*(3*SQR(X) + 3*SQR(Y) + 5*SQR(Z)))*SQR(ToReal(M)) + 
-      rXYZ*(-12*QAD(rXYZ) + SQR(rXYZ)*(17*SQR(X) + 17*SQR(Y) + 21*SQR(Z)) - 
-      2*(QAD(X) + QAD(Y) - 3*QAD(Z) + 2*SQR(X)*(SQR(Y) - SQR(Z)) - 
-      2*SQR(Y*Z)))*ToReal(M)) + Y*pow(ToReal(a),8)*QAD(rXYZ)*(pow(rXYZ,7) + 
-      SQR(Z)*(7*pow(rXYZ,5) - CUB(rXYZ)*(2*SQR(X) + 2*SQR(Y) + 9*SQR(Z))) + 
-      2*(SQR(X) + SQR(Y) + 3*SQR(Z))*SQR(rXYZ*Z)*ToReal(M) + 
-      QAD(Z)*(-(rXYZ*(2*SQR(X) + 2*SQR(Y) + 9*SQR(Z) + 2*SQR(ToReal(M)))) - 
-      (8*SQR(X) + 8*SQR(Y) + 21*SQR(Z))*ToReal(M)))));
+    CCTK_REAL G32 = 2*csetemp15*(csetemp19 + csetemp20)*Z*INV((csetemp15 + 
+      csetemp9)*(csetemp14 + csetemp12*csetemp9))*ToReal(M);
     
-    CCTK_REAL K33 = -2*INV(alpL*SQR(QAD(rXYZ) + 
-      SQR(Z*ToReal(a)))*(SQR(rXYZ) + SQR(ToReal(a)))*SQR(QAD(rXYZ) + 
-      SQR(Z*ToReal(a)) + 2*CUB(rXYZ)*ToReal(M))*sqrt(SQR(SQR(X) + SQR(Y) + 
-      SQR(Z) - SQR(ToReal(a))) + 
-      4*SQR(Z*ToReal(a))))*ToReal(M)*(-2*(pow(rXYZ,18) + 
-      pow(Z,8)*pow(ToReal(a),10)) + pow(rXYZ,16)*(SQR(X) + SQR(Y) + 3*SQR(Z) 
-      - 3*SQR(ToReal(a))) + pow(rXYZ,12)*SQR(Z)*(-QAD(ToReal(a)) + 
-      SQR(ToReal(a))*(SQR(X) + SQR(Y) + 3*SQR(Z) - 24*SQR(ToReal(M))) + 
-      18*(SQR(X) + SQR(Y) + SQR(Z))*SQR(ToReal(M))) + 
-      pow(rXYZ,8)*QAD(Z)*SQR(ToReal(a))*(5*QAD(ToReal(a)) + 6*(SQR(X) + 
-      SQR(Y) + SQR(Z))*SQR(ToReal(M)) - SQR(ToReal(a))*(SQR(X) + SQR(Y) + 
-      3*SQR(Z) + 2*SQR(ToReal(M)))) + pow(rXYZ,14)*(-QAD(ToReal(a)) + (SQR(X) 
-      + SQR(Y) + 3*SQR(Z))*SQR(ToReal(a)) - 16*SQR(Z*ToReal(M))) + 
-      (-4*pow(rXYZ,17) - 5*rXYZ*pow(Z,8)*pow(ToReal(a),8) + 
-      2*pow(rXYZ,15)*(SQR(X) + SQR(Y) - 2*SQR(Z) - 3*SQR(ToReal(a))) + 
-      pow(rXYZ,13)*(-2*QAD(ToReal(a)) + 11*SQR(Z)*(SQR(X) + SQR(Y) + SQR(Z)) 
-      + 2*(SQR(X) + SQR(Y) - 7*SQR(Z))*SQR(ToReal(a))) - 
-      pow(rXYZ,5)*QAD(Z*ToReal(a))*(4*(QAD(X) + QAD(Y)) + 7*QAD(Z) + 
-      2*QAD(ToReal(a)) + SQR(X)*(8*SQR(Y) + 11*SQR(Z)) + 11*SQR(Y*Z) - 
-      2*(3*(SQR(X) + SQR(Y)) + 7*SQR(Z))*SQR(ToReal(a))) + 
-      pow(rXYZ,9)*(-4*(QAD(X) + QAD(Y) - QAD(Z) + QAD(ToReal(a)) + 
-      2*SQR(X*Y)) + (8*(SQR(X) + SQR(Y)) + 
-      9*SQR(Z))*SQR(ToReal(a)))*SQR(Z*ToReal(a)))*ToReal(M) + 
-      SQR(Z*ToReal(a))*(pow(rXYZ,10)*(-QAD(ToReal(a)) + 
-      SQR(ToReal(a))*(SQR(X) + SQR(Y) + 7*SQR(Z) - 8*SQR(ToReal(M))) + 
-      4*(2*(SQR(X) + SQR(Y)) + 5*SQR(Z))*SQR(ToReal(M))) + 
-      2*pow(rXYZ,11)*(9*(SQR(X) + SQR(Y)) + 11*SQR(Z) - 
-      7*SQR(ToReal(a)))*ToReal(M)) + 
-      QAD(Z*ToReal(a))*(pow(rXYZ,6)*(QAD(ToReal(a)) + 4*(SQR(X) + SQR(Y) + 
-      2*SQR(Z))*SQR(ToReal(M)) - SQR(ToReal(a))*(SQR(X) + SQR(Y) + 3*SQR(Z) + 
-      4*SQR(ToReal(M)))) + 2*pow(rXYZ,7)*(4*(SQR(X) + SQR(Y)) + 7*SQR(Z) - 
-      2*SQR(ToReal(a)))*ToReal(M)) + 
-      pow(Z,6)*(pow(ToReal(a),8)*SQR(rXYZ)*(-SQR(X) - SQR(Y) - 5*SQR(Z) + 
-      SQR(ToReal(a))) + pow(ToReal(a),6)*(QAD(rXYZ)*(-SQR(X) - SQR(Y) - 
-      3*SQR(Z) + SQR(ToReal(a)) + 2*SQR(ToReal(M))) + 4*CUB(rXYZ)*(-2*(SQR(X) 
-      + SQR(Y)) - 3*SQR(Z) + SQR(ToReal(a)))*ToReal(M))));
+    CCTK_REAL G33 = 1 + 2*csetemp12*rXYZ*INV(csetemp14 + 
+      csetemp12*csetemp9)*ToReal(M);
     
-    CCTK_REAL betap1 = 2*CUB(rXYZ)*INV((SQR(rXYZ) + 
-      SQR(ToReal(a)))*(QAD(rXYZ) + SQR(Z*ToReal(a)) + 
-      2*CUB(rXYZ)*ToReal(M)))*(rXYZ*X + Y*ToReal(a))*ToReal(M);
+    CCTK_REAL csetemp21 = 4*Y*ToReal(M);
     
-    CCTK_REAL betap2 = 2*CUB(rXYZ)*INV((SQR(rXYZ) + 
-      SQR(ToReal(a)))*(QAD(rXYZ) + SQR(Z*ToReal(a)) + 
-      2*CUB(rXYZ)*ToReal(M)))*(rXYZ*Y - X*ToReal(a))*ToReal(M);
+    CCTK_REAL csetemp22 = csetemp21*X;
     
-    CCTK_REAL betap3 = 2*Z*INV(QAD(rXYZ) + SQR(Z*ToReal(a)) + 
-      2*CUB(rXYZ)*ToReal(M))*SQR(rXYZ)*ToReal(M);
+    CCTK_REAL csetemp23 = 2*X*Y*ToReal(M);
+    
+    CCTK_REAL csetemp24 = INV(alpL);
+    
+    CCTK_REAL csetemp25 = pow(rXYZ,8);
+    
+    CCTK_REAL csetemp26 = pow(rXYZ,5);
+    
+    CCTK_REAL csetemp27 = pow(rXYZ,7);
+    
+    CCTK_REAL csetemp28 = QAD(ToReal(a));
+    
+    CCTK_REAL csetemp29 = pow(rXYZ,6);
+    
+    CCTK_REAL csetemp30 = CUB(ToReal(a));
+    
+    CCTK_REAL csetemp31 = pow(ToReal(a),5);
+    
+    CCTK_REAL csetemp32 = pow(rXYZ,9);
+    
+    CCTK_REAL csetemp33 = pow(ToReal(a),6);
+    
+    CCTK_REAL K11 = -2*csetemp13*csetemp24*INV(QAD(csetemp15 + 
+      csetemp9)*SQR(csetemp14 + csetemp12*csetemp9)*SQR(csetemp14 + 
+      csetemp12*csetemp9 + 2*csetemp13*ToReal(M))*sqrt(4*csetemp12*csetemp9 + 
+      SQR(csetemp10 + csetemp11 + csetemp12 - 
+      csetemp9)))*ToReal(M)*((-(csetemp12*(csetemp16 + 
+      csetemp17)*SQR(csetemp15 + csetemp9)*(-3*csetemp27*X - 
+      3*csetemp26*csetemp9*X + csetemp13*(2*csetemp10 + 2*csetemp11 + 
+      3*csetemp12 - 2*csetemp9)*csetemp9*X + 5*csetemp12*csetemp28*rXYZ*X - 
+      5*csetemp14*csetemp30*Y + 3*csetemp12*csetemp31*Y + 
+      csetemp15*csetemp30*(2*csetemp10 + 2*csetemp11 + csetemp12 - 
+      2*csetemp9)*Y - 5*csetemp29*Y*ToReal(a))) - csetemp13*SQR(csetemp16 + 
+      csetemp17)*(4*csetemp32 + csetemp27*(-5*csetemp10 - 2*(csetemp11 + 
+      csetemp12) + 6*csetemp9) + csetemp9*(-(csetemp12*csetemp13*(csetemp10 + 
+      2*(csetemp11 + csetemp12 - 3*csetemp9))) + csetemp26*(-csetemp10 + 
+      2*(-csetemp11 + csetemp12 + csetemp9))) + (-(csetemp14*csetemp30) + 
+      3*csetemp12*csetemp31)*X*Y + csetemp12*(csetemp28*(3*csetemp10 - 
+      2*(csetemp11 + csetemp12) + 2*csetemp9)*rXYZ - csetemp15*csetemp30*X*Y) 
+      - 5*csetemp29*X*Y*ToReal(a)))*ToReal(M)*(csetemp14 + csetemp12*csetemp9 
+      + 2*csetemp13*ToReal(M)) + (csetemp16 + 
+      csetemp17)*ToReal(M)*(4*csetemp12*(csetemp14 + 
+      csetemp12*csetemp9)*rXYZ*X*CUB(csetemp15 + csetemp9)*(csetemp14 - 
+      csetemp12*csetemp9 + csetemp13*ToReal(M)) - csetemp13*(csetemp19 + 
+      csetemp20)*(csetemp14*csetemp30*(-2*csetemp10 - 3*csetemp11 + 
+      2*(csetemp12 + csetemp9)) + 
+      csetemp12*(-(csetemp15*csetemp30*(2*csetemp10 + 3*csetemp11 + 
+      2*csetemp12 - 6*csetemp9)) + csetemp31*(-2*csetemp10 + csetemp11 - 
+      2*csetemp12 + 2*csetemp9)) - 3*csetemp27*X*Y + 
+      csetemp12*csetemp13*csetemp9*X*Y + csetemp26*csetemp9*X*Y + 
+      5*csetemp12*csetemp28*rXYZ*X*Y + (4*csetemp25 - csetemp29*(2*csetemp10 
+      + 7*csetemp11 + 2*csetemp12 - 6*csetemp9))*ToReal(a))*(csetemp14 + 
+      csetemp12*csetemp9 + 2*csetemp13*ToReal(M))) + (csetemp14 + 
+      csetemp12*csetemp9)*(csetemp25 + 2*csetemp12*csetemp15*csetemp28 + 
+      csetemp12*csetemp33 + 2*csetemp29*csetemp9 + 
+      csetemp14*ToReal(a)*(csetemp22 + csetemp30 + csetemp12*ToReal(a)) + 
+      2*csetemp10*csetemp26*ToReal(M) + 
+      2*csetemp11*csetemp13*csetemp9*ToReal(M))*(-2*csetemp32 + 
+      csetemp27*(3*csetemp10 + csetemp11 + csetemp12 - 3*csetemp9) + 
+      csetemp12*csetemp28*(-3*csetemp10 + csetemp11 + csetemp12 - 
+      csetemp9)*rXYZ - 3*csetemp12*csetemp31*X*Y + 
+      csetemp12*(csetemp13*(-csetemp10 + csetemp11 + csetemp12 - 
+      3*csetemp9)*csetemp9 - csetemp15*csetemp30*X*Y) + 
+      csetemp26*ToReal(a)*(csetemp22 - csetemp30 + (csetemp10 + csetemp11 - 
+      csetemp12)*ToReal(a)) - 4*csetemp25*ToReal(M) + 
+      csetemp29*(3*X*Y*ToReal(a) + 2*(2*csetemp10 + csetemp11 + 
+      csetemp12)*ToReal(M) - 6*csetemp9*ToReal(M)) + 
+      csetemp14*csetemp9*(X*Y*ToReal(a) + 2*(csetemp11 + csetemp12)*ToReal(M) 
+      - 2*csetemp9*ToReal(M))) + 2*csetemp13*(csetemp16 + 
+      csetemp17)*(csetemp19 + csetemp20)*(csetemp14 + 
+      csetemp12*csetemp9)*ToReal(M)*(csetemp12*(-(csetemp15*csetemp30*(csetemp11 
+      + csetemp12 - 3*csetemp9)) - csetemp31*(-2*csetemp10 + csetemp11 + 
+      csetemp12 - csetemp9)) - 4*csetemp12*csetemp28*rXYZ*X*Y + 
+      2*csetemp25*ToReal(a) + csetemp29*(csetemp23 + 3*csetemp30 - 
+      (4*csetemp10 + csetemp11 + csetemp12)*ToReal(a)) - 
+      2*csetemp26*(3*csetemp10 + csetemp11 + csetemp12 - 
+      3*csetemp9)*ToReal(a)*ToReal(M) + csetemp14*csetemp9*(csetemp30 + 
+      (-2*csetemp10 - csetemp11 + csetemp12)*ToReal(a) - 2*X*Y*ToReal(M)) + 
+      2*csetemp27*(X*Y + 2*ToReal(a)*ToReal(M)) + 
+      2*csetemp13*csetemp9*(-(csetemp12*X*Y) + (csetemp30 - (csetemp10 + 
+      csetemp11 + csetemp12)*ToReal(a))*ToReal(M))));
+    
+    CCTK_REAL csetemp34 = pow(rXYZ,19);
+    
+    CCTK_REAL csetemp35 = pow(rXYZ,18);
+    
+    CCTK_REAL csetemp36 = pow(rXYZ,17);
+    
+    CCTK_REAL csetemp37 = SQR(ToReal(M));
+    
+    CCTK_REAL csetemp38 = pow(ToReal(a),11);
+    
+    CCTK_REAL csetemp39 = pow(Z,6);
+    
+    CCTK_REAL csetemp40 = pow(ToReal(a),10);
+    
+    CCTK_REAL csetemp41 = QAD(Z);
+    
+    CCTK_REAL csetemp42 = pow(rXYZ,16);
+    
+    CCTK_REAL csetemp43 = pow(rXYZ,15);
+    
+    CCTK_REAL csetemp44 = pow(rXYZ,14);
+    
+    CCTK_REAL csetemp45 = pow(rXYZ,10);
+    
+    CCTK_REAL csetemp46 = pow(rXYZ,13);
+    
+    CCTK_REAL csetemp47 = pow(rXYZ,12);
+    
+    CCTK_REAL csetemp48 = pow(ToReal(a),9);
+    
+    CCTK_REAL csetemp49 = pow(ToReal(a),8);
+    
+    CCTK_REAL csetemp50 = pow(ToReal(a),7);
+    
+    CCTK_REAL csetemp51 = pow(rXYZ,11);
+    
+    CCTK_REAL K21 = -(csetemp13*csetemp24*INV(QAD(csetemp15 + 
+      csetemp9)*SQR(csetemp14 + csetemp12*csetemp9)*SQR(csetemp14 + 
+      csetemp12*csetemp9 + 2*csetemp13*ToReal(M))*sqrt(4*csetemp12*csetemp9 + 
+      SQR(csetemp10 + csetemp11 + csetemp12 - 
+      csetemp9)))*ToReal(M)*(-3*csetemp35*(csetemp22 + (csetemp10 - 
+      csetemp11)*ToReal(a)) + 3*csetemp39*pow(ToReal(a),12)*(csetemp23 + 
+      (csetemp10 - csetemp11)*ToReal(a)) + csetemp42*((csetemp10 - 
+      csetemp11)*(-7*csetemp30 + 32*csetemp37*ToReal(a)) + (22*(csetemp10 + 
+      csetemp11 + csetemp12) - 4*csetemp9)*X*Y*ToReal(M)) + 
+      csetemp44*ToReal(a)*((csetemp10 - csetemp11)*(-5*csetemp28 - 
+      36*(csetemp10 + csetemp11 + csetemp12)*csetemp37 + (-5*csetemp12 + 
+      48*csetemp37)*csetemp9) + X*Y*(12*csetemp30 + 
+      8*csetemp12*ToReal(a))*ToReal(M)) + 
+      csetemp41*(csetemp14*csetemp49*((csetemp10 - csetemp11)*(5*csetemp30 + 
+      (5*csetemp12 + 12*csetemp37)*ToReal(a)) + (-2*(5*(csetemp10 + 
+      csetemp11) + 24*csetemp12) - 4*csetemp9)*X*Y*ToReal(M)) + 
+      csetemp15*csetemp40*(7*(csetemp10 - csetemp11)*csetemp12*ToReal(a) + 
+      4*(csetemp10 + csetemp11 - csetemp12 - csetemp9)*X*Y*ToReal(M))) + 
+      4*(csetemp34*X*Y + csetemp38*csetemp39*rXYZ*(-2*X*Y*ToReal(a) + 
+      (3*csetemp10 - 3*csetemp11)*ToReal(M)) + csetemp36*(2*(-4*csetemp37 + 
+      csetemp9)*X*Y + 3*(csetemp10 - csetemp11)*ToReal(a)*ToReal(M)) + 
+      csetemp43*((csetemp28 + 9*(csetemp10 + csetemp11 + csetemp12)*csetemp37 
+      + (csetemp12 - 4*csetemp37)*csetemp9)*X*Y + (csetemp10 - 
+      csetemp11)*(4*csetemp30 - 5*(csetemp10 + csetemp11 + 
+      csetemp12)*ToReal(a))*ToReal(M))) - 
+      2*(csetemp12*csetemp26*csetemp50*(X*Y*(4*csetemp30*(2*csetemp12 + 
+      csetemp37) - 4*((csetemp10 + csetemp11 + 2*csetemp12)*csetemp37 - 
+      2*csetemp41)*ToReal(a)) + (csetemp10 - 
+      csetemp11)*csetemp12*(-9*(csetemp10 + csetemp11) - 10*csetemp12 + 
+      2*csetemp9)*ToReal(M)) + csetemp13*csetemp41*csetemp48*(-((csetemp10 - 
+      csetemp11)*(5*(csetemp10 + csetemp11) + 16*csetemp12)*ToReal(M)) + 
+      2*((5*csetemp12 - 3*csetemp37)*X*Y*ToReal(a) + (csetemp10 - 
+      csetemp11)*csetemp9*ToReal(M)))) + 
+      csetemp12*(-(csetemp29*csetemp33*((csetemp10 - 
+      csetemp11)*(csetemp30*(-9*csetemp12 + 8*csetemp37) - 
+      (8*csetemp10*csetemp37 + 8*csetemp11*csetemp37 + 28*csetemp12*csetemp37 
+      + csetemp41)*ToReal(a)) + 4*csetemp12*(9*csetemp10 + 9*csetemp11 + 
+      11*csetemp12)*X*Y*ToReal(M) + 4*csetemp28*X*Y*ToReal(M) - 4*(csetemp10 
+      + csetemp11 - csetemp12)*csetemp9*X*Y*ToReal(M))) + 
+      csetemp25*csetemp28*((csetemp10 - csetemp11)*csetemp31 + (csetemp10 - 
+      csetemp11)*csetemp30*(3*csetemp12 - 20*csetemp37) + 4*(csetemp10 - 
+      csetemp11)*(3*csetemp10 + 3*csetemp11 + csetemp12)*csetemp37*ToReal(a) 
+      - 6*csetemp12*(csetemp10 + csetemp11 + csetemp12)*X*Y*ToReal(M) - 
+      6*csetemp28*X*Y*ToReal(M) - 4*(4*csetemp10 + 4*csetemp11 + 
+      11*csetemp12)*csetemp9*X*Y*ToReal(M)) - 
+      csetemp30*csetemp45*(3*(csetemp10 - csetemp11)*csetemp28 + 
+      12*(csetemp10 - csetemp11)*(csetemp10 + csetemp11 + 
+      csetemp12)*csetemp37 + (csetemp10 - csetemp11)*(csetemp12 + 
+      20*csetemp37)*csetemp9 - 12*csetemp30*X*Y*ToReal(M) + 12*(3*csetemp10 + 
+      3*csetemp11 + 2*csetemp12)*X*Y*ToReal(a)*ToReal(M)) - 
+      4*(csetemp27*csetemp33*((-((csetemp10 + csetemp11 - 
+      6*csetemp12)*csetemp37) + csetemp41)*X*Y + 3*(3*csetemp12 + 
+      csetemp37)*csetemp9*X*Y + (csetemp10 - csetemp11)*csetemp30*ToReal(M) - 
+      2*(csetemp10 - csetemp11)*(csetemp10 + csetemp11 + 
+      csetemp12)*ToReal(a)*ToReal(M)) + csetemp28*csetemp32*(2*csetemp28*X*Y 
+      + 2*(3*csetemp10 + 3*csetemp11 + 2*csetemp12)*csetemp37*X*Y + 
+      6*csetemp12*csetemp9*X*Y + (csetemp10 - csetemp11)*(3*csetemp30 - 
+      (csetemp10 + csetemp11 - 3*csetemp12)*ToReal(a))*ToReal(M)))) + 
+      csetemp9*(csetemp47*((-csetemp10 + csetemp11)*csetemp31 + (csetemp10 - 
+      csetemp11)*(csetemp30*(-9*csetemp12 + 16*csetemp37) - 4*(5*(csetemp10 + 
+      csetemp11) + 11*csetemp12)*csetemp37*ToReal(a)) + 
+      (16*csetemp12*(csetemp10 + csetemp11 + csetemp12) + 4*csetemp28 - 
+      6*(csetemp10 + csetemp11)*csetemp9)*X*Y*ToReal(M)) + 
+      2*(csetemp46*ToReal(M)*((csetemp10 - csetemp11)*(2*csetemp30 - 
+      (7*(csetemp10 + csetemp11) + 10*csetemp12)*ToReal(a)) + 
+      (4*(-2*(csetemp10 + csetemp11) + csetemp12) + 
+      16*csetemp9)*X*Y*ToReal(M)) + csetemp51*((6*csetemp12*(csetemp10 + 
+      csetemp11 + csetemp12)*csetemp37 + 2*csetemp28*(-3*csetemp12 + 
+      4*csetemp37) - 2*((5*(csetemp10 + csetemp11) + 6*csetemp12)*csetemp37 + 
+      csetemp41)*csetemp9)*X*Y + (csetemp10 - csetemp11)*(-((csetemp10 + 
+      csetemp11 + 4*csetemp12)*csetemp30) - 10*csetemp12*(csetemp10 + 
+      csetemp11 + csetemp12)*ToReal(a))*ToReal(M))))));
+    
+    CCTK_REAL csetemp52 = 4*X*ToReal(M);
+    
+    CCTK_REAL csetemp53 = pow(ToReal(a),13);
+    
+    CCTK_REAL csetemp54 = QAD(X);
+    
+    CCTK_REAL csetemp55 = QAD(Y);
+    
+    CCTK_REAL K31 = csetemp24*rXYZ*Z*INV(CUB(csetemp15 + 
+      csetemp9)*SQR(csetemp14 + csetemp12*csetemp9)*SQR(csetemp14 + 
+      csetemp12*csetemp9 + 2*csetemp13*ToReal(M))*sqrt(4*csetemp12*csetemp9 + 
+      SQR(csetemp10 + csetemp11 + csetemp12 - 
+      csetemp9)))*ToReal(M)*(-4*csetemp34*X + 3*csetemp35*(csetemp52 - 
+      Y*ToReal(a)) + csetemp39*(3*csetemp53*Y + 2*csetemp38*rXYZ*(csetemp21 + 
+      3*X*ToReal(a))) - csetemp42*(11*csetemp30*Y - 32*csetemp37*Y*ToReal(a) 
+      + 22*(csetemp10 + csetemp11 + csetemp12)*X*ToReal(M) - 
+      24*csetemp9*X*ToReal(M)) + 
+      csetemp12*csetemp25*csetemp28*(-15*csetemp31*Y + csetemp30*(8*csetemp10 
+      + 8*csetemp11 + 7*csetemp12 - 4*csetemp37)*Y - 4*(csetemp10 + csetemp11 
+      + 3*csetemp12)*csetemp37*Y*ToReal(a) + 2*(4*csetemp10*csetemp11 + 
+      7*csetemp10*csetemp12 + 7*csetemp11*csetemp12 + 5*csetemp41 + 
+      2*csetemp54 + 2*csetemp55)*X*ToReal(M) - 4*(csetemp10 + csetemp11 + 
+      3*csetemp12)*csetemp9*X*ToReal(M)) + 
+      csetemp12*csetemp29*csetemp33*((4*csetemp10 + 4*csetemp11 + 
+      3*csetemp12)*csetemp30*Y - 4*csetemp31*Y + csetemp12*(2*csetemp10 + 
+      2*csetemp11 + 3*csetemp12 + 4*csetemp37)*Y*ToReal(a) + 
+      2*(4*csetemp10*csetemp11 + 17*csetemp10*csetemp12 + 
+      17*csetemp11*csetemp12 + 19*csetemp41 + 2*csetemp54 + 
+      2*csetemp55)*X*ToReal(M) - 4*(csetemp10 + csetemp11 + 
+      3*csetemp12)*csetemp9*X*ToReal(M)) + 
+      2*csetemp13*csetemp41*csetemp48*(X*(-csetemp30 + (csetemp10 + csetemp11 
+      + 9*csetemp12)*ToReal(a)) + (5*csetemp10 + 5*csetemp11 + 12*csetemp12 - 
+      2*csetemp9)*Y*ToReal(M)) + 
+      2*csetemp12*csetemp26*csetemp50*(csetemp12*csetemp30*X + 
+      csetemp12*(2*csetemp10 + 2*csetemp11 + 9*csetemp12 + 
+      2*csetemp37)*X*ToReal(a) + (11*csetemp11*csetemp12 + 
+      csetemp10*(4*csetemp11 + 11*csetemp12) + 2*(5*csetemp41 + csetemp54 + 
+      csetemp55))*Y*ToReal(M) - 2*(csetemp10 + csetemp11 + 
+      4*csetemp12)*csetemp9*Y*ToReal(M)) + 
+      2*csetemp12*csetemp27*csetemp31*((2*csetemp10 + 2*csetemp11 + 
+      9*csetemp12)*csetemp30*X - 2*csetemp31*X + csetemp12*(csetemp10 + 
+      csetemp11 + 3*csetemp12 + 2*csetemp37)*X*ToReal(a) - 4*(csetemp10 + 
+      csetemp11 + 3*csetemp12)*csetemp9*Y*ToReal(M) + 2*Y*SQR(csetemp10 + 
+      csetemp11 + csetemp12)*ToReal(M)) - csetemp44*ToReal(a)*(36*(csetemp10 
+      + csetemp11 + csetemp12)*csetemp37*Y + (15*csetemp28 - (2*csetemp10 + 
+      2*csetemp11 - 3*csetemp12 + 64*csetemp37)*csetemp9)*Y - 
+      16*csetemp30*X*ToReal(M) + 2*(17*csetemp10 + 17*csetemp11 + 
+      21*csetemp12)*X*ToReal(a)*ToReal(M)) - 
+      csetemp30*csetemp45*(12*csetemp12*(csetemp10 + csetemp11 + 
+      csetemp12)*csetemp37*Y + (2*csetemp33 - csetemp28*(2*csetemp10 + 
+      2*csetemp11 - 21*csetemp12 + 8*csetemp37))*Y + 
+      (-(csetemp12*(4*csetemp10 + 4*csetemp11 + 3*csetemp12)) + 
+      4*(2*csetemp10 + 2*csetemp11 + 7*csetemp12)*csetemp37)*csetemp9*Y + 
+      2*(2*csetemp10 + 2*csetemp11 + 5*csetemp12)*csetemp30*X*ToReal(M) - 
+      4*(2*csetemp10*csetemp11 - 4*csetemp41 + csetemp54 + 
+      csetemp55)*X*ToReal(a)*ToReal(M)) + 2*csetemp36*(16*csetemp37*X - 
+      7*csetemp9*X + 6*Y*ToReal(a)*ToReal(M)) - 2*csetemp43*(18*(csetemp10 + 
+      csetemp11 + csetemp12)*csetemp37*X + (9*csetemp28 - (csetemp10 + 
+      csetemp11 - csetemp12 + 32*csetemp37)*csetemp9)*X - 
+      12*csetemp30*Y*ToReal(M) + 10*(csetemp10 + csetemp11 + 
+      csetemp12)*Y*ToReal(a)*ToReal(M)) - 
+      2*csetemp28*csetemp32*(2*csetemp12*(csetemp10 + csetemp11 + 
+      3*csetemp12)*csetemp37*X + csetemp12*(7*csetemp28 - (4*csetemp10 + 
+      4*csetemp11 + 11*csetemp12 - 2*csetemp37)*csetemp9)*X + 2*(csetemp10 + 
+      csetemp11 + 2*csetemp12)*csetemp30*Y*ToReal(M) - 
+      2*(2*csetemp10*(csetemp11 - csetemp12) - 2*csetemp11*csetemp12 - 
+      7*csetemp41 + csetemp54 + csetemp55)*Y*ToReal(a)*ToReal(M)) - 
+      2*csetemp51*csetemp9*(6*csetemp12*(csetemp10 + csetemp11 + 
+      csetemp12)*csetemp37*X + (csetemp33 - csetemp28*(csetemp10 + csetemp11 
+      - 9*csetemp12 + 4*csetemp37))*X + 2*(-(csetemp12*(csetemp10 + csetemp11 
+      + 2*csetemp12)) + (2*csetemp10 + 2*csetemp11 + 
+      7*csetemp12)*csetemp37)*csetemp9*X + 3*(3*csetemp10 + 3*csetemp11 + 
+      4*csetemp12)*csetemp30*Y*ToReal(M) - 2*csetemp31*Y*ToReal(M) - 
+      2*(2*csetemp10*csetemp11 - 3*csetemp10*csetemp12 - 
+      3*csetemp11*csetemp12 - 4*csetemp41 + csetemp54 + 
+      csetemp55)*Y*ToReal(a)*ToReal(M)) + 
+      csetemp41*(csetemp15*csetemp40*(-2*csetemp30*Y + (2*csetemp10 + 
+      2*csetemp11 + 9*csetemp12)*Y*ToReal(a) + 14*csetemp12*X*ToReal(M)) + 
+      csetemp14*csetemp49*(-3*csetemp30*Y + (4*csetemp10 + 4*csetemp11 + 
+      9*csetemp12 + 4*csetemp37)*Y*ToReal(a) + 2*(8*csetemp10 + 8*csetemp11 + 
+      21*csetemp12)*X*ToReal(M) - 4*csetemp9*X*ToReal(M))) + 
+      csetemp9*(-(csetemp47*((9*csetemp31 - csetemp30*(4*csetemp10 + 
+      4*csetemp11 - 13*csetemp12 + 40*csetemp37))*Y + 12*(3*csetemp10 + 
+      3*csetemp11 + 5*csetemp12)*csetemp37*Y*ToReal(a) - 
+      4*csetemp28*X*ToReal(M) - 4*(2*csetemp10*(csetemp11 - csetemp12) - 
+      2*csetemp11*csetemp12 - 3*csetemp41 + csetemp54 + 
+      csetemp55)*X*ToReal(M) + 10*(2*csetemp10 + 2*csetemp11 + 
+      3*csetemp12)*csetemp9*X*ToReal(M))) - 2*csetemp46*(6*(3*csetemp10 + 
+      3*csetemp11 + 5*csetemp12)*csetemp37*X + (5*csetemp28 - (2*csetemp10 + 
+      2*csetemp11 - 5*csetemp12 + 20*csetemp37)*csetemp9)*X - 
+      8*csetemp30*Y*ToReal(M) + 3*(5*csetemp10 + 5*csetemp11 + 
+      6*csetemp12)*Y*ToReal(a)*ToReal(M))));
+    
+    CCTK_REAL csetemp56 = -csetemp20;
+    
+    CCTK_REAL K22 = -2*csetemp13*csetemp24*INV(QAD(csetemp15 + 
+      csetemp9)*SQR(csetemp14 + csetemp12*csetemp9)*SQR(csetemp14 + 
+      csetemp12*csetemp9 + 2*csetemp13*ToReal(M))*sqrt(4*csetemp12*csetemp9 + 
+      SQR(csetemp10 + csetemp11 + csetemp12 - 
+      csetemp9)))*ToReal(M)*((-(csetemp12*(csetemp18 + 
+      csetemp56)*SQR(csetemp15 + csetemp9)*(-5*csetemp14*csetemp30*X + 
+      3*csetemp12*csetemp31*X + csetemp15*csetemp30*(2*csetemp10 + 
+      2*csetemp11 + csetemp12 - 2*csetemp9)*X + 3*csetemp27*Y + 
+      3*csetemp26*csetemp9*Y + csetemp13*csetemp9*(-2*csetemp10 - 2*csetemp11 
+      - 3*csetemp12 + 2*csetemp9)*Y - 5*csetemp12*csetemp28*rXYZ*Y - 
+      5*csetemp29*X*ToReal(a))) - csetemp13*SQR(csetemp18 + 
+      csetemp56)*(4*csetemp32 - csetemp27*(2*csetemp10 + 5*csetemp11 + 
+      2*csetemp12 - 6*csetemp9) + 
+      csetemp9*(-(csetemp12*csetemp13*(2*csetemp10 + csetemp11 + 2*csetemp12 
+      - 6*csetemp9)) + csetemp26*(-2*csetemp10 - csetemp11 + 2*(csetemp12 + 
+      csetemp9))) + csetemp12*csetemp28*(-2*csetemp10 + 3*csetemp11 - 
+      2*csetemp12 + 2*csetemp9)*rXYZ + csetemp14*csetemp30*X*Y + 
+      csetemp12*csetemp15*csetemp30*X*Y - 3*csetemp12*csetemp31*X*Y + 
+      5*csetemp29*X*Y*ToReal(a)))*ToReal(M)*(csetemp14 + csetemp12*csetemp9 + 
+      2*csetemp13*ToReal(M)) + (csetemp19 + 
+      csetemp20)*(4*csetemp12*(csetemp14 + 
+      csetemp12*csetemp9)*rXYZ*Y*CUB(csetemp15 + 
+      csetemp9)*ToReal(M)*(csetemp14 - csetemp12*csetemp9 + 
+      csetemp13*ToReal(M)) + csetemp13*(csetemp16 + 
+      csetemp17)*(csetemp12*csetemp15*csetemp30*(-3*csetemp10 - 2*(csetemp11 
+      + csetemp12) + 6*csetemp9) + csetemp14*csetemp30*(-3*csetemp10 + 
+      2*(-csetemp11 + csetemp12 + csetemp9)) + (3*csetemp27 - 
+      csetemp26*csetemp9)*X*Y - 5*csetemp12*csetemp28*rXYZ*X*Y + 
+      csetemp12*(csetemp31*(csetemp10 - 2*(csetemp11 + csetemp12) + 
+      2*csetemp9) - csetemp13*csetemp9*X*Y) + 4*csetemp25*ToReal(a) + 
+      csetemp29*(-7*csetemp10 - 2*(csetemp11 + csetemp12) + 
+      6*csetemp9)*ToReal(a))*ToReal(M)*(csetemp14 + csetemp12*csetemp9 + 
+      2*csetemp13*ToReal(M))) + (csetemp14 + 
+      csetemp12*csetemp9)*(-2*csetemp32 + csetemp27*(csetemp10 + 3*csetemp11 
+      + csetemp12 - 3*csetemp9) + csetemp12*csetemp13*(csetemp10 - csetemp11 
+      + csetemp12 - 3*csetemp9)*csetemp9 + csetemp12*csetemp28*(csetemp10 - 
+      3*csetemp11 + csetemp12 - csetemp9)*rXYZ + 
+      csetemp12*csetemp15*csetemp30*X*Y + 3*csetemp12*csetemp31*X*Y - 
+      csetemp26*ToReal(a)*(csetemp22 + csetemp30 - (csetemp10 + csetemp11 - 
+      csetemp12)*ToReal(a)) - 4*csetemp25*ToReal(M) + 
+      csetemp29*(-3*X*Y*ToReal(a) + 2*(csetemp10 + 2*csetemp11 + 
+      csetemp12)*ToReal(M) - 6*csetemp9*ToReal(M)) + 
+      csetemp14*csetemp9*(-(X*Y*ToReal(a)) + 2*(csetemp10 + 
+      csetemp12)*ToReal(M) - 2*csetemp9*ToReal(M)))*(csetemp25 + 
+      2*csetemp12*csetemp15*csetemp28 + csetemp12*csetemp33 + 
+      2*csetemp29*csetemp9 + 2*csetemp11*csetemp26*ToReal(M) + 
+      2*csetemp10*csetemp13*csetemp9*ToReal(M) + 
+      csetemp14*ToReal(a)*(csetemp30 + csetemp12*ToReal(a) - 
+      4*X*Y*ToReal(M))) + 2*csetemp13*(csetemp16 + csetemp17)*(csetemp19 + 
+      csetemp20)*(csetemp14 + 
+      csetemp12*csetemp9)*ToReal(M)*(csetemp12*csetemp15*csetemp30*(csetemp10 
+      + csetemp12 - 3*csetemp9) + csetemp12*csetemp31*(csetemp10 - 
+      2*csetemp11 + csetemp12 - csetemp9) - 4*csetemp12*csetemp28*rXYZ*X*Y - 
+      2*csetemp25*ToReal(a) + csetemp29*(csetemp23 - 3*csetemp30 + (csetemp10 
+      + 4*csetemp11 + csetemp12)*ToReal(a)) + 2*csetemp26*(csetemp10 + 
+      3*csetemp11 + csetemp12 - 3*csetemp9)*ToReal(a)*ToReal(M) + 
+      csetemp27*(2*X*Y - 4*ToReal(a)*ToReal(M)) + 
+      csetemp9*(-(csetemp14*(csetemp23 + csetemp30 + (-csetemp10 - 
+      2*csetemp11 + csetemp12)*ToReal(a))) + 2*csetemp13*(-(csetemp12*X*Y) + 
+      (-csetemp30 + (csetemp10 + csetemp11 + 
+      csetemp12)*ToReal(a))*ToReal(M)))));
+    
+    CCTK_REAL K32 = -(csetemp24*rXYZ*Z*INV(CUB(csetemp15 + 
+      csetemp9)*SQR(csetemp14 + csetemp12*csetemp9)*SQR(csetemp14 + 
+      csetemp12*csetemp9 + 2*csetemp13*ToReal(M))*sqrt(4*csetemp12*csetemp9 + 
+      SQR(csetemp10 + csetemp11 + csetemp12 - 
+      csetemp9)))*ToReal(M)*(-3*(csetemp18 + csetemp21)*csetemp35 + 
+      4*csetemp34*Y + csetemp39*(3*csetemp53*X + 2*csetemp38*rXYZ*(csetemp52 
+      - 3*Y*ToReal(a))) + csetemp42*(X*(-11*csetemp30 + 
+      32*csetemp37*ToReal(a)) + (22*(csetemp10 + csetemp11 + csetemp12) - 
+      24*csetemp9)*Y*ToReal(M)) + csetemp44*ToReal(a)*((-15*csetemp28 - 
+      36*(csetemp10 + csetemp11 + csetemp12)*csetemp37 + (2*(csetemp10 + 
+      csetemp11) - 3*csetemp12 + 64*csetemp37)*csetemp9)*X + Y*(-16*csetemp30 
+      + 2*(17*(csetemp10 + csetemp11) + 21*csetemp12)*ToReal(a))*ToReal(M)) + 
+      csetemp30*csetemp45*((-2*csetemp33 - 12*csetemp12*(csetemp10 + 
+      csetemp11 + csetemp12)*csetemp37 + csetemp28*(2*(csetemp10 + csetemp11) 
+      - 21*csetemp12 + 8*csetemp37) + (csetemp12*(4*(csetemp10 + csetemp11) + 
+      3*csetemp12) - 4*(2*(csetemp10 + csetemp11) + 
+      7*csetemp12)*csetemp37)*csetemp9)*X + Y*(2*(2*(csetemp10 + csetemp11) + 
+      5*csetemp12)*csetemp30 - 4*(2*csetemp10*csetemp11 - 4*csetemp41 + 
+      csetemp54 + csetemp55)*ToReal(a))*ToReal(M)) + 
+      csetemp12*(-2*csetemp26*csetemp50*(csetemp12*Y*(csetemp30 + 
+      (9*csetemp12 + 2*(csetemp10 + csetemp11 + csetemp37))*ToReal(a)) + 
+      (-11*csetemp11*csetemp12 - csetemp10*(4*csetemp11 + 11*csetemp12) - 
+      2*(5*csetemp41 + csetemp54 + csetemp55) + 2*(csetemp10 + csetemp11 + 
+      4*csetemp12)*csetemp9)*X*ToReal(M)) - 
+      csetemp25*csetemp28*(X*(15*csetemp31 - csetemp30*(8*(csetemp10 + 
+      csetemp11) + 7*csetemp12 - 4*csetemp37) + 4*(csetemp10 + csetemp11 + 
+      3*csetemp12)*csetemp37*ToReal(a)) + (2*(7*csetemp11*csetemp12 + 
+      csetemp10*(4*csetemp11 + 7*csetemp12) + 5*csetemp41 + 2*(csetemp54 + 
+      csetemp55)) - 4*(csetemp10 + csetemp11 + 
+      3*csetemp12)*csetemp9)*Y*ToReal(M)) + 
+      csetemp29*csetemp33*(X*((4*(csetemp10 + csetemp11) + 
+      3*csetemp12)*csetemp30 - 4*csetemp31 + csetemp12*(2*(csetemp10 + 
+      csetemp11) + 3*csetemp12 + 4*csetemp37)*ToReal(a)) + 
+      (-2*(17*csetemp11*csetemp12 + csetemp10*(4*csetemp11 + 17*csetemp12) + 
+      19*csetemp41 + 2*(csetemp54 + csetemp55)) + 4*(csetemp10 + csetemp11 + 
+      3*csetemp12)*csetemp9)*Y*ToReal(M)) + 
+      2*csetemp27*csetemp31*(Y*(-((2*csetemp10 + 2*csetemp11 + 
+      9*csetemp12)*csetemp30) + 2*csetemp31 - csetemp12*(csetemp10 + 
+      csetemp11 + 3*csetemp12 + 2*csetemp37)*ToReal(a)) + X*(-4*(csetemp10 + 
+      csetemp11 + 3*csetemp12)*csetemp9 + 2*SQR(csetemp10 + csetemp11 + 
+      csetemp12))*ToReal(M))) + csetemp9*(csetemp47*(X*(-9*csetemp31 + 
+      csetemp30*(4*(csetemp10 + csetemp11) - 13*csetemp12 + 40*csetemp37) - 
+      12*(3*(csetemp10 + csetemp11) + 5*csetemp12)*csetemp37*ToReal(a)) + 
+      (-4*(2*csetemp10*(csetemp11 - csetemp12) - 2*csetemp11*csetemp12 + 
+      csetemp28 - 3*csetemp41 + csetemp54 + csetemp55) + 10*(2*(csetemp10 + 
+      csetemp11) + 3*csetemp12)*csetemp9)*Y*ToReal(M)) + 
+      2*csetemp46*((5*csetemp28 + 6*(3*(csetemp10 + csetemp11) + 
+      5*csetemp12)*csetemp37 - (2*(csetemp10 + csetemp11) - 5*csetemp12 + 
+      20*csetemp37)*csetemp9)*Y + X*(8*csetemp30 - 3*(5*(csetemp10 + 
+      csetemp11) + 6*csetemp12)*ToReal(a))*ToReal(M))) + 
+      2*(csetemp36*((-16*csetemp37 + 7*csetemp9)*Y + 6*X*ToReal(a)*ToReal(M)) 
+      + csetemp43*((9*csetemp28 + 18*(csetemp10 + csetemp11 + 
+      csetemp12)*csetemp37 - (csetemp10 + csetemp11 - csetemp12 + 
+      32*csetemp37)*csetemp9)*Y + X*(12*csetemp30 - 10*(csetemp10 + csetemp11 
+      + csetemp12)*ToReal(a))*ToReal(M)) + 
+      csetemp28*csetemp32*(csetemp12*(7*csetemp28 + 2*(csetemp10 + csetemp11 
+      + 3*csetemp12)*csetemp37 - (4*(csetemp10 + csetemp11) + 11*csetemp12 - 
+      2*csetemp37)*csetemp9)*Y + X*(-2*(csetemp10 + csetemp11 + 
+      2*csetemp12)*csetemp30 + 2*(2*csetemp10*(csetemp11 - csetemp12) - 
+      2*csetemp11*csetemp12 - 7*csetemp41 + csetemp54 + 
+      csetemp55)*ToReal(a))*ToReal(M)) + csetemp51*csetemp9*((csetemp33 + 
+      6*csetemp12*(csetemp10 + csetemp11 + csetemp12)*csetemp37 - 
+      csetemp28*(csetemp10 + csetemp11 - 9*csetemp12 + 4*csetemp37) + 
+      2*(-(csetemp12*(csetemp10 + csetemp11 + 2*csetemp12)) + (2*(csetemp10 + 
+      csetemp11) + 7*csetemp12)*csetemp37)*csetemp9)*Y + X*(-3*(3*(csetemp10 
+      + csetemp11) + 4*csetemp12)*csetemp30 + 2*(csetemp31 + 
+      (csetemp10*(2*csetemp11 - 3*csetemp12) - 3*csetemp11*csetemp12 - 
+      4*csetemp41 + csetemp54 + csetemp55)*ToReal(a)))*ToReal(M))) + 
+      csetemp41*(2*csetemp13*csetemp48*(Y*(csetemp30 - (csetemp10 + csetemp11 
+      + 9*csetemp12)*ToReal(a)) + (5*(csetemp10 + csetemp11) + 12*csetemp12 - 
+      2*csetemp9)*X*ToReal(M)) + csetemp14*csetemp49*(X*(-3*csetemp30 + 
+      (9*csetemp12 + 4*(csetemp10 + csetemp11 + csetemp37))*ToReal(a)) - 
+      2*(8*(csetemp10 + csetemp11) + 21*csetemp12 - 2*csetemp9)*Y*ToReal(M)) 
+      + csetemp15*csetemp40*((2*(csetemp10 + csetemp11) + 
+      9*csetemp12)*X*ToReal(a) - 2*(csetemp30*X + 
+      7*csetemp12*Y*ToReal(M))))));
+    
+    CCTK_REAL csetemp57 = pow(Z,8);
+    
+    CCTK_REAL K33 = -2*csetemp24*INV((csetemp15 + csetemp9)*SQR(csetemp14 
+      + csetemp12*csetemp9)*SQR(csetemp14 + csetemp12*csetemp9 + 
+      2*csetemp13*ToReal(M))*sqrt(4*csetemp12*csetemp9 + SQR(csetemp10 + 
+      csetemp11 + csetemp12 - csetemp9)))*ToReal(M)*(-2*(csetemp35 + 
+      csetemp40*csetemp57) + csetemp39*(-(csetemp15*csetemp49*(csetemp10 + 
+      csetemp11 + 5*csetemp12 - csetemp9)) - csetemp14*csetemp33*(csetemp10 + 
+      csetemp11 + 3*csetemp12 - 2*csetemp37 - csetemp9)) + 
+      csetemp42*(csetemp10 + csetemp11 + 3*csetemp12 - 3*csetemp9) + 
+      csetemp44*(-csetemp28 - 16*csetemp12*csetemp37 + (csetemp10 + csetemp11 
+      + 3*csetemp12)*csetemp9) + csetemp12*csetemp47*(-csetemp28 + 
+      18*(csetemp10 + csetemp11 + csetemp12)*csetemp37 + (csetemp10 + 
+      csetemp11 + 3*(csetemp12 - 8*csetemp37))*csetemp9) + 
+      csetemp12*csetemp45*csetemp9*(-csetemp28 + 4*(2*csetemp10 + 2*csetemp11 
+      + 5*csetemp12)*csetemp37 + (csetemp10 + csetemp11 + 7*csetemp12 - 
+      8*csetemp37)*csetemp9) + csetemp28*csetemp29*csetemp41*(csetemp28 + 
+      4*(csetemp10 + csetemp11 + 2*csetemp12)*csetemp37 - (csetemp10 + 
+      csetemp11 + 3*csetemp12 + 4*csetemp37)*csetemp9) - 
+      4*csetemp36*ToReal(M) + 2*csetemp43*(csetemp10 + csetemp11 - 
+      2*csetemp12 - 3*csetemp9)*ToReal(M) + 
+      2*csetemp27*csetemp28*csetemp41*(4*csetemp10 + 4*csetemp11 + 
+      7*csetemp12 - 2*csetemp9)*ToReal(M) + 
+      2*csetemp12*csetemp51*(9*csetemp10 + 9*csetemp11 + 11*csetemp12 - 
+      7*csetemp9)*csetemp9*ToReal(M) + 
+      4*csetemp13*csetemp33*csetemp39*(-2*csetemp10 - 2*csetemp11 - 
+      3*csetemp12 + csetemp9)*ToReal(M) + csetemp46*(11*csetemp12*(csetemp10 
+      + csetemp11 + csetemp12) - 2*csetemp28 + 2*(csetemp10 + csetemp11 - 
+      7*csetemp12)*csetemp9)*ToReal(M) + 
+      csetemp12*csetemp32*csetemp9*(-4*csetemp28 - 4*(2*csetemp10*csetemp11 - 
+      csetemp41 + csetemp54 + csetemp55) + (8*csetemp10 + 8*csetemp11 + 
+      9*csetemp12)*csetemp9)*ToReal(M) - 5*csetemp49*csetemp57*rXYZ*ToReal(M) 
+      + csetemp41*(csetemp25*csetemp9*(5*csetemp28 + 6*(csetemp10 + csetemp11 
+      + csetemp12)*csetemp37 - (csetemp10 + csetemp11 + 3*csetemp12 + 
+      2*csetemp37)*csetemp9) - csetemp26*csetemp28*(11*csetemp11*csetemp12 + 
+      csetemp10*(8*csetemp11 + 11*csetemp12) + 2*csetemp28 + 7*csetemp41 + 
+      4*csetemp54 + 4*csetemp55 - 2*(3*csetemp10 + 3*csetemp11 + 
+      7*csetemp12)*csetemp9)*ToReal(M)));
+    
+    CCTK_REAL betap1 = 2*csetemp13*(csetemp16 + csetemp17)*INV((csetemp15 
+      + csetemp9)*(csetemp14 + csetemp12*csetemp9 + 
+      2*csetemp13*ToReal(M)))*ToReal(M);
+    
+    CCTK_REAL betap2 = 2*csetemp13*(csetemp19 + csetemp20)*INV((csetemp15 
+      + csetemp9)*(csetemp14 + csetemp12*csetemp9 + 
+      2*csetemp13*ToReal(M)))*ToReal(M);
+    
+    CCTK_REAL betap3 = 2*csetemp15*Z*INV(csetemp14 + csetemp12*csetemp9 + 
+      2*csetemp13*ToReal(M))*ToReal(M);
     
     CCTK_REAL dtbetap1 = 0;
     
@@ -552,8 +713,14 @@ static void KerrSchild_initial_Body(cGH const * restrict const cctkGH, int const
     
     CCTK_REAL dtbetap3 = 0;
     
-    CCTK_REAL gxxL = 2*(G32*Jac21*Jac31 + Jac11*(G21*Jac21 + G31*Jac31)) + 
-      G11*SQR(Jac11) + G22*SQR(Jac21) + G33*SQR(Jac31);
+    CCTK_REAL csetemp58 = SQR(Jac11);
+    
+    CCTK_REAL csetemp59 = SQR(Jac21);
+    
+    CCTK_REAL csetemp60 = SQR(Jac31);
+    
+    CCTK_REAL gxxL = csetemp58*G11 + csetemp59*G22 + csetemp60*G33 + 
+      2*(G32*Jac21*Jac31 + Jac11*(G21*Jac21 + G31*Jac31));
     
     CCTK_REAL gxyL = Jac12*(G11*Jac11 + G21*Jac21 + G31*Jac31) + 
       Jac22*(G21*Jac11 + G22*Jac21 + G32*Jac31) + (G31*Jac11 + G32*Jac21 + 
@@ -563,18 +730,30 @@ static void KerrSchild_initial_Body(cGH const * restrict const cctkGH, int const
       Jac23*(G21*Jac11 + G22*Jac21 + G32*Jac31) + (G31*Jac11 + G32*Jac21 + 
       G33*Jac31)*Jac33;
     
-    CCTK_REAL gyyL = 2*(G32*Jac22*Jac32 + Jac12*(G21*Jac22 + G31*Jac32)) + 
-      G11*SQR(Jac12) + G22*SQR(Jac22) + G33*SQR(Jac32);
+    CCTK_REAL csetemp61 = SQR(Jac12);
+    
+    CCTK_REAL csetemp62 = SQR(Jac22);
+    
+    CCTK_REAL csetemp63 = SQR(Jac32);
+    
+    CCTK_REAL gyyL = csetemp61*G11 + csetemp62*G22 + csetemp63*G33 + 
+      2*(G32*Jac22*Jac32 + Jac12*(G21*Jac22 + G31*Jac32));
     
     CCTK_REAL gyzL = Jac13*(G11*Jac12 + G21*Jac22 + G31*Jac32) + 
       Jac23*(G21*Jac12 + G22*Jac22 + G32*Jac32) + (G31*Jac12 + G32*Jac22 + 
       G33*Jac32)*Jac33;
     
-    CCTK_REAL gzzL = 2*(G32*Jac23*Jac33 + Jac13*(G21*Jac23 + G31*Jac33)) + 
-      G11*SQR(Jac13) + G22*SQR(Jac23) + G33*SQR(Jac33);
+    CCTK_REAL csetemp64 = SQR(Jac13);
     
-    CCTK_REAL kxxL = 2*(Jac11*(Jac21*K21 + Jac31*K31) + Jac21*Jac31*K32) + 
-      K11*SQR(Jac11) + K22*SQR(Jac21) + K33*SQR(Jac31);
+    CCTK_REAL csetemp65 = SQR(Jac23);
+    
+    CCTK_REAL csetemp66 = SQR(Jac33);
+    
+    CCTK_REAL gzzL = csetemp64*G11 + csetemp65*G22 + csetemp66*G33 + 
+      2*(G32*Jac23*Jac33 + Jac13*(G21*Jac23 + G31*Jac33));
+    
+    CCTK_REAL kxxL = csetemp58*K11 + csetemp59*K22 + 2*(Jac11*(Jac21*K21 + 
+      Jac31*K31) + Jac21*Jac31*K32) + csetemp60*K33;
     
     CCTK_REAL kxyL = Jac11*(Jac12*K11 + Jac22*K21 + Jac32*K31) + 
       Jac21*(Jac12*K21 + Jac22*K22 + Jac32*K32) + Jac31*(Jac12*K31 + 
@@ -584,15 +763,15 @@ static void KerrSchild_initial_Body(cGH const * restrict const cctkGH, int const
       Jac21*(Jac13*K21 + Jac23*K22 + Jac33*K32) + Jac31*(Jac13*K31 + 
       Jac23*K32 + Jac33*K33);
     
-    CCTK_REAL kyyL = 2*(Jac12*(Jac22*K21 + Jac32*K31) + Jac22*Jac32*K32) + 
-      K11*SQR(Jac12) + K22*SQR(Jac22) + K33*SQR(Jac32);
+    CCTK_REAL kyyL = csetemp61*K11 + csetemp62*K22 + 2*(Jac12*(Jac22*K21 + 
+      Jac32*K31) + Jac22*Jac32*K32) + csetemp63*K33;
     
     CCTK_REAL kyzL = Jac12*(Jac13*K11 + Jac23*K21 + Jac33*K31) + 
       Jac22*(Jac13*K21 + Jac23*K22 + Jac33*K32) + Jac32*(Jac13*K31 + 
       Jac23*K32 + Jac33*K33);
     
-    CCTK_REAL kzzL = 2*(Jac13*(Jac23*K21 + Jac33*K31) + Jac23*Jac33*K32) + 
-      K11*SQR(Jac13) + K22*SQR(Jac23) + K33*SQR(Jac33);
+    CCTK_REAL kzzL = csetemp64*K11 + csetemp65*K22 + 2*(Jac13*(Jac23*K21 + 
+      Jac33*K31) + Jac23*Jac33*K32) + csetemp66*K33;
     
     CCTK_REAL betaxL = betap1*InvJac11 + betap2*InvJac12 + betap3*InvJac13 
       + shiftadd1;
