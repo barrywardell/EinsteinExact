@@ -169,20 +169,23 @@ static void ModifiedSchwarzschildBL_always_Body(cGH const * restrict const cctkG
     
     CCTK_REAL dtalpL = 0;
     
-    CCTK_REAL G11 = QAD(3 - 2*rXYZ*INV(ToReal(M)) + (0.25 - 
-      0.25*cos(4*Pi*rXYZ*INV(ToReal(M))))*INV(rXYZ*SQR(Pi))*ToReal(M));
+    CCTK_REAL G11 = QAD(1 + 0.5*INV(rXYZ)*(4*fmin(rXYZ,0.5*ToReal(M)) - 
+      4*INV(ToReal(M))*SQR(fmin(rXYZ,0.5*ToReal(M))) + 
+      INV(SQR(Pi))*SQR(sin(2*Pi*fmin(rXYZ,0.5*ToReal(M))*INV(ToReal(M))))*ToReal(M)));
     
     CCTK_REAL G21 = 0;
     
     CCTK_REAL G31 = 0;
     
-    CCTK_REAL G22 = QAD(3 - 2*rXYZ*INV(ToReal(M)) + (0.25 - 
-      0.25*cos(4*Pi*rXYZ*INV(ToReal(M))))*INV(rXYZ*SQR(Pi))*ToReal(M));
+    CCTK_REAL G22 = QAD(1 + 0.5*INV(rXYZ)*(4*fmin(rXYZ,0.5*ToReal(M)) - 
+      4*INV(ToReal(M))*SQR(fmin(rXYZ,0.5*ToReal(M))) + 
+      INV(SQR(Pi))*SQR(sin(2*Pi*fmin(rXYZ,0.5*ToReal(M))*INV(ToReal(M))))*ToReal(M)));
     
     CCTK_REAL G32 = 0;
     
-    CCTK_REAL G33 = QAD(3 - 2*rXYZ*INV(ToReal(M)) + (0.25 - 
-      0.25*cos(4*Pi*rXYZ*INV(ToReal(M))))*INV(rXYZ*SQR(Pi))*ToReal(M));
+    CCTK_REAL G33 = QAD(1 + 0.5*INV(rXYZ)*(4*fmin(rXYZ,0.5*ToReal(M)) - 
+      4*INV(ToReal(M))*SQR(fmin(rXYZ,0.5*ToReal(M))) + 
+      INV(SQR(Pi))*SQR(sin(2*Pi*fmin(rXYZ,0.5*ToReal(M))*INV(ToReal(M))))*ToReal(M)));
     
     CCTK_REAL K11 = 0;
     
