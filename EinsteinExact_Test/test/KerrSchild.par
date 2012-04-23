@@ -1,0 +1,90 @@
+ActiveThorns = "
+  ADMBase
+  Boundary
+  Carpet
+  CarpetIOASCII
+  CarpetLib
+  CarpetReduce
+  CartGrid3d
+  CoordBase
+  GenericFD
+  IOUtil
+  KerrSchild
+  LoopControl
+  SymBase
+  TimerReport
+"
+
+#############################################################
+# Grid
+#############################################################
+
+CoordBase::domainsize                   = minmax
+
+CartGrid3D::type                        = "coordbase"
+CartGrid3D::domain                      = "full"
+CartGrid3D::avoid_origin                = "no"
+
+CoordBase::xmin                         = 0
+CoordBase::ymin                         = 0
+CoordBase::zmin                         = 0
+
+CoordBase::xmax                         = 10
+CoordBase::ymax                         = 10
+CoordBase::zmax                         = 10
+
+CoordBase::dx                           = 1
+CoordBase::dy                           = 1
+CoordBase::dz                           = 1
+
+Cactus::cctk_itlast                     = 0
+
+#############################################################
+# Carpet
+#############################################################
+
+Carpet::ghost_size                      = 0
+Carpet::domain_from_coordbase           = "yes"
+Carpet::init_3_timelevels               = "no"
+Carpet::poison_new_timelevels           = yes
+
+#############################################################
+# Timers
+#############################################################
+
+# Do not commit these as testsuite output as they will change on
+# different machines.  They are useful for performance monitoring in
+# automated build and test systems.
+TimerReport::output_all_timers_readable = yes
+TimerReport::n_top_timers               = 40
+TimerReport::output_schedule_timers     = no
+
+#############################################################
+# Initial data
+#############################################################
+
+KerrSchild::M = 1
+KerrSchild::a = 0.8
+
+#############################################################
+# Output
+#############################################################
+
+IO::out_dir                   = $parfile
+IO::out_fileinfo              = "none"
+IO::parfile_write             = "no"
+
+IOASCII::out1D_every          = 8
+IOASCII::out_precision        = 19
+IOASCII::out1D_x              = "yes"
+IOASCII::out1D_y              = "no"
+IOASCII::out1D_z              = "no"
+IOASCII::out1D_d              = "no"
+IOASCII::out1D_vars           = "
+  ADMBase::gxx
+  ADMBase::kxx
+  ADMBase::alp
+  ADMBase::betax
+  ADMBase::dtalp
+  ADMBase::dtbetax
+"
