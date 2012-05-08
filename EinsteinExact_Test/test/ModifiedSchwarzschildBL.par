@@ -63,6 +63,12 @@ TimerReport::output_schedule_timers     = no
 # Initial data
 #############################################################
 
+ADMBase::initial_data                = "ModifiedSchwarzschildBL"
+ADMBase::initial_lapse               = "ModifiedSchwarzschildBL"
+ADMBase::initial_shift               = "ModifiedSchwarzschildBL"
+ADMBase::initial_dtlapse             = "ModifiedSchwarzschildBL"
+ADMBase::initial_dtshift             = "ModifiedSchwarzschildBL"
+
 ModifiedSchwarzschildBL::M = 1
 
 #############################################################

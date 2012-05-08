@@ -63,6 +63,12 @@ TimerReport::output_schedule_timers     = no
 # Initial data
 #############################################################
 
+ADMBase::initial_data                = "ShiftedGaugeWave"
+ADMBase::initial_lapse               = "ShiftedGaugeWave"
+ADMBase::initial_shift               = "ShiftedGaugeWave"
+ADMBase::initial_dtlapse             = "ShiftedGaugeWave"
+ADMBase::initial_dtshift             = "ShiftedGaugeWave"
+
 ShiftedGaugeWave::amp = 0.1
 ShiftedGaugeWave::period = 0.577350269189626
 

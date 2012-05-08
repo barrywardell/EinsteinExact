@@ -63,6 +63,11 @@ TimerReport::output_schedule_timers     = no
 # Initial data
 #############################################################
 
+ADMBase::initial_data                = "Minkowski"
+ADMBase::initial_lapse               = "Minkowski"
+ADMBase::initial_shift               = "Minkowski"
+ADMBase::initial_dtlapse             = "Minkowski"
+ADMBase::initial_dtshift             = "Minkowski"
 
 #############################################################
 # Output

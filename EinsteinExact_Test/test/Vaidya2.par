@@ -63,6 +63,12 @@ TimerReport::output_schedule_timers     = no
 # Initial data
 #############################################################
 
+ADMBase::initial_data                = "Vaidya2"
+ADMBase::initial_lapse               = "Vaidya2"
+ADMBase::initial_shift               = "Vaidya2"
+ADMBase::initial_dtlapse             = "Vaidya2"
+ADMBase::initial_dtshift             = "Vaidya2"
+
 Vaidya2::M = 1
 Vaidya2::dM = 0.5
 

@@ -63,6 +63,12 @@ TimerReport::output_schedule_timers     = no
 # Initial data
 #############################################################
 
+ADMBase::initial_data                = "KerrSchild"
+ADMBase::initial_lapse               = "KerrSchild"
+ADMBase::initial_shift               = "KerrSchild"
+ADMBase::initial_dtlapse             = "KerrSchild"
+ADMBase::initial_dtshift             = "KerrSchild"
+
 KerrSchild::M = 1
 KerrSchild::a = 0.8
 

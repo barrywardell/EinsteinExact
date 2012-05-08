@@ -63,6 +63,12 @@ TimerReport::output_schedule_timers     = no
 # Initial data
 #############################################################
 
+ADMBase::initial_data                = "GaugeWave"
+ADMBase::initial_lapse               = "GaugeWave"
+ADMBase::initial_shift               = "GaugeWave"
+ADMBase::initial_dtlapse             = "GaugeWave"
+ADMBase::initial_dtshift             = "GaugeWave"
+
 GaugeWave::amp = 0.1
 GaugeWave::period = 0.577350269189626
 
