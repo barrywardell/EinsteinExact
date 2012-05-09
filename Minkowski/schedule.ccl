@@ -1,0 +1,69 @@
+# File produced by Kranc
+
+
+schedule Minkowski_Startup at STARTUP
+{
+  LANG: C
+  OPTIONS: meta
+} "create banner"
+
+schedule Minkowski_RegisterSymmetries in SymmetryRegister
+{
+  LANG: C
+  OPTIONS: meta
+} "register symmetries"
+
+
+if (CCTK_EQUALS(initial_data, "Minkowski"))
+{
+  schedule Minkowski_initial in ADMBase_InitialData
+  {
+    LANG: C
+    READS:    grid::coordinates
+    WRITES:   admbase::curv
+    WRITES:   admbase::dtlapse
+    WRITES:   admbase::dtshift
+    WRITES:   admbase::lapse
+    WRITES:   admbase::metric
+    WRITES:   admbase::shift
+  } "Minkowski_initial"
+}
+
+
+if (CCTK_EQUALS(evolution_method, "Minkowski"))
+{
+  schedule Minkowski_always at ANALYSIS
+  {
+    LANG: C
+    READS:    grid::coordinates
+    WRITES:   admbase::curv
+    WRITES:   admbase::dtlapse
+    WRITES:   admbase::dtshift
+    WRITES:   admbase::lapse
+    WRITES:   admbase::metric
+    WRITES:   admbase::shift
+  } "Minkowski_always"
+}
+
+schedule Minkowski_SelectBoundConds in MoL_PostStep
+{
+  LANG: C
+  OPTIONS: level
+} "select boundary conditions"
+
+schedule Minkowski_CheckBoundaries at BASEGRID
+{
+  LANG: C
+  OPTIONS: meta
+} "check boundaries treatment"
+
+schedule Minkowski_RegisterVars in MoL_Register
+{
+  LANG: C
+  OPTIONS: meta
+} "Register Variables for MoL"
+
+schedule group ApplyBCs as Minkowski_ApplyBCs in MoL_PostStep after Minkowski_SelectBoundConds
+{
+  # no language specified
+} "Apply boundary conditions controlled by thorn Boundary"

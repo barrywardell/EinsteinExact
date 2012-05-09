@@ -1,0 +1,184 @@
+# File produced by Kranc
+
+
+shares: ADMBase
+
+
+EXTENDS CCTK_KEYWORD initial_data "initial_data"
+{
+  ModifiedSchwarzschildBL :: ""
+} 
+
+
+EXTENDS CCTK_KEYWORD initial_lapse "initial_lapse"
+{
+  ModifiedSchwarzschildBL :: ""
+} 
+
+
+EXTENDS CCTK_KEYWORD initial_shift "initial_shift"
+{
+  ModifiedSchwarzschildBL :: ""
+} 
+
+
+EXTENDS CCTK_KEYWORD initial_dtlapse "initial_dtlapse"
+{
+  ModifiedSchwarzschildBL :: ""
+} 
+
+
+EXTENDS CCTK_KEYWORD initial_dtshift "initial_dtshift"
+{
+  ModifiedSchwarzschildBL :: ""
+} 
+
+
+EXTENDS CCTK_KEYWORD evolution_method "evolution_method"
+{
+  ModifiedSchwarzschildBL :: ""
+} 
+
+
+
+shares: GenericFD
+
+
+
+shares: MethodOfLines
+
+USES CCTK_INT MoL_Num_Evolved_Vars
+USES CCTK_INT MoL_Num_ArrayEvolved_Vars
+
+restricted:
+CCTK_INT verbose "verbose" STEERABLE=ALWAYS
+{
+  *:* :: ""
+} 0
+
+restricted:
+CCTK_REAL positiont "positiont"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL positionx "positionx"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL positiony "positiony"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL positionz "positionz"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL shiftaddx "shiftaddx"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL shiftaddy "shiftaddy"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL shiftaddz "shiftaddz"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL theta "theta"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL phi "phi"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL psi "psi"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL M "M"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL epsilon "epsilon"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_INT ModifiedSchwarzschildBL_MaxNumEvolvedVars "Number of evolved variables used by this thorn" ACCUMULATOR-BASE=MethodofLines::MoL_Num_Evolved_Vars STEERABLE=RECOVER
+{
+  0:0 :: "Number of evolved variables used by this thorn"
+} 0
+
+restricted:
+CCTK_INT ModifiedSchwarzschildBL_MaxNumArrayEvolvedVars "Number of Array evolved variables used by this thorn" ACCUMULATOR-BASE=MethodofLines::MoL_Num_ArrayEvolved_Vars STEERABLE=RECOVER
+{
+  0:0 :: "Number of Array evolved variables used by this thorn"
+} 0
+
+restricted:
+CCTK_INT timelevels "Number of active timelevels" STEERABLE=RECOVER
+{
+  0:3 :: ""
+} 3
+
+restricted:
+CCTK_INT rhs_timelevels "Number of active RHS timelevels" STEERABLE=RECOVER
+{
+  0:3 :: ""
+} 1
+
+restricted:
+CCTK_INT other_timelevels "Number of active timelevels for non-evolved grid functions" STEERABLE=RECOVER
+{
+  0:3 :: ""
+} 1
+
+restricted:
+CCTK_INT ModifiedSchwarzschildBL_initial_calc_every "ModifiedSchwarzschildBL_initial_calc_every" STEERABLE=ALWAYS
+{
+  *:* :: ""
+} 1
+
+restricted:
+CCTK_INT ModifiedSchwarzschildBL_always_calc_every "ModifiedSchwarzschildBL_always_calc_every" STEERABLE=ALWAYS
+{
+  *:* :: ""
+} 1
+
+restricted:
+CCTK_INT ModifiedSchwarzschildBL_initial_calc_offset "ModifiedSchwarzschildBL_initial_calc_offset" STEERABLE=ALWAYS
+{
+  *:* :: ""
+} 0
+
+restricted:
+CCTK_INT ModifiedSchwarzschildBL_always_calc_offset "ModifiedSchwarzschildBL_always_calc_offset" STEERABLE=ALWAYS
+{
+  *:* :: ""
+} 0
+

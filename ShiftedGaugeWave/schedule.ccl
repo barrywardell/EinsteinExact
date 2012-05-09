@@ -1,0 +1,71 @@
+# File produced by Kranc
+
+
+schedule ShiftedGaugeWave_Startup at STARTUP
+{
+  LANG: C
+  OPTIONS: meta
+} "create banner"
+
+schedule ShiftedGaugeWave_RegisterSymmetries in SymmetryRegister
+{
+  LANG: C
+  OPTIONS: meta
+} "register symmetries"
+
+
+if (CCTK_EQUALS(initial_data, "ShiftedGaugeWave"))
+{
+  schedule ShiftedGaugeWave_initial in ADMBase_InitialData
+  {
+    LANG: C
+    READS:    admbase::lapse
+    READS:    grid::coordinates
+    WRITES:   admbase::curv
+    WRITES:   admbase::dtlapse
+    WRITES:   admbase::dtshift
+    WRITES:   admbase::lapse
+    WRITES:   admbase::metric
+    WRITES:   admbase::shift
+  } "ShiftedGaugeWave_initial"
+}
+
+
+if (CCTK_EQUALS(evolution_method, "ShiftedGaugeWave"))
+{
+  schedule ShiftedGaugeWave_always at ANALYSIS
+  {
+    LANG: C
+    READS:    admbase::lapse
+    READS:    grid::coordinates
+    WRITES:   admbase::curv
+    WRITES:   admbase::dtlapse
+    WRITES:   admbase::dtshift
+    WRITES:   admbase::lapse
+    WRITES:   admbase::metric
+    WRITES:   admbase::shift
+  } "ShiftedGaugeWave_always"
+}
+
+schedule ShiftedGaugeWave_SelectBoundConds in MoL_PostStep
+{
+  LANG: C
+  OPTIONS: level
+} "select boundary conditions"
+
+schedule ShiftedGaugeWave_CheckBoundaries at BASEGRID
+{
+  LANG: C
+  OPTIONS: meta
+} "check boundaries treatment"
+
+schedule ShiftedGaugeWave_RegisterVars in MoL_Register
+{
+  LANG: C
+  OPTIONS: meta
+} "Register Variables for MoL"
+
+schedule group ApplyBCs as ShiftedGaugeWave_ApplyBCs in MoL_PostStep after ShiftedGaugeWave_SelectBoundConds
+{
+  # no language specified
+} "Apply boundary conditions controlled by thorn Boundary"
