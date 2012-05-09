@@ -1,3 +1,0 @@
-[submodule "m/Metrics"]
-	path = m/Metrics
-	url = git://github.com/barrywardell/Metrics
