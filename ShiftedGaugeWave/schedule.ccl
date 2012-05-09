@@ -19,14 +19,30 @@ if (CCTK_EQUALS(initial_data, "ShiftedGaugeWave"))
   schedule ShiftedGaugeWave_initial in ADMBase_InitialData
   {
     LANG: C
-    READS:    admbase::lapse
-    READS:    grid::coordinates
-    WRITES:   admbase::curv
-    WRITES:   admbase::dtlapse
-    WRITES:   admbase::dtshift
-    WRITES:   admbase::lapse
-    WRITES:   admbase::metric
-    WRITES:   admbase::shift
+    READS:    admbase::alp
+    READS:    grid::x
+    READS:    grid::y
+    READS:    grid::z
+    WRITES:   admbase::alp
+    WRITES:   admbase::betax
+    WRITES:   admbase::betay
+    WRITES:   admbase::betaz
+    WRITES:   admbase::dtalp
+    WRITES:   admbase::dtbetax
+    WRITES:   admbase::dtbetay
+    WRITES:   admbase::dtbetaz
+    WRITES:   admbase::gxx
+    WRITES:   admbase::gxy
+    WRITES:   admbase::gxz
+    WRITES:   admbase::gyy
+    WRITES:   admbase::gyz
+    WRITES:   admbase::gzz
+    WRITES:   admbase::kxx
+    WRITES:   admbase::kxy
+    WRITES:   admbase::kxz
+    WRITES:   admbase::kyy
+    WRITES:   admbase::kyz
+    WRITES:   admbase::kzz
   } "ShiftedGaugeWave_initial"
 }
 
@@ -36,14 +52,30 @@ if (CCTK_EQUALS(evolution_method, "ShiftedGaugeWave"))
   schedule ShiftedGaugeWave_always at ANALYSIS
   {
     LANG: C
-    READS:    admbase::lapse
-    READS:    grid::coordinates
-    WRITES:   admbase::curv
-    WRITES:   admbase::dtlapse
-    WRITES:   admbase::dtshift
-    WRITES:   admbase::lapse
-    WRITES:   admbase::metric
-    WRITES:   admbase::shift
+    READS:    admbase::alp
+    READS:    grid::x
+    READS:    grid::y
+    READS:    grid::z
+    WRITES:   admbase::alp
+    WRITES:   admbase::betax
+    WRITES:   admbase::betay
+    WRITES:   admbase::betaz
+    WRITES:   admbase::dtalp
+    WRITES:   admbase::dtbetax
+    WRITES:   admbase::dtbetay
+    WRITES:   admbase::dtbetaz
+    WRITES:   admbase::gxx
+    WRITES:   admbase::gxy
+    WRITES:   admbase::gxz
+    WRITES:   admbase::gyy
+    WRITES:   admbase::gyz
+    WRITES:   admbase::gzz
+    WRITES:   admbase::kxx
+    WRITES:   admbase::kxy
+    WRITES:   admbase::kxz
+    WRITES:   admbase::kyy
+    WRITES:   admbase::kyz
+    WRITES:   admbase::kzz
   } "ShiftedGaugeWave_always"
 }
 

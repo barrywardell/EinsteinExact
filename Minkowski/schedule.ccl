@@ -19,13 +19,29 @@ if (CCTK_EQUALS(initial_data, "Minkowski"))
   schedule Minkowski_initial in ADMBase_InitialData
   {
     LANG: C
-    READS:    grid::coordinates
-    WRITES:   admbase::curv
-    WRITES:   admbase::dtlapse
-    WRITES:   admbase::dtshift
-    WRITES:   admbase::lapse
-    WRITES:   admbase::metric
-    WRITES:   admbase::shift
+    READS:    grid::x
+    READS:    grid::y
+    READS:    grid::z
+    WRITES:   admbase::alp
+    WRITES:   admbase::betax
+    WRITES:   admbase::betay
+    WRITES:   admbase::betaz
+    WRITES:   admbase::dtalp
+    WRITES:   admbase::dtbetax
+    WRITES:   admbase::dtbetay
+    WRITES:   admbase::dtbetaz
+    WRITES:   admbase::gxx
+    WRITES:   admbase::gxy
+    WRITES:   admbase::gxz
+    WRITES:   admbase::gyy
+    WRITES:   admbase::gyz
+    WRITES:   admbase::gzz
+    WRITES:   admbase::kxx
+    WRITES:   admbase::kxy
+    WRITES:   admbase::kxz
+    WRITES:   admbase::kyy
+    WRITES:   admbase::kyz
+    WRITES:   admbase::kzz
   } "Minkowski_initial"
 }
 
@@ -35,13 +51,29 @@ if (CCTK_EQUALS(evolution_method, "Minkowski"))
   schedule Minkowski_always at ANALYSIS
   {
     LANG: C
-    READS:    grid::coordinates
-    WRITES:   admbase::curv
-    WRITES:   admbase::dtlapse
-    WRITES:   admbase::dtshift
-    WRITES:   admbase::lapse
-    WRITES:   admbase::metric
-    WRITES:   admbase::shift
+    READS:    grid::x
+    READS:    grid::y
+    READS:    grid::z
+    WRITES:   admbase::alp
+    WRITES:   admbase::betax
+    WRITES:   admbase::betay
+    WRITES:   admbase::betaz
+    WRITES:   admbase::dtalp
+    WRITES:   admbase::dtbetax
+    WRITES:   admbase::dtbetay
+    WRITES:   admbase::dtbetaz
+    WRITES:   admbase::gxx
+    WRITES:   admbase::gxy
+    WRITES:   admbase::gxz
+    WRITES:   admbase::gyy
+    WRITES:   admbase::gyz
+    WRITES:   admbase::gzz
+    WRITES:   admbase::kxx
+    WRITES:   admbase::kxy
+    WRITES:   admbase::kxz
+    WRITES:   admbase::kyy
+    WRITES:   admbase::kyz
+    WRITES:   admbase::kzz
   } "Minkowski_always"
 }
 

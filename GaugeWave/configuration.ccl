@@ -1,6 +1,5 @@
 # File produced by Kranc
 
 REQUIRES GenericFD
-OPTIONAL LoopControl
-{
-}
+REQUIRES LoopControl
+REQUIRES Vectors
