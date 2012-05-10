@@ -10,7 +10,7 @@ of Einstein's equations.
 
 Getting the arrangement
 -----------------------
-The latest version of EinsteinExactwill always be available from the project
+The latest version of EinsteinExact will always be available from the project
 git repository:
 
 git clone --recursive git://github.com/barrywardell/EinsteinExact
