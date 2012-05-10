@@ -1,0 +1,207 @@
+\documentclass{article}
+
+\usepackage{../../../doc/latex/cactus}
+
+\begin{document}
+
+\author{Barry Wardell and Ian Hinder}
+\title{EinsteinExact}
+\date{10 May 2012}
+
+\maketitle
+
+% Do not delete next line
+% START CACTUS THORNGUIDE
+
+\begin{abstract}
+The \textsc{EinsteinExact} arrangement provides a collection of thorns which compute
+exact solutions to the Einstein equation and set the $3+1$ ADM variables
+provided by the ADMBase thorn. The solutions may be computed either as initial
+data, or at each iteration of an evolution. The computation is done analytically
+from expressions for the metric which are taken from a database of solutions
+provided by the \textsc{Metrics} package for \textsc{Mathematica}. Adding new
+solutions to \textsc{EinsteinExact} only requires that the metric be added to this
+database.
+\end{abstract}
+
+\section{Introduction}
+The \textsc{EinsteinExact} arrangement provides a collection of thorns which compute
+exact solutions to the Einstein equation and set the $3+1$ ADM variables
+provided by the ADMBase thorn. The solutions may be computed either as initial
+data, or at each iteration of an evolution. The computation is done analytically
+from expressions for the metric which are taken from a database of solutions
+provided by the \textsc{Metrics} package for \textsc{Mathematica}. Adding new
+solutions to \textsc{EinsteinExact} only requires that the metric be added to this
+database.
+
+Each thorn sets the ADM variables for a specific spacetime in some
+particular coordinate system. It therefore only makes sense to have one
+thorn in the arrangement activated at a time.
+
+\section{$3+1$ Decomposition of the metric}
+The \textsc{EinsteinExact} code relies on the fact that a given analytic
+expression for the $4$-metric $g_{ab}$ (and its inverse $g^{ab}$) of a spacetime
+may be decomposed into the $3+1$ ADM variables,
+\begin{equation}
+g_{ab} =
+\left(
+\begin{array}{cc}
+ -\alpha^2 + \beta_k \beta^k & \beta_i \\
+ \beta_i & \gamma_{ij}\\
+\end{array}
+\right),\quad
+g^{ab} =
+\left(
+\begin{array}{cc}
+ -1/\alpha^2 & \beta^i / \alpha^2 \\
+ \beta^i / \alpha^2 & \gamma^{ij} - \beta^i \beta^j / \alpha^2\\
+\end{array}
+\right),
+\end{equation}
+where $\alpha$ is the lapse, $\beta^i$ is the shift and $\gamma_{ij}$
+is the three metric on the slice. The \textsc{ADMBase} variables for the
+lapse, shift and three metric may therefore be directly obtained from
+components of the four metric and its inverse:
+\begin{equation}
+\alpha = \frac{1}{\sqrt{-g_{00}}},\quad
+\beta^i = \alpha^2 g^{0i},\quad
+\gamma_{ij} = g_{ij}.
+\end{equation}
+Another \textsc{ADMBase} variable which must be set is the extrinsic
+curvature $K_{ij}$. This may be written as
+\begin{equation}
+K_{ij} = -\frac{1}{2\alpha} \mathcal{L}_{\alpha \vec{n}} \gamma_{ij}
+\end{equation}
+where $\mathcal{L}$ is the Lie derivative and $\vec{n}$ is the normal to the
+slice. Explicitly expanding this out gives
+\begin{align}
+K_{ij} = & \frac{1}{2\alpha} (-\partial_t + D_i \beta_j + D_j \beta_i) \nonumber \\
+ = &  \frac{1}{2\alpha} (-\partial_t
+        + \beta^k \partial_k \gamma_{ij}
+        + \gamma_{ik} \partial_j \beta^k
+        + \gamma_{kj} \partial_i \beta^k
+      )
+\end{align}
+which is readily computed from the previous analytic expressions for $\alpha$,
+$\beta^i$ and $\gamma_{ij}$. Finally, the \textsc{ADMBase} variables for the time
+derivatives for the lapse and shift are computed by analytically differentiating
+$\alpha$ and $\beta^i$ with respect to $t$.
+
+\section{Obtaining EinsteinExact}
+The latest version of \textsc{EinsteinExact} will always be available from the
+project git repository:
+
+\code{git clone --recursive git://github.com/barrywardell/EinsteinExact}
+
+\section{Using EinsteinExact}
+To use \textsc{EinsteinExact}, include the thorn for your desired spacetime in your
+thornlist and in the \code{ActiveThorns} section of your parameter file and set either
+the \code{ADMBase::initial\_data} or \code{ADMBase::evolution\_method}
+parameters described below.
+
+\subsection{Common Parameters}
+Although there is a separate Cactus thorn for each supported spacetime, all
+thorns are generated from the same Kranc script and therefore share some
+common parameters. The parameters supported by all thorns are listed in this
+section.
+
+\subsubsection{\code{ADMBase::initial\_data}}
+The ADM variables can be set as initial data for an evolution. Each
+EinsteinExact thorn extends the \code{ADMBase::initial\_data}
+keyword parameter with another option corresponding to the name of the thorn.
+If the parameter is set to the thorn name, then initial data for the ADM
+variables will be set by the thorn in the \code{ADMBase\_InitialData} schedule
+bin.
+
+\subsubsection{\code{ADMBase::evolution\_method}}
+The setting of the ADM variables can optionally be done at each step in an
+evolution. Each EinsteinExact thorn extends the \code{ADMBase::evolution\_method}
+keyword parameter with another option corresponding to the name of the thorn.
+If the parameter is set to the thorn name, then the ADM variables will be set
+by the thorn at each iteration during the \code{ANALYSIS} schedule bin.
+
+\subsubsection{\code{ADMBase::initial\_lapse}}
+Each EinsteinExact thorn extends this keyword parameter with another option
+corresponding to the name of the thorn. This parameter is currently ignored
+by the code.
+
+\subsubsection{\code{ADMBase::initial\_shift}}
+Each EinsteinExact thorn extends this keyword parameter with another option
+corresponding to the name of the thorn. This parameter is currently ignored
+by the code.
+
+\subsubsection{\code{ADMBase::initial\_dtlapse}}
+Each EinsteinExact thorn extends this keyword parameter with another option
+corresponding to the name of the thorn. This parameter is currently ignored
+by the code.
+
+\subsubsection{\code{ADMBase::initial\_dtshift}}
+Each EinsteinExact thorn extends this keyword parameter with another option
+corresponding to the name of the thorn. This parameter is currently ignored
+by the code.
+
+\subsubsection{Origin: \code{positiont}, \code{positionx}, \code{positiony}, \code{positionz}}
+These parameters specify the position at which the origin of the spacetime
+should be located.
+
+\subsubsection{Shift: \code{shiftx}, \code{shifty}, \code{shiftz}}
+Shift that should be added to the metric.
+
+\subsubsection{Rotation: \code{theta}, \code{phi}, \code{psi}}
+The spacetime may have an arbitrary $3$D rigid rotation applied to it. This
+rotation is specified by the \code{theta}, \code{phi} and \code{psi} parameters
+which correspond to the Euler angles of the rotation. The conventions used are
+such that the rotations are given by the three rotation matrices:
+\begin{align}
+R_\phi =& 
+\left(
+\begin{array}{ccc}
+ \cos (\phi ) & \sin (\phi ) & 0 \\
+ -\sin (\phi ) & \cos (\phi ) & 0 \\
+ 0 & 0 & 1 \\
+\end{array}
+\right), \nonumber \\
+R_\theta =&
+\left(
+\begin{array}{ccc}
+ 1 & 0 & 0 \\
+ 0 & \cos (\theta ) & \sin (\theta ) \\
+ 0 & -\sin (\theta ) & \cos (\theta ) \\
+\end{array}
+\right), \nonumber \\
+R_\psi =&
+\left(
+\begin{array}{ccc}
+ \cos (\psi ) & \sin (\psi ) & 0 \\
+ -\sin (\psi ) & \cos (\psi ) & 0 \\
+ 0 & 0 & 1 \\
+\end{array}
+\right).
+\end{align}
+
+\section{Included Spacetimes}
+
+\subsection{Gauge Wave}
+
+\subsection{Kerr-Schild}
+
+\subsection{Minkowski}
+
+\subsection{ShiftedGaugeWave}
+
+\subsection{Vaidya}
+
+\section{Modifying EinsteinExact}
+
+\subsection{Generating the Code}
+
+\subsection{Adding a spacetime}
+
+\subsection{Updating the Metrics Database}
+
+\section{Acknowledgments}
+
+
+% END CACTUS THORNGUIDE
+
+\end{document}
