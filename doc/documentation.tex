@@ -25,20 +25,6 @@ database.
 \end{abstract}
 
 \section{Introduction}
-The \textsc{EinsteinExact} arrangement provides a collection of thorns which compute
-exact solutions to the Einstein equation and set the $3+1$ ADM variables
-provided by the \textsc{ADMBase} thorn. The solutions may be computed either as initial
-data, or at each iteration of an evolution. The computation is done analytically
-from expressions for the metric which are taken from a database of solutions
-provided by the \textsc{Metrics} package for \textsc{Mathematica}. Adding new
-solutions to \textsc{EinsteinExact} only requires that the metric be added to this
-database.
-
-Each thorn sets the ADM variables for a specific spacetime in some
-particular coordinate system. It therefore only makes sense to have one
-thorn in the arrangement activated at a time.
-
-\section{$3+1$ Decomposition of the metric}
 The \textsc{EinsteinExact} code relies on the fact that a given analytic
 expression for the $4$-metric $g_{ab}$ (and its inverse $g^{ab}$) of a spacetime
 may be decomposed into the $3+1$ ADM variables,
@@ -94,10 +80,16 @@ project git repository:
 \code{git clone --recursive git://github.com/barrywardell/EinsteinExact}
 
 \section{Using EinsteinExact}
+The \textsc{EinsteinExact} thorns are designed to work with \textsc{Cactus} as
+part of the \textsc{Einstein Toolkit}. All requirements are therefore already included
+with the \textsc{Einstein Toolkit}.
+
 To use an \textsc{EinsteinExact} thorn, include the thorn for your desired spacetime in your
 thornlist and in the \code{ActiveThorns} section of your parameter file and set either
 the \code{ADMBase::initial\_data} or \code{ADMBase::evolution\_method}
-parameters (or both) described below.
+parameters (or both) described below. As each thorn sets the ADM variables for a
+specific spacetime in some particular coordinate system it only makes sense to
+have one thorn in the arrangement activated at a time.
 
 \section{Common Parameters}
 Although there is a separate \textsc{Cactus} thorn for each supported spacetime, all
@@ -106,8 +98,9 @@ common parameters. The parameters supported by all thorns are listed in this
 section.
 
 \subsubsection{\code{ADMBase::initial\_data}}
-The ADM variables can be set as initial data for an evolution. Each
-EinsteinExact thorn extends the \code{ADMBase::initial\_data}
+The ADM variables can be set by \textsc{EinsteinExact}
+as initial data for an evolution. Each
+\textsc{EinsteinExact} thorn extends the \code{ADMBase::initial\_data}
 keyword parameter with another option corresponding to the name of the thorn.
 If the parameter is set to the thorn name, then initial data for the ADM
 variables will be set by the thorn in the \code{ADMBase\_InitialData} schedule
@@ -115,7 +108,8 @@ bin.
 
 \subsubsection{\code{ADMBase::evolution\_method}}
 The setting of the ADM variables can optionally be done at each step in an
-evolution. Each EinsteinExact thorn extends the \code{ADMBase::evolution\_method}
+evolution. Each \textsc{EinsteinExact} thorn extends the
+\code{ADMBase::evolution\_method}
 keyword parameter with another option corresponding to the name of the thorn.
 If the parameter is set to the thorn name, then the ADM variables will be set
 by the thorn at each iteration during the \code{ANALYSIS} schedule bin.
@@ -181,18 +175,55 @@ R_\psi =&
 
 \section{Included Spacetimes}
 
+This section lists all spacetimes currently supported by \textsc{EinsteinExact}.
+
 \input{spacetimes}
 
 \section{Modifying EinsteinExact}
 
 \subsection{Generating the Code}
+The script which generates the thorns requires the \textsc{Kranc} and
+\textsc{Metrics} \textsc{Mathematica} packages to be installed. \textsc{Kranc}
+is included with the Einstein Toolkit and the \textsc{Metrics} package is
+included in the \code{Metrics} directory.
+
+To regenerate the code \code{make} from within the \code{m} directory.
 
 \subsection{Adding a spacetime}
+To add a new spacetime to \textsc{EinsteinExact}, simply create a new file
+for the spacetime under \code{m/Metrics/metrics/} and then add this spacetime
+to the \code{thorns = \ldots} and \code{spacetimes = \ldots} lines at the end
+of the \textsc{Kranc} script in \code{m/EinsteinExact.m}.
+
+If you think this spacetime would be of use to others, please consider 
+submitting a patch. As all of the spacetimes in the \textsc{EinsteinExact}
+arrangement come from them \textsc{Metrics} database it is highly preferable to
+have new spacetimes added to the upstream repository for the \textsc{Metrics}
+package. The version of the \textsc{Metrics} package used by
+\textsc{EinsteinExact} can then be updated.
 
 \subsection{Updating the Metrics Database}
+The \textsc{Metrics} database exists as a separate git repository. For
+convenience, a version of it is included with \textsc{EinsteinExact} under
+the \code{m/Metrics} directory. This is a version of the standalone
+\textsc{Metrics} repository which has been merged using the \code{git-subtree}
+command\footnote{\code{git-subtree} is included in the latest version of git.
+For older versions of git, it may be obtained from
+\url{http://github.com/apenwarr/git-subtree}}.
+
+If a new version of the \textsc{Metrics} package becomes available, the version
+in the \textsc{EinsteinExact} repository may be updated using the following
+command:
+\begin{verbatim}
+git subtree pull --prefix=m/Metrics --squash git://github.com/barrywardell/Metrics master
+\end{verbatim}
+This will pull in new changes from the \textsc{Metrics} repository and merge
+them with the \textsc{EinsteinExact} repository under the \code{m/Metrics}
+directory.
 
 \section{Acknowledgments}
-
+Erik Schnetter contributed helpful comments and suggestions, along with some
+patches for the code.
 
 % END CACTUS THORNGUIDE
 
