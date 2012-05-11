@@ -91,7 +91,7 @@ parameters (or both) described below. As each thorn sets the ADM variables for a
 specific spacetime in some particular coordinate system it only makes sense to
 have one thorn in the arrangement activated at a time.
 
-\section{Common Parameters}
+\section{Common parameters}
 Although there is a separate \textsc{Cactus} thorn for each supported spacetime, all
 thorns are generated from the same \textsc{Kranc} script and therefore share some
 common parameters. The parameters supported by all thorns are listed in this
@@ -173,7 +173,7 @@ R_\psi =&
 \right).
 \end{align}
 
-\section{Included Spacetimes}
+\section{Included spacetimes}
 
 This section lists all spacetimes currently supported by \textsc{EinsteinExact}.
 
@@ -181,7 +181,7 @@ This section lists all spacetimes currently supported by \textsc{EinsteinExact}.
 
 \section{Modifying EinsteinExact}
 
-\subsection{Generating the Code}
+\subsection{Generating the code}
 The script which generates the thorns requires the \textsc{Kranc} and
 \textsc{Metrics} \textsc{Mathematica} packages to be installed. \textsc{Kranc}
 is included with the Einstein Toolkit and the \textsc{Metrics} package is
@@ -193,7 +193,9 @@ To regenerate the code \code{make} from within the \code{m} directory.
 To add a new spacetime to \textsc{EinsteinExact}, simply create a new file
 for the spacetime under \code{m/Metrics/metrics/} and then add this spacetime
 to the \code{thorns = \ldots} and \code{spacetimes = \ldots} lines at the end
-of the \textsc{Kranc} script in \code{m/EinsteinExact.m}.
+of the \textsc{Kranc} script in \code{m/EinsteinExact.m}. Also consider adding
+a regression test to the \code{EinsteinExact\_test} thorn and correctness tests
+under the \code{tests} directory.
 
 If you think this spacetime would be of use to others, please consider 
 submitting a patch. As all of the spacetimes in the \textsc{EinsteinExact}
@@ -202,7 +204,7 @@ have new spacetimes added to the upstream repository for the \textsc{Metrics}
 package. The version of the \textsc{Metrics} package used by
 \textsc{EinsteinExact} can then be updated.
 
-\subsection{Updating the Metrics Database}
+\subsection{Updating the Metrics database}
 The \textsc{Metrics} database exists as a separate git repository. For
 convenience, a version of it is included with \textsc{EinsteinExact} under
 the \code{m/Metrics} directory. This is a version of the standalone
@@ -220,6 +222,25 @@ git subtree pull --prefix=m/Metrics --squash git://github.com/barrywardell/Metri
 This will pull in new changes from the \textsc{Metrics} repository and merge
 them with the \textsc{EinsteinExact} repository under the \code{m/Metrics}
 directory.
+
+\section{Tests}
+
+\subsection{Correctness tests}
+There are correctness tests for the \textsc{EinsteinExact} thorns under the
+\code{tests} directory. These tests include:
+\begin{itemize}
+\item Checks that the solutions provided by the \textsc{Exact} thorn converge
+  to those provided by each of the \textsc{EinsteinExact} thorns at the appropriate order.
+\item Checks that the constraints for the solutions provided by each of the
+ \textsc{EinsteinExact} converge to $0$ at the appropriate order.
+\end{itemize}
+In addition, the \textsc{Metrics} package has independent correctness tests
+which check that the provided metrics are correct.
+
+\subsection{Regression tests}
+Each thorn provided by \textsc{EinsteinExact} has a corresponding regression
+test in the \code{EinsteinExact\_code} thorn which checks that no new bugs are
+introduced in the code.
 
 \section{Acknowledgments}
 Erik Schnetter contributed helpful comments and suggestions, along with some
