@@ -16,7 +16,7 @@
 \begin{abstract}
 The \textsc{EinsteinExact} arrangement provides a collection of thorns which compute
 exact solutions to the Einstein equation and set the $3+1$ ADM variables
-provided by the ADMBase thorn. The solutions may be computed either as initial
+provided by the \textsc{ADMBase} thorn. The solutions may be computed either as initial
 data, or at each iteration of an evolution. The computation is done analytically
 from expressions for the metric which are taken from a database of solutions
 provided by the \textsc{Metrics} package for \textsc{Mathematica}. Adding new
@@ -27,7 +27,7 @@ database.
 \section{Introduction}
 The \textsc{EinsteinExact} arrangement provides a collection of thorns which compute
 exact solutions to the Einstein equation and set the $3+1$ ADM variables
-provided by the ADMBase thorn. The solutions may be computed either as initial
+provided by the \textsc{ADMBase} thorn. The solutions may be computed either as initial
 data, or at each iteration of an evolution. The computation is done analytically
 from expressions for the metric which are taken from a database of solutions
 provided by the \textsc{Metrics} package for \textsc{Mathematica}. Adding new
@@ -94,14 +94,14 @@ project git repository:
 \code{git clone --recursive git://github.com/barrywardell/EinsteinExact}
 
 \section{Using EinsteinExact}
-To use \textsc{EinsteinExact}, include the thorn for your desired spacetime in your
+To use an \textsc{EinsteinExact} thorn, include the thorn for your desired spacetime in your
 thornlist and in the \code{ActiveThorns} section of your parameter file and set either
 the \code{ADMBase::initial\_data} or \code{ADMBase::evolution\_method}
-parameters described below.
+parameters (or both) described below.
 
-\subsection{Common Parameters}
-Although there is a separate Cactus thorn for each supported spacetime, all
-thorns are generated from the same Kranc script and therefore share some
+\section{Common Parameters}
+Although there is a separate \textsc{Cactus} thorn for each supported spacetime, all
+thorns are generated from the same \textsc{Kranc} script and therefore share some
 common parameters. The parameters supported by all thorns are listed in this
 section.
 
@@ -181,15 +181,7 @@ R_\psi =&
 
 \section{Included Spacetimes}
 
-\subsection{Gauge Wave}
-
-\subsection{Kerr-Schild}
-
-\subsection{Minkowski}
-
-\subsection{ShiftedGaugeWave}
-
-\subsection{Vaidya}
+\input{spacetimes}
 
 \section{Modifying EinsteinExact}
 

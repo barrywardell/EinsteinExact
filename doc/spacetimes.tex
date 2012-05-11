@@ -1,0 +1,160 @@
+
+\subsection{GaugeWave}
+{\bf Description:}  \text{4D flat spacetime in Cartesian gauge wave \
+coordinates} \\
+{\bf Thorn name:} GaugeWave \\
+{\bf Parameters:} \code{\text{amp}}, \code{\text{period}} \\
+{\bf Metric:} \\
+\begin{equation}
+g_{ab} = 
+\left(
+\begin{array}{cccc}
+ \text{amp} \sin \left(\frac{2 \pi  (x-t)}{\text{period}}\right)-1 & 0 & 0 & \
+0 \\
+ 0 & 1-\text{amp} \sin \left(\frac{2 \pi  (x-t)}{\text{period}}\right) & 0 & \
+0 \\
+ 0 & 0 & 1 & 0 \\
+ 0 & 0 & 0 & 1 \\
+\end{array}
+\right)
+\end{equation}
+
+
+\subsection{KerrSchild}
+{\bf Description:}  \text{Kerr spacetime in Kerr-Schild coordinates} \\
+{\bf Thorn name:} KerrSchild \\
+{\bf Parameters:} \code{M}, \code{a} \\
+{\bf Metric:} \\
+\begin{equation}
+g_{ab} = 
+\left(
+\begin{array}{cccc}
+ \frac{2 M r^3}{r^4+a^2 z^2}-1 & \frac{2 M r^3 (r x+a \
+y)}{\left(a^2+r^2\right) \left(r^4+a^2 z^2\right)} & \frac{2 M r^3 (r y-a \
+x)}{\left(a^2+r^2\right) \left(r^4+a^2 z^2\right)} & \frac{2 M r^2 \
+z}{r^4+a^2 z^2} \\
+ \frac{2 M r^3 (r x+a y)}{\left(a^2+r^2\right) \left(r^4+a^2 z^2\right)} & \
+\frac{2 M (r x+a y)^2 r^3}{\left(a^2+r^2\right)^2 \left(r^4+a^2 \
+z^2\right)}+1 & \frac{2 M r^3 (r x+a y) (r y-a x)}{\left(a^2+r^2\right)^2 \
+\left(r^4+a^2 z^2\right)} & \frac{2 M r^2 (r x+a y) z}{\left(a^2+r^2\right) \
+\left(r^4+a^2 z^2\right)} \\
+ \frac{2 M r^3 (r y-a x)}{\left(a^2+r^2\right) \left(r^4+a^2 z^2\right)} & \
+\frac{2 M r^3 (r x+a y) (r y-a x)}{\left(a^2+r^2\right)^2 \left(r^4+a^2 \
+z^2\right)} & \frac{2 M (r y-a x)^2 r^3}{\left(a^2+r^2\right)^2 \
+\left(r^4+a^2 z^2\right)}+1 & \frac{2 M r^2 (r y-a x) \
+z}{\left(a^2+r^2\right) \left(r^4+a^2 z^2\right)} \\
+ \frac{2 M r^2 z}{r^4+a^2 z^2} & \frac{2 M r^2 (r x+a y) \
+z}{\left(a^2+r^2\right) \left(r^4+a^2 z^2\right)} & \frac{2 M r^2 (r y-a x) \
+z}{\left(a^2+r^2\right) \left(r^4+a^2 z^2\right)} & \frac{2 M r z^2}{r^4+a^2 \
+z^2}+1 \\
+\end{array}
+\right)
+\end{equation}
+where
+\begin{equation}
+r(x,y,z)=\frac{\sqrt{\sqrt{\left(-a^2+x^2+y^2+z^2\right)^2+4 a^2 \
+z^2}-a^2+x^2+y^2+z^2}}{\sqrt{2}}
+\end{equation}
+
+
+\subsection{Minkowski}
+{\bf Description:}  \text{4D flat spacetime in Cartesian coordinates} \\
+{\bf Thorn name:} Minkowski \\
+{\bf Metric:} \\
+\begin{equation}
+g_{ab} = 
+\left(
+\begin{array}{cccc}
+ -1 & 0 & 0 & 0 \\
+ 0 & 1 & 0 & 0 \\
+ 0 & 0 & 1 & 0 \\
+ 0 & 0 & 0 & 1 \\
+\end{array}
+\right)
+\end{equation}
+
+
+\subsection{ShiftedGaugeWave}
+{\bf Description:}  \text{4D flat spacetime in Cartesian shifted gauge wave \
+coordinates} \\
+{\bf Thorn name:} ShiftedGaugeWave \\
+{\bf Parameters:} \code{\text{amp}}, \code{\text{period}} \\
+{\bf Metric:} \\
+\begin{equation}
+g_{ab} = 
+\left(
+\begin{array}{cccc}
+ \text{amp} \sin \left(\frac{2 \pi  (x-t)}{\text{period}}\right)-1 & \
+-\text{amp} \sin \left(\frac{2 \pi  (x-t)}{\text{period}}\right) & 0 & 0 \\
+ -\text{amp} \sin \left(\frac{2 \pi  (x-t)}{\text{period}}\right) & \
+\text{amp} \sin \left(\frac{2 \pi  (x-t)}{\text{period}}\right)+1 & 0 & 0 \\
+ 0 & 0 & 1 & 0 \\
+ 0 & 0 & 0 & 1 \\
+\end{array}
+\right)
+\end{equation}
+
+
+\subsection{Vaidya}
+{\bf Description:}  \text{A Vaidya spacetime with mass function m(v) = M (1 \
++ Tanh[v dM / M]${}^{\wedge}$2)} \\
+{\bf Thorn name:} Vaidya2 \\
+{\bf Parameters:} \code{M}, \code{\text{dM}} \\
+{\bf Metric:} \\
+\begin{equation}
+g_{ab} = 
+\left(
+\begin{array}{cccc}
+ \frac{2 m}{r}-1 & \frac{2 m x}{r^2} & \frac{2 m y}{r^2} & \frac{2 m z}{r^2} \
+\\
+ \frac{2 m x}{r^2} & \frac{2 m x^2}{r^3}+1 & \frac{2 m x y}{r^3} & \frac{2 m \
+x z}{r^3} \\
+ \frac{2 m y}{r^2} & \frac{2 m x y}{r^3} & \frac{2 m y^2}{r^3}+1 & \frac{2 m \
+y z}{r^3} \\
+ \frac{2 m z}{r^2} & \frac{2 m x z}{r^3} & \frac{2 m y z}{r^3} & \frac{2 m \
+z^2}{r^3}+1 \\
+\end{array}
+\right)
+\end{equation}
+where
+\begin{equation}
+r(x,y,z)=\sqrt{x^2+y^2+z^2}
+\end{equation}
+\begin{equation}
+m(t,x,y,z)=M \left(\tanh ^2\left(\frac{\text{dM} \
+\left(t+\sqrt{x^2+y^2+z^2}\right)}{M}\right)+1\right)
+\end{equation}
+
+
+\subsection{ModifiedSchwarzschildBL}
+{\bf Description:}  \text{Modified Schwarzschild spacetime in \
+Brill-Lindquist coordinates with a radially dependent mass inside the black \
+hole} \\
+{\bf Thorn name:} ModifiedSchwarzschildBL \\
+{\bf Parameters:} \code{M}, \code{epsilon} \\
+{\bf Metric:} \\
+\begin{equation}
+g_{ab} = 
+\left(
+\begin{array}{cccc}
+ -1 & 0 & 0 & 0 \\
+ 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \
+\left(\frac{\left(\cos \left(\frac{4 \pi  \min \
+\left(\frac{M}{2},r\right)}{M}\right)-1\right) M^2}{16 \pi ^2}+\frac{1}{2} \
+\min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 & 0 & 0 \\
+ 0 & 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \
+\left(\frac{\left(\cos \left(\frac{4 \pi  \min \
+\left(\frac{M}{2},r\right)}{M}\right)-1\right) M^2}{16 \pi ^2}+\frac{1}{2} \
+\min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 & 0 \\
+ 0 & 0 & 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \
+\left(\frac{\left(\cos \left(\frac{4 \pi  \min \
+\left(\frac{M}{2},r\right)}{M}\right)-1\right) M^2}{16 \pi ^2}+\frac{1}{2} \
+\min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 \\
+\end{array}
+\right)
+\end{equation}
+where
+\begin{equation}
+r(x,y,z)=\sqrt{x^2+y^2+z^2}
+\end{equation}
+

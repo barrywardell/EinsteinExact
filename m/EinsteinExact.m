@@ -281,10 +281,46 @@ idThorn[spacetime_, thorn_] :=
     UseVectors -> True];
 ];
 
+(* Create documentation stub *)
+docGenerate[spacetime_, thorn_] :=
+ Module[{shorthands, replaceShorthands, paramtext, shorthandtext, metrictextdoctext},
+  parameters = MetricProperty[spacetime, "Parameters"] /. None -> {};
+  paramtext =
+    StringJoin @@ Riffle["\\code{" <> ToString[TeXForm[#]] <> "}" & /@ parameters, ", "];
+  paramtext = StringReplace[paramtext, "\\epsilon" -> "epsilon"]; (* Horrible hack! *)
+
+  shorthands = MetricProperty[spacetime, "Shorthands"] /. None -> {};
+  replaceShorthands =
+    Thread[shorthands[[All, 1]] ->
+      Map[(# /. s_[___] :> s) &, shorthands[[All, 1]]]];
+  shorthandtext =
+    StringJoin[("\\begin{equation}\n" <> ToString[TeXForm[Equal @@ #]] <>
+      "\n\\end{equation}\n") & /@ shorthands];
+
+  metrictext =
+    ToString[TeXForm[MetricProperty[spacetime, "Metric"] /. replaceShorthands]];
+
+  doctext = "
+\\subsection{" <> spacetime <> "}
+{\\bf Description:}  " <>
+ToString[TeXForm[MetricProperty[spacetime, "Description"]]] <> " \\\\
+{\\bf Thorn name:} " <> thorn <>
+If[paramtext =!= "", " \\\\
+{\\bf Parameters:} " <> paramtext, ""] <> " \\\\
+{\\bf Metric:} \\\\
+\\begin{equation}
+g_{ab} =
+" <> metrictext <> "
+\\end{equation}
+" <> If[shorthandtext =!= "", "where\n" <> shorthandtext, ""];
+
+  PutAppend[OutputForm[doctext], "../doc/spacetimes.tex"];
+]
+
 spacetimes = {"GaugeWave", "KerrSchild", "Minkowski", "ShiftedGaugeWave", "Vaidya", "ModifiedSchwarzschildBL"};
 thorns     = {"GaugeWave", "KerrSchild", "Minkowski", "ShiftedGaugeWave", "Vaidya2", "ModifiedSchwarzschildBL"};
 
 MapThread[idThorn, {spacetimes, thorns}];
 
-
-
+DeleteFile["../doc/spacetimes.tex"];
+MapThread[docGenerate, {spacetimes, thorns}];
