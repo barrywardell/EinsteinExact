@@ -13,7 +13,7 @@ Getting the arrangement
 The latest version of EinsteinExact will always be available from the project
 git repository:
 
-git clone --recursive git://github.com/barrywardell/EinsteinExact
+git clone git://github.com/barrywardell/EinsteinExact
 
 Documentation
 -------------
