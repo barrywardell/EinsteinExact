@@ -10,7 +10,7 @@ ActiveThorns = "
   GenericFD
   IOUtil
   LoopControl
-  ShiftedGaugeWave
+  Minkowski
   SymBase
   TimerReport
 "
@@ -63,18 +63,11 @@ TimerReport::output_schedule_timers     = no
 # Initial data
 #############################################################
 
-ADMBase::initial_data                = "ShiftedGaugeWave"
-ADMBase::initial_lapse               = "ShiftedGaugeWave"
-ADMBase::initial_shift               = "ShiftedGaugeWave"
-ADMBase::initial_dtlapse             = "ShiftedGaugeWave"
-ADMBase::initial_dtshift             = "ShiftedGaugeWave"
-
-ShiftedGaugeWave::amp = 0.1
-ShiftedGaugeWave::period = 0.577350269189626
-
-ShiftedGaugeWave::psi = -1.9216757376671543544
-ShiftedGaugeWave::theta = 0.66214523564555227398
-ShiftedGaugeWave::phi = 1.2199169159226388841
+ADMBase::initial_data                = "Minkowski"
+ADMBase::initial_lapse               = "Minkowski"
+ADMBase::initial_shift               = "Minkowski"
+ADMBase::initial_dtlapse             = "Minkowski"
+ADMBase::initial_dtshift             = "Minkowski"
 
 #############################################################
 # Output

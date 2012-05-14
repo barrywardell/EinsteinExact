@@ -9,8 +9,8 @@ ActiveThorns = "
   CoordBase
   GenericFD
   IOUtil
+  KerrSchild
   LoopControl
-  ShiftedGaugeWave
   SymBase
   TimerReport
 "
@@ -29,13 +29,13 @@ CoordBase::xmin                         = 0
 CoordBase::ymin                         = 0
 CoordBase::zmin                         = 0
 
-CoordBase::xmax                         = 1
-CoordBase::ymax                         = 1
-CoordBase::zmax                         = 1
+CoordBase::xmax                         = 10
+CoordBase::ymax                         = 10
+CoordBase::zmax                         = 10
 
-CoordBase::dx                           = 0.1
-CoordBase::dy                           = 0.1
-CoordBase::dz                           = 0.1
+CoordBase::dx                           = 1
+CoordBase::dy                           = 1
+CoordBase::dz                           = 1
 
 Cactus::cctk_itlast                     = 0
 
@@ -63,18 +63,14 @@ TimerReport::output_schedule_timers     = no
 # Initial data
 #############################################################
 
-ADMBase::initial_data                = "ShiftedGaugeWave"
-ADMBase::initial_lapse               = "ShiftedGaugeWave"
-ADMBase::initial_shift               = "ShiftedGaugeWave"
-ADMBase::initial_dtlapse             = "ShiftedGaugeWave"
-ADMBase::initial_dtshift             = "ShiftedGaugeWave"
+ADMBase::initial_data                = "KerrSchild"
+ADMBase::initial_lapse               = "KerrSchild"
+ADMBase::initial_shift               = "KerrSchild"
+ADMBase::initial_dtlapse             = "KerrSchild"
+ADMBase::initial_dtshift             = "KerrSchild"
 
-ShiftedGaugeWave::amp = 0.1
-ShiftedGaugeWave::period = 0.577350269189626
-
-ShiftedGaugeWave::psi = -1.9216757376671543544
-ShiftedGaugeWave::theta = 0.66214523564555227398
-ShiftedGaugeWave::phi = 1.2199169159226388841
+KerrSchild::M = 1
+KerrSchild::a = 0.8
 
 #############################################################
 # Output

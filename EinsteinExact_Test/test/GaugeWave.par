@@ -7,10 +7,10 @@ ActiveThorns = "
   CarpetReduce
   CartGrid3d
   CoordBase
+  GaugeWave
   GenericFD
   IOUtil
   LoopControl
-  ShiftedGaugeWave
   SymBase
   TimerReport
 "
@@ -63,18 +63,18 @@ TimerReport::output_schedule_timers     = no
 # Initial data
 #############################################################
 
-ADMBase::initial_data                = "ShiftedGaugeWave"
-ADMBase::initial_lapse               = "ShiftedGaugeWave"
-ADMBase::initial_shift               = "ShiftedGaugeWave"
-ADMBase::initial_dtlapse             = "ShiftedGaugeWave"
-ADMBase::initial_dtshift             = "ShiftedGaugeWave"
+ADMBase::initial_data                = "GaugeWave"
+ADMBase::initial_lapse               = "GaugeWave"
+ADMBase::initial_shift               = "GaugeWave"
+ADMBase::initial_dtlapse             = "GaugeWave"
+ADMBase::initial_dtshift             = "GaugeWave"
 
-ShiftedGaugeWave::amp = 0.1
-ShiftedGaugeWave::period = 0.577350269189626
+GaugeWave::amp = 0.1
+GaugeWave::period = 0.577350269189626
 
-ShiftedGaugeWave::psi = -1.9216757376671543544
-ShiftedGaugeWave::theta = 0.66214523564555227398
-ShiftedGaugeWave::phi = 1.2199169159226388841
+GaugeWave::psi = -1.9216757376671543544
+GaugeWave::theta = 0.66214523564555227398
+GaugeWave::phi = 1.2199169159226388841
 
 #############################################################
 # Output
