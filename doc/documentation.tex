@@ -145,7 +145,7 @@ Shift that should be added to the metric.
 The spacetime may have an arbitrary $3$D rigid rotation applied to it. This
 rotation is specified by the \code{theta}, \code{phi} and \code{psi} parameters
 which correspond to the Euler angles of the rotation. The conventions used are
-such that the rotations are given by the three rotation matrices:
+such that the rotations are given by the three rotation matrices \cite{EinsteinExact_Euler}:
 \begin{align}
 R_\phi =& 
 \left(
@@ -245,6 +245,13 @@ introduced in the code.
 \section{Acknowledgments}
 Erik Schnetter contributed helpful comments and suggestions, along with some
 patches for the code.
+
+\begin{thebibliography}{{Pen}}
+
+\bibitem{EinsteinExact_Euler}
+{Eric W. Weisstein, {\em Euler Angles}, MathWorld--A Wolfram Web Resource. \url{http://mathworld.wolfram.com/EulerAngles.html}}
+
+\end{thebibliography}
 
 % END CACTUS THORNGUIDE
 
