@@ -87,7 +87,11 @@ with the \textsc{Einstein Toolkit}.
 To use an \textsc{EinsteinExact} thorn, include the thorn for your desired spacetime in your
 thornlist and in the \code{ActiveThorns} section of your parameter file and set either
 the \code{ADMBase::initial\_data} or \code{ADMBase::evolution\_method}
-parameters (or both) described below. As each thorn sets the ADM variables for a
+parameters (or both) described below. It is also necessary to set the \code{ADMBase::initial\_lapse},
+\code{ADMBase::initial\_dtlapse}, \code{ADMBase::initial\_shift} and \code{ADMBase::initial\_dtshift}
+parameters in order for storage to be allocated for all \textsc{ADMBase} variables set by EinsteinExact.
+
+As each thorn sets the ADM variables for a
 specific spacetime in some particular coordinate system it only makes sense to
 have one thorn in the arrangement activated at a time.
 
@@ -117,22 +121,26 @@ by the thorn at each iteration during the \code{ANALYSIS} schedule bin.
 \subsubsection{\code{ADMBase::initial\_lapse}}
 Each EinsteinExact thorn extends this keyword parameter with another option
 corresponding to the name of the thorn. This parameter is currently ignored
-by the code.
+by the EinsteinExact code but must be set nonetheless in order to ensure
+storage is allocated for the lapse variable.
 
 \subsubsection{\code{ADMBase::initial\_shift}}
 Each EinsteinExact thorn extends this keyword parameter with another option
 corresponding to the name of the thorn. This parameter is currently ignored
-by the code.
+by the EinsteinExact code but must be set nonetheless in order to ensure
+storage is allocated for the shift variables.
 
 \subsubsection{\code{ADMBase::initial\_dtlapse}}
 Each EinsteinExact thorn extends this keyword parameter with another option
 corresponding to the name of the thorn. This parameter is currently ignored
-by the code.
+by the EinsteinExact code but must be set nonetheless in order to ensure
+storage is allocated for the dtlapse variable.
 
 \subsubsection{\code{ADMBase::initial\_dtshift}}
 Each EinsteinExact thorn extends this keyword parameter with another option
 corresponding to the name of the thorn. This parameter is currently ignored
-by the code.
+by the EinsteinExact code but must be set nonetheless in order to ensure
+storage is allocated for the dtshift variables.
 
 \subsubsection{Origin: \code{positiont}, \code{positionx}, \code{positiony}, \code{positionz}}
 These parameters specify the position at which the origin of the spacetime
