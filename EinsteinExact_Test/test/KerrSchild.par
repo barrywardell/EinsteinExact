@@ -25,7 +25,7 @@ CartGrid3D::type                        = "coordbase"
 CartGrid3D::domain                      = "full"
 CartGrid3D::avoid_origin                = "no"
 
-CoordBase::xmin                         = 0
+CoordBase::xmin                         = 1
 CoordBase::ymin                         = 0
 CoordBase::zmin                         = 0
 
