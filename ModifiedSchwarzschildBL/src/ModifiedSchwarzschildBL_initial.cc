@@ -18,10 +18,14 @@
 
 /* Define macros used in calculations */
 #define INITVALUE (42)
-#define QAD(x) (SQR(SQR(x)))
+#define ScalarINV(x) ((CCTK_REAL)1.0 / (x))
+#define ScalarSQR(x) ((x) * (x))
+#define ScalarCUB(x) ((x) * ScalarSQR(x))
+#define ScalarQAD(x) (ScalarSQR(ScalarSQR(x)))
 #define INV(x) (kdiv(ToReal(1.0),x))
 #define SQR(x) (kmul(x,x))
 #define CUB(x) (kmul(x,SQR(x)))
+#define QAD(x) (SQR(SQR(x)))
 
 static void ModifiedSchwarzschildBL_initial_Body(cGH const * restrict const cctkGH, int const dir, int const face, CCTK_REAL const normal[3], CCTK_REAL const tangentA[3], CCTK_REAL const tangentB[3], int const imin[3], int const imax[3], int const n_subblock_gfs, CCTK_REAL * restrict const subblock_gfs[])
 {
@@ -69,7 +73,7 @@ static void ModifiedSchwarzschildBL_initial_Body(cGH const * restrict const cctk
   #pragma omp parallel
   LC_LOOP3VEC(ModifiedSchwarzschildBL_initial,
     i,j,k, imin[0],imin[1],imin[2], imax[0],imax[1],imax[2],
-    cctk_lsh[0],cctk_lsh[1],cctk_lsh[2],
+    cctk_ash[0],cctk_ash[1],cctk_ash[2],
     CCTK_REAL_VEC_SIZE)
   {
     ptrdiff_t const index = di*i + dj*j + dk*k;
@@ -179,36 +183,36 @@ static void ModifiedSchwarzschildBL_initial_Body(cGH const * restrict const cctk
     
     CCTK_REAL_VEC Z = XX3;
     
-    CCTK_REAL_VEC rXYZ = ksqrt(kadd(SQR(X),kadd(SQR(Y),SQR(Z))));
+    CCTK_REAL_VEC rXYZ = ksqrt(kmadd(X,X,kmadd(Y,Y,kmul(Z,Z))));
     
     CCTK_REAL_VEC alpL = ToReal(1);
     
     CCTK_REAL_VEC dtalpL = ToReal(0);
     
-    CCTK_REAL_VEC csetemp9 = kmul(ToReal(0.5),ToReal(M));
+    CCTK_REAL_VEC csetemp9 = ToReal(0.5*M);
     
-    CCTK_REAL_VEC csetemp10 = INV(rXYZ);
+    CCTK_REAL_VEC csetemp10 = kdiv(ToReal(1),rXYZ);
     
-    CCTK_REAL_VEC csetemp11 = INV(ToReal(M));
+    CCTK_REAL_VEC csetemp11 = ToReal(ScalarINV(M));
     
-    CCTK_REAL_VEC csetemp12 = SQR(ToReal(M));
+    CCTK_REAL_VEC csetemp12 = ToReal(ScalarSQR(M));
     
-    CCTK_REAL_VEC csetemp13 = INV(SQR(ToReal(Pi)));
+    CCTK_REAL_VEC csetemp13 = ToReal(ScalarINV(ScalarSQR(Pi)));
     
     CCTK_REAL_VEC G11 = 
-      kmul(QAD(kmadd(csetemp10,kmadd(csetemp11,kmadd(SQR(kfmin(csetemp9,rXYZ)),ToReal(-8),kmul(csetemp12,knmsub(csetemp13,kcos(kmul(csetemp11,kmul(kfmin(csetemp9,rXYZ),kmul(ToReal(4),ToReal(Pi))))),csetemp13))),kmul(kfmin(csetemp9,rXYZ),ToReal(8))),ToReal(4))),ToReal(0.00390625));
+      kmul(kmul(kmul(kmadd(csetemp10,kmadd(csetemp11,kmadd(kmul(kfmin(csetemp9,rXYZ),kfmin(csetemp9,rXYZ)),ToReal(-8),kmul(csetemp12,knmsub(csetemp13,kcos(kmul(csetemp11,kmul(kfmin(csetemp9,rXYZ),ToReal(4*Pi)))),csetemp13))),kmul(kfmin(csetemp9,rXYZ),ToReal(8))),ToReal(4)),kmadd(csetemp10,kmadd(csetemp11,kmadd(kmul(kfmin(csetemp9,rXYZ),kfmin(csetemp9,rXYZ)),ToReal(-8),kmul(csetemp12,knmsub(csetemp13,kcos(kmul(csetemp11,kmul(kfmin(csetemp9,rXYZ),ToReal(4*Pi)))),csetemp13))),kmul(kfmin(csetemp9,rXYZ),ToReal(8))),ToReal(4))),kmul(kmadd(csetemp10,kmadd(csetemp11,kmadd(kmul(kfmin(csetemp9,rXYZ),kfmin(csetemp9,rXYZ)),ToReal(-8),kmul(csetemp12,knmsub(csetemp13,kcos(kmul(csetemp11,kmul(kfmin(csetemp9,rXYZ),ToReal(4*Pi)))),csetemp13))),kmul(kfmin(csetemp9,rXYZ),ToReal(8))),ToReal(4)),kmadd(csetemp10,kmadd(csetemp11,kmadd(kmul(kfmin(csetemp9,rXYZ),kfmin(csetemp9,rXYZ)),ToReal(-8),kmul(csetemp12,knmsub(csetemp13,kcos(kmul(csetemp11,kmul(kfmin(csetemp9,rXYZ),ToReal(4*Pi)))),csetemp13))),kmul(kfmin(csetemp9,rXYZ),ToReal(8))),ToReal(4)))),ToReal(0.00390625));
     
     CCTK_REAL_VEC G21 = ToReal(0);
     
     CCTK_REAL_VEC G31 = ToReal(0);
     
     CCTK_REAL_VEC G22 = 
-      kmul(QAD(kmadd(csetemp10,kmadd(csetemp11,kmadd(SQR(kfmin(csetemp9,rXYZ)),ToReal(-8),kmul(csetemp12,knmsub(csetemp13,kcos(kmul(csetemp11,kmul(kfmin(csetemp9,rXYZ),kmul(ToReal(4),ToReal(Pi))))),csetemp13))),kmul(kfmin(csetemp9,rXYZ),ToReal(8))),ToReal(4))),ToReal(0.00390625));
+      kmul(kmul(kmul(kmadd(csetemp10,kmadd(csetemp11,kmadd(kmul(kfmin(csetemp9,rXYZ),kfmin(csetemp9,rXYZ)),ToReal(-8),kmul(csetemp12,knmsub(csetemp13,kcos(kmul(csetemp11,kmul(kfmin(csetemp9,rXYZ),ToReal(4*Pi)))),csetemp13))),kmul(kfmin(csetemp9,rXYZ),ToReal(8))),ToReal(4)),kmadd(csetemp10,kmadd(csetemp11,kmadd(kmul(kfmin(csetemp9,rXYZ),kfmin(csetemp9,rXYZ)),ToReal(-8),kmul(csetemp12,knmsub(csetemp13,kcos(kmul(csetemp11,kmul(kfmin(csetemp9,rXYZ),ToReal(4*Pi)))),csetemp13))),kmul(kfmin(csetemp9,rXYZ),ToReal(8))),ToReal(4))),kmul(kmadd(csetemp10,kmadd(csetemp11,kmadd(kmul(kfmin(csetemp9,rXYZ),kfmin(csetemp9,rXYZ)),ToReal(-8),kmul(csetemp12,knmsub(csetemp13,kcos(kmul(csetemp11,kmul(kfmin(csetemp9,rXYZ),ToReal(4*Pi)))),csetemp13))),kmul(kfmin(csetemp9,rXYZ),ToReal(8))),ToReal(4)),kmadd(csetemp10,kmadd(csetemp11,kmadd(kmul(kfmin(csetemp9,rXYZ),kfmin(csetemp9,rXYZ)),ToReal(-8),kmul(csetemp12,knmsub(csetemp13,kcos(kmul(csetemp11,kmul(kfmin(csetemp9,rXYZ),ToReal(4*Pi)))),csetemp13))),kmul(kfmin(csetemp9,rXYZ),ToReal(8))),ToReal(4)))),ToReal(0.00390625));
     
     CCTK_REAL_VEC G32 = ToReal(0);
     
     CCTK_REAL_VEC G33 = 
-      kmul(QAD(kmadd(csetemp10,kmadd(csetemp11,kmadd(SQR(kfmin(csetemp9,rXYZ)),ToReal(-8),kmul(csetemp12,knmsub(csetemp13,kcos(kmul(csetemp11,kmul(kfmin(csetemp9,rXYZ),kmul(ToReal(4),ToReal(Pi))))),csetemp13))),kmul(kfmin(csetemp9,rXYZ),ToReal(8))),ToReal(4))),ToReal(0.00390625));
+      kmul(kmul(kmul(kmadd(csetemp10,kmadd(csetemp11,kmadd(kmul(kfmin(csetemp9,rXYZ),kfmin(csetemp9,rXYZ)),ToReal(-8),kmul(csetemp12,knmsub(csetemp13,kcos(kmul(csetemp11,kmul(kfmin(csetemp9,rXYZ),ToReal(4*Pi)))),csetemp13))),kmul(kfmin(csetemp9,rXYZ),ToReal(8))),ToReal(4)),kmadd(csetemp10,kmadd(csetemp11,kmadd(kmul(kfmin(csetemp9,rXYZ),kfmin(csetemp9,rXYZ)),ToReal(-8),kmul(csetemp12,knmsub(csetemp13,kcos(kmul(csetemp11,kmul(kfmin(csetemp9,rXYZ),ToReal(4*Pi)))),csetemp13))),kmul(kfmin(csetemp9,rXYZ),ToReal(8))),ToReal(4))),kmul(kmadd(csetemp10,kmadd(csetemp11,kmadd(kmul(kfmin(csetemp9,rXYZ),kfmin(csetemp9,rXYZ)),ToReal(-8),kmul(csetemp12,knmsub(csetemp13,kcos(kmul(csetemp11,kmul(kfmin(csetemp9,rXYZ),ToReal(4*Pi)))),csetemp13))),kmul(kfmin(csetemp9,rXYZ),ToReal(8))),ToReal(4)),kmadd(csetemp10,kmadd(csetemp11,kmadd(kmul(kfmin(csetemp9,rXYZ),kfmin(csetemp9,rXYZ)),ToReal(-8),kmul(csetemp12,knmsub(csetemp13,kcos(kmul(csetemp11,kmul(kfmin(csetemp9,rXYZ),ToReal(4*Pi)))),csetemp13))),kmul(kfmin(csetemp9,rXYZ),ToReal(8))),ToReal(4)))),ToReal(0.00390625));
     
     CCTK_REAL_VEC K11 = ToReal(0);
     
@@ -234,11 +238,11 @@ static void ModifiedSchwarzschildBL_initial_Body(cGH const * restrict const cctk
     
     CCTK_REAL_VEC dtbetap3 = ToReal(0);
     
-    CCTK_REAL_VEC csetemp14 = SQR(Jac11);
+    CCTK_REAL_VEC csetemp14 = kmul(Jac11,Jac11);
     
-    CCTK_REAL_VEC csetemp15 = SQR(Jac21);
+    CCTK_REAL_VEC csetemp15 = kmul(Jac21,Jac21);
     
-    CCTK_REAL_VEC csetemp16 = SQR(Jac31);
+    CCTK_REAL_VEC csetemp16 = kmul(Jac31,Jac31);
     
     CCTK_REAL_VEC gxxL = 
       kmadd(csetemp14,G11,kmadd(csetemp15,G22,kmadd(csetemp16,G33,kmul(kmadd(G32,kmul(Jac21,Jac31),kmul(Jac11,kmadd(G21,Jac21,kmul(G31,Jac31)))),ToReal(2)))));
@@ -249,11 +253,11 @@ static void ModifiedSchwarzschildBL_initial_Body(cGH const * restrict const cctk
     CCTK_REAL_VEC gxzL = 
       kmadd(Jac13,kmadd(G11,Jac11,kmadd(G21,Jac21,kmul(G31,Jac31))),kmadd(Jac23,kmadd(G21,Jac11,kmadd(G22,Jac21,kmul(G32,Jac31))),kmul(kmadd(G31,Jac11,kmadd(G32,Jac21,kmul(G33,Jac31))),Jac33)));
     
-    CCTK_REAL_VEC csetemp17 = SQR(Jac12);
+    CCTK_REAL_VEC csetemp17 = kmul(Jac12,Jac12);
     
-    CCTK_REAL_VEC csetemp18 = SQR(Jac22);
+    CCTK_REAL_VEC csetemp18 = kmul(Jac22,Jac22);
     
-    CCTK_REAL_VEC csetemp19 = SQR(Jac32);
+    CCTK_REAL_VEC csetemp19 = kmul(Jac32,Jac32);
     
     CCTK_REAL_VEC gyyL = 
       kmadd(csetemp17,G11,kmadd(csetemp18,G22,kmadd(csetemp19,G33,kmul(kmadd(G32,kmul(Jac22,Jac32),kmul(Jac12,kmadd(G21,Jac22,kmul(G31,Jac32)))),ToReal(2)))));
@@ -261,11 +265,11 @@ static void ModifiedSchwarzschildBL_initial_Body(cGH const * restrict const cctk
     CCTK_REAL_VEC gyzL = 
       kmadd(Jac13,kmadd(G11,Jac12,kmadd(G21,Jac22,kmul(G31,Jac32))),kmadd(Jac23,kmadd(G21,Jac12,kmadd(G22,Jac22,kmul(G32,Jac32))),kmul(kmadd(G31,Jac12,kmadd(G32,Jac22,kmul(G33,Jac32))),Jac33)));
     
-    CCTK_REAL_VEC csetemp20 = SQR(Jac13);
+    CCTK_REAL_VEC csetemp20 = kmul(Jac13,Jac13);
     
-    CCTK_REAL_VEC csetemp21 = SQR(Jac23);
+    CCTK_REAL_VEC csetemp21 = kmul(Jac23,Jac23);
     
-    CCTK_REAL_VEC csetemp22 = SQR(Jac33);
+    CCTK_REAL_VEC csetemp22 = kmul(Jac33,Jac33);
     
     CCTK_REAL_VEC gzzL = 
       kmadd(csetemp20,G11,kmadd(csetemp21,G22,kmadd(csetemp22,G33,kmul(kmadd(G32,kmul(Jac23,Jac33),kmul(Jac13,kmadd(G21,Jac23,kmul(G31,Jac33)))),ToReal(2)))));

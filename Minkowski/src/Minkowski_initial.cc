@@ -18,10 +18,14 @@
 
 /* Define macros used in calculations */
 #define INITVALUE (42)
-#define QAD(x) (SQR(SQR(x)))
+#define ScalarINV(x) ((CCTK_REAL)1.0 / (x))
+#define ScalarSQR(x) ((x) * (x))
+#define ScalarCUB(x) ((x) * ScalarSQR(x))
+#define ScalarQAD(x) (ScalarSQR(ScalarSQR(x)))
 #define INV(x) (kdiv(ToReal(1.0),x))
 #define SQR(x) (kmul(x,x))
 #define CUB(x) (kmul(x,SQR(x)))
+#define QAD(x) (SQR(SQR(x)))
 
 static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const dir, int const face, CCTK_REAL const normal[3], CCTK_REAL const tangentA[3], CCTK_REAL const tangentB[3], int const imin[3], int const imax[3], int const n_subblock_gfs, CCTK_REAL * restrict const subblock_gfs[])
 {
@@ -69,7 +73,7 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
   #pragma omp parallel
   LC_LOOP3VEC(Minkowski_initial,
     i,j,k, imin[0],imin[1],imin[2], imax[0],imax[1],imax[2],
-    cctk_lsh[0],cctk_lsh[1],cctk_lsh[2],
+    cctk_ash[0],cctk_ash[1],cctk_ash[2],
     CCTK_REAL_VEC_SIZE)
   {
     ptrdiff_t const index = di*i + dj*j + dk*k;
@@ -181,11 +185,11 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     
     CCTK_REAL_VEC dtbetap3 = ToReal(0);
     
-    CCTK_REAL_VEC csetemp6 = SQR(Jac11);
+    CCTK_REAL_VEC csetemp6 = kmul(Jac11,Jac11);
     
-    CCTK_REAL_VEC csetemp7 = SQR(Jac21);
+    CCTK_REAL_VEC csetemp7 = kmul(Jac21,Jac21);
     
-    CCTK_REAL_VEC csetemp8 = SQR(Jac31);
+    CCTK_REAL_VEC csetemp8 = kmul(Jac31,Jac31);
     
     CCTK_REAL_VEC gxxL = 
       kmadd(csetemp6,G11,kmadd(csetemp7,G22,kmadd(csetemp8,G33,kmul(kmadd(G32,kmul(Jac21,Jac31),kmul(Jac11,kmadd(G21,Jac21,kmul(G31,Jac31)))),ToReal(2)))));
@@ -196,11 +200,11 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     CCTK_REAL_VEC gxzL = 
       kmadd(Jac13,kmadd(G11,Jac11,kmadd(G21,Jac21,kmul(G31,Jac31))),kmadd(Jac23,kmadd(G21,Jac11,kmadd(G22,Jac21,kmul(G32,Jac31))),kmul(kmadd(G31,Jac11,kmadd(G32,Jac21,kmul(G33,Jac31))),Jac33)));
     
-    CCTK_REAL_VEC csetemp9 = SQR(Jac12);
+    CCTK_REAL_VEC csetemp9 = kmul(Jac12,Jac12);
     
-    CCTK_REAL_VEC csetemp10 = SQR(Jac22);
+    CCTK_REAL_VEC csetemp10 = kmul(Jac22,Jac22);
     
-    CCTK_REAL_VEC csetemp11 = SQR(Jac32);
+    CCTK_REAL_VEC csetemp11 = kmul(Jac32,Jac32);
     
     CCTK_REAL_VEC gyyL = 
       kmadd(csetemp9,G11,kmadd(csetemp10,G22,kmadd(csetemp11,G33,kmul(kmadd(G32,kmul(Jac22,Jac32),kmul(Jac12,kmadd(G21,Jac22,kmul(G31,Jac32)))),ToReal(2)))));
@@ -208,11 +212,11 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     CCTK_REAL_VEC gyzL = 
       kmadd(Jac13,kmadd(G11,Jac12,kmadd(G21,Jac22,kmul(G31,Jac32))),kmadd(Jac23,kmadd(G21,Jac12,kmadd(G22,Jac22,kmul(G32,Jac32))),kmul(kmadd(G31,Jac12,kmadd(G32,Jac22,kmul(G33,Jac32))),Jac33)));
     
-    CCTK_REAL_VEC csetemp12 = SQR(Jac13);
+    CCTK_REAL_VEC csetemp12 = kmul(Jac13,Jac13);
     
-    CCTK_REAL_VEC csetemp13 = SQR(Jac23);
+    CCTK_REAL_VEC csetemp13 = kmul(Jac23,Jac23);
     
-    CCTK_REAL_VEC csetemp14 = SQR(Jac33);
+    CCTK_REAL_VEC csetemp14 = kmul(Jac33,Jac33);
     
     CCTK_REAL_VEC gzzL = 
       kmadd(csetemp12,G11,kmadd(csetemp13,G22,kmadd(csetemp14,G33,kmul(kmadd(G32,kmul(Jac23,Jac33),kmul(Jac13,kmadd(G21,Jac23,kmul(G31,Jac33)))),ToReal(2)))));
