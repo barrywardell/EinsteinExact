@@ -19,7 +19,6 @@ if (CCTK_EQUALS(initial_data, "Vaidya2"))
   schedule Vaidya2_initial in ADMBase_InitialData
   {
     LANG: C
-    READS:    admbase::alp
     READS:    grid::x
     READS:    grid::y
     READS:    grid::z
@@ -52,7 +51,6 @@ if (CCTK_EQUALS(evolution_method, "Vaidya2"))
   schedule Vaidya2_always at ANALYSIS
   {
     LANG: C
-    READS:    admbase::alp
     READS:    grid::x
     READS:    grid::y
     READS:    grid::z

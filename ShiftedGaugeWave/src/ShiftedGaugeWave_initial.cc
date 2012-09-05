@@ -80,7 +80,6 @@ static void ShiftedGaugeWave_initial_Body(cGH const * restrict const cctkGH, int
     
     /* Assign local copies of grid functions */
     
-    CCTK_REAL_VEC alpL = vec_load(alp[index]);
     CCTK_REAL_VEC xL = vec_load(x[index]);
     CCTK_REAL_VEC yL = vec_load(y[index]);
     CCTK_REAL_VEC zL = vec_load(z[index]);
@@ -186,7 +185,7 @@ static void ShiftedGaugeWave_initial_Body(cGH const * restrict const cctkGH, int
     CCTK_REAL_VEC G33 = ToReal(1.);
     
     CCTK_REAL_VEC K11 = 
-      kneg(kdiv(kmul(kcos(kmul(csetemp6,kmul(csetemp7,ToReal(6.283185307179586)))),ToReal(amp*Pi)),kmul(kmadd(ksin(kmul(csetemp6,kmul(csetemp7,ToReal(6.283185307179586)))),ToReal(amp*period),ToReal(period)),alpL)));
+      kneg(kdiv(kmul(kcos(kmul(csetemp6,kmul(csetemp7,ToReal(6.283185307179586)))),ToReal(amp*Pi)),kmul(ToReal(period),ksqrt(kmadd(ksin(kmul(csetemp6,kmul(csetemp7,ToReal(6.283185307179586)))),ToReal(amp),ToReal(1.))))));
     
     CCTK_REAL_VEC K21 = ToReal(0.);
     
@@ -272,7 +271,7 @@ static void ShiftedGaugeWave_initial_Body(cGH const * restrict const cctkGH, int
     CCTK_REAL_VEC kzzL = 
       kmadd(csetemp14,K11,kmadd(csetemp15,K22,kmadd(csetemp16,K33,kmul(kmadd(Jac13,kmadd(Jac23,K21,kmul(Jac33,K31)),kmul(Jac23,kmul(Jac33,K32))),ToReal(2.)))));
     
-    alpL = kmul(alpp,ToReal(lapsefactor));
+    CCTK_REAL_VEC alpL = kmul(alpp,ToReal(lapsefactor));
     
     CCTK_REAL_VEC dtalpL = kmul(dtalpp,ToReal(lapsefactor));
     

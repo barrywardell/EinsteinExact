@@ -171,7 +171,7 @@ idThorn[spacetime_, thorn_] :=
   lapse = 1/Sqrt[-invFourMetric[[1, 1]]];
   shift = Simplify[lapse^2 invFourMetric[[1, 2 ;; 4]], simpopts];
   threeMetric = fourMetric[[2 ;; 4, 2 ;; 4]];
-  extrinsicCurvature = -1/(2 alp) Simplify[Table[
+  extrinsicCurvature = -1/(2 lapse) Simplify[Table[
      (D[threeMetric[[i, j]], T] -
        Sum[D[threeMetric[[i, j]], spatialCoords[[k]]] shift[[k]], {k, 3}] -
        Sum[threeMetric[[i, k]] D[shift[[k]], spatialCoords[[j]]], {k, 3}] -
