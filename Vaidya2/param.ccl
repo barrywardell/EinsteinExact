@@ -81,6 +81,12 @@ CCTK_REAL positionz "positionz"
 } 0
 
 restricted:
+CCTK_REAL lapsefactor "lapsefactor"
+{
+  "*:*" :: ""
+} 1
+
+restricted:
 CCTK_REAL shiftaddx "shiftaddx"
 {
   "*:*" :: ""

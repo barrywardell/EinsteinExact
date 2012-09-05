@@ -62,7 +62,7 @@ admGroups =
 
 shorthands = 
 {
-  position[ui], shiftadd[ui], Jac[ui,lj], InvJac[ui,lj], xx[ui], XX[ui], T, X, Y, Z, betap[ui], dtbetap[ui], G[li,lj], K[li,lk]
+  position[ui], shiftadd[ui], Jac[ui,lj], InvJac[ui,lj], xx[ui], XX[ui], T, X, Y, Z, alpp, dtalpp, betap[ui], dtbetap[ui], G[li,lj], K[li,lk]
 };
 
 (**************************************************************************************)
@@ -76,7 +76,9 @@ realParameters =
   {Name -> positionx, Default -> 0},
   {Name -> positiony, Default -> 0},
   {Name -> positionz, Default -> 0},
-  (* Shift that should be added to the metric *)
+  (* Factor that should multiply the lapse *)
+  {Name -> lapsefactor, Default -> 1},
+  (* Shift that should be added *)
   {Name -> shiftaddx, Default -> 0},
   {Name -> shiftaddy, Default -> 0},
   {Name -> shiftaddz, Default -> 0},
@@ -236,8 +238,8 @@ idThorn[spacetime_, thorn_] :=
       Table[Jac[i,j] -> Rot[[i,j]], {i,1,3}, {j,1,3}],
       Table[InvJac[i,j] -> Jac[j,i], {i,1,3}, {j,1,3}],
 
-      (* We compute everything in the rotated *)
-      T -> t - positiont,
+      (* We compute everything in the rotated frame *)
+      T -> lapsefactor (t - positiont),
       XX[ui] -> Jac[ui,lj] (xx[uj] - position[uj] - shiftadd[uj] T),
       X -> XX[1],
       Y -> XX[2],
@@ -250,16 +252,18 @@ idThorn[spacetime_, thorn_] :=
       (* TODO: set these only if initial_lapse etc are set to
          <spacetime>.  This is not supported by Kranc at the
          moment. *)
-      alp -> lapse,
-      dtalp -> dtlapse,
       Table[G[i,j]-> threeMetric[[i, j]], {j, 3}, {i, j, 3}],
       Table[K[i,j] -> extrinsicCurvature[[i,j]], {j, 3}, {i, j, 3}],
+      alpp -> lapse,
+      dtalpp -> dtlapse,
       Table[betap[i] -> shift[[i]], {i, 3}],
       Table[dtbetap[i] -> dtshift[[i]], {i, 3}],
 
       (* Rotate back to Cactus components *)
       g[li,lj] -> Jac[um,li] Jac[un,lj] G[lm,ln],
       k[li,lj] -> Jac[um,li] Jac[un,lj] K[lm,ln],
+      alp -> lapsefactor alpp,
+      dtalp -> lapsefactor dtalpp,
       beta[ui] -> InvJac[ui,lj] betap[uj] + shiftadd[ui],
       dtbeta[ui] -> InvJac[ui,lj] dtbetap[uj]
     }

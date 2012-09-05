@@ -36,28 +36,28 @@ static void Minkowski_always_Body(cGH const * restrict const cctkGH, int const d
   /* Include user-supplied include files */
   
   /* Initialise finite differencing variables */
-  ptrdiff_t const di = 1;
-  ptrdiff_t const dj = CCTK_GFINDEX3D(cctkGH,0,1,0) - CCTK_GFINDEX3D(cctkGH,0,0,0);
-  ptrdiff_t const dk = CCTK_GFINDEX3D(cctkGH,0,0,1) - CCTK_GFINDEX3D(cctkGH,0,0,0);
-  ptrdiff_t const cdi = sizeof(CCTK_REAL) * di;
-  ptrdiff_t const cdj = sizeof(CCTK_REAL) * dj;
-  ptrdiff_t const cdk = sizeof(CCTK_REAL) * dk;
-  CCTK_REAL_VEC const dx = ToReal(CCTK_DELTA_SPACE(0));
-  CCTK_REAL_VEC const dy = ToReal(CCTK_DELTA_SPACE(1));
-  CCTK_REAL_VEC const dz = ToReal(CCTK_DELTA_SPACE(2));
-  CCTK_REAL_VEC const dt = ToReal(CCTK_DELTA_TIME);
-  CCTK_REAL_VEC const t = ToReal(cctk_time);
-  CCTK_REAL_VEC const dxi = INV(dx);
-  CCTK_REAL_VEC const dyi = INV(dy);
-  CCTK_REAL_VEC const dzi = INV(dz);
-  CCTK_REAL_VEC const khalf = ToReal(0.5);
-  CCTK_REAL_VEC const kthird = ToReal(1.0/3.0);
-  CCTK_REAL_VEC const ktwothird = ToReal(2.0/3.0);
-  CCTK_REAL_VEC const kfourthird = ToReal(4.0/3.0);
-  CCTK_REAL_VEC const keightthird = ToReal(8.0/3.0);
-  CCTK_REAL_VEC const hdxi = kmul(ToReal(0.5), dxi);
-  CCTK_REAL_VEC const hdyi = kmul(ToReal(0.5), dyi);
-  CCTK_REAL_VEC const hdzi = kmul(ToReal(0.5), dzi);
+  ptrdiff_t /*const*/ di = 1;
+  ptrdiff_t /*const*/ dj = CCTK_GFINDEX3D(cctkGH,0,1,0) - CCTK_GFINDEX3D(cctkGH,0,0,0);
+  ptrdiff_t /*const*/ dk = CCTK_GFINDEX3D(cctkGH,0,0,1) - CCTK_GFINDEX3D(cctkGH,0,0,0);
+  ptrdiff_t /*const*/ cdi = sizeof(CCTK_REAL) * di;
+  ptrdiff_t /*const*/ cdj = sizeof(CCTK_REAL) * dj;
+  ptrdiff_t /*const*/ cdk = sizeof(CCTK_REAL) * dk;
+  CCTK_REAL_VEC /*const*/ dx = ToReal(CCTK_DELTA_SPACE(0));
+  CCTK_REAL_VEC /*const*/ dy = ToReal(CCTK_DELTA_SPACE(1));
+  CCTK_REAL_VEC /*const*/ dz = ToReal(CCTK_DELTA_SPACE(2));
+  CCTK_REAL_VEC /*const*/ dt = ToReal(CCTK_DELTA_TIME);
+  CCTK_REAL_VEC /*const*/ t = ToReal(cctk_time);
+  CCTK_REAL_VEC /*const*/ dxi = INV(dx);
+  CCTK_REAL_VEC /*const*/ dyi = INV(dy);
+  CCTK_REAL_VEC /*const*/ dzi = INV(dz);
+  CCTK_REAL_VEC /*const*/ khalf = ToReal(0.5);
+  CCTK_REAL_VEC /*const*/ kthird = ToReal(1.0/3.0);
+  CCTK_REAL_VEC /*const*/ ktwothird = ToReal(2.0/3.0);
+  CCTK_REAL_VEC /*const*/ kfourthird = ToReal(4.0/3.0);
+  CCTK_REAL_VEC /*const*/ keightthird = ToReal(8.0/3.0);
+  CCTK_REAL_VEC /*const*/ hdxi = kmul(ToReal(0.5), dxi);
+  CCTK_REAL_VEC /*const*/ hdyi = kmul(ToReal(0.5), dyi);
+  CCTK_REAL_VEC /*const*/ hdzi = kmul(ToReal(0.5), dzi);
   
   /* Initialize predefined quantities */
   
@@ -76,7 +76,7 @@ static void Minkowski_always_Body(cGH const * restrict const cctkGH, int const d
     cctk_ash[0],cctk_ash[1],cctk_ash[2],
     CCTK_REAL_VEC_SIZE)
   {
-    ptrdiff_t const index = di*i + dj*j + dk*k;
+    ptrdiff_t /*const*/ index = di*i + dj*j + dk*k;
     
     /* Assign local copies of grid functions */
     
@@ -145,10 +145,6 @@ static void Minkowski_always_Body(cGH const * restrict const cctkGH, int const d
     
     CCTK_REAL_VEC InvJac33 = Jac33;
     
-    CCTK_REAL_VEC alpL = ToReal(1.);
-    
-    CCTK_REAL_VEC dtalpL = ToReal(0.);
-    
     CCTK_REAL_VEC G11 = ToReal(1.);
     
     CCTK_REAL_VEC G21 = ToReal(0.);
@@ -172,6 +168,10 @@ static void Minkowski_always_Body(cGH const * restrict const cctkGH, int const d
     CCTK_REAL_VEC K32 = ToReal(0.);
     
     CCTK_REAL_VEC K33 = ToReal(0.);
+    
+    CCTK_REAL_VEC alpp = ToReal(1.);
+    
+    CCTK_REAL_VEC dtalpp = ToReal(0.);
     
     CCTK_REAL_VEC betap1 = ToReal(0.);
     
@@ -238,6 +238,10 @@ static void Minkowski_always_Body(cGH const * restrict const cctkGH, int const d
     
     CCTK_REAL_VEC kzzL = 
       kmadd(csetemp12,K11,kmadd(csetemp13,K22,kmadd(csetemp14,K33,kmul(kmadd(Jac13,kmadd(Jac23,K21,kmul(Jac33,K31)),kmul(Jac23,kmul(Jac33,K32))),ToReal(2.)))));
+    
+    CCTK_REAL_VEC alpL = kmul(alpp,ToReal(lapsefactor));
+    
+    CCTK_REAL_VEC dtalpL = kmul(dtalpp,ToReal(lapsefactor));
     
     CCTK_REAL_VEC betaxL = 
       kmadd(betap1,InvJac11,kmadd(betap2,InvJac12,kmadd(betap3,InvJac13,shiftadd1)));

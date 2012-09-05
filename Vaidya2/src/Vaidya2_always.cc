@@ -36,28 +36,28 @@ static void Vaidya2_always_Body(cGH const * restrict const cctkGH, int const dir
   /* Include user-supplied include files */
   
   /* Initialise finite differencing variables */
-  ptrdiff_t const di = 1;
-  ptrdiff_t const dj = CCTK_GFINDEX3D(cctkGH,0,1,0) - CCTK_GFINDEX3D(cctkGH,0,0,0);
-  ptrdiff_t const dk = CCTK_GFINDEX3D(cctkGH,0,0,1) - CCTK_GFINDEX3D(cctkGH,0,0,0);
-  ptrdiff_t const cdi = sizeof(CCTK_REAL) * di;
-  ptrdiff_t const cdj = sizeof(CCTK_REAL) * dj;
-  ptrdiff_t const cdk = sizeof(CCTK_REAL) * dk;
-  CCTK_REAL_VEC const dx = ToReal(CCTK_DELTA_SPACE(0));
-  CCTK_REAL_VEC const dy = ToReal(CCTK_DELTA_SPACE(1));
-  CCTK_REAL_VEC const dz = ToReal(CCTK_DELTA_SPACE(2));
-  CCTK_REAL_VEC const dt = ToReal(CCTK_DELTA_TIME);
-  CCTK_REAL_VEC const t = ToReal(cctk_time);
-  CCTK_REAL_VEC const dxi = INV(dx);
-  CCTK_REAL_VEC const dyi = INV(dy);
-  CCTK_REAL_VEC const dzi = INV(dz);
-  CCTK_REAL_VEC const khalf = ToReal(0.5);
-  CCTK_REAL_VEC const kthird = ToReal(1.0/3.0);
-  CCTK_REAL_VEC const ktwothird = ToReal(2.0/3.0);
-  CCTK_REAL_VEC const kfourthird = ToReal(4.0/3.0);
-  CCTK_REAL_VEC const keightthird = ToReal(8.0/3.0);
-  CCTK_REAL_VEC const hdxi = kmul(ToReal(0.5), dxi);
-  CCTK_REAL_VEC const hdyi = kmul(ToReal(0.5), dyi);
-  CCTK_REAL_VEC const hdzi = kmul(ToReal(0.5), dzi);
+  ptrdiff_t /*const*/ di = 1;
+  ptrdiff_t /*const*/ dj = CCTK_GFINDEX3D(cctkGH,0,1,0) - CCTK_GFINDEX3D(cctkGH,0,0,0);
+  ptrdiff_t /*const*/ dk = CCTK_GFINDEX3D(cctkGH,0,0,1) - CCTK_GFINDEX3D(cctkGH,0,0,0);
+  ptrdiff_t /*const*/ cdi = sizeof(CCTK_REAL) * di;
+  ptrdiff_t /*const*/ cdj = sizeof(CCTK_REAL) * dj;
+  ptrdiff_t /*const*/ cdk = sizeof(CCTK_REAL) * dk;
+  CCTK_REAL_VEC /*const*/ dx = ToReal(CCTK_DELTA_SPACE(0));
+  CCTK_REAL_VEC /*const*/ dy = ToReal(CCTK_DELTA_SPACE(1));
+  CCTK_REAL_VEC /*const*/ dz = ToReal(CCTK_DELTA_SPACE(2));
+  CCTK_REAL_VEC /*const*/ dt = ToReal(CCTK_DELTA_TIME);
+  CCTK_REAL_VEC /*const*/ t = ToReal(cctk_time);
+  CCTK_REAL_VEC /*const*/ dxi = INV(dx);
+  CCTK_REAL_VEC /*const*/ dyi = INV(dy);
+  CCTK_REAL_VEC /*const*/ dzi = INV(dz);
+  CCTK_REAL_VEC /*const*/ khalf = ToReal(0.5);
+  CCTK_REAL_VEC /*const*/ kthird = ToReal(1.0/3.0);
+  CCTK_REAL_VEC /*const*/ ktwothird = ToReal(2.0/3.0);
+  CCTK_REAL_VEC /*const*/ kfourthird = ToReal(4.0/3.0);
+  CCTK_REAL_VEC /*const*/ keightthird = ToReal(8.0/3.0);
+  CCTK_REAL_VEC /*const*/ hdxi = kmul(ToReal(0.5), dxi);
+  CCTK_REAL_VEC /*const*/ hdyi = kmul(ToReal(0.5), dyi);
+  CCTK_REAL_VEC /*const*/ hdzi = kmul(ToReal(0.5), dzi);
   
   /* Initialize predefined quantities */
   
@@ -76,7 +76,7 @@ static void Vaidya2_always_Body(cGH const * restrict const cctkGH, int const dir
     cctk_ash[0],cctk_ash[1],cctk_ash[2],
     CCTK_REAL_VEC_SIZE)
   {
-    ptrdiff_t const index = di*i + dj*j + dk*k;
+    ptrdiff_t /*const*/ index = di*i + dj*j + dk*k;
     
     /* Assign local copies of grid functions */
     
@@ -161,7 +161,7 @@ static void Vaidya2_always_Body(cGH const * restrict const cctkGH, int const dir
     
     CCTK_REAL_VEC InvJac33 = Jac33;
     
-    CCTK_REAL_VEC T = ksub(t,ToReal(positiont));
+    CCTK_REAL_VEC T = kmul(ToReal(lapsefactor),ksub(t,ToReal(positiont)));
     
     CCTK_REAL_VEC csetemp6 = kneg(kmul(shiftadd1,T));
     
@@ -199,16 +199,6 @@ static void Vaidya2_always_Body(cGH const * restrict const cctkGH, int const dir
     
     CCTK_REAL_VEC csetemp13 = kdiv(ToReal(1.),kmul(rXYZ,kmul(rXYZ,rXYZ)));
     
-    CCTK_REAL_VEC csetemp14 = kmul(rXYZ,kmul(rXYZ,rXYZ));
-    
-    alpL = 
-      kdiv(ToReal(1.),ksqrt(kmul(csetemp13,kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14))));
-    
-    CCTK_REAL_VEC csetemp15 = kadd(rXYZ,T);
-    
-    CCTK_REAL_VEC dtalpL = 
-      kdiv(kmul(csetemp13,kmul(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(kpow(kmul(csetemp13,kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14)),-1.5),kmul(ktanh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),ToReal(-2.*dM))))),kmul(kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM))))));
-    
     CCTK_REAL_VEC G11 = 
       kmadd(csetemp13,kmul(csetemp9,kmul(mTXYZ,ToReal(2.))),ToReal(1.));
     
@@ -227,53 +217,63 @@ static void Vaidya2_always_Body(cGH const * restrict const cctkGH, int const dir
     CCTK_REAL_VEC G33 = 
       kmadd(csetemp11,kmul(csetemp13,kmul(mTXYZ,ToReal(2.))),ToReal(1.));
     
-    CCTK_REAL_VEC csetemp16 = kdiv(ToReal(1.),alpL);
+    CCTK_REAL_VEC csetemp14 = kdiv(ToReal(1.),alpL);
     
-    CCTK_REAL_VEC csetemp17 = 
+    CCTK_REAL_VEC csetemp15 = 
       kdiv(ToReal(1.),kmul(kmul(rXYZ,rXYZ),kmul(rXYZ,rXYZ)));
     
-    CCTK_REAL_VEC csetemp18 = 
+    CCTK_REAL_VEC csetemp16 = kmul(rXYZ,kmul(rXYZ,rXYZ));
+    
+    CCTK_REAL_VEC csetemp17 = 
       kmul(rXYZ,kmul(kmul(rXYZ,rXYZ),kmul(rXYZ,rXYZ)));
     
-    CCTK_REAL_VEC csetemp19 = kmul(mTXYZ,mTXYZ);
+    CCTK_REAL_VEC csetemp18 = kmul(mTXYZ,mTXYZ);
     
-    CCTK_REAL_VEC csetemp20 = kmul(kmul(rXYZ,rXYZ),kmul(rXYZ,rXYZ));
+    CCTK_REAL_VEC csetemp19 = kmul(kmul(rXYZ,rXYZ),kmul(rXYZ,rXYZ));
+    
+    CCTK_REAL_VEC csetemp20 = kadd(rXYZ,T);
     
     CCTK_REAL_VEC K11 = 
-      kdiv(kmul(csetemp16,kmul(csetemp17,kmul(ToReal(-2.),kmsub(csetemp9,kmsub(csetemp19,kadd(csetemp10,kadd(csetemp11,csetemp9)),kdiv(kmul(csetemp20,kmul(ktanh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),ToReal(dM))),kmul(kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM))))))),kmul(mTXYZ,kmadd(csetemp14,kmul(csetemp9,ToReal(-2.)),csetemp18)))))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14));
+      kdiv(kmul(csetemp14,kmul(csetemp15,kmul(ToReal(-2.),kmsub(csetemp9,kmsub(csetemp18,kadd(csetemp10,kadd(csetemp11,csetemp9)),kdiv(kmul(csetemp19,kmul(ktanh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),ToReal(dM))),kmul(kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM))))))),kmul(mTXYZ,kmadd(csetemp16,kmul(csetemp9,ToReal(-2.)),csetemp17)))))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16));
     
     CCTK_REAL_VEC K21 = 
-      kdiv(kmul(csetemp16,kmul(csetemp17,kmul(X,kmul(Y,kmul(ToReal(-2.),kmadd(csetemp19,kadd(csetemp10,kadd(csetemp11,csetemp9)),kmsub(csetemp14,kmul(mTXYZ,ToReal(2.)),kdiv(kmul(csetemp20,kmul(ktanh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),ToReal(dM))),kmul(kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM))))))))))))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14));
+      kdiv(kmul(csetemp14,kmul(csetemp15,kmul(X,kmul(Y,kmul(ToReal(-2.),kmadd(csetemp18,kadd(csetemp10,kadd(csetemp11,csetemp9)),kmsub(csetemp16,kmul(mTXYZ,ToReal(2.)),kdiv(kmul(csetemp19,kmul(ktanh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),ToReal(dM))),kmul(kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM))))))))))))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16));
     
     CCTK_REAL_VEC K31 = 
-      kdiv(kmul(csetemp16,kmul(csetemp17,kmul(X,kmul(Z,kmul(ToReal(-2.),kmadd(csetemp19,kadd(csetemp10,kadd(csetemp11,csetemp9)),kmsub(csetemp14,kmul(mTXYZ,ToReal(2.)),kdiv(kmul(csetemp20,kmul(ktanh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),ToReal(dM))),kmul(kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM))))))))))))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14));
+      kdiv(kmul(csetemp14,kmul(csetemp15,kmul(X,kmul(Z,kmul(ToReal(-2.),kmadd(csetemp18,kadd(csetemp10,kadd(csetemp11,csetemp9)),kmsub(csetemp16,kmul(mTXYZ,ToReal(2.)),kdiv(kmul(csetemp19,kmul(ktanh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),ToReal(dM))),kmul(kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM))))))))))))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16));
     
     CCTK_REAL_VEC K22 = 
-      kdiv(kmul(csetemp16,kmul(csetemp17,kmul(ToReal(-2.),kmadd(mTXYZ,kmsub(csetemp10,kmul(csetemp14,ToReal(2.)),csetemp18),kmul(csetemp10,kmsub(csetemp19,kadd(csetemp10,kadd(csetemp11,csetemp9)),kdiv(kmul(csetemp20,kmul(ktanh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),ToReal(dM))),kmul(kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))))))))))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14));
+      kdiv(kmul(csetemp14,kmul(csetemp15,kmul(ToReal(-2.),kmadd(mTXYZ,kmsub(csetemp10,kmul(csetemp16,ToReal(2.)),csetemp17),kmul(csetemp10,kmsub(csetemp18,kadd(csetemp10,kadd(csetemp11,csetemp9)),kdiv(kmul(csetemp19,kmul(ktanh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),ToReal(dM))),kmul(kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))))))))))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16));
     
     CCTK_REAL_VEC K32 = 
-      kdiv(kmul(csetemp16,kmul(csetemp17,kmul(Y,kmul(Z,kmul(ToReal(-2.),kmadd(csetemp19,kadd(csetemp10,kadd(csetemp11,csetemp9)),kmsub(csetemp14,kmul(mTXYZ,ToReal(2.)),kdiv(kmul(csetemp20,kmul(ktanh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),ToReal(dM))),kmul(kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM))))))))))))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14));
+      kdiv(kmul(csetemp14,kmul(csetemp15,kmul(Y,kmul(Z,kmul(ToReal(-2.),kmadd(csetemp18,kadd(csetemp10,kadd(csetemp11,csetemp9)),kmsub(csetemp16,kmul(mTXYZ,ToReal(2.)),kdiv(kmul(csetemp19,kmul(ktanh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),ToReal(dM))),kmul(kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM))))))))))))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16));
     
     CCTK_REAL_VEC K33 = 
-      kdiv(kmul(csetemp16,kmul(csetemp17,kmul(ToReal(-2.),kmadd(mTXYZ,kmsub(csetemp11,kmul(csetemp14,ToReal(2.)),csetemp18),kmul(csetemp11,kmsub(csetemp19,kadd(csetemp10,kadd(csetemp11,csetemp9)),kdiv(kmul(csetemp20,kmul(ktanh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),ToReal(dM))),kmul(kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))))))))))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14));
+      kdiv(kmul(csetemp14,kmul(csetemp15,kmul(ToReal(-2.),kmadd(mTXYZ,kmsub(csetemp11,kmul(csetemp16,ToReal(2.)),csetemp17),kmul(csetemp11,kmsub(csetemp18,kadd(csetemp10,kadd(csetemp11,csetemp9)),kdiv(kmul(csetemp19,kmul(ktanh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),ToReal(dM))),kmul(kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))))))))))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16));
+    
+    CCTK_REAL_VEC alpp = 
+      kdiv(ToReal(1.),ksqrt(kmul(csetemp13,kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16))));
+    
+    CCTK_REAL_VEC dtalpp = 
+      kdiv(kmul(csetemp13,kmul(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(kpow(kmul(csetemp13,kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16)),-1.5),kmul(ktanh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),ToReal(-2.*dM))))),kmul(kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM))))));
     
     CCTK_REAL_VEC betap1 = 
-      kdiv(kmul(mTXYZ,kmul(rXYZ,kmul(X,ToReal(2.)))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14));
+      kdiv(kmul(mTXYZ,kmul(rXYZ,kmul(X,ToReal(2.)))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16));
     
     CCTK_REAL_VEC betap2 = 
-      kdiv(kmul(mTXYZ,kmul(rXYZ,kmul(Y,ToReal(2.)))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14));
+      kdiv(kmul(mTXYZ,kmul(rXYZ,kmul(Y,ToReal(2.)))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16));
     
     CCTK_REAL_VEC betap3 = 
-      kdiv(kmul(mTXYZ,kmul(rXYZ,kmul(Z,ToReal(2.)))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14));
+      kdiv(kmul(mTXYZ,kmul(rXYZ,kmul(Z,ToReal(2.)))),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16));
     
     CCTK_REAL_VEC dtbetap1 = 
-      kdiv(kmul(csetemp20,kmul(X,kmul(ktanh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),ToReal(4.*dM)))),kmul(kmul(kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14)),kmul(kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))))));
+      kdiv(kmul(csetemp19,kmul(X,kmul(ktanh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),ToReal(4.*dM)))),kmul(kmul(kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16)),kmul(kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))))));
     
     CCTK_REAL_VEC dtbetap2 = 
-      kdiv(kmul(csetemp20,kmul(Y,kmul(ktanh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),ToReal(4.*dM)))),kmul(kmul(kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14)),kmul(kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))))));
+      kdiv(kmul(csetemp19,kmul(Y,kmul(ktanh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),ToReal(4.*dM)))),kmul(kmul(kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16)),kmul(kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))))));
     
     CCTK_REAL_VEC dtbetap3 = 
-      kdiv(kmul(csetemp20,kmul(Z,kmul(ktanh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),ToReal(4.*dM)))),kmul(kmul(kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp14)),kmul(kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp15,ToReal(dM)))))));
+      kdiv(kmul(csetemp19,kmul(Z,kmul(ktanh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),ToReal(4.*dM)))),kmul(kmul(kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16),kmadd(kadd(csetemp10,kadd(csetemp11,csetemp9)),kmul(mTXYZ,ToReal(2.)),csetemp16)),kmul(kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))),kcosh(kmul(csetemp12,kmul(csetemp20,ToReal(dM)))))));
     
     CCTK_REAL_VEC csetemp21 = kmul(Jac11,Jac11);
     
@@ -328,6 +328,10 @@ static void Vaidya2_always_Body(cGH const * restrict const cctkGH, int const dir
     
     CCTK_REAL_VEC kzzL = 
       kmadd(csetemp27,K11,kmadd(csetemp28,K22,kmadd(csetemp29,K33,kmul(kmadd(Jac13,kmadd(Jac23,K21,kmul(Jac33,K31)),kmul(Jac23,kmul(Jac33,K32))),ToReal(2.)))));
+    
+    alpL = kmul(alpp,ToReal(lapsefactor));
+    
+    CCTK_REAL_VEC dtalpL = kmul(dtalpp,ToReal(lapsefactor));
     
     CCTK_REAL_VEC betaxL = 
       kmadd(betap1,InvJac11,kmadd(betap2,InvJac12,kmadd(betap3,InvJac13,shiftadd1)));
