@@ -302,7 +302,6 @@ idThorn[spacetime_, thorn_] :=
   dShorthands = Simplify[Flatten[D[shorthandEquations, #] & /@ coords], simpopts] /. (0->0) -> Sequence[];
 
   (* Simplify an expression *)
-  (*TODO simp[expr_] := Simplify[expr /. dShorthands, simpopts] /. shorthandEquations; *)
   simp[expr_] := Simplify[expr /. dShorthands, simpopts];
 
   (* If the inverse four metric is not provided then compute it,
@@ -313,7 +312,6 @@ idThorn[spacetime_, thorn_] :=
   ];
   *)
 
-  (*TODO fourMetric = simp[fourMetric]; *)
   dFourMetric = simp[Table[D[fourMetric[[i, j]], coords[[k]]],
                            {i, 4}, {j, 4}, {k, 4}]];
 
