@@ -344,9 +344,9 @@ static void KerrSchild_initial_Body(cGH const * restrict const cctkGH, int const
     
     CCTK_REAL csetemp12 = SQR(Z);
     
-    CCTK_REAL rXYZ = INV(sqrt(2))*sqrt(csetemp10 + csetemp11 + csetemp12 - 
+    CCTK_REAL rXYZ = sqrt(INV(2)*(csetemp10 + csetemp11 + csetemp12 - 
       csetemp9 + sqrt(4*csetemp12*csetemp9 + SQR(csetemp10 + csetemp11 + 
-      csetemp12 - csetemp9)));
+      csetemp12 - csetemp9))));
     
     CCTK_REAL csetemp13 = CUB(rXYZ);
     
