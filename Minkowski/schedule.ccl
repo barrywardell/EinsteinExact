@@ -48,7 +48,7 @@ if (CCTK_EQUALS(initial_data, "Minkowski"))
 
 if (CCTK_EQUALS(evolution_method, "Minkowski"))
 {
-  schedule Minkowski_always at ANALYSIS
+  schedule Minkowski_always at CCTK_PRESTEP
   {
     LANG: C
     READS:    grid::x

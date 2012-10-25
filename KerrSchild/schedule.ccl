@@ -48,7 +48,7 @@ if (CCTK_EQUALS(initial_data, "KerrSchild"))
 
 if (CCTK_EQUALS(evolution_method, "KerrSchild"))
 {
-  schedule KerrSchild_always at ANALYSIS
+  schedule KerrSchild_always at CCTK_PRESTEP
   {
     LANG: C
     READS:    grid::x

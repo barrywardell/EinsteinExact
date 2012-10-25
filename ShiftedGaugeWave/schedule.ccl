@@ -48,7 +48,7 @@ if (CCTK_EQUALS(initial_data, "ShiftedGaugeWave"))
 
 if (CCTK_EQUALS(evolution_method, "ShiftedGaugeWave"))
 {
-  schedule ShiftedGaugeWave_always at ANALYSIS
+  schedule ShiftedGaugeWave_always at CCTK_PRESTEP
   {
     LANG: C
     READS:    grid::x
