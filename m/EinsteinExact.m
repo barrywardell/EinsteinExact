@@ -282,7 +282,9 @@ idThorn[spacetime_, thorn_] :=
     InheritedImplementations -> {"admbase"},
     CSE -> True,
     UseLoopControl -> True,
-    UseVectors -> True];
+    (* Something is broken in Kranc's vectorisation -- disable it temporarily *)
+    (* UseVectors -> True *)
+    UseVectors -> False];
 ];
 
 (* Create documentation stub *)
