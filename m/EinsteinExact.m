@@ -67,7 +67,7 @@ admGroups =
 (* Transform pseudo-tensors to symbols, e.g. g4[1,2] -> g412 *)
 arrayToSymbolRules =
   Module[{names},
-         names = {invXform1L, invXform2L, invXformL, dInvXformL,
+         names = {invXform1L, invXform2L, invXformL,
                   xx, txx, tg4, tdg4, g4, dg4};
          {name_[inds__Integer] :>
           Symbol[StringJoin[Map[ToString, {name, inds}]]]
@@ -91,7 +91,6 @@ shorthands =
       Table[invXform1L[i,j], {i, 0, 3}, {j, 0, 3}],
       Table[invXform2L[i,j], {i, 0, 3}, {j, 0, 3}],
       Table[invXformL[i,j], {i, 0, 3}, {j, 0, 3}],
-      Table[dInvXformL[i,j,k], {i, 0, 3}, {j, 0, 3}, {k, 0, 3}],
       Table[xx[i], {i, 0, 3}],
       Table[txx[i], {i, 0, 3}],
       Table[tg4[i,j], {i, 0, 3}, {j, i, 3}],
@@ -319,10 +318,6 @@ idThorn[spacetime_, thorn_] :=
       Table[invXform2L[i,j] -> invXform2[[i+1, j+1]], {i, 0, 3}, {j, 0, 3}],
       Table[invXformL[i,j] -> Sum[invXform2L[i,k] invXform1L[k,j], {k, 0, 3}],
             {i, 0, 3}, {j, 0, 3}],
-      (* This is always zero
-      Table[dInvXformL[i,j,k] -> dInvXform[[i+1, j+1, k+1]],
-            {i, 0, 3}, {j, 0, 3}, {k, 0, 3}],
-      *)
 
       Table[xx[i] -> originalCoords[[i+1]] - coordOffset[[i+1]], {i, 0, 3}],
       Table[txx[i] -> Sum[invXformL[i,j] xx[j], {j, 0, 3}], {i, 0, 3}],
@@ -343,18 +338,11 @@ idThorn[spacetime_, thorn_] :=
                            Sum[invXformL[l,j] tg4[k,l], {l, 0, 3}],
                            {k, 0, 3}],
             {i, 0, 3}, {j, i, 3}],
-      (* dInvXform is always zero *)
-      Table[dg4[i,j,k] -> ((* + Sum[dInvXformL[l,i,k]
-                                 Sum[invXformL[m,j] tg4[l,m], {m, 0, 3}],
-                                 {l, 0, 3}] *)
-                           (* + Sum[invXformL[l,i]
-                                 Sum[dInvXformL[m,j,k] tg4[l,m], {m, 0, 3}],
-                                 {l, 0, 3}] *)
-                           + Sum[invXformL[l,i]
+      Table[dg4[i,j,k] -> Sum[invXformL[l,i]
                                  Sum[invXformL[m,j] 
                                      Sum[invXformL[n,k] tdg4[l,m,n], {n, 0, 3}],
                                      {m, 0, 3}],
-                                 {l, 0, 3}]),
+                                 {l, 0, 3}],
             {i, 0, 3}, {j, i, 3}, {k, 0, 3}],
 
       (* Compute lapse, shift, three metric and extrinsic curvature *)
