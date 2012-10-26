@@ -144,32 +144,6 @@ Print["Generating transformations"];
 (* Could be Identity, Simplify, FullSimplify *)
 xformSimplify = FullSimplify;
 
-(* Rotation about axis and with angle {rotationx, rotationy, rotationz} *)
-(* UNUSED *)
-xformRotation := Module[{eps, delta3, delta4, epsilon3, rotation,
-                         alpha, omega, omega2, xform3, xform},
-                        eps = 10^{-10};
-                        delta3 = IdentityMatrix[3];
-                        delta4 = IdentityMatrix[4];
-                        epsilon3 = Normal[LeviCivitaTensor[3]];
-                        rotation = {rotationx, rotationy, rotationz};
-                        alpha = Max[eps, Sqrt[Total[rotation^2]]];
-                        omega = Table[Sum[epsilon3[[i,j,k]]
-                                          rotation[[k]] / alpha,
-                                          {k,3}],
-                                      {i,3}, {j,3}];
-                        (* omega2 = omega^2 *)
-                        omega2 = omega.omega;
-                       (* Exp[alpha omega] *)
-                        xform3 = Table[delta3[[i,j]]
-                                       + omega[[i,j]] Sin[2 Pi alpha]
-                                       - omega2[[i,j]] (Cos[2 Pi alpha] - 1),
-                                       {i,3}, {j,3}];
-                        xform = Table[If[i==0 || j==0, delta4[[i+1,j+1]],
-                                         xform3[[i,j]]],
-                                      {i,0,3}, {j,0,3}];
-                        xformSimplify[xform]];
-
 (* Rotation about Euler angles {theta, phi, psi} *)
 xformEuler = Module[{delta4, Rphi, Rtheta, Rpsi, Rot, xform},
                     delta4 = IdentityMatrix[4];
@@ -234,7 +208,6 @@ xform2 = xformEuler;
 xform = xform1 . xform2;
 
 (* Inverse transformation *)
-(* invXform = Inverse[xform]; *)
 invXform1 = Inverse[xform1];
 invXform2 = Inverse[xform2];
 invXform = invXform2 . invXform1;
@@ -282,9 +255,6 @@ idThorn[spacetime_, thorn_] :=
   spatialCoords = coords[[2;;]];
 
   fourMetric = MetricProperty[spacetime, "Metric"] /. coordRule;
-  (*
-  invFourMetric = MetricProperty[spacetime, "InverseMetric"] /. coordRule;
-  *)
 
   (* Create new equations for all shorthands and get rules for their derivatives *)
   shorthandEquations = MetricProperty[spacetime, "Shorthands"] /. coordRule;
@@ -304,14 +274,6 @@ idThorn[spacetime_, thorn_] :=
   (* Simplify an expression *)
   simp[expr_] := Simplify[expr /. dShorthands, simpopts];
 
-  (* If the inverse four metric is not provided then compute it,
-     otherwise transform it *)
-  (*
-  If[invFourMetric === {},
-    invFourMetric = simp[Inverse[fourMetric]]
-  ];
-  *)
-
   dFourMetric = simp[Table[D[fourMetric[[i, j]], coords[[k]]],
                            {i, 4}, {j, 4}, {k, 4}]];
 
@@ -320,14 +282,6 @@ idThorn[spacetime_, thorn_] :=
   kranctf = tf /. krancShortVars;
 
   (* Replace any shorthands with Kranc-friendly versions *)
-  (*
-  lapse = lapse /. krancShortVars;
-  shift = shift /. krancShortVars;
-  dtlapse = dtlapse /. krancShortVars;
-  dtshift = dtshift /. krancShortVars;
-  threeMetric = threeMetric /. krancShortVars;
-  extrinsicCurvature = extrinsicCurvature /. krancShortVars;
-  *)
   fourMetric = fourMetric /. krancShortVars;
   dFourMetric = dFourMetric /. krancShortVars;
   shorthandEquations = shorthandEquations /. krancShortVars;
