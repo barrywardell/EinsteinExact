@@ -221,7 +221,7 @@ originalCoords = {t,x,y,z};
 dInvXform = Table[D[invXform[[i, j]], originalCoords[[k]]],
                   {i, 4}, {j, 4}, {k, 4}];
 (* This is currently always zero -- abort if not *)
-If[Total[Flatten[dInvXform]] =!= 0, Throw["Error, dInvXform is non-zero"]]
+If[Count[Flatten[dInvXform], Except[0]] > 0, Throw["Error, dInvXform is non-zero"]]
 
 (**************************************************************************************)
 (* Some helper functions *)
