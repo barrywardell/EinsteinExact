@@ -4,7 +4,7 @@
 
 extern "C" int Minkowski_Startup(void)
 {
-  const char * banner = "Minkowski";
+  const char * banner CCTK_ATTRIBUTE_UNUSED  = "Minkowski";
   CCTK_RegisterBanner(banner);
   return 0;
 }
