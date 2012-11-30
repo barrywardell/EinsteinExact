@@ -346,7 +346,7 @@ idThorn[spacetime_, thorn_] :=
     Name -> thorn <> "_" <> when,
     Switch[when,
       "initial", Schedule -> {"in ADMBase_InitialData"},
-      "always",  Schedule -> {"at ANALYSIS"},
+      "always",  Schedule -> {"at CCTK_PRESTEP"},
       _, Throw["Unrecognised scheduling keyword"]],
 
     ConditionalOnKeyword ->
