@@ -144,30 +144,24 @@ Print["Generating transformations"];
 xformSimplify = FullSimplify;
 
 (* Rotation about Euler angles {theta, phi, psi} *)
-xformEuler = Module[{delta4, Rphi, Rtheta, Rpsi, Rot, xform},
-                    delta4 = IdentityMatrix[4];
-                    Rphi = {{Cos[phi], -Sin[phi], 0},
-                            {Sin[phi], Cos[phi], 0},
-                            {0, 0, 1}};
-                    Rtheta = {{1, 0, 0}, 
-                              {0, Cos[theta], -Sin[theta]}, 
-                              {0, Sin[theta], Cos[theta]}};
-                    Rpsi = {{Cos[psi], -Sin[psi], 0},
-                            {Sin[psi], Cos[psi], 0},
-                            {0, 0, 1}};
-                    Rot = Rphi.Rtheta.Rpsi;
-                    xform = Table[If[i==0 || j==0, delta4[[i+1,j+1]],
-                                     Rot[[i,j]]],
-                                  {i,0,3}, {j,0,3}];
-                    xformSimplify[xform]];
+xformEuler = Module[{Rphi, Rtheta, Rpsi, Rot, xform},
+  (* Rotate counter-clockwise about z, x, z *)
+  Rphi = RotationMatrix[phi, {0, 0, 1}];
+  Rtheta = RotationMatrix[theta, {1, 0, 0}];
+  Rpsi = RotationMatrix[psi, {0, 0, 1}];
+  Rot = Rphi.Rtheta.Rpsi;
+
+  xform = IdentityMatrix[4];
+  xform[[2;;4, 2;;4]] = Rot;
+  xformSimplify[xform]
+];
 
 (* Modify lapse *)
-xformSlowdown = Module[{delta4, xform},
-                       delta4 = IdentityMatrix[4];
-                       xform = Table[If[i==0 && j==0, lapsefactor,
-                                        delta4[[i+1,j+1]]],
-                                     {i,0,3}, {j,0,3}];
-                       xformSimplify[xform]];
+xformSlowdown = Module[{xform},
+  xform = IdentityMatrix[4];
+  xform[[1, 1]] = lapsefactor;
+  xformSimplify[xform]
+];
 
 (* Not implemented: deformation, cushion, shear *)
 
