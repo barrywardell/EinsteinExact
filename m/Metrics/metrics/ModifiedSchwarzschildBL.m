@@ -13,7 +13,7 @@ Module[
                      "a radially dependent mass inside the black hole",
     "Dimensions" -> 4,
     "Coordinates" -> {t, x, y, z},
-    "Parameters" -> {M, epsilon},
+    "Parameters" -> {M},
     "Metric" -> {{-1, 0, 0, 0},
                  {0, psi4, 0, 0},
                  {0, 0, psi4, 0},
