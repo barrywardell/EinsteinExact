@@ -178,13 +178,12 @@ xformBoost = Module[{gamma, boost, xform},
 
 (* Modify shift *)
 xformVelocity = Module[{delta4, velocity, xform1, xform},
-                       delta4 = IdentityMatrix[4];
-                       velocity = {shiftaddx, shiftaddy, shiftaddz};
-                       xform1 = velocity;
-                       xform = Table[If[i>0 && j==0, xform1[[i]],
-                                        delta4[[i+1,j+1]]],
-                                     {i,0,3}, {j,0,3}];
-                       xformSimplify[xform]];
+  velocity = {shiftaddx, shiftaddy, shiftaddz};
+
+  xform = IdentityMatrix[4];
+  xform[[2;;4, 1]] = velocity;
+  xformSimplify[xform]
+];
 
 (* The order in which these transformations are chained does matter --
    the order below has been chosen carefully to "make sense" *)
