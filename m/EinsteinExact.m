@@ -224,8 +224,6 @@ idThorn[spacetime_, thorn_] :=
   Module[{coordRule, coords, spatialCoords, fourMetric, invFourMetric,
           dFourMetric,
           shorthandEquations, shorthandVars, dShorthands, simplifyhints, tf, cf, simpopts,
-          (* lapse, shift, threeMetric, dtlapse, dtshift, dtthreeMetric,
-          dxshift, dxthreeMetric, extrinsicCurvature, *)
           krancShortVars, kranctf, parameters, extendedKeywordParameters, calc,
           calculations},
 
