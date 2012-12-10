@@ -23,7 +23,7 @@ g_{ab} =
 \subsection{KerrSchild}
 {\bf Description:}  \text{Kerr spacetime in Kerr-Schild coordinates} \\
 {\bf Thorn name:} KerrSchild \\
-{\bf Parameters:} \code{M}, \code{a} \\
+{\bf Parameters:} \code{M}, \code{a}, \code{epsilon} \\
 {\bf Metric:} \\
 \begin{equation}
 g_{ab} =
@@ -52,8 +52,12 @@ z^2}+1 \\
 \end{equation}
 where
 \begin{equation}
-r(x,y,z)=\frac{\sqrt{\sqrt{\left(-a^2+x^2+y^2+z^2\right)^2+4 a^2 \
-z^2}-a^2+x^2+y^2+z^2}}{\sqrt{2}}
+r(x,y,z)=\max \left(\frac{\sqrt{\sqrt{\left(-a^2+x^2+y^2+z^2\right)^2+4 a^2 \
+z^2}-a^2+x^2+y^2+z^2}}{\sqrt{2}},\frac{3 \epsilon ^2 \
+\left(\sqrt{\left(-a^2+x^2+y^2+z^2\right)^2+4 a^2 \
+z^2}-a^2+x^2+y^2+z^2\right)-\frac{1}{4} \
+\left(\sqrt{\left(-a^2+x^2+y^2+z^2\right)^2+4 a^2 \
+z^2}-a^2+x^2+y^2+z^2\right)^2+3 \epsilon ^4}{8 \epsilon ^3}\right)
 \end{equation}
 
 
@@ -131,7 +135,7 @@ m(t,x,y,z)=M \left(\tanh ^2\left(\frac{\text{dM} \
 Brill-Lindquist coordinates with a radially dependent mass inside the black \
 hole} \\
 {\bf Thorn name:} ModifiedSchwarzschildBL \\
-{\bf Parameters:} \code{M}, \code{epsilon} \\
+{\bf Parameters:} \code{M} \\
 {\bf Metric:} \\
 \begin{equation}
 g_{ab} =

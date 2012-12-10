@@ -19,19 +19,6 @@ if (CCTK_EQUALS(initial_data, "Minkowski"))
   schedule Minkowski_initial in ADMBase_InitialData
   {
     LANG: C
-    READS:    admbase::alp
-    READS:    admbase::betax
-    READS:    admbase::betay
-    READS:    admbase::betaz
-    READS:    admbase::dtbetax
-    READS:    admbase::dtbetay
-    READS:    admbase::dtbetaz
-    READS:    admbase::gxx
-    READS:    admbase::gxy
-    READS:    admbase::gxz
-    READS:    admbase::gyy
-    READS:    admbase::gyz
-    READS:    admbase::gzz
     READS:    grid::x
     READS:    grid::y
     READS:    grid::z
@@ -61,22 +48,9 @@ if (CCTK_EQUALS(initial_data, "Minkowski"))
 
 if (CCTK_EQUALS(evolution_method, "Minkowski"))
 {
-  schedule Minkowski_always at ANALYSIS
+  schedule Minkowski_always at CCTK_PRESTEP
   {
     LANG: C
-    READS:    admbase::alp
-    READS:    admbase::betax
-    READS:    admbase::betay
-    READS:    admbase::betaz
-    READS:    admbase::dtbetax
-    READS:    admbase::dtbetay
-    READS:    admbase::dtbetaz
-    READS:    admbase::gxx
-    READS:    admbase::gxy
-    READS:    admbase::gxz
-    READS:    admbase::gyy
-    READS:    admbase::gyz
-    READS:    admbase::gzz
     READS:    grid::x
     READS:    grid::y
     READS:    grid::z

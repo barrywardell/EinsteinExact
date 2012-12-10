@@ -4,7 +4,7 @@
 
 extern "C" int KerrSchild_Startup(void)
 {
-  const char * banner = "KerrSchild";
+  const char * banner CCTK_ATTRIBUTE_UNUSED  = "KerrSchild";
   CCTK_RegisterBanner(banner);
   return 0;
 }

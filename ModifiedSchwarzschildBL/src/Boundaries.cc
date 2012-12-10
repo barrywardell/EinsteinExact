@@ -30,7 +30,7 @@ extern "C" void ModifiedSchwarzschildBL_SelectBoundConds(CCTK_ARGUMENTS)
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
   
-  CCTK_INT ierr = 0;
+  CCTK_INT ierr CCTK_ATTRIBUTE_UNUSED  = 0;
   return;
 }
 
