@@ -166,21 +166,15 @@ xformSlowdown = Module[{xform},
 (* Not implemented: deformation, cushion, shear *)
 
 (* Lorentz Boost *)
-xformBoost = Module[{eps, delta3, delta4,
-                     gamma, boost, xform0, xform1, xform3, xform},
-                    delta3 = IdentityMatrix[3];
-                    delta4 = IdentityMatrix[4];
-                    boost = {boostx, boosty, boostz};
-                    gamma = 1 / Sqrt[1 - Total[boost^2]];
-                    xform0 = gamma;
-                    xform1 = boost gamma;
-                    xform3 = (delta3 +
-                              gamma^2 / (gamma+1) Outer[Times, boost, boost]);
-                    xform = Table[If[i==0,
-                                     If[j==0, xform0, xform1[[j]]],
-                                     If[j==0, xform1[[i]], xform3[[i,j]]]],
-                                  {i,0,3}, {j,0,3}];
-                    xformSimplify[xform]];
+xformBoost = Module[{gamma, boost, xform},
+   boost = {boostx, boosty, boostz};
+   gamma = 1/Sqrt[1 - boost.boost];
+   xform = IdentityMatrix[4];
+   xform[[1, 1]] = gamma;
+   xform[[2 ;; 4, 1]] = xform[[1, 2 ;; 4]] = gamma boost;
+   xform[[2 ;; 4, 2 ;; 4]] = IdentityMatrix[3] + Outer[Times, boost, boost] gamma^2 / (gamma+1);
+   FullSimplify[xform]
+];
 
 (* Modify shift *)
 xformVelocity = Module[{delta4, velocity, xform1, xform},
