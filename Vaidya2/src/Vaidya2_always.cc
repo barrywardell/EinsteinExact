@@ -1825,113 +1825,237 @@ static void Vaidya2_always_Body(cGH const * restrict const cctkGH, int const dir
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED dg333 = dg4333;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp236 = SQR(gu11);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp236 = dtg11*gu11;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp237 = SQR(gu12);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp237 = dtg12*gu12;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp238 = SQR(gu13);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp238 = dtg13*gu13;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu11 = -(csetemp236*dtg11) - 
-      csetemp237*dtg22 - csetemp238*dtg33 - 2*dtg12*gu11*gu12 - 
-      2*dtg13*gu11*gu13 - 2*dtg23*gu12*gu13;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp239 = dtg12*gu11;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu12 = gu12*(-(dtg11*gu11) - 
-      dtg13*gu13 - dtg22*gu22) + dtg12*(-csetemp237 - gu11*gu22) + 
-      (-(dtg13*gu11) - dtg33*gu13)*gu23 + dtg23*(-(gu13*gu22) - gu12*gu23);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp240 = dtg22*gu12;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu13 = (-(dtg12*gu11) - 
-      dtg22*gu12)*gu23 - dtg23*gu12*gu33 + gu13*(-(dtg11*gu11) - dtg12*gu12 - 
-      dtg23*gu23 - dtg33*gu33) + dtg13*(-csetemp238 - gu11*gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp241 = dtg23*gu13;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp239 = SQR(gu22);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp242 = dtg13*gu11;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp240 = SQR(gu23);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp243 = dtg23*gu12;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu22 = -(csetemp237*dtg11) - 
-      csetemp239*dtg22 - csetemp240*dtg33 - 2*dtg12*gu12*gu22 - 
-      2*dtg13*gu12*gu23 - 2*dtg23*gu22*gu23;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp244 = dtg33*gu13;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu23 = gu13*(-(dtg11*gu12) - 
-      dtg12*gu22 - dtg13*gu23) - dtg13*gu12*gu33 + gu23*(-(dtg12*gu12) - 
-      dtg22*gu22 - dtg33*gu33) + dtg23*(-csetemp240 - gu22*gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu11 = -((csetemp236 + csetemp237 + 
+      csetemp238)*gu11) - (csetemp239 + csetemp240 + csetemp241)*gu12 - 
+      (csetemp242 + csetemp243 + csetemp244)*gu13;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp241 = SQR(gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu12 = -((csetemp236 + csetemp237 + 
+      csetemp238)*gu12) - (csetemp239 + csetemp240 + csetemp241)*gu22 - 
+      (csetemp242 + csetemp243 + csetemp244)*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu33 = -(csetemp238*dtg11) - 
-      csetemp240*dtg22 - csetemp241*dtg33 - 2*dtg12*gu13*gu23 - 
-      2*dtg13*gu13*gu33 - 2*dtg23*gu23*gu33;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu13 = -((csetemp236 + csetemp237 + 
+      csetemp238)*gu13) - (csetemp239 + csetemp240 + csetemp241)*gu23 - 
+      (csetemp242 + csetemp243 + csetemp244)*gu33;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu111 = -(csetemp236*dg111) - 
-      csetemp237*dg221 - csetemp238*dg331 - 2*dg121*gu11*gu12 - 
-      2*dg131*gu11*gu13 - 2*dg231*gu12*gu13;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp245 = dtg11*gu12;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu121 = gu12*(-(dg111*gu11) - 
-      dg131*gu13 - dg221*gu22) + dg121*(-csetemp237 - gu11*gu22) + 
-      (-(dg131*gu11) - dg331*gu13)*gu23 + dg231*(-(gu13*gu22) - gu12*gu23);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp246 = dtg12*gu22;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu131 = (-(dg121*gu11) - 
-      dg221*gu12)*gu23 - dg231*gu12*gu33 + gu13*(-(dg111*gu11) - dg121*gu12 - 
-      dg231*gu23 - dg331*gu33) + dg131*(-csetemp238 - gu11*gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp247 = dtg13*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu221 = -(csetemp237*dg111) - 
-      csetemp239*dg221 - csetemp240*dg331 - 2*dg121*gu12*gu22 - 
-      2*dg131*gu12*gu23 - 2*dg231*gu22*gu23;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp248 = dtg22*gu22;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu231 = gu13*(-(dg111*gu12) - 
-      dg121*gu22 - dg131*gu23) - dg131*gu12*gu33 + gu23*(-(dg121*gu12) - 
-      dg221*gu22 - dg331*gu33) + dg231*(-csetemp240 - gu22*gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp249 = dtg23*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu331 = -(csetemp238*dg111) - 
-      csetemp240*dg221 - csetemp241*dg331 - 2*dg121*gu13*gu23 - 
-      2*dg131*gu13*gu33 - 2*dg231*gu23*gu33;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp250 = dtg13*gu12;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu112 = -(csetemp236*dg112) - 
-      csetemp237*dg222 - csetemp238*dg332 - 2*dg122*gu11*gu12 - 
-      2*dg132*gu11*gu13 - 2*dg232*gu12*gu13;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp251 = dtg23*gu22;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu122 = gu12*(-(dg112*gu11) - 
-      dg132*gu13 - dg222*gu22) + dg122*(-csetemp237 - gu11*gu22) + 
-      (-(dg132*gu11) - dg332*gu13)*gu23 + dg232*(-(gu13*gu22) - gu12*gu23);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp252 = dtg33*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu132 = (-(dg122*gu11) - 
-      dg222*gu12)*gu23 - dg232*gu12*gu33 + gu13*(-(dg112*gu11) - dg122*gu12 - 
-      dg232*gu23 - dg332*gu33) + dg132*(-csetemp238 - gu11*gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu22 = -((csetemp245 + csetemp246 + 
+      csetemp247)*gu12) - (csetemp237 + csetemp248 + csetemp249)*gu22 - 
+      (csetemp250 + csetemp251 + csetemp252)*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu222 = -(csetemp237*dg112) - 
-      csetemp239*dg222 - csetemp240*dg332 - 2*dg122*gu12*gu22 - 
-      2*dg132*gu12*gu23 - 2*dg232*gu22*gu23;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu23 = -((csetemp245 + csetemp246 + 
+      csetemp247)*gu13) - (csetemp237 + csetemp248 + csetemp249)*gu23 - 
+      (csetemp250 + csetemp251 + csetemp252)*gu33;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu232 = gu13*(-(dg112*gu12) - 
-      dg122*gu22 - dg132*gu23) - dg132*gu12*gu33 + gu23*(-(dg122*gu12) - 
-      dg222*gu22 - dg332*gu33) + dg232*(-csetemp240 - gu22*gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu33 = -(gu13*(dtg11*gu13 + 
+      dtg12*gu23 + dtg13*gu33)) - gu23*(dtg12*gu13 + dtg22*gu23 + dtg23*gu33) 
+      - gu33*(csetemp238 + csetemp249 + dtg33*gu33);
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu332 = -(csetemp238*dg112) - 
-      csetemp240*dg222 - csetemp241*dg332 - 2*dg122*gu13*gu23 - 
-      2*dg132*gu13*gu33 - 2*dg232*gu23*gu33;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp253 = dg111*gu11;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu113 = -(csetemp236*dg113) - 
-      csetemp237*dg223 - csetemp238*dg333 - 2*dg123*gu11*gu12 - 
-      2*dg133*gu11*gu13 - 2*dg233*gu12*gu13;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp254 = dg121*gu12;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu123 = gu12*(-(dg113*gu11) - 
-      dg133*gu13 - dg223*gu22) + dg123*(-csetemp237 - gu11*gu22) + 
-      (-(dg133*gu11) - dg333*gu13)*gu23 + dg233*(-(gu13*gu22) - gu12*gu23);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp255 = dg131*gu13;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu133 = (-(dg123*gu11) - 
-      dg223*gu12)*gu23 - dg233*gu12*gu33 + gu13*(-(dg113*gu11) - dg123*gu12 - 
-      dg233*gu23 - dg333*gu33) + dg133*(-csetemp238 - gu11*gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp256 = dg121*gu11;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu223 = -(csetemp237*dg113) - 
-      csetemp239*dg223 - csetemp240*dg333 - 2*dg123*gu12*gu22 - 
-      2*dg133*gu12*gu23 - 2*dg233*gu22*gu23;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp257 = dg221*gu12;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu233 = gu13*(-(dg113*gu12) - 
-      dg123*gu22 - dg133*gu23) - dg133*gu12*gu33 + gu23*(-(dg123*gu12) - 
-      dg223*gu22 - dg333*gu33) + dg233*(-csetemp240 - gu22*gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp258 = dg231*gu13;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu333 = -(csetemp238*dg113) - 
-      csetemp240*dg223 - csetemp241*dg333 - 2*dg123*gu13*gu23 - 
-      2*dg133*gu13*gu33 - 2*dg233*gu23*gu33;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp259 = dg131*gu11;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp260 = dg231*gu12;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp261 = dg331*gu13;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu111 = -((csetemp253 + csetemp254 + 
+      csetemp255)*gu11) - (csetemp256 + csetemp257 + csetemp258)*gu12 - 
+      (csetemp259 + csetemp260 + csetemp261)*gu13;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu121 = -((csetemp253 + csetemp254 + 
+      csetemp255)*gu12) - (csetemp256 + csetemp257 + csetemp258)*gu22 - 
+      (csetemp259 + csetemp260 + csetemp261)*gu23;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu131 = -((csetemp253 + csetemp254 + 
+      csetemp255)*gu13) - (csetemp256 + csetemp257 + csetemp258)*gu23 - 
+      (csetemp259 + csetemp260 + csetemp261)*gu33;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp262 = dg111*gu12;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp263 = dg121*gu22;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp264 = dg131*gu23;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp265 = dg221*gu22;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp266 = dg231*gu23;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp267 = dg131*gu12;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp268 = dg231*gu22;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp269 = dg331*gu23;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu221 = -((csetemp262 + csetemp263 + 
+      csetemp264)*gu12) - (csetemp254 + csetemp265 + csetemp266)*gu22 - 
+      (csetemp267 + csetemp268 + csetemp269)*gu23;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu231 = -((csetemp262 + csetemp263 + 
+      csetemp264)*gu13) - (csetemp254 + csetemp265 + csetemp266)*gu23 - 
+      (csetemp267 + csetemp268 + csetemp269)*gu33;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu331 = -(gu13*(dg111*gu13 + 
+      dg121*gu23 + dg131*gu33)) - gu23*(dg121*gu13 + dg221*gu23 + dg231*gu33) 
+      - gu33*(csetemp255 + csetemp266 + dg331*gu33);
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp270 = dg112*gu11;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp271 = dg122*gu12;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp272 = dg132*gu13;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp273 = dg122*gu11;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp274 = dg222*gu12;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp275 = dg232*gu13;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp276 = dg132*gu11;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp277 = dg232*gu12;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp278 = dg332*gu13;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu112 = -((csetemp270 + csetemp271 + 
+      csetemp272)*gu11) - (csetemp273 + csetemp274 + csetemp275)*gu12 - 
+      (csetemp276 + csetemp277 + csetemp278)*gu13;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu122 = -((csetemp270 + csetemp271 + 
+      csetemp272)*gu12) - (csetemp273 + csetemp274 + csetemp275)*gu22 - 
+      (csetemp276 + csetemp277 + csetemp278)*gu23;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu132 = -((csetemp270 + csetemp271 + 
+      csetemp272)*gu13) - (csetemp273 + csetemp274 + csetemp275)*gu23 - 
+      (csetemp276 + csetemp277 + csetemp278)*gu33;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp279 = dg112*gu12;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp280 = dg122*gu22;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp281 = dg132*gu23;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp282 = dg222*gu22;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp283 = dg232*gu23;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp284 = dg132*gu12;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp285 = dg232*gu22;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp286 = dg332*gu23;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu222 = -((csetemp279 + csetemp280 + 
+      csetemp281)*gu12) - (csetemp271 + csetemp282 + csetemp283)*gu22 - 
+      (csetemp284 + csetemp285 + csetemp286)*gu23;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu232 = -((csetemp279 + csetemp280 + 
+      csetemp281)*gu13) - (csetemp271 + csetemp282 + csetemp283)*gu23 - 
+      (csetemp284 + csetemp285 + csetemp286)*gu33;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu332 = -(gu13*(dg112*gu13 + 
+      dg122*gu23 + dg132*gu33)) - gu23*(dg122*gu13 + dg222*gu23 + dg232*gu33) 
+      - gu33*(csetemp272 + csetemp283 + dg332*gu33);
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp287 = dg113*gu11;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp288 = dg123*gu12;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp289 = dg133*gu13;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp290 = dg123*gu11;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp291 = dg223*gu12;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp292 = dg233*gu13;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp293 = dg133*gu11;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp294 = dg233*gu12;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp295 = dg333*gu13;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu113 = -((csetemp287 + csetemp288 + 
+      csetemp289)*gu11) - (csetemp290 + csetemp291 + csetemp292)*gu12 - 
+      (csetemp293 + csetemp294 + csetemp295)*gu13;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu123 = -((csetemp287 + csetemp288 + 
+      csetemp289)*gu12) - (csetemp290 + csetemp291 + csetemp292)*gu22 - 
+      (csetemp293 + csetemp294 + csetemp295)*gu23;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu133 = -((csetemp287 + csetemp288 + 
+      csetemp289)*gu13) - (csetemp290 + csetemp291 + csetemp292)*gu23 - 
+      (csetemp293 + csetemp294 + csetemp295)*gu33;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp296 = dg113*gu12;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp297 = dg123*gu22;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp298 = dg133*gu23;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp299 = dg223*gu22;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp300 = dg233*gu23;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp301 = dg133*gu12;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp302 = dg233*gu22;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp303 = dg333*gu23;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu223 = -((csetemp296 + csetemp297 + 
+      csetemp298)*gu12) - (csetemp288 + csetemp299 + csetemp300)*gu22 - 
+      (csetemp301 + csetemp302 + csetemp303)*gu23;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu233 = -((csetemp296 + csetemp297 + 
+      csetemp298)*gu13) - (csetemp288 + csetemp299 + csetemp300)*gu23 - 
+      (csetemp301 + csetemp302 + csetemp303)*gu33;
+    
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu333 = -(gu13*(dg113*gu13 + 
+      dg123*gu23 + dg133*gu33)) - gu23*(dg123*gu13 + dg223*gu23 + dg233*gu33) 
+      - gu33*(csetemp289 + csetemp300 + dg333*gu33);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtbetal1 = dg4010;
     
@@ -2006,34 +2130,34 @@ static void Vaidya2_always_Body(cGH const * restrict const cctkGH, int const dir
       dtbetayL*betal2 + dtbetazL*betal3 + betaxL*dtbetal1 + 
       betayL*dtbetal2 + betazL*dtbetal3;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp242 = INV(alpL);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp304 = INV(alpL);
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtalpL = 0.5*csetemp242*(-dg4000 + 
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtalpL = 0.5*csetemp304*(-dg4000 + 
       dtbetasq);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED kxxL = 
-      0.5*csetemp242*(2*(gxxL*dbeta11 + gxyL*dbeta21 + gxzL*dbeta31) + 
+      0.5*csetemp304*(2*(gxxL*dbeta11 + gxyL*dbeta21 + gxzL*dbeta31) + 
       betaxL*dg111 + betayL*dg112 + betazL*dg113 - dtg11);
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED kxyL = 0.5*csetemp242*(gxxL*dbeta12 
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED kxyL = 0.5*csetemp304*(gxxL*dbeta12 
       + gyyL*dbeta21 + gxyL*(dbeta11 + dbeta22) + gyzL*dbeta31 + 
       gxzL*dbeta32 + betaxL*dg121 + betayL*dg122 + betazL*dg123 - 
       dtg12);
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED kxzL = 0.5*csetemp242*(gxxL*dbeta13 
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED kxzL = 0.5*csetemp304*(gxxL*dbeta13 
       + gyzL*dbeta21 + gxyL*dbeta23 + gzzL*dbeta31 + gxzL*(dbeta11 + 
       dbeta33) + betaxL*dg131 + betayL*dg132 + betazL*dg133 - dtg13);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED kyyL = 
-      0.5*csetemp242*(2*(gxyL*dbeta12 + gyyL*dbeta22 + gyzL*dbeta32) + 
+      0.5*csetemp304*(2*(gxyL*dbeta12 + gyyL*dbeta22 + gyzL*dbeta32) + 
       betaxL*dg221 + betayL*dg222 + betazL*dg223 - dtg22);
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED kyzL = 0.5*csetemp242*(gxzL*dbeta12 
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED kyzL = 0.5*csetemp304*(gxzL*dbeta12 
       + gxyL*dbeta13 + gyyL*dbeta23 + gzzL*dbeta32 + gyzL*(dbeta22 + 
       dbeta33) + betaxL*dg231 + betayL*dg232 + betazL*dg233 - dtg23);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED kzzL = 
-      0.5*csetemp242*(2*(gxzL*dbeta13 + gyzL*dbeta23 + gzzL*dbeta33) + 
+      0.5*csetemp304*(2*(gxzL*dbeta13 + gyzL*dbeta23 + gzzL*dbeta33) + 
       betaxL*dg331 + betayL*dg332 + betazL*dg333 - dtg33);
     
     /* Copy local copies back to grid functions */
