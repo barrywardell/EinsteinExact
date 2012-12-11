@@ -142,15 +142,42 @@ corresponding to the name of the thorn. This parameter is currently ignored
 by the EinsteinExact code but must be set nonetheless in order to ensure
 storage is allocated for the dtshift variables.
 
-\subsubsection{Origin: \code{positiont}, \code{positionx}, \code{positiony}, \code{positionz}}
+\subsubsection{Origin: \code{timeoffset}, \code{positionx}, \code{positiony}, \code{positionz}}
 These parameters specify the position at which the origin of the spacetime
 should be located.
 
 \subsubsection{Lapse: \code{lapsefactor}}
-Factor that should multiply the lapse.
+Factor that should multiply the lapse. This has the effect of rescaling the time
+coordinate so that $t' = \code{lapsefactor}~ t$. Note that this also has the
+effect of rescaling the shift by a factor $1/\code{lapsefactor}$ (see xform.nb
+for more details).
 
-\subsubsection{Shift: \code{shiftx}, \code{shifty}, \code{shiftz}}
-Shift that should be added to the metric.
+\subsubsection{Shift: \code{shiftaddx}, \code{shiftaddy}, \code{shiftaddz}}
+Shift that should be added to the metric. This has the effect of adding an
+offset to the spatial coordinates so that $x' = x + \code{shiftaddx}~ t'$,
+$y' = y + \code{shiftaddy}~ t'$,  $z' = z + \code{shiftaddz}~ t'$ (see xform.nb
+for more details).
+
+\subsubsection{Lorentz Boost: \code{boostx}, \code{boosty}, \code{boostz}}
+Lorentz-boost the spacetime by a velocity
+$v^i = [\code{boostx}, \code{boosty}, \code{boostz}]$. This applies a
+Lorentz boost transformation to the coordinates of the form
+\begin{equation}
+\begin{bmatrix}
+t' \\
+\mathbf{r'}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\gamma & - \gamma \boldsymbol{\beta}^\mathrm{T} \\
+-\gamma\boldsymbol{\beta} & \mathbf{I} + \gamma^2 / (\gamma+1) \boldsymbol{\beta}\boldsymbol{\beta}^\mathrm{T}  \\
+\end{bmatrix}
+\begin{bmatrix}
+t  \\
+\mathbf{r}
+\end{bmatrix}.
+\end{equation}
+
 
 \subsubsection{Rotation: \code{theta}, \code{phi}, \code{psi}}
 The spacetime may have an arbitrary $3$D rigid rotation applied to it. This
