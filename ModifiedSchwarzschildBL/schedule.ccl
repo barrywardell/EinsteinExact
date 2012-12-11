@@ -61,7 +61,7 @@ if (CCTK_EQUALS(initial_data, "ModifiedSchwarzschildBL"))
 
 if (CCTK_EQUALS(evolution_method, "ModifiedSchwarzschildBL"))
 {
-  schedule ModifiedSchwarzschildBL_always at ANALYSIS
+  schedule ModifiedSchwarzschildBL_always at CCTK_PRESTEP
   {
     LANG: C
     READS:    admbase::alp

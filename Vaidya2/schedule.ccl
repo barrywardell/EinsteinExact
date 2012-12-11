@@ -61,7 +61,7 @@ if (CCTK_EQUALS(initial_data, "Vaidya2"))
 
 if (CCTK_EQUALS(evolution_method, "Vaidya2"))
 {
-  schedule Vaidya2_always at ANALYSIS
+  schedule Vaidya2_always at CCTK_PRESTEP
   {
     LANG: C
     READS:    admbase::alp
