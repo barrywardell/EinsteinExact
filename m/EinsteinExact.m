@@ -362,7 +362,7 @@ idThorn[spacetime_, thorn_] :=
     calc["always"]
   };
 
-  CreateKrancThornTT[admGroups, "../", thorn,
+  CreateKrancThornTT[admGroups, "..", thorn,
     Calculations -> calculations,
     RealParameters -> Join[realParameters, parameters],
     ExtendedKeywordParameters -> extendedKeywordParameters,
