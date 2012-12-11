@@ -10,4 +10,10 @@ extern "C" void Minkowski_RegisterSymmetries(CCTK_ARGUMENTS)
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
   
+  
+  /* array holding symmetry definitions */
+  CCTK_INT sym[3];
+  
+  
+  /* Register symmetries of grid functions */
 }

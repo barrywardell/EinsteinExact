@@ -4,7 +4,7 @@
 
 extern "C" int ModifiedSchwarzschildBL_Startup(void)
 {
-  const char * banner CCTK_ATTRIBUTE_UNUSED  = "ModifiedSchwarzschildBL";
+  const char * banner = "ModifiedSchwarzschildBL";
   CCTK_RegisterBanner(banner);
   return 0;
 }

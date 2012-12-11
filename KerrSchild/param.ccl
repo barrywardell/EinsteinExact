@@ -57,7 +57,7 @@ CCTK_INT verbose "verbose" STEERABLE=ALWAYS
 } 0
 
 restricted:
-CCTK_REAL positiont "positiont"
+CCTK_REAL timeoffset "timeoffset"
 {
   "*:*" :: ""
 } 0
@@ -81,10 +81,46 @@ CCTK_REAL positionz "positionz"
 } 0
 
 restricted:
+CCTK_REAL theta "theta"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL phi "phi"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL psi "psi"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
 CCTK_REAL lapsefactor "lapsefactor"
 {
   "*:*" :: ""
 } 1
+
+restricted:
+CCTK_REAL boostx "boostx"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL boosty "boosty"
+{
+  "*:*" :: ""
+} 0
+
+restricted:
+CCTK_REAL boostz "boostz"
+{
+  "*:*" :: ""
+} 0
 
 restricted:
 CCTK_REAL shiftaddx "shiftaddx"
@@ -100,24 +136,6 @@ CCTK_REAL shiftaddy "shiftaddy"
 
 restricted:
 CCTK_REAL shiftaddz "shiftaddz"
-{
-  "*:*" :: ""
-} 0
-
-restricted:
-CCTK_REAL theta "theta"
-{
-  "*:*" :: ""
-} 0
-
-restricted:
-CCTK_REAL phi "phi"
-{
-  "*:*" :: ""
-} 0
-
-restricted:
-CCTK_REAL psi "psi"
 {
   "*:*" :: ""
 } 0

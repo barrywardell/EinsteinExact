@@ -4,7 +4,7 @@
 
 extern "C" int GaugeWave_Startup(void)
 {
-  const char * banner CCTK_ATTRIBUTE_UNUSED  = "GaugeWave";
+  const char * banner = "GaugeWave";
   CCTK_RegisterBanner(banner);
   return 0;
 }
