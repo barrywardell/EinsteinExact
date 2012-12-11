@@ -67,7 +67,7 @@ admGroups =
 (* Transform pseudo-tensors to symbols, e.g. g4[1,2] -> g412 *)
 arrayToSymbolRules =
   Module[{names},
-         names = {invXform1L, invXform2L, invXformL,
+         names = {xform1L, xform2L, xformL,
                   xx, txx, tg4, tdg4, g4, dg4};
          {name_[inds__Integer] :>
           Symbol[StringJoin[Map[ToString, {name, inds}]]]
@@ -88,9 +88,9 @@ shorthands =
       dgu[ui,uj,lk], dtbetal[li], dbetal[li,lj], dbeta[ui,lj], dtbetasq
     },
     Flatten[{
-      Table[invXform1L[i,j], {i, 0, 3}, {j, 0, 3}],
-      Table[invXform2L[i,j], {i, 0, 3}, {j, 0, 3}],
-      Table[invXformL[i,j], {i, 0, 3}, {j, 0, 3}],
+      Table[xform1L[i,j], {i, 0, 3}, {j, 0, 3}],
+      Table[xform2L[i,j], {i, 0, 3}, {j, 0, 3}],
+      Table[xformL[i,j], {i, 0, 3}, {j, 0, 3}],
       Table[xx[i], {i, 0, 3}],
       Table[txx[i], {i, 0, 3}],
       Table[tg4[i,j], {i, 0, 3}, {j, i, 3}],
@@ -145,11 +145,11 @@ xformSimplify = FullSimplify;
 
 (* Rotation about Euler angles {theta, phi, psi} *)
 xformEuler = Module[{Rphi, Rtheta, Rpsi, Rot, xform},
-  (* Rotate counter-clockwise about z, x, z *)
-  Rphi = RotationMatrix[phi, {0, 0, 1}];
-  Rtheta = RotationMatrix[theta, {1, 0, 0}];
-  Rpsi = RotationMatrix[psi, {0, 0, 1}];
-  Rot = Rphi.Rtheta.Rpsi;
+  (* Rotate clockwise about z, x, z *)
+  Rphi = RotationMatrix[phi, {0, 0, -1}];
+  Rtheta = RotationMatrix[theta, {-1, 0, 0}];
+  Rpsi = RotationMatrix[psi, {0, 0, -1}];
+  Rot = Rpsi.Rtheta.Rphi;
 
   xform = IdentityMatrix[4];
   xform[[2;;4, 2;;4]] = Rot;
@@ -159,29 +159,30 @@ xformEuler = Module[{Rphi, Rtheta, Rpsi, Rot, xform},
 (* Modify lapse *)
 xformSlowdown = Module[{xform},
   xform = IdentityMatrix[4];
-  xform[[1, 1]] = lapsefactor;
+  xform[[1, 1]] = 1 / lapsefactor;
   xformSimplify[xform]
 ];
 
 (* Not implemented: deformation, cushion, shear *)
 
-(* Lorentz Boost *)
-xformBoost = Module[{gamma, boost, xform},
+(* Lorentz Boost - we define this in terms of its effect on the coordinates *)
+invxformBoost = Module[{gamma, boost, invxform},
    boost = {boostx, boosty, boostz};
    gamma = 1/Sqrt[1 - boost.boost];
-   xform = IdentityMatrix[4];
-   xform[[1, 1]] = gamma;
-   xform[[2 ;; 4, 1]] = xform[[1, 2 ;; 4]] = gamma boost;
-   xform[[2 ;; 4, 2 ;; 4]] = IdentityMatrix[3] + Outer[Times, boost, boost] gamma^2 / (gamma+1);
-   FullSimplify[xform]
+   invxform = IdentityMatrix[4];
+   invxform[[1, 1]] = gamma;
+   invxform[[2 ;; 4, 1]] = invxform[[1, 2 ;; 4]] = gamma boost;
+   invxform[[2 ;; 4, 2 ;; 4]] = IdentityMatrix[3] + Outer[Times, boost, boost] gamma^2 / (gamma+1);
+   xformSimplify[invxform]
 ];
+xformBoost = Inverse[invxformBoost];
 
 (* Modify shift *)
 xformVelocity = Module[{delta4, velocity, xform1, xform},
   velocity = {shiftaddx, shiftaddy, shiftaddz};
 
   xform = IdentityMatrix[4];
-  xform[[2;;4, 1]] = velocity;
+  xform[[2;;4, 1]] = - velocity;
   xformSimplify[xform]
 ];
 
@@ -189,14 +190,9 @@ xformVelocity = Module[{delta4, velocity, xform1, xform},
    the order below has been chosen carefully to "make sense" *)
 (* We keep the transformation in two pieces that we multiply at run
    time to speed up code generation *)
-xform1 = xformVelocity . xformBoost . xformSlowdown;
-xform2 = xformEuler;
+xform1 = xformEuler;
+xform2 = xformSlowdown . xformBoost . xformVelocity;
 xform = xform1 . xform2;
-
-(* Inverse transformation *)
-invXform1 = Inverse[xform1];
-invXform2 = Inverse[xform2];
-invXform = invXform2 . invXform1;
 
 (* Note: indices are xform[ua,lb] and invXform[ua,lb] *)
 
@@ -204,10 +200,11 @@ coordOffset = {timeoffset, positionx, positiony, positionz};
 originalCoords = {t,x,y,z};
 
 (* Derivative of inverse transformation *)
+invXform = Inverse[xformVelocity] . invxformBoost . Inverse[xformSlowdown]. Inverse[xformEuler];
 dInvXform = Table[D[invXform[[i, j]], originalCoords[[k]]],
                   {i, 4}, {j, 4}, {k, 4}];
-(* This is currently always zero -- abort if not *)
-If[Count[Flatten[dInvXform], Except[0]] > 0, Throw["Error, dInvXform is non-zero"]]
+(* This is assumed later to be zero -- abort if not *)
+If[Count[Flatten[dInvXform], Except[0]] > 0, Throw["Error, dInvXform is non-zero"]];
 
 (**************************************************************************************)
 (* Some helper functions *)
@@ -299,13 +296,13 @@ idThorn[spacetime_, thorn_] :=
     {
       (* TODO: these transformations are the same for every grid point;
          do not recalculate them *)
-      Table[invXform1L[i,j] -> invXform1[[i+1, j+1]], {i, 0, 3}, {j, 0, 3}],
-      Table[invXform2L[i,j] -> invXform2[[i+1, j+1]], {i, 0, 3}, {j, 0, 3}],
-      Table[invXformL[i,j] -> Sum[invXform2L[i,k] invXform1L[k,j], {k, 0, 3}],
+      Table[xform1L[i,j] -> xform1[[i+1, j+1]], {i, 0, 3}, {j, 0, 3}],
+      Table[xform2L[i,j] -> xform2[[i+1, j+1]], {i, 0, 3}, {j, 0, 3}],
+      Table[xformL[i,j] -> Sum[xform2L[i,k] xform1L[k,j], {k, 0, 3}],
             {i, 0, 3}, {j, 0, 3}],
 
       Table[xx[i] -> originalCoords[[i+1]] - coordOffset[[i+1]], {i, 0, 3}],
-      Table[txx[i] -> Sum[invXformL[i,j] xx[j], {j, 0, 3}], {i, 0, 3}],
+      Table[txx[i] -> Sum[xformL[i,j] xx[j], {j, 0, 3}], {i, 0, 3}],
 
       T -> txx[0],
       X -> txx[1],
@@ -319,13 +316,13 @@ idThorn[spacetime_, thorn_] :=
       Table[tg4[i,j] -> fourMetric[[i+1, j+1]], {i, 0, 3}, {j, i, 3}],
       Table[tdg4[i,j,k] -> dFourMetric[[i+1, j+1, k+1]],
             {i, 0, 3}, {j, i, 3}, {k, 0, 3}],
-      Table[g4[i,j] -> Sum[invXformL[k,i]
-                           Sum[invXformL[l,j] tg4[k,l], {l, 0, 3}],
+      Table[g4[i,j] -> Sum[xformL[k,i]
+                           Sum[xformL[l,j] tg4[k,l], {l, 0, 3}],
                            {k, 0, 3}],
             {i, 0, 3}, {j, i, 3}],
-      Table[dg4[i,j,k] -> Sum[invXformL[l,i]
-                                 Sum[invXformL[m,j] 
-                                     Sum[invXformL[n,k] tdg4[l,m,n], {n, 0, 3}],
+      Table[dg4[i,j,k] -> Sum[xformL[l,i]
+                                 Sum[xformL[m,j]
+                                     Sum[xformL[n,k] tdg4[l,m,n], {n, 0, 3}],
                                      {m, 0, 3}],
                                  {l, 0, 3}],
             {i, 0, 3}, {j, i, 3}, {k, 0, 3}],
