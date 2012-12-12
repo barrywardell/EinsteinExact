@@ -153,11 +153,11 @@ static void ShiftedGaugeWave_initial_Body(cGH const * restrict const cctkGH, int
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp9 = INV(ToReal(lapsefactor));
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L00 = -(csetemp9*INV((-1 + 
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L00 = csetemp9*INV((-1 + 
       csetemp6 + csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
       csetemp8)))*(1 - csetemp6 - csetemp7 - csetemp8 + sqrt(1 - csetemp6 - 
-      csetemp7 - csetemp8))*(1 + ToReal(boostx)*ToReal(shiftaddx) + 
-      ToReal(boosty)*ToReal(shiftaddy) + ToReal(boostz)*ToReal(shiftaddz)));
+      csetemp7 - csetemp8))*(-1 + ToReal(boostx)*ToReal(shiftaddx) + 
+      ToReal(boosty)*ToReal(shiftaddy) + ToReal(boostz)*ToReal(shiftaddz));
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L01 = csetemp9*INV((-1 + 
       csetemp6 + csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
@@ -176,12 +176,11 @@ static void ShiftedGaugeWave_initial_Body(cGH const * restrict const cctkGH, int
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L10 = INV((-1 + csetemp6 + 
       csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8)))*(-((csetemp6 + (-1 + csetemp7 + csetemp8)*(1 + sqrt(1 - 
-      csetemp6 - csetemp7 - csetemp8)))*ToReal(shiftaddx)) + 
-      ToReal(boostx)*(1 - csetemp6 - csetemp7 - csetemp8 + sqrt(1 - csetemp6 
-      - csetemp7 - csetemp8) + sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8)*ToReal(boosty)*ToReal(shiftaddy) + sqrt(1 - csetemp6 - 
-      csetemp7 - csetemp8)*ToReal(boostz)*ToReal(shiftaddz)));
+      csetemp8)))*((csetemp6 + (-1 + csetemp7 + csetemp8)*(1 + sqrt(1 - 
+      csetemp6 - csetemp7 - csetemp8)))*ToReal(shiftaddx) - 
+      ToReal(boostx)*(-1 + csetemp6 + csetemp7 + csetemp8 + sqrt(1 - csetemp6 
+      - csetemp7 - csetemp8)*(-1 + ToReal(boosty)*ToReal(shiftaddy) + 
+      ToReal(boostz)*ToReal(shiftaddz))));
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L11 = INV((-1 + csetemp6 + 
       csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
@@ -198,12 +197,11 @@ static void ShiftedGaugeWave_initial_Body(cGH const * restrict const cctkGH, int
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L20 = INV((-1 + csetemp6 + 
       csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8)))*(-((csetemp7 + (-1 + csetemp6 + csetemp8)*(1 + sqrt(1 - 
-      csetemp6 - csetemp7 - csetemp8)))*ToReal(shiftaddy)) + 
-      ToReal(boosty)*(1 - csetemp6 - csetemp7 - csetemp8 + sqrt(1 - csetemp6 
-      - csetemp7 - csetemp8) + sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8)*ToReal(boostx)*ToReal(shiftaddx) + sqrt(1 - csetemp6 - 
-      csetemp7 - csetemp8)*ToReal(boostz)*ToReal(shiftaddz)));
+      csetemp8)))*((csetemp7 + (-1 + csetemp6 + csetemp8)*(1 + sqrt(1 - 
+      csetemp6 - csetemp7 - csetemp8)))*ToReal(shiftaddy) - 
+      ToReal(boosty)*(-1 + csetemp6 + csetemp7 + csetemp8 + sqrt(1 - csetemp6 
+      - csetemp7 - csetemp8)*(-1 + ToReal(boostx)*ToReal(shiftaddx) + 
+      ToReal(boostz)*ToReal(shiftaddz))));
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L21 = -(INV(-1 + csetemp6 + 
       csetemp7 + csetemp8 - sqrt(1 - csetemp6 - csetemp7 - 
@@ -220,12 +218,11 @@ static void ShiftedGaugeWave_initial_Body(cGH const * restrict const cctkGH, int
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L30 = INV((-1 + csetemp6 + 
       csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8)))*(ToReal(boostz)*(1 - csetemp6 - csetemp7 - csetemp8 + 
-      sqrt(1 - csetemp6 - csetemp7 - csetemp8) + sqrt(1 - csetemp6 - csetemp7 
-      - csetemp8)*ToReal(boostx)*ToReal(shiftaddx) + sqrt(1 - csetemp6 - 
-      csetemp7 - csetemp8)*ToReal(boosty)*ToReal(shiftaddy)) - (-1 + csetemp6 
-      + csetemp7 + csetemp8 + (-1 + csetemp6 + csetemp7)*sqrt(1 - csetemp6 - 
-      csetemp7 - csetemp8))*ToReal(shiftaddz));
+      csetemp8)))*(-(ToReal(boostz)*(-1 + csetemp6 + csetemp7 + csetemp8 + 
+      sqrt(1 - csetemp6 - csetemp7 - csetemp8)*(-1 + 
+      ToReal(boostx)*ToReal(shiftaddx) + ToReal(boosty)*ToReal(shiftaddy)))) 
+      + (-1 + csetemp6 + csetemp7 + csetemp8 + (-1 + csetemp6 + 
+      csetemp7)*sqrt(1 - csetemp6 - csetemp7 - csetemp8))*ToReal(shiftaddz));
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L31 = -(INV(-1 + csetemp6 + 
       csetemp7 + csetemp8 - sqrt(1 - csetemp6 - csetemp7 - 
@@ -241,52 +238,52 @@ static void ShiftedGaugeWave_initial_Body(cGH const * restrict const cctkGH, int
       csetemp7)*sqrt(1 - csetemp6 - csetemp7 - csetemp8));
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL00 = xform1L00*xform2L00 + 
-      xform1L10*xform2L01 + xform1L20*xform2L02 + xform1L30*xform2L03;
+      xform1L01*xform2L10 + xform1L02*xform2L20 + xform1L03*xform2L30;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL01 = xform1L01*xform2L00 + 
-      xform1L11*xform2L01 + xform1L21*xform2L02 + xform1L31*xform2L03;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL01 = xform1L00*xform2L01 + 
+      xform1L01*xform2L11 + xform1L02*xform2L21 + xform1L03*xform2L31;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL02 = xform1L02*xform2L00 + 
-      xform1L12*xform2L01 + xform1L22*xform2L02 + xform1L32*xform2L03;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL02 = xform1L00*xform2L02 + 
+      xform1L01*xform2L12 + xform1L02*xform2L22 + xform1L03*xform2L32;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL03 = xform1L03*xform2L00 + 
-      xform1L13*xform2L01 + xform1L23*xform2L02 + xform1L33*xform2L03;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL03 = xform1L00*xform2L03 + 
+      xform1L01*xform2L13 + xform1L02*xform2L23 + xform1L03*xform2L33;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL10 = xform1L00*xform2L10 + 
-      xform1L10*xform2L11 + xform1L20*xform2L12 + xform1L30*xform2L13;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL10 = xform1L10*xform2L00 + 
+      xform1L11*xform2L10 + xform1L12*xform2L20 + xform1L13*xform2L30;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL11 = xform1L01*xform2L10 + 
-      xform1L11*xform2L11 + xform1L21*xform2L12 + xform1L31*xform2L13;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL11 = xform1L10*xform2L01 + 
+      xform1L11*xform2L11 + xform1L12*xform2L21 + xform1L13*xform2L31;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL12 = xform1L02*xform2L10 + 
-      xform1L12*xform2L11 + xform1L22*xform2L12 + xform1L32*xform2L13;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL12 = xform1L10*xform2L02 + 
+      xform1L11*xform2L12 + xform1L12*xform2L22 + xform1L13*xform2L32;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL13 = xform1L03*xform2L10 + 
-      xform1L13*xform2L11 + xform1L23*xform2L12 + xform1L33*xform2L13;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL13 = xform1L10*xform2L03 + 
+      xform1L11*xform2L13 + xform1L12*xform2L23 + xform1L13*xform2L33;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL20 = xform1L00*xform2L20 + 
-      xform1L10*xform2L21 + xform1L20*xform2L22 + xform1L30*xform2L23;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL20 = xform1L20*xform2L00 + 
+      xform1L21*xform2L10 + xform1L22*xform2L20 + xform1L23*xform2L30;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL21 = xform1L01*xform2L20 + 
-      xform1L11*xform2L21 + xform1L21*xform2L22 + xform1L31*xform2L23;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL21 = xform1L20*xform2L01 + 
+      xform1L21*xform2L11 + xform1L22*xform2L21 + xform1L23*xform2L31;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL22 = xform1L02*xform2L20 + 
-      xform1L12*xform2L21 + xform1L22*xform2L22 + xform1L32*xform2L23;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL22 = xform1L20*xform2L02 + 
+      xform1L21*xform2L12 + xform1L22*xform2L22 + xform1L23*xform2L32;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL23 = xform1L03*xform2L20 + 
-      xform1L13*xform2L21 + xform1L23*xform2L22 + xform1L33*xform2L23;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL23 = xform1L20*xform2L03 + 
+      xform1L21*xform2L13 + xform1L22*xform2L23 + xform1L23*xform2L33;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL30 = xform1L00*xform2L30 + 
-      xform1L10*xform2L31 + xform1L20*xform2L32 + xform1L30*xform2L33;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL30 = xform1L30*xform2L00 + 
+      xform1L31*xform2L10 + xform1L32*xform2L20 + xform1L33*xform2L30;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL31 = xform1L01*xform2L30 + 
-      xform1L11*xform2L31 + xform1L21*xform2L32 + xform1L31*xform2L33;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL31 = xform1L30*xform2L01 + 
+      xform1L31*xform2L11 + xform1L32*xform2L21 + xform1L33*xform2L31;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL32 = xform1L02*xform2L30 + 
-      xform1L12*xform2L31 + xform1L22*xform2L32 + xform1L32*xform2L33;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL32 = xform1L30*xform2L02 + 
+      xform1L31*xform2L12 + xform1L32*xform2L22 + xform1L33*xform2L32;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL33 = xform1L03*xform2L30 + 
-      xform1L13*xform2L31 + xform1L23*xform2L32 + xform1L33*xform2L33;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL33 = xform1L30*xform2L03 + 
+      xform1L31*xform2L13 + xform1L32*xform2L23 + xform1L33*xform2L33;
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xx0 = t - ToReal(timeoffset);
     
