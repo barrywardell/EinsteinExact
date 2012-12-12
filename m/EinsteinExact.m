@@ -298,7 +298,7 @@ idThorn[spacetime_, thorn_] :=
          do not recalculate them *)
       Table[xform1L[i,j] -> xform1[[i+1, j+1]], {i, 0, 3}, {j, 0, 3}],
       Table[xform2L[i,j] -> xform2[[i+1, j+1]], {i, 0, 3}, {j, 0, 3}],
-      Table[xformL[i,j] -> Sum[xform2L[i,k] xform1L[k,j], {k, 0, 3}],
+      Table[xformL[i,j] -> Sum[xform1L[i,k] xform2L[k,j], {k, 0, 3}],
             {i, 0, 3}, {j, 0, 3}],
 
       Table[xx[i] -> originalCoords[[i+1]] - coordOffset[[i+1]], {i, 0, 3}],
