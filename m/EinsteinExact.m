@@ -362,10 +362,24 @@ idThorn[spacetime_, thorn_] :=
     calc["always"]
   };
 
+  parameterConditions =
+  {{((Parameter["initial_data"] == spacetime ||
+     Parameter["initial_lapse"] == spacetime ||
+     Parameter["initial_shift"] == spacetime ||
+     Parameter["initial_dtlapse"] == spacetime ||
+     Parameter["initial_dtshift"] == spacetime) &&
+    (Parameter["initial_data"] != spacetime ||
+     Parameter["initial_lapse"] != spacetime ||
+     Parameter["initial_shift"] != spacetime ||
+     Parameter["initial_dtlapse"] != spacetime ||
+     Parameter["initial_dtshift"] != spacetime)),
+   "The parameters ADMBase::initial_data ADMBase::initial_lapse, ADMBase::initial_shift, ADMBase::initial_dtlapse and ADMBase::initial_dtshift must all be set to \"" <> spacetime <> "\""}};
+
   CreateKrancThornTT[admGroups, "..", thorn,
     Calculations -> calculations,
     RealParameters -> Join[realParameters, parameters],
     ExtendedKeywordParameters -> extendedKeywordParameters,
+    ParameterConditions -> parameterConditions,
     InheritedImplementations -> {"admbase"},
     CSE -> True,
     UseLoopControl -> True,
