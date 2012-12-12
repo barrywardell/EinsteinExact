@@ -182,7 +182,7 @@ xformVelocity = Module[{delta4, velocity, xform1, xform},
   velocity = {shiftaddx, shiftaddy, shiftaddz};
 
   xform = IdentityMatrix[4];
-  xform[[2;;4, 1]] = - velocity;
+  xform[[2;;4, 1]] = velocity;
   xformSimplify[xform]
 ];
 
