@@ -19,19 +19,6 @@ if (CCTK_EQUALS(initial_data, "Vaidya2"))
   schedule Vaidya2_initial in ADMBase_InitialData
   {
     LANG: C
-    READS:    admbase::alp
-    READS:    admbase::betax
-    READS:    admbase::betay
-    READS:    admbase::betaz
-    READS:    admbase::dtbetax
-    READS:    admbase::dtbetay
-    READS:    admbase::dtbetaz
-    READS:    admbase::gxx
-    READS:    admbase::gxy
-    READS:    admbase::gxz
-    READS:    admbase::gyy
-    READS:    admbase::gyz
-    READS:    admbase::gzz
     READS:    grid::x
     READS:    grid::y
     READS:    grid::z
@@ -64,19 +51,6 @@ if (CCTK_EQUALS(evolution_method, "Vaidya2"))
   schedule Vaidya2_always at CCTK_PRESTEP
   {
     LANG: C
-    READS:    admbase::alp
-    READS:    admbase::betax
-    READS:    admbase::betay
-    READS:    admbase::betaz
-    READS:    admbase::dtbetax
-    READS:    admbase::dtbetay
-    READS:    admbase::dtbetaz
-    READS:    admbase::gxx
-    READS:    admbase::gxy
-    READS:    admbase::gxz
-    READS:    admbase::gyy
-    READS:    admbase::gyz
-    READS:    admbase::gzz
     READS:    grid::x
     READS:    grid::y
     READS:    grid::z
@@ -120,6 +94,12 @@ schedule Vaidya2_RegisterVars in MoL_Register
   LANG: C
   OPTIONS: meta
 } "Register Variables for MoL"
+
+schedule Vaidya2_ParamCheck at CCTK_PARAMCHECK
+{
+  LANG: C
+  OPTIONS: global
+} "Check parameter consistency"
 
 schedule group ApplyBCs as Vaidya2_ApplyBCs in MoL_PostStep after Vaidya2_SelectBoundConds
 {
