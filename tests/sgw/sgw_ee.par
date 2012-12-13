@@ -87,6 +87,14 @@ ShiftedGaugeWave::psi = -1.9216757376671543544
 ShiftedGaugeWave::theta = 0.66214523564555227398
 ShiftedGaugeWave::phi = 1.2199169159226388841
 
+ShiftedGaugeWave::boostx = 0.08243756890799234
+ShiftedGaugeWave::boosty = 0.010857909160141704
+ShiftedGaugeWave::boostz = 0.029744605009401293
+
+ShiftedGaugeWave::shiftaddx = 0.08877318585950641
+ShiftedGaugeWave::shiftaddy = 0.07854842534703614
+ShiftedGaugeWave::shiftaddz = 0.059309168022958936
+
 #############################################################
 # Output
 #############################################################

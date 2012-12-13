@@ -93,6 +93,14 @@ Exact::rotation_euler_psi = -1.9216757376671543544
 Exact::rotation_euler_theta = 0.66214523564555227398
 Exact::rotation_euler_phi = 1.2199169159226388841
 
+Exact::boost_vx = 0.08243756890799234
+Exact::boost_vy = 0.010857909160141704
+Exact::boost_vz = 0.029744605009401293
+
+Exact::shift_add_x = 0.08877318585950641
+Exact::shift_add_y = 0.07854842534703614
+Exact::shift_add_z = 0.059309168022958936
+
 Exact::exact_order = 4
 Exact::exact_eps = 1e-2 # This is large to ensure regression tests are insensitive to roundoff
 
