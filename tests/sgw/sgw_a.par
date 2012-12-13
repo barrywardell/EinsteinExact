@@ -12,6 +12,7 @@ ActiveThorns = "
   GenericFD
   HDF5
   IOUtil
+  LoopControl
   SymBase
   Periodic
   Slab
