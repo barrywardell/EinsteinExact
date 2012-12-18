@@ -432,5 +432,5 @@ thornNameRules = {"Vaidya" -> "Vaidya2"};
 thorns = spacetimes /. thornNameRules;
 MapThread[idThorn, {spacetimes, thorns}];
 
-DeleteFile["../doc/spacetimes.tex"];
+If[FileExistsQ["../doc/spacetimes.tex"], DeleteFile["../doc/spacetimes.tex"]];
 MapThread[docGenerate, {spacetimes, thorns}];
