@@ -364,16 +364,16 @@ idThorn[spacetime_, thorn_] :=
 
   parameterConditions =
   {{((Parameter["initial_data"] == spacetime ||
-     Parameter["initial_lapse"] == spacetime ||
-     Parameter["initial_shift"] == spacetime ||
-     Parameter["initial_dtlapse"] == spacetime ||
-     Parameter["initial_dtshift"] == spacetime) &&
-    (Parameter["initial_data"] != spacetime ||
-     Parameter["initial_lapse"] != spacetime ||
-     Parameter["initial_shift"] != spacetime ||
-     Parameter["initial_dtlapse"] != spacetime ||
-     Parameter["initial_dtshift"] != spacetime)),
-   "The parameters ADMBase::initial_data ADMBase::initial_lapse, ADMBase::initial_shift, ADMBase::initial_dtlapse and ADMBase::initial_dtshift must all be set to \"" <> spacetime <> "\""}};
+      Parameter["initial_lapse"] == spacetime ||
+      Parameter["initial_shift"] == spacetime ||
+      Parameter["initial_dtlapse"] == spacetime ||
+      Parameter["initial_dtshift"] == spacetime) &&
+     (Parameter["initial_data"] != spacetime ||
+      Parameter["initial_lapse"] != spacetime ||
+      Parameter["initial_shift"] != spacetime ||
+      Parameter["initial_dtlapse"] != spacetime ||
+      Parameter["initial_dtshift"] != spacetime)),
+    "If one of the parameters ADMBase::initial_data, ADMBase::initial_lapse, ADMBase::initial_shift, ADMBase::initial_dtlapse, and ADMBase::initial_dtshift are set to \"" <> spacetime <> "\", then all must be set to this value"}};
 
   CreateKrancThornTT[admGroups, "..", thorn,
     Calculations -> calculations,
