@@ -13,7 +13,7 @@ extern "C" void KerrSchild_ParamCheck(CCTK_ARGUMENTS)
     
     if (((CCTK_EQUALS(initial_data,"KerrSchild") || CCTK_EQUALS(initial_lapse,"KerrSchild") || CCTK_EQUALS(initial_shift,"KerrSchild") || CCTK_EQUALS(initial_dtlapse,"KerrSchild") || CCTK_EQUALS(initial_dtshift,"KerrSchild")) && (!CCTK_EQUALS(initial_data,"KerrSchild") || !CCTK_EQUALS(initial_lapse,"KerrSchild") || !CCTK_EQUALS(initial_shift,"KerrSchild") || !CCTK_EQUALS(initial_dtlapse,"KerrSchild") || !CCTK_EQUALS(initial_dtshift,"KerrSchild"))))
     {
-      CCTK_WARN(0, "The parameters ADMBase::initial_data ADMBase::initial_lapse, ADMBase::initial_shift, ADMBase::initial_dtlapse and ADMBase::initial_dtshift must all be set to \"KerrSchild\"");
+      CCTK_WARN(0, "If one of the parameters ADMBase::initial_data, ADMBase::initial_lapse, ADMBase::initial_shift, ADMBase::initial_dtlapse, and ADMBase::initial_dtshift are set to \"KerrSchild\", then all must be set to this value");
     }
   }
 }
