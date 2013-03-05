@@ -147,15 +147,16 @@ These parameters specify the position at which the origin of the spacetime
 should be located.
 
 \subsubsection{Lapse: \code{lapsefactor}}
-Factor that should multiply the lapse. This has the effect of rescaling the time
+Factor that should rescale the lapse such that
+$\alpha' = \tfrac{1}{\code{lapsefactor}}~ \alpha$. This has the effect of rescaling the time
 coordinate so that $t' = \code{lapsefactor}~ t$. Note that this also has the
-effect of rescaling the shift by a factor $1/\code{lapsefactor}$ (see xform.nb
+effect of rescaling the shift by a factor $\tfrac{1}{\code{lapsefactor}}$ (see xform.nb
 for more details).
 
 \subsubsection{Shift: \code{shiftaddx}, \code{shiftaddy}, \code{shiftaddz}}
 Shift that should be added to the metric. This has the effect of adding an
-offset to the spatial coordinates so that $x' = x + \code{shiftaddx}~ t'$,
-$y' = y + \code{shiftaddy}~ t'$,  $z' = z + \code{shiftaddz}~ t'$ (see xform.nb
+offset to the spatial coordinates so that $x' = x - \code{shiftaddx}~ t'$,
+$y' = y - \code{shiftaddy}~ t'$,  $z' = z - \code{shiftaddz}~ t'$ (see xform.nb
 for more details).
 
 \subsubsection{Lorentz Boost: \code{boostx}, \code{boosty}, \code{boostz}}
