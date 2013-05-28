@@ -19,29 +19,29 @@ if (CCTK_EQUALS(initial_data, "ModifiedSchwarzschildBL"))
   schedule ModifiedSchwarzschildBL_initial in ADMBase_InitialData
   {
     LANG: C
-    READS:    grid::x
-    READS:    grid::y
-    READS:    grid::z
-    WRITES:   admbase::alp
-    WRITES:   admbase::betax
-    WRITES:   admbase::betay
-    WRITES:   admbase::betaz
-    WRITES:   admbase::dtalp
-    WRITES:   admbase::dtbetax
-    WRITES:   admbase::dtbetay
-    WRITES:   admbase::dtbetaz
-    WRITES:   admbase::gxx
-    WRITES:   admbase::gxy
-    WRITES:   admbase::gxz
-    WRITES:   admbase::gyy
-    WRITES:   admbase::gyz
-    WRITES:   admbase::gzz
-    WRITES:   admbase::kxx
-    WRITES:   admbase::kxy
-    WRITES:   admbase::kxz
-    WRITES:   admbase::kyy
-    WRITES:   admbase::kyz
-    WRITES:   admbase::kzz
+    READS:    grid::x(Everywhere)
+    READS:    grid::y(Everywhere)
+    READS:    grid::z(Everywhere)
+    WRITES:   admbase::alp(Everywhere)
+    WRITES:   admbase::betax(Everywhere)
+    WRITES:   admbase::betay(Everywhere)
+    WRITES:   admbase::betaz(Everywhere)
+    WRITES:   admbase::dtalp(Everywhere)
+    WRITES:   admbase::dtbetax(Everywhere)
+    WRITES:   admbase::dtbetay(Everywhere)
+    WRITES:   admbase::dtbetaz(Everywhere)
+    WRITES:   admbase::gxx(Everywhere)
+    WRITES:   admbase::gxy(Everywhere)
+    WRITES:   admbase::gxz(Everywhere)
+    WRITES:   admbase::gyy(Everywhere)
+    WRITES:   admbase::gyz(Everywhere)
+    WRITES:   admbase::gzz(Everywhere)
+    WRITES:   admbase::kxx(Everywhere)
+    WRITES:   admbase::kxy(Everywhere)
+    WRITES:   admbase::kxz(Everywhere)
+    WRITES:   admbase::kyy(Everywhere)
+    WRITES:   admbase::kyz(Everywhere)
+    WRITES:   admbase::kzz(Everywhere)
   } "ModifiedSchwarzschildBL_initial"
 }
 
@@ -51,29 +51,29 @@ if (CCTK_EQUALS(evolution_method, "ModifiedSchwarzschildBL"))
   schedule ModifiedSchwarzschildBL_always at CCTK_PRESTEP
   {
     LANG: C
-    READS:    grid::x
-    READS:    grid::y
-    READS:    grid::z
-    WRITES:   admbase::alp
-    WRITES:   admbase::betax
-    WRITES:   admbase::betay
-    WRITES:   admbase::betaz
-    WRITES:   admbase::dtalp
-    WRITES:   admbase::dtbetax
-    WRITES:   admbase::dtbetay
-    WRITES:   admbase::dtbetaz
-    WRITES:   admbase::gxx
-    WRITES:   admbase::gxy
-    WRITES:   admbase::gxz
-    WRITES:   admbase::gyy
-    WRITES:   admbase::gyz
-    WRITES:   admbase::gzz
-    WRITES:   admbase::kxx
-    WRITES:   admbase::kxy
-    WRITES:   admbase::kxz
-    WRITES:   admbase::kyy
-    WRITES:   admbase::kyz
-    WRITES:   admbase::kzz
+    READS:    grid::x(Everywhere)
+    READS:    grid::y(Everywhere)
+    READS:    grid::z(Everywhere)
+    WRITES:   admbase::alp(Everywhere)
+    WRITES:   admbase::betax(Everywhere)
+    WRITES:   admbase::betay(Everywhere)
+    WRITES:   admbase::betaz(Everywhere)
+    WRITES:   admbase::dtalp(Everywhere)
+    WRITES:   admbase::dtbetax(Everywhere)
+    WRITES:   admbase::dtbetay(Everywhere)
+    WRITES:   admbase::dtbetaz(Everywhere)
+    WRITES:   admbase::gxx(Everywhere)
+    WRITES:   admbase::gxy(Everywhere)
+    WRITES:   admbase::gxz(Everywhere)
+    WRITES:   admbase::gyy(Everywhere)
+    WRITES:   admbase::gyz(Everywhere)
+    WRITES:   admbase::gzz(Everywhere)
+    WRITES:   admbase::kxx(Everywhere)
+    WRITES:   admbase::kxy(Everywhere)
+    WRITES:   admbase::kxz(Everywhere)
+    WRITES:   admbase::kyy(Everywhere)
+    WRITES:   admbase::kyz(Everywhere)
+    WRITES:   admbase::kzz(Everywhere)
   } "ModifiedSchwarzschildBL_always"
 }
 
@@ -103,5 +103,4 @@ schedule ModifiedSchwarzschildBL_ParamCheck at CCTK_PARAMCHECK
 
 schedule group ApplyBCs as ModifiedSchwarzschildBL_ApplyBCs in MoL_PostStep after ModifiedSchwarzschildBL_SelectBoundConds
 {
-  # no language specified
 } "Apply boundary conditions controlled by thorn Boundary"

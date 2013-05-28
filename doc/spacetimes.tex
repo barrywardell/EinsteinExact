@@ -138,9 +138,18 @@ g_{ab} =
 \left(
 \begin{array}{cccc}
  -1 & 0 & 0 & 0 \\
- 0 & \left(1+\frac{M(r)}{2 r}\right)^4 & 0 & 0 \\
- 0 & 0 & \left(1+\frac{M(r)}{2 r}\right)^4 & 0 \\
- 0 & 0 & 0 & \left(1+\frac{M(r)}{2 r}\right)^4 \\
+ 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \
+\left(\frac{\left(\cos \left(\frac{4 \pi  \min \
+\left(\frac{M}{2},r\right)}{M}\right)-1\right) M^2}{16 \pi ^2}+\frac{1}{2} \
+\min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 & 0 & 0 \\
+ 0 & 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \
+\left(\frac{\left(\cos \left(\frac{4 \pi  \min \
+\left(\frac{M}{2},r\right)}{M}\right)-1\right) M^2}{16 \pi ^2}+\frac{1}{2} \
+\min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 & 0 \\
+ 0 & 0 & 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \
+\left(\frac{\left(\cos \left(\frac{4 \pi  \min \
+\left(\frac{M}{2},r\right)}{M}\right)-1\right) M^2}{16 \pi ^2}+\frac{1}{2} \
+\min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 \\
 \end{array}
 \right)
 \end{equation}
@@ -148,11 +157,4 @@ where
 \begin{equation}
 r(x,y,z)=\sqrt{x^2+y^2+z^2}
 \end{equation}
-\begin{equation}
-M(r) = \left\{
-     \begin{array}{lr}
-       4 r - \frac{8 \frac{r^2}{2} + [\cos(\frac{4 \pi r}{M}) - 1] \left(\frac{M}{4 \pi}\right)^2}{M} & : r < M/2\\
-       M & : r \ge M/2
-     \end{array}
-   \right.
-\end{equation}
+
