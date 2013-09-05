@@ -43,6 +43,7 @@ EXTENDS CCTK_KEYWORD evolution_method "evolution_method"
 
 shares: GenericFD
 
+USES CCTK_INT assume_stress_energy_state
 
 
 shares: MethodOfLines

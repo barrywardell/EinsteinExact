@@ -22,7 +22,7 @@
 #define CUB(x) ((x) * SQR(x))
 #define QAD(x) (SQR(SQR(x)))
 
-static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const dir, int const face, CCTK_REAL const normal[3], CCTK_REAL const tangentA[3], CCTK_REAL const tangentB[3], int const imin[3], int const imax[3], int const n_subblock_gfs, CCTK_REAL * restrict const subblock_gfs[])
+static void Minkowski_initial_Body(const cGH* restrict const cctkGH, const int dir, const int face, const CCTK_REAL normal[3], const CCTK_REAL tangentA[3], const CCTK_REAL tangentB[3], const int imin[3], const int imax[3], const int n_subblock_gfs, CCTK_REAL* restrict const subblock_gfs[])
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
@@ -31,28 +31,28 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
   /* Include user-supplied include files */
   
   /* Initialise finite differencing variables */
-  ptrdiff_t /*const*/ di CCTK_ATTRIBUTE_UNUSED  = 1;
-  ptrdiff_t /*const*/ dj CCTK_ATTRIBUTE_UNUSED  = CCTK_GFINDEX3D(cctkGH,0,1,0) - CCTK_GFINDEX3D(cctkGH,0,0,0);
-  ptrdiff_t /*const*/ dk CCTK_ATTRIBUTE_UNUSED  = CCTK_GFINDEX3D(cctkGH,0,0,1) - CCTK_GFINDEX3D(cctkGH,0,0,0);
-  ptrdiff_t /*const*/ cdi CCTK_ATTRIBUTE_UNUSED  = sizeof(CCTK_REAL) * di;
-  ptrdiff_t /*const*/ cdj CCTK_ATTRIBUTE_UNUSED  = sizeof(CCTK_REAL) * dj;
-  ptrdiff_t /*const*/ cdk CCTK_ATTRIBUTE_UNUSED  = sizeof(CCTK_REAL) * dk;
-  CCTK_REAL /*const*/ dx CCTK_ATTRIBUTE_UNUSED  = ToReal(CCTK_DELTA_SPACE(0));
-  CCTK_REAL /*const*/ dy CCTK_ATTRIBUTE_UNUSED  = ToReal(CCTK_DELTA_SPACE(1));
-  CCTK_REAL /*const*/ dz CCTK_ATTRIBUTE_UNUSED  = ToReal(CCTK_DELTA_SPACE(2));
-  CCTK_REAL /*const*/ dt CCTK_ATTRIBUTE_UNUSED  = ToReal(CCTK_DELTA_TIME);
-  CCTK_REAL /*const*/ t CCTK_ATTRIBUTE_UNUSED  = ToReal(cctk_time);
-  CCTK_REAL /*const*/ dxi CCTK_ATTRIBUTE_UNUSED  = INV(dx);
-  CCTK_REAL /*const*/ dyi CCTK_ATTRIBUTE_UNUSED  = INV(dy);
-  CCTK_REAL /*const*/ dzi CCTK_ATTRIBUTE_UNUSED  = INV(dz);
-  CCTK_REAL /*const*/ khalf CCTK_ATTRIBUTE_UNUSED  = 0.5;
-  CCTK_REAL /*const*/ kthird CCTK_ATTRIBUTE_UNUSED  = 1/3.0;
-  CCTK_REAL /*const*/ ktwothird CCTK_ATTRIBUTE_UNUSED  = 2.0/3.0;
-  CCTK_REAL /*const*/ kfourthird CCTK_ATTRIBUTE_UNUSED  = 4.0/3.0;
-  CCTK_REAL /*const*/ keightthird CCTK_ATTRIBUTE_UNUSED  = 8.0/3.0;
-  CCTK_REAL /*const*/ hdxi CCTK_ATTRIBUTE_UNUSED  = 0.5 * dxi;
-  CCTK_REAL /*const*/ hdyi CCTK_ATTRIBUTE_UNUSED  = 0.5 * dyi;
-  CCTK_REAL /*const*/ hdzi CCTK_ATTRIBUTE_UNUSED  = 0.5 * dzi;
+  const ptrdiff_t di CCTK_ATTRIBUTE_UNUSED = 1;
+  const ptrdiff_t dj CCTK_ATTRIBUTE_UNUSED = CCTK_GFINDEX3D(cctkGH,0,1,0) - CCTK_GFINDEX3D(cctkGH,0,0,0);
+  const ptrdiff_t dk CCTK_ATTRIBUTE_UNUSED = CCTK_GFINDEX3D(cctkGH,0,0,1) - CCTK_GFINDEX3D(cctkGH,0,0,0);
+  const ptrdiff_t cdi CCTK_ATTRIBUTE_UNUSED = sizeof(CCTK_REAL) * di;
+  const ptrdiff_t cdj CCTK_ATTRIBUTE_UNUSED = sizeof(CCTK_REAL) * dj;
+  const ptrdiff_t cdk CCTK_ATTRIBUTE_UNUSED = sizeof(CCTK_REAL) * dk;
+  const CCTK_REAL dx CCTK_ATTRIBUTE_UNUSED = ToReal(CCTK_DELTA_SPACE(0));
+  const CCTK_REAL dy CCTK_ATTRIBUTE_UNUSED = ToReal(CCTK_DELTA_SPACE(1));
+  const CCTK_REAL dz CCTK_ATTRIBUTE_UNUSED = ToReal(CCTK_DELTA_SPACE(2));
+  const CCTK_REAL dt CCTK_ATTRIBUTE_UNUSED = ToReal(CCTK_DELTA_TIME);
+  const CCTK_REAL t CCTK_ATTRIBUTE_UNUSED = ToReal(cctk_time);
+  const CCTK_REAL dxi CCTK_ATTRIBUTE_UNUSED = INV(dx);
+  const CCTK_REAL dyi CCTK_ATTRIBUTE_UNUSED = INV(dy);
+  const CCTK_REAL dzi CCTK_ATTRIBUTE_UNUSED = INV(dz);
+  const CCTK_REAL khalf CCTK_ATTRIBUTE_UNUSED = 0.5;
+  const CCTK_REAL kthird CCTK_ATTRIBUTE_UNUSED = 1/3.0;
+  const CCTK_REAL ktwothird CCTK_ATTRIBUTE_UNUSED = 2.0/3.0;
+  const CCTK_REAL kfourthird CCTK_ATTRIBUTE_UNUSED = 4.0/3.0;
+  const CCTK_REAL keightthird CCTK_ATTRIBUTE_UNUSED = 8.0/3.0;
+  const CCTK_REAL hdxi CCTK_ATTRIBUTE_UNUSED = 0.5 * dxi;
+  const CCTK_REAL hdyi CCTK_ATTRIBUTE_UNUSED = 0.5 * dyi;
+  const CCTK_REAL hdzi CCTK_ATTRIBUTE_UNUSED = 0.5 * dzi;
   
   /* Initialize predefined quantities */
   
@@ -65,12 +65,19 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
   /* Copy local copies back to grid functions */
   
   /* Loop over the grid points */
-  #pragma omp parallel
+  const int imin0=imin[0];
+  const int imin1=imin[1];
+  const int imin2=imin[2];
+  const int imax0=imax[0];
+  const int imax1=imax[1];
+  const int imax2=imax[2];
+  #pragma omp parallel // reduction(+: vec_iter_counter, vec_op_counter, vec_mem_counter)
   CCTK_LOOP3(Minkowski_initial,
-    i,j,k, imin[0],imin[1],imin[2], imax[0],imax[1],imax[2],
+    i,j,k, imin0,imin1,imin2, imax0,imax1,imax2,
     cctk_ash[0],cctk_ash[1],cctk_ash[2])
   {
-    ptrdiff_t /*const*/ index CCTK_ATTRIBUTE_UNUSED  = di*i + dj*j + dk*k;
+    const ptrdiff_t index CCTK_ATTRIBUTE_UNUSED = di*i + dj*j + dk*k;
+    // ++vec_iter_counter;
     
     /* Assign local copies of grid functions */
     
@@ -94,15 +101,15 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     /* Precompute derivatives */
     
     /* Calculate temporaries and grid functions */
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L00 = 1.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L00 = 1;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L01 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L01 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L02 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L02 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L03 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L03 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L10 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L10 = 0;
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp0 = cos(ToReal(phi));
     
@@ -115,7 +122,7 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp4 = sin(ToReal(psi));
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L11 = csetemp0*csetemp1 - 
-      1.*csetemp2*csetemp3*csetemp4;
+      csetemp2*csetemp3*csetemp4;
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L12 = csetemp1*csetemp3 + 
       csetemp0*csetemp2*csetemp4;
@@ -124,21 +131,21 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L13 = csetemp4*csetemp5;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L20 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L20 = 0;
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L21 = 
-      -1.*(csetemp1*csetemp2*csetemp3 + csetemp0*csetemp4);
+      -(csetemp1*csetemp2*csetemp3) - csetemp0*csetemp4;
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L22 = csetemp0*csetemp1*csetemp2 
-      - 1.*csetemp3*csetemp4;
+      - csetemp3*csetemp4;
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L23 = csetemp1*csetemp5;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L30 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L30 = 0;
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L31 = csetemp3*csetemp5;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L32 = -1.*csetemp0*csetemp5;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L32 = -(csetemp0*csetemp5);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform1L33 = csetemp2;
     
@@ -150,91 +157,89 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp9 = INV(ToReal(lapsefactor));
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L00 = csetemp9*INV((-1. + 
-      csetemp6 + csetemp7 + csetemp8)*(1. + sqrt(1. - 1.*(csetemp6 + csetemp7 
-      + csetemp8))))*(1. - 1.*(csetemp6 + csetemp7 + csetemp8) + sqrt(1. - 
-      1.*(csetemp6 + csetemp7 + csetemp8)))*(-1. + 
-      ToReal(boostx)*ToReal(shiftaddx) + ToReal(boosty)*ToReal(shiftaddy) + 
-      ToReal(boostz)*ToReal(shiftaddz));
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L00 = csetemp9*INV((-1 + 
+      csetemp6 + csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
+      csetemp8)))*(1 - csetemp6 - csetemp7 - csetemp8 + sqrt(1 - csetemp6 - 
+      csetemp7 - csetemp8))*(-1 + ToReal(boostx)*ToReal(shiftaddx) + 
+      ToReal(boosty)*ToReal(shiftaddy) + ToReal(boostz)*ToReal(shiftaddz));
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L01 = csetemp9*INV((-1. + 
-      csetemp6 + csetemp7 + csetemp8)*(1. + sqrt(1. - 1.*(csetemp6 + csetemp7 
-      + csetemp8))))*(1. - 1.*(csetemp6 + csetemp7 + csetemp8) + sqrt(1. - 
-      1.*(csetemp6 + csetemp7 + csetemp8)))*ToReal(boostx);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L01 = csetemp9*INV((-1 + 
+      csetemp6 + csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
+      csetemp8)))*(1 - csetemp6 - csetemp7 - csetemp8 + sqrt(1 - csetemp6 - 
+      csetemp7 - csetemp8))*ToReal(boostx);
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L02 = csetemp9*INV((-1. + 
-      csetemp6 + csetemp7 + csetemp8)*(1. + sqrt(1. - 1.*(csetemp6 + csetemp7 
-      + csetemp8))))*(1. - 1.*(csetemp6 + csetemp7 + csetemp8) + sqrt(1. - 
-      1.*(csetemp6 + csetemp7 + csetemp8)))*ToReal(boosty);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L02 = csetemp9*INV((-1 + 
+      csetemp6 + csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
+      csetemp8)))*(1 - csetemp6 - csetemp7 - csetemp8 + sqrt(1 - csetemp6 - 
+      csetemp7 - csetemp8))*ToReal(boosty);
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L03 = csetemp9*INV((-1. + 
-      csetemp6 + csetemp7 + csetemp8)*(1. + sqrt(1. - 1.*(csetemp6 + csetemp7 
-      + csetemp8))))*(1. - 1.*(csetemp6 + csetemp7 + csetemp8) + sqrt(1. - 
-      1.*(csetemp6 + csetemp7 + csetemp8)))*ToReal(boostz);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L03 = csetemp9*INV((-1 + 
+      csetemp6 + csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
+      csetemp8)))*(1 - csetemp6 - csetemp7 - csetemp8 + sqrt(1 - csetemp6 - 
+      csetemp7 - csetemp8))*ToReal(boostz);
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L10 = INV((-1. + csetemp6 + 
-      csetemp7 + csetemp8)*(1. + sqrt(1. - 1.*(csetemp6 + csetemp7 + 
-      csetemp8))))*((csetemp6 + (-1. + csetemp7 + csetemp8)*(1. + sqrt(1. - 
-      1.*(csetemp6 + csetemp7 + csetemp8))))*ToReal(shiftaddx) - 
-      1.*ToReal(boostx)*(-1. + csetemp6 + csetemp7 + csetemp8 + sqrt(1. - 
-      1.*(csetemp6 + csetemp7 + csetemp8))*(-1. + 
-      ToReal(boosty)*ToReal(shiftaddy) + ToReal(boostz)*ToReal(shiftaddz))));
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L10 = INV((-1 + csetemp6 + 
+      csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
+      csetemp8)))*((csetemp6 + (-1 + csetemp7 + csetemp8)*(1 + sqrt(1 - 
+      csetemp6 - csetemp7 - csetemp8)))*ToReal(shiftaddx) - 
+      ToReal(boostx)*(-1 + csetemp6 + csetemp7 + csetemp8 + sqrt(1 - csetemp6 
+      - csetemp7 - csetemp8)*(-1 + ToReal(boosty)*ToReal(shiftaddy) + 
+      ToReal(boostz)*ToReal(shiftaddz))));
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L11 = INV((-1. + csetemp6 + 
-      csetemp7 + csetemp8)*(1. + sqrt(1. - 1.*(csetemp6 + csetemp7 + 
-      csetemp8))))*(csetemp6 + (-1. + csetemp7 + csetemp8)*(1. + sqrt(1. - 
-      1.*(csetemp6 + csetemp7 + csetemp8))));
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L11 = INV((-1 + csetemp6 + 
+      csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
+      csetemp8)))*(csetemp6 + (-1 + csetemp7 + csetemp8)*(1 + sqrt(1 - 
+      csetemp6 - csetemp7 - csetemp8)));
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L12 = -1.*INV(-1. + csetemp6 + 
-      csetemp7 + csetemp8 - 1.*sqrt(1. - 1.*(csetemp6 + csetemp7 + 
-      csetemp8)))*ToReal(boostx)*ToReal(boosty);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L12 = -(INV(-1 + csetemp6 + 
+      csetemp7 + csetemp8 - sqrt(1 - csetemp6 - csetemp7 - 
+      csetemp8))*ToReal(boostx)*ToReal(boosty));
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L13 = -1.*INV(-1. + csetemp6 + 
-      csetemp7 + csetemp8 - 1.*sqrt(1. - 1.*(csetemp6 + csetemp7 + 
-      csetemp8)))*ToReal(boostx)*ToReal(boostz);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L13 = -(INV(-1 + csetemp6 + 
+      csetemp7 + csetemp8 - sqrt(1 - csetemp6 - csetemp7 - 
+      csetemp8))*ToReal(boostx)*ToReal(boostz));
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L20 = INV((-1. + csetemp6 + 
-      csetemp7 + csetemp8)*(1. + sqrt(1. - 1.*(csetemp6 + csetemp7 + 
-      csetemp8))))*((csetemp7 + (-1. + csetemp6 + csetemp8)*(1. + sqrt(1. - 
-      1.*(csetemp6 + csetemp7 + csetemp8))))*ToReal(shiftaddy) - 
-      1.*ToReal(boosty)*(-1. + csetemp6 + csetemp7 + csetemp8 + sqrt(1. - 
-      1.*(csetemp6 + csetemp7 + csetemp8))*(-1. + 
-      ToReal(boostx)*ToReal(shiftaddx) + ToReal(boostz)*ToReal(shiftaddz))));
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L20 = INV((-1 + csetemp6 + 
+      csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
+      csetemp8)))*((csetemp7 + (-1 + csetemp6 + csetemp8)*(1 + sqrt(1 - 
+      csetemp6 - csetemp7 - csetemp8)))*ToReal(shiftaddy) - 
+      ToReal(boosty)*(-1 + csetemp6 + csetemp7 + csetemp8 + sqrt(1 - csetemp6 
+      - csetemp7 - csetemp8)*(-1 + ToReal(boostx)*ToReal(shiftaddx) + 
+      ToReal(boostz)*ToReal(shiftaddz))));
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L21 = -1.*INV(-1. + csetemp6 + 
-      csetemp7 + csetemp8 - 1.*sqrt(1. - 1.*(csetemp6 + csetemp7 + 
-      csetemp8)))*ToReal(boostx)*ToReal(boosty);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L21 = -(INV(-1 + csetemp6 + 
+      csetemp7 + csetemp8 - sqrt(1 - csetemp6 - csetemp7 - 
+      csetemp8))*ToReal(boostx)*ToReal(boosty));
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L22 = INV((-1. + csetemp6 + 
-      csetemp7 + csetemp8)*(1. + sqrt(1. - 1.*(csetemp6 + csetemp7 + 
-      csetemp8))))*(csetemp7 + (-1. + csetemp6 + csetemp8)*(1. + sqrt(1. - 
-      1.*(csetemp6 + csetemp7 + csetemp8))));
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L22 = INV((-1 + csetemp6 + 
+      csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
+      csetemp8)))*(csetemp7 + (-1 + csetemp6 + csetemp8)*(1 + sqrt(1 - 
+      csetemp6 - csetemp7 - csetemp8)));
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L23 = -1.*INV(-1. + csetemp6 + 
-      csetemp7 + csetemp8 - 1.*sqrt(1. - 1.*(csetemp6 + csetemp7 + 
-      csetemp8)))*ToReal(boosty)*ToReal(boostz);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L23 = -(INV(-1 + csetemp6 + 
+      csetemp7 + csetemp8 - sqrt(1 - csetemp6 - csetemp7 - 
+      csetemp8))*ToReal(boosty)*ToReal(boostz));
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L30 = INV((-1. + csetemp6 + 
-      csetemp7 + csetemp8)*(1. + sqrt(1. - 1.*(csetemp6 + csetemp7 + 
-      csetemp8))))*(-1.*ToReal(boostz)*(-1. + csetemp6 + csetemp7 + csetemp8 
-      + sqrt(1. - 1.*(csetemp6 + csetemp7 + csetemp8))*(-1. + 
-      ToReal(boostx)*ToReal(shiftaddx) + ToReal(boosty)*ToReal(shiftaddy))) + 
-      (-1. + csetemp6 + csetemp7 + csetemp8 + (-1. + csetemp6 + 
-      csetemp7)*sqrt(1. - 1.*(csetemp6 + csetemp7 + 
-      csetemp8)))*ToReal(shiftaddz));
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L30 = INV((-1 + csetemp6 + 
+      csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
+      csetemp8)))*(-(ToReal(boostz)*(-1 + csetemp6 + csetemp7 + csetemp8 + 
+      sqrt(1 - csetemp6 - csetemp7 - csetemp8)*(-1 + 
+      ToReal(boostx)*ToReal(shiftaddx) + ToReal(boosty)*ToReal(shiftaddy)))) 
+      + (-1 + csetemp6 + csetemp7 + csetemp8 + (-1 + csetemp6 + 
+      csetemp7)*sqrt(1 - csetemp6 - csetemp7 - csetemp8))*ToReal(shiftaddz));
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L31 = -1.*INV(-1. + csetemp6 + 
-      csetemp7 + csetemp8 - 1.*sqrt(1. - 1.*(csetemp6 + csetemp7 + 
-      csetemp8)))*ToReal(boostx)*ToReal(boostz);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L31 = -(INV(-1 + csetemp6 + 
+      csetemp7 + csetemp8 - sqrt(1 - csetemp6 - csetemp7 - 
+      csetemp8))*ToReal(boostx)*ToReal(boostz));
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L32 = -1.*INV(-1. + csetemp6 + 
-      csetemp7 + csetemp8 - 1.*sqrt(1. - 1.*(csetemp6 + csetemp7 + 
-      csetemp8)))*ToReal(boosty)*ToReal(boostz);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L32 = -(INV(-1 + csetemp6 + 
+      csetemp7 + csetemp8 - sqrt(1 - csetemp6 - csetemp7 - 
+      csetemp8))*ToReal(boosty)*ToReal(boostz));
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L33 = INV((-1. + csetemp6 + 
-      csetemp7 + csetemp8)*(1. + sqrt(1. - 1.*(csetemp6 + csetemp7 + 
-      csetemp8))))*(-1. + csetemp6 + csetemp7 + csetemp8 + (-1. + csetemp6 + 
-      csetemp7)*sqrt(1. - 1.*(csetemp6 + csetemp7 + csetemp8)));
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED xform2L33 = INV((-1 + csetemp6 + 
+      csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
+      csetemp8)))*(-1 + csetemp6 + csetemp7 + csetemp8 + (-1 + csetemp6 + 
+      csetemp7)*sqrt(1 - csetemp6 - csetemp7 - csetemp8));
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL00 = xform1L00*xform2L00 + 
       xform1L01*xform2L10 + xform1L02*xform2L20 + xform1L03*xform2L30;
@@ -284,107 +289,107 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED xformL33 = xform1L30*xform2L03 + 
       xform1L31*xform2L13 + xform1L32*xform2L23 + xform1L33*xform2L33;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg400 = -1.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg400 = -1;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg401 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg401 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg402 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg402 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg403 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg403 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg411 = 1.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg411 = 1;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg412 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg412 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg413 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg413 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg422 = 1.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg422 = 1;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg423 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg423 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg433 = 1.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tg433 = 1;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4000 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4000 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4001 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4001 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4002 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4002 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4003 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4003 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4010 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4010 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4011 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4011 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4012 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4012 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4013 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4013 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4020 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4020 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4021 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4021 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4022 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4022 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4023 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4023 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4030 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4030 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4031 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4031 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4032 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4032 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4033 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4033 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4110 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4110 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4111 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4111 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4112 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4112 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4113 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4113 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4120 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4120 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4121 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4121 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4122 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4122 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4123 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4123 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4130 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4130 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4131 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4131 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4132 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4132 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4133 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4133 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4220 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4220 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4221 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4221 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4222 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4222 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4223 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4223 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4230 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4230 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4231 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4231 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4232 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4232 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4233 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4233 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4330 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4330 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4331 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4331 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4332 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4332 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4333 = 0.;
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED tdg4333 = 0;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED g400 = 2.*(tg423*xformL20*xformL30 + 
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED g400 = 2*(tg423*xformL20*xformL30 + 
       xformL00*(tg401*xformL10 + tg402*xformL20 + tg403*xformL30) + 
       xformL10*(tg412*xformL20 + tg413*xformL30)) + tg400*SQR(xformL00) + 
       tg411*SQR(xformL10) + tg422*SQR(xformL20) + tg433*SQR(xformL30);
@@ -1549,29 +1554,29 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp220 = SQR(gxyL);
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED detg = 2.*gxyL*gxzL*gyzL + 
-      gyyL*(gxxL*gzzL - 1.*csetemp218) - 1.*(gxxL*csetemp219 + 
-      gzzL*csetemp220);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED detg = 2*gxyL*gxzL*gyzL + 
+      gyyL*(gxxL*gzzL - csetemp218) - gxxL*csetemp219 - 
+      gzzL*csetemp220;
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp221 = INV(detg);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED gu11 = (gyyL*gzzL - 
-      1.*csetemp219)*csetemp221;
+      csetemp219)*csetemp221;
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED gu12 = (gxzL*gyzL - 
-      1.*gxyL*gzzL)*csetemp221;
+      gxyL*gzzL)*csetemp221;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED gu13 = (-1.*gxzL*gyyL + 
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED gu13 = (-(gxzL*gyyL) + 
       gxyL*gyzL)*csetemp221;
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED gu22 = (gxxL*gzzL - 
-      1.*csetemp218)*csetemp221;
+      csetemp218)*csetemp221;
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED gu23 = (gxyL*gxzL - 
-      1.*gxxL*gyzL)*csetemp221;
+      gxxL*gyzL)*csetemp221;
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED gu33 = (gxxL*gyyL - 
-      1.*csetemp220)*csetemp221;
+      csetemp220)*csetemp221;
     
     betaxL = betal1*gu11 + betal2*gu12 + betal3*gu13;
     
@@ -1582,7 +1587,7 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED betasq = betaxL*betal1 + 
       betayL*betal2 + betazL*betal3;
     
-    alpL = sqrt(betasq - 1.*g400);
+    alpL = sqrt(betasq - g400);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtg11 = dg4110;
     
@@ -1650,17 +1655,17 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp230 = dtg33*gu13;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu11 = -1.*((csetemp222 + csetemp223 
-      + csetemp224)*gu11 + (csetemp225 + csetemp226 + csetemp227)*gu12 + 
-      (csetemp228 + csetemp229 + csetemp230)*gu13);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu11 = -((csetemp222 + csetemp223 + 
+      csetemp224)*gu11) - (csetemp225 + csetemp226 + csetemp227)*gu12 - 
+      (csetemp228 + csetemp229 + csetemp230)*gu13;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu12 = -1.*((csetemp222 + csetemp223 
-      + csetemp224)*gu12 + (csetemp225 + csetemp226 + csetemp227)*gu22 + 
-      (csetemp228 + csetemp229 + csetemp230)*gu23);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu12 = -((csetemp222 + csetemp223 + 
+      csetemp224)*gu12) - (csetemp225 + csetemp226 + csetemp227)*gu22 - 
+      (csetemp228 + csetemp229 + csetemp230)*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu13 = -1.*((csetemp222 + csetemp223 
-      + csetemp224)*gu13 + (csetemp225 + csetemp226 + csetemp227)*gu23 + 
-      (csetemp228 + csetemp229 + csetemp230)*gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu13 = -((csetemp222 + csetemp223 + 
+      csetemp224)*gu13) - (csetemp225 + csetemp226 + csetemp227)*gu23 - 
+      (csetemp228 + csetemp229 + csetemp230)*gu33;
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp231 = dtg11*gu12;
     
@@ -1678,17 +1683,17 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp238 = dtg33*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu22 = -1.*((csetemp231 + csetemp232 
-      + csetemp233)*gu12 + (csetemp223 + csetemp234 + csetemp235)*gu22 + 
-      (csetemp236 + csetemp237 + csetemp238)*gu23);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu22 = -((csetemp231 + csetemp232 + 
+      csetemp233)*gu12) - (csetemp223 + csetemp234 + csetemp235)*gu22 - 
+      (csetemp236 + csetemp237 + csetemp238)*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu23 = -1.*((csetemp231 + csetemp232 
-      + csetemp233)*gu13 + (csetemp223 + csetemp234 + csetemp235)*gu23 + 
-      (csetemp236 + csetemp237 + csetemp238)*gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu23 = -((csetemp231 + csetemp232 + 
+      csetemp233)*gu13) - (csetemp223 + csetemp234 + csetemp235)*gu23 - 
+      (csetemp236 + csetemp237 + csetemp238)*gu33;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu33 = -1.*(gu13*(dtg11*gu13 + 
-      dtg12*gu23 + dtg13*gu33) + gu23*(dtg12*gu13 + dtg22*gu23 + dtg23*gu33) 
-      + gu33*(csetemp224 + csetemp235 + dtg33*gu33));
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtgu33 = -(gu13*(dtg11*gu13 + 
+      dtg12*gu23 + dtg13*gu33)) - gu23*(dtg12*gu13 + dtg22*gu23 + dtg23*gu33) 
+      - gu33*(csetemp224 + csetemp235 + dtg33*gu33);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp239 = dg111*gu11;
     
@@ -1708,17 +1713,17 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp247 = dg331*gu13;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu111 = -1.*((csetemp239 + csetemp240 
-      + csetemp241)*gu11 + (csetemp242 + csetemp243 + csetemp244)*gu12 + 
-      (csetemp245 + csetemp246 + csetemp247)*gu13);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu111 = -((csetemp239 + csetemp240 + 
+      csetemp241)*gu11) - (csetemp242 + csetemp243 + csetemp244)*gu12 - 
+      (csetemp245 + csetemp246 + csetemp247)*gu13;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu121 = -1.*((csetemp239 + csetemp240 
-      + csetemp241)*gu12 + (csetemp242 + csetemp243 + csetemp244)*gu22 + 
-      (csetemp245 + csetemp246 + csetemp247)*gu23);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu121 = -((csetemp239 + csetemp240 + 
+      csetemp241)*gu12) - (csetemp242 + csetemp243 + csetemp244)*gu22 - 
+      (csetemp245 + csetemp246 + csetemp247)*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu131 = -1.*((csetemp239 + csetemp240 
-      + csetemp241)*gu13 + (csetemp242 + csetemp243 + csetemp244)*gu23 + 
-      (csetemp245 + csetemp246 + csetemp247)*gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu131 = -((csetemp239 + csetemp240 + 
+      csetemp241)*gu13) - (csetemp242 + csetemp243 + csetemp244)*gu23 - 
+      (csetemp245 + csetemp246 + csetemp247)*gu33;
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp248 = dg111*gu12;
     
@@ -1736,17 +1741,17 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp255 = dg331*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu221 = -1.*((csetemp248 + csetemp249 
-      + csetemp250)*gu12 + (csetemp240 + csetemp251 + csetemp252)*gu22 + 
-      (csetemp253 + csetemp254 + csetemp255)*gu23);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu221 = -((csetemp248 + csetemp249 + 
+      csetemp250)*gu12) - (csetemp240 + csetemp251 + csetemp252)*gu22 - 
+      (csetemp253 + csetemp254 + csetemp255)*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu231 = -1.*((csetemp248 + csetemp249 
-      + csetemp250)*gu13 + (csetemp240 + csetemp251 + csetemp252)*gu23 + 
-      (csetemp253 + csetemp254 + csetemp255)*gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu231 = -((csetemp248 + csetemp249 + 
+      csetemp250)*gu13) - (csetemp240 + csetemp251 + csetemp252)*gu23 - 
+      (csetemp253 + csetemp254 + csetemp255)*gu33;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu331 = -1.*(gu13*(dg111*gu13 + 
-      dg121*gu23 + dg131*gu33) + gu23*(dg121*gu13 + dg221*gu23 + dg231*gu33) 
-      + gu33*(csetemp241 + csetemp252 + dg331*gu33));
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu331 = -(gu13*(dg111*gu13 + 
+      dg121*gu23 + dg131*gu33)) - gu23*(dg121*gu13 + dg221*gu23 + dg231*gu33) 
+      - gu33*(csetemp241 + csetemp252 + dg331*gu33);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp256 = dg112*gu11;
     
@@ -1766,17 +1771,17 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp264 = dg332*gu13;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu112 = -1.*((csetemp256 + csetemp257 
-      + csetemp258)*gu11 + (csetemp259 + csetemp260 + csetemp261)*gu12 + 
-      (csetemp262 + csetemp263 + csetemp264)*gu13);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu112 = -((csetemp256 + csetemp257 + 
+      csetemp258)*gu11) - (csetemp259 + csetemp260 + csetemp261)*gu12 - 
+      (csetemp262 + csetemp263 + csetemp264)*gu13;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu122 = -1.*((csetemp256 + csetemp257 
-      + csetemp258)*gu12 + (csetemp259 + csetemp260 + csetemp261)*gu22 + 
-      (csetemp262 + csetemp263 + csetemp264)*gu23);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu122 = -((csetemp256 + csetemp257 + 
+      csetemp258)*gu12) - (csetemp259 + csetemp260 + csetemp261)*gu22 - 
+      (csetemp262 + csetemp263 + csetemp264)*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu132 = -1.*((csetemp256 + csetemp257 
-      + csetemp258)*gu13 + (csetemp259 + csetemp260 + csetemp261)*gu23 + 
-      (csetemp262 + csetemp263 + csetemp264)*gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu132 = -((csetemp256 + csetemp257 + 
+      csetemp258)*gu13) - (csetemp259 + csetemp260 + csetemp261)*gu23 - 
+      (csetemp262 + csetemp263 + csetemp264)*gu33;
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp265 = dg112*gu12;
     
@@ -1794,17 +1799,17 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp272 = dg332*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu222 = -1.*((csetemp265 + csetemp266 
-      + csetemp267)*gu12 + (csetemp257 + csetemp268 + csetemp269)*gu22 + 
-      (csetemp270 + csetemp271 + csetemp272)*gu23);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu222 = -((csetemp265 + csetemp266 + 
+      csetemp267)*gu12) - (csetemp257 + csetemp268 + csetemp269)*gu22 - 
+      (csetemp270 + csetemp271 + csetemp272)*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu232 = -1.*((csetemp265 + csetemp266 
-      + csetemp267)*gu13 + (csetemp257 + csetemp268 + csetemp269)*gu23 + 
-      (csetemp270 + csetemp271 + csetemp272)*gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu232 = -((csetemp265 + csetemp266 + 
+      csetemp267)*gu13) - (csetemp257 + csetemp268 + csetemp269)*gu23 - 
+      (csetemp270 + csetemp271 + csetemp272)*gu33;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu332 = -1.*(gu13*(dg112*gu13 + 
-      dg122*gu23 + dg132*gu33) + gu23*(dg122*gu13 + dg222*gu23 + dg232*gu33) 
-      + gu33*(csetemp258 + csetemp269 + dg332*gu33));
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu332 = -(gu13*(dg112*gu13 + 
+      dg122*gu23 + dg132*gu33)) - gu23*(dg122*gu13 + dg222*gu23 + dg232*gu33) 
+      - gu33*(csetemp258 + csetemp269 + dg332*gu33);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp273 = dg113*gu11;
     
@@ -1824,17 +1829,17 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp281 = dg333*gu13;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu113 = -1.*((csetemp273 + csetemp274 
-      + csetemp275)*gu11 + (csetemp276 + csetemp277 + csetemp278)*gu12 + 
-      (csetemp279 + csetemp280 + csetemp281)*gu13);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu113 = -((csetemp273 + csetemp274 + 
+      csetemp275)*gu11) - (csetemp276 + csetemp277 + csetemp278)*gu12 - 
+      (csetemp279 + csetemp280 + csetemp281)*gu13;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu123 = -1.*((csetemp273 + csetemp274 
-      + csetemp275)*gu12 + (csetemp276 + csetemp277 + csetemp278)*gu22 + 
-      (csetemp279 + csetemp280 + csetemp281)*gu23);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu123 = -((csetemp273 + csetemp274 + 
+      csetemp275)*gu12) - (csetemp276 + csetemp277 + csetemp278)*gu22 - 
+      (csetemp279 + csetemp280 + csetemp281)*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu133 = -1.*((csetemp273 + csetemp274 
-      + csetemp275)*gu13 + (csetemp276 + csetemp277 + csetemp278)*gu23 + 
-      (csetemp279 + csetemp280 + csetemp281)*gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu133 = -((csetemp273 + csetemp274 + 
+      csetemp275)*gu13) - (csetemp276 + csetemp277 + csetemp278)*gu23 - 
+      (csetemp279 + csetemp280 + csetemp281)*gu33;
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp282 = dg113*gu12;
     
@@ -1852,17 +1857,17 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp289 = dg333*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu223 = -1.*((csetemp282 + csetemp283 
-      + csetemp284)*gu12 + (csetemp274 + csetemp285 + csetemp286)*gu22 + 
-      (csetemp287 + csetemp288 + csetemp289)*gu23);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu223 = -((csetemp282 + csetemp283 + 
+      csetemp284)*gu12) - (csetemp274 + csetemp285 + csetemp286)*gu22 - 
+      (csetemp287 + csetemp288 + csetemp289)*gu23;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu233 = -1.*((csetemp282 + csetemp283 
-      + csetemp284)*gu13 + (csetemp274 + csetemp285 + csetemp286)*gu23 + 
-      (csetemp287 + csetemp288 + csetemp289)*gu33);
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu233 = -((csetemp282 + csetemp283 + 
+      csetemp284)*gu13) - (csetemp274 + csetemp285 + csetemp286)*gu23 - 
+      (csetemp287 + csetemp288 + csetemp289)*gu33;
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu333 = -1.*(gu13*(dg113*gu13 + 
-      dg123*gu23 + dg133*gu33) + gu23*(dg123*gu13 + dg223*gu23 + dg233*gu33) 
-      + gu33*(csetemp275 + csetemp286 + dg333*gu33));
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dgu333 = -(gu13*(dg113*gu13 + 
+      dg123*gu23 + dg133*gu33)) - gu23*(dg123*gu13 + dg223*gu23 + dg233*gu33) 
+      - gu33*(csetemp275 + csetemp286 + dg333*gu33);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtbetal1 = dg4010;
     
@@ -1939,35 +1944,33 @@ static void Minkowski_initial_Body(cGH const * restrict const cctkGH, int const 
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED csetemp290 = INV(alpL);
     
-    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtalpL = 0.5*csetemp290*(-1.*dg4000 + 
+    CCTK_REAL CCTK_ATTRIBUTE_UNUSED dtalpL = 0.5*csetemp290*(-dg4000 + 
       dtbetasq);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED kxxL = 
-      0.5*csetemp290*(2.*(gxxL*dbeta11 + gxyL*dbeta21 + gxzL*dbeta31) + 
-      betaxL*dg111 + betayL*dg112 + betazL*dg113 - 1.*dtg11);
+      0.5*csetemp290*(2*(gxxL*dbeta11 + gxyL*dbeta21 + gxzL*dbeta31) + 
+      betaxL*dg111 + betayL*dg112 + betazL*dg113 - dtg11);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED kxyL = 0.5*csetemp290*(gxxL*dbeta12 
       + gyyL*dbeta21 + gxyL*(dbeta11 + dbeta22) + gyzL*dbeta31 + 
       gxzL*dbeta32 + betaxL*dg121 + betayL*dg122 + betazL*dg123 - 
-      1.*dtg12);
+      dtg12);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED kxzL = 0.5*csetemp290*(gxxL*dbeta13 
       + gyzL*dbeta21 + gxyL*dbeta23 + gzzL*dbeta31 + gxzL*(dbeta11 + 
-      dbeta33) + betaxL*dg131 + betayL*dg132 + betazL*dg133 - 
-      1.*dtg13);
+      dbeta33) + betaxL*dg131 + betayL*dg132 + betazL*dg133 - dtg13);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED kyyL = 
-      0.5*csetemp290*(2.*(gxyL*dbeta12 + gyyL*dbeta22 + gyzL*dbeta32) + 
-      betaxL*dg221 + betayL*dg222 + betazL*dg223 - 1.*dtg22);
+      0.5*csetemp290*(2*(gxyL*dbeta12 + gyyL*dbeta22 + gyzL*dbeta32) + 
+      betaxL*dg221 + betayL*dg222 + betazL*dg223 - dtg22);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED kyzL = 0.5*csetemp290*(gxzL*dbeta12 
       + gxyL*dbeta13 + gyyL*dbeta23 + gzzL*dbeta32 + gyzL*(dbeta22 + 
-      dbeta33) + betaxL*dg231 + betayL*dg232 + betazL*dg233 - 
-      1.*dtg23);
+      dbeta33) + betaxL*dg231 + betayL*dg232 + betazL*dg233 - dtg23);
     
     CCTK_REAL CCTK_ATTRIBUTE_UNUSED kzzL = 
-      0.5*csetemp290*(2.*(gxzL*dbeta13 + gyzL*dbeta23 + gzzL*dbeta33) + 
-      betaxL*dg331 + betayL*dg332 + betazL*dg333 - 1.*dtg33);
+      0.5*csetemp290*(2*(gxzL*dbeta13 + gyzL*dbeta23 + gzzL*dbeta33) + 
+      betaxL*dg331 + betayL*dg332 + betazL*dg333 - dtg33);
     
     /* Copy local copies back to grid functions */
     alp[index] = alpL;
@@ -2010,7 +2013,7 @@ extern "C" void Minkowski_initial(CCTK_ARGUMENTS)
     return;
   }
   
-  const char *const groups[] = {
+  const char* const groups[] = {
     "admbase::curv",
     "admbase::dtlapse",
     "admbase::dtshift",
