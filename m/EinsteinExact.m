@@ -383,10 +383,9 @@ idThorn[spacetime_, thorn_] :=
     InheritedImplementations -> {"admbase"},
     CSE -> True,
     UseLoopControl -> True,
-    (* We currently need to disable vectorisation, because it cannot
-       handle the Piecewise[] functions that are generated from
-       derivatives of the Min[] function used to hide singularities
-       e.g. in ModifiedSchwarzschildBL *)
+    (* We can't enable vectorization and CSE at the same time, because
+       CSE creates temporaries for some scalar values, declaring these
+       as vectors, which then breaks e.g. IfThen conditions. *)
     UseVectors -> False];
 ];
 
