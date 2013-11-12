@@ -58,6 +58,12 @@ CCTK_INT verbose "verbose" STEERABLE=ALWAYS
 } 0
 
 restricted:
+CCTK_INT other_timelevels "Number of active timelevels for non-evolved grid functions" STEERABLE=RECOVER
+{
+  0:3 :: ""
+} 1
+
+restricted:
 CCTK_REAL timeoffset "timeoffset"
 {
   "*:*" :: ""
@@ -173,12 +179,6 @@ CCTK_INT timelevels "Number of active timelevels" STEERABLE=RECOVER
 
 restricted:
 CCTK_INT rhs_timelevels "Number of active RHS timelevels" STEERABLE=RECOVER
-{
-  0:3 :: ""
-} 1
-
-restricted:
-CCTK_INT other_timelevels "Number of active timelevels for non-evolved grid functions" STEERABLE=RECOVER
 {
   0:3 :: ""
 } 1
