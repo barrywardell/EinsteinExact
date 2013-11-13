@@ -1,0 +1,113 @@
+Cactus::cctk_run_title     = "Tilted Kerr/Kerr-Schild data"
+Cactus::cctk_full_warnings = yes
+
+Cactus::cctk_itlast = 2
+
+ActiveThorns = "IOUtil"
+IO::out_dir       = $parfile
+IO::out_fileinfo  = "axis labels"
+IO::parfile_write = "no"
+
+ActiveThorns = "AEILocalInterp LocalInterp LocalReduce"
+
+ActiveThorns = "PUGH PUGHInterp PUGHReduce PUGHSlab"
+driver::global_nsize = 49
+driver::ghost_size   =  2
+
+ActiveThorns = "NaNChecker"
+
+ActiveThorns = "Boundary CartGrid3D CoordBase SymBase SymBase SphericalSurface CoordBase"
+CartGrid3D::type         = "byspacing"
+CartGrid3D::domain       = "full"
+CartGrid3D::dxyz         = 0.125
+CartGrid3D::avoid_origin = no
+CoordBase::boundary_size_x_upper = 2
+CoordBase::boundary_size_y_upper = 2
+CoordBase::boundary_size_z_upper = 2
+CoordBase::boundary_size_x_lower = 2
+CoordBase::boundary_size_y_lower = 2
+CoordBase::boundary_size_z_lower = 2
+
+ActiveThorns = "ADMBase ADMCoupling ADMMacros CoordGauge SpaceMask StaticConformal TmunuBase"
+SpaceMask::use_mask = yes
+
+ActiveThorns = "KerrSchild"
+
+ADMBase::initial_data  = "KerrSchild"
+ADMBase::initial_lapse = "KerrSchild"
+ADMBase::initial_shift = "KerrSchild"
+ADMBase::initial_dtlapse = "KerrSchild"
+ADMBase::initial_dtshift = "KerrSchild"
+
+KerrSchild::theta     = 0.4 # in radians, approx. 23 degrees
+KerrSchild::M         = 1
+KerrSchild::a         = 0.6
+
+ActiveThorns = "NoExcision"
+NoExcision::num_regions      = 1
+NoExcision::radius[0]        = 0.8
+NoExcision::Minkowski_scale[0] = 2.6637047122099 # value found at r=0.875
+NoExcision::reduce_rhs[0] = yes
+
+ActiveThorns = "Time"
+Time::dtfac = 0.25
+
+ActiveThorns = "MoL"
+MoL::ODE_Method = "RK3"
+
+ActiveThorns = "ML_BSSN ML_BSSN_Helper GenericFD LoopControl TmunuBase NewRad"
+ADMBase::evolution_method = ML_BSSN
+ML_BSSN::fdOrder                     = 2
+ML_BSSN::my_initial_boundary_condition = "extrapolate-gammas"
+ML_BSSN::my_rhs_boundary_condition     = "NewRad"
+# These are necessary
+ML_BSSN::ML_log_confac_bound = "none"
+ML_BSSN::ML_metric_bound     = "none"
+ML_BSSN::ML_Gamma_bound      = "none"
+ML_BSSN::ML_trace_curv_bound = "none"
+ML_BSSN::ML_curv_bound       = "none"
+ML_BSSN::ML_lapse_bound      = "none"
+ML_BSSN::ML_dtlapse_bound    = "none"
+ML_BSSN::ML_shift_bound      = "none"
+ML_BSSN::ML_dtshift_bound    = "none"
+
+ActiveThorns = "ADMConstraints"
+
+ActiveThorns = "AHFinderDirect"
+AHFinderDirect::output_OpenDX_control_files    = no
+AHFinderDirect::geometry_interpolator_name     = "Lagrange polynomial interpolation"
+AHFinderDirect::geometry_interpolator_pars     = "order=2"
+AHFinderDirect::surface_interpolator_name      = "Lagrange polynomial interpolation"
+AHFinderDirect::surface_interpolator_pars      = "order=2"
+
+ActiveThorns = "IOBasic"
+IOBasic::outInfo_every      = 1
+IOBasic::outInfo_reductions = "norm2"
+IOBasic::outInfo_vars       = "
+        ADMConstraints::ham
+        ADMBase::gxx
+"
+
+IOBasic::outScalar_every      = 1
+IOBasic::outScalar_reductions = "average count maximum minimum norm1 norm2 norm_inf"
+IOBasic::outScalar_vars       = "
+        ADMBase::metric
+        ADMBase::curv
+        ADMBase::lapse
+        ADMBase::shift
+        ADMConstraints::hamiltonian
+        ADMConstraints::momentum
+        SpaceMask::mask
+"
+
+ActiveThorns = "IOASCII"
+IOASCII::out1D_every = 1
+IOASCII::out1D_vars  = "
+        ADMBase::metric
+        ADMBase::curv
+        ADMBase::lapse
+        ADMBase::shift
+        ADMConstraints::hamiltonian
+        ADMConstraints::momentum
+        SpaceMask::mask
+"
