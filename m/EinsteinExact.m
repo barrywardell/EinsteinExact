@@ -422,7 +422,7 @@ g_{ab} =
 \\end{equation}
 " <> If[shorthandtext =!= "", "where\n" <> shorthandtext, ""];
 
-  PutAppend[OutputForm[doctext], "../doc/spacetimes.tex"];
+  StringForm[doctext]
 ]
 
 spacetimes = {"GaugeWave", "KerrSchild", "Minkowski", "ShiftedGaugeWave", "Vaidya", "ModifiedSchwarzschildBL"};
@@ -431,5 +431,5 @@ thornNameRules = {"Vaidya" -> "Vaidya2"};
 thorns = spacetimes /. thornNameRules;
 MapThread[idThorn, {spacetimes, thorns}];
 
-If[FileExistsQ["../doc/spacetimes.tex"], DeleteFile["../doc/spacetimes.tex"]];
-MapThread[docGenerate, {spacetimes, thorns}];
+spacetimeDescriptions = StringJoin[ToString /@ MapThread[docGenerate, {spacetimes, thorns}]];
+Splice["documentation.mtex", "../doc/documentation.tex", FormatType -> OutputForm, PageWidth -> Infinity];

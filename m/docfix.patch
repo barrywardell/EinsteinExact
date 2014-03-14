@@ -1,30 +1,23 @@
-diff --git a/doc/spacetimes.tex b/doc/spacetimes.tex
-index 3c866a7..c320dcb 100644
---- a/doc/spacetimes.tex
-+++ b/doc/spacetimes.tex
-@@ -138,18 +138,9 @@ g_{ab} =
+diff --git a/doc/documentation.tex b/doc/documentation.tex
+index 31ef3cc..54e33b7 100644
+--- a/doc/documentation.tex
++++ b/doc/documentation.tex
+@@ -322,18 +322,25 @@ g_{ab} =
  \left(
  \begin{array}{cccc}
   -1 & 0 & 0 & 0 \\
-- 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \
--\left(\frac{\left(\cos \left(\frac{4 \pi  \min \
--\left(\frac{M}{2},r\right)}{M}\right)-1\right) M^2}{16 \pi ^2}+\frac{1}{2} \
--\min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 & 0 & 0 \\
-- 0 & 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \
--\left(\frac{\left(\cos \left(\frac{4 \pi  \min \
--\left(\frac{M}{2},r\right)}{M}\right)-1\right) M^2}{16 \pi ^2}+\frac{1}{2} \
--\min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 & 0 \\
-- 0 & 0 & 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \
--\left(\frac{\left(\cos \left(\frac{4 \pi  \min \
--\left(\frac{M}{2},r\right)}{M}\right)-1\right) M^2}{16 \pi ^2}+\frac{1}{2} \
--\min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 \\
+- 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \left(\frac{\left(\cos \left(\frac{4 \pi  \min \left(\frac{M}{2},r\right)}{M}\right)-1\right) M^2}{16 \pi ^2}+\frac{1}{2} \min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 & 0 & 0 \\
+- 0 & 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \left(\frac{\left(\cos \left(\frac{4 \pi  \min \left(\frac{M}{2},r\right)}{M}\right)-1\right) M^2}{16 \pi ^2}+\frac{1}{2} \min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 & 0 \\
+- 0 & 0 & 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \left(\frac{\left(\cos \left(\frac{4 \pi  \min \left(\frac{M}{2},r\right)}{M}\right)-1\right) M^2}{16 \pi ^2}+\frac{1}{2} \min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 \\
+-\end{array}
+-\right)
 + 0 & \left(1+\frac{M(r)}{2 r}\right)^4 & 0 & 0 \\
 + 0 & 0 & \left(1+\frac{M(r)}{2 r}\right)^4 & 0 \\
 + 0 & 0 & 0 & \left(1+\frac{M(r)}{2 r}\right)^4 \\
- \end{array}
- \right)
++\end{array}
++\right)
  \end{equation}
-@@ -157,4 +148,11 @@ where
+ where
  \begin{equation}
  r(x,y,z)=\sqrt{x^2+y^2+z^2}
  \end{equation}
@@ -37,3 +30,7 @@ index 3c866a7..c320dcb 100644
 +     \end{array}
 +   \right.
 +\end{equation}
+ 
+ \section{Modifying EinsteinExact}
+ 
+ \subsection{Generating the code}
