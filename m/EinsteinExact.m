@@ -33,7 +33,8 @@ SetEnhancedTimes[False];
 Map[DefineTensor, 
 {
   alp, dtalp, betal, beta, dtbetal, dtbeta, dbetal, dbeta,
-  g, dtg, dg, gu, dtgu, dgu, k
+  g, dtg, dg, gu, dtgu, dgu, k,
+  alperr, dtalperr, betaerr, dtbetaerr, gerr, kerr
 }];
 
 AssertSymmetricIncreasing[g[la,lb], la, lb];
@@ -43,6 +44,8 @@ AssertSymmetricIncreasing[gu[ua,ub], ua, ub];
 AssertSymmetricIncreasing[dtgu[ua,ub], ua, ub];
 AssertSymmetricIncreasing[dgu[ua,ub,lc], ua, ub];
 AssertSymmetricIncreasing[k[la,lb], la, lb];
+AssertSymmetricIncreasing[gerr[la,lb], la, lb];
+AssertSymmetricIncreasing[kerr[la,lb], la, lb];
 
 
 (**************************************************************************************)
@@ -51,7 +54,6 @@ AssertSymmetricIncreasing[k[la,lb], la, lb];
 
 (* Cactus group definitions *)
 
-
 admGroups = 
   {{"admbase::metric", {gxx,gxy,gxz,gyy,gyz,gzz}},
    {"admbase::curv", {kxx,kxy,kxz,kyy,kyz,kzz}},
@@ -59,6 +61,17 @@ admGroups =
    {"admbase::shift", {betax,betay,betaz}},
    {"admbase::dtlapse", {dtalp}},
    {"admbase::dtshift", {dtbetax,dtbetay,dtbetaz}}};
+
+errorGroups =
+  {SetGroupName[CreateGroupFromTensor[gerr[li,lj]], "metric_error"],
+   SetGroupName[CreateGroupFromTensor[kerr[li,lj]], "curv_error"],
+   SetGroupName[CreateGroupFromTensor[alperr], "lapse_error"],
+   SetGroupName[CreateGroupFromTensor[dtalperr], "dtlapse_error"],
+   SetGroupName[CreateGroupFromTensor[betaerr[ui]], "shift_error"],
+   SetGroupName[CreateGroupFromTensor[dtbetaerr[ui]], "dtshift_error"]};
+
+groups = Join[admGroups, errorGroups];
+declaredGroups = First/@errorGroups;
 
 (**************************************************************************************)
 (* Shorthands *)
@@ -79,6 +92,15 @@ symmetryRules =
            Table[g4[i,j]     -> g4[j,i]    , {i, 0, 3}, {j, 0, i-1}],
            Table[dg4[i,j,k]  -> dg4[j,i,k] , {i, 0, 3}, {j, 0, i-1}, {k, 0, 3}]
           }] /. arrayToSymbolRules;
+
+(* Calculate the solution error instead of the solution *)
+calcErrorRules =
+  {(Tensor[g,i_,j_]->rhs_) :> (Tensor[gerr,i,j] -> Tensor[g,i,j] - rhs),
+   (Tensor[k,i_,j_]->rhs_) :> (Tensor[kerr,i,j] -> Tensor[k,i,j] - rhs),
+   (alp->rhs_) :> (alperr -> alp - rhs),
+   (dtalp->rhs_) :> (dtalperr -> dtalp - rhs),
+   (Tensor[beta,i_]->rhs_) :> (Tensor[betaerr,i] -> Tensor[beta,i] - rhs),
+   (Tensor[dtbeta,i_]->rhs_) :> (Tensor[dtbetaerr,i] -> Tensor[dtbeta,i] - rhs)};
 
 shorthands =
   Join[
@@ -221,7 +243,8 @@ idThorn[spacetime_, thorn_] :=
   Module[{coordRule, coords, spatialCoords, fourMetric, invFourMetric,
           dFourMetric,
           shorthandEquations, shorthandVars, dShorthands, simplifyhints, tf, cf, simpopts,
-          krancShortVars, kranctf, parameters, extendedKeywordParameters, calc,
+          krancShortVars, kranctf, parameters, extendedKeywordParameters,
+          keywordParameters, calc,
           calculations},
 
   Print["Generating thorn ", thorn, " for ", spacetime, " spacetime."];
@@ -277,17 +300,24 @@ idThorn[spacetime_, thorn_] :=
                    "ADMBase::initial_dtlapse", "ADMBase::initial_dtshift",
                    "ADMBase::evolution_method"}}];
 
+  keywordParameters =
+    {{Name          -> "error_method",
+      AllowedValues -> {"none", thorn},
+      Default       -> "none"}};
+
   calc[when_] := {
     Name -> thorn <> "_" <> when,
     Switch[when,
       "initial", Schedule -> {"in ADMBase_InitialData"},
       "always",  Schedule -> {"at CCTK_PRESTEP"},
+      "error",   Schedule -> {"at CCTK_ANALYSIS"},
       _, Throw["Unrecognised scheduling keyword"]],
 
     ConditionalOnKeyword ->
       {Switch[when,
          "initial", "initial_data",
          "always", "evolution_method",
+         "error", "error_method",
          _, Throw["Unrecognised scheduling keyword"]],
        thorn},
 
@@ -353,13 +383,15 @@ idThorn[spacetime_, thorn_] :=
       k[li,lj] -> (- dtg[li,lj]
                    + g[lk,lj] dbeta[uk,li] + g[li,lk] dbeta[uk,lj]
                    + dg[li,lj,lk] beta[uk]) / (2 alp)
-    } /. arrayToSymbolRules /. symmetryRules)
+    } /. arrayToSymbolRules /. symmetryRules
+      /. If[when=="error", calcErrorRules, {}])
   };
 
   calculations =
   {
     calc["initial"],
-    calc["always"]
+    calc["always"],
+    calc["error"]
   };
 
   parameterConditions =
@@ -375,10 +407,12 @@ idThorn[spacetime_, thorn_] :=
       Parameter["initial_dtshift"] != spacetime)),
     "If one of the parameters ADMBase::initial_data, ADMBase::initial_lapse, ADMBase::initial_shift, ADMBase::initial_dtlapse, and ADMBase::initial_dtshift are set to \"" <> spacetime <> "\", then all must be set to this value"}};
 
-  CreateKrancThornTT[admGroups, "..", thorn,
+  CreateKrancThornTT[groups, "..", thorn,
     Calculations -> calculations,
+    DeclaredGroups -> declaredGroups,
     RealParameters -> Join[realParameters, parameters],
     ExtendedKeywordParameters -> extendedKeywordParameters,
+    KeywordParameters -> keywordParameters,
     ParameterConditions -> parameterConditions,
     InheritedImplementations -> {"admbase"},
     CSE -> True,
