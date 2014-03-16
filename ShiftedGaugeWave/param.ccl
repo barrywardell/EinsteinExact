@@ -160,6 +160,19 @@ CCTK_REAL period "period"
 } 0
 
 restricted:
+CCTK_INT tile_size "Loop tile size"
+{
+  *:* :: ""
+} -1
+
+private:
+KEYWORD error_method "error_method"
+{
+  "none" :: ""
+  "ShiftedGaugeWave" :: ""
+} "none"
+
+restricted:
 CCTK_INT ShiftedGaugeWave_MaxNumEvolvedVars "Number of evolved variables used by this thorn" ACCUMULATOR-BASE=MethodofLines::MoL_Num_Evolved_Vars STEERABLE=RECOVER
 {
   0:0 :: "Number of evolved variables used by this thorn"
@@ -196,6 +209,12 @@ CCTK_INT ShiftedGaugeWave_always_calc_every "ShiftedGaugeWave_always_calc_every"
 } 1
 
 restricted:
+CCTK_INT ShiftedGaugeWave_error_calc_every "ShiftedGaugeWave_error_calc_every" STEERABLE=ALWAYS
+{
+  *:* :: ""
+} 1
+
+restricted:
 CCTK_INT ShiftedGaugeWave_initial_calc_offset "ShiftedGaugeWave_initial_calc_offset" STEERABLE=ALWAYS
 {
   *:* :: ""
@@ -203,6 +222,12 @@ CCTK_INT ShiftedGaugeWave_initial_calc_offset "ShiftedGaugeWave_initial_calc_off
 
 restricted:
 CCTK_INT ShiftedGaugeWave_always_calc_offset "ShiftedGaugeWave_always_calc_offset" STEERABLE=ALWAYS
+{
+  *:* :: ""
+} 0
+
+restricted:
+CCTK_INT ShiftedGaugeWave_error_calc_offset "ShiftedGaugeWave_error_calc_offset" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 0

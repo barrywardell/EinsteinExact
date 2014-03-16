@@ -1,6 +1,16 @@
 # File produced by Kranc
 
+STORAGE: metric_error[other_timelevels]
 
+STORAGE: curv_error[other_timelevels]
+
+STORAGE: lapse_error[other_timelevels]
+
+STORAGE: dtlapse_error[other_timelevels]
+
+STORAGE: shift_error[other_timelevels]
+
+STORAGE: dtshift_error[other_timelevels]
 schedule KerrSchild_Startup at STARTUP
 {
   LANG: C
@@ -12,7 +22,6 @@ schedule KerrSchild_RegisterSymmetries in SymmetryRegister
   LANG: C
   OPTIONS: meta
 } "register symmetries"
-
 
 if (CCTK_EQUALS(initial_data, "KerrSchild"))
 {
@@ -45,7 +54,6 @@ if (CCTK_EQUALS(initial_data, "KerrSchild"))
   } "KerrSchild_initial"
 }
 
-
 if (CCTK_EQUALS(evolution_method, "KerrSchild"))
 {
   schedule KerrSchild_always at CCTK_PRESTEP
@@ -77,6 +85,57 @@ if (CCTK_EQUALS(evolution_method, "KerrSchild"))
   } "KerrSchild_always"
 }
 
+if (CCTK_EQUALS(error_method, "KerrSchild"))
+{
+  schedule KerrSchild_error at CCTK_ANALYSIS
+  {
+    LANG: C
+    READS: admbase::kxx(Everywhere)
+    READS: admbase::kxy(Everywhere)
+    READS: admbase::kxz(Everywhere)
+    READS: admbase::kyy(Everywhere)
+    READS: admbase::kyz(Everywhere)
+    READS: admbase::kzz(Everywhere)
+    READS: admbase::dtalp(Everywhere)
+    READS: admbase::dtbetax(Everywhere)
+    READS: admbase::dtbetay(Everywhere)
+    READS: admbase::dtbetaz(Everywhere)
+    READS: admbase::alp(Everywhere)
+    READS: admbase::gxx(Everywhere)
+    READS: admbase::gxy(Everywhere)
+    READS: admbase::gxz(Everywhere)
+    READS: admbase::gyy(Everywhere)
+    READS: admbase::gyz(Everywhere)
+    READS: admbase::gzz(Everywhere)
+    READS: admbase::betax(Everywhere)
+    READS: admbase::betay(Everywhere)
+    READS: admbase::betaz(Everywhere)
+    READS: grid::x(Everywhere)
+    READS: grid::y(Everywhere)
+    READS: grid::z(Everywhere)
+    WRITES: KerrSchild::alperr(Everywhere)
+    WRITES: KerrSchild::betaerr1(Everywhere)
+    WRITES: KerrSchild::betaerr2(Everywhere)
+    WRITES: KerrSchild::betaerr3(Everywhere)
+    WRITES: KerrSchild::dtalperr(Everywhere)
+    WRITES: KerrSchild::dtbetaerr1(Everywhere)
+    WRITES: KerrSchild::dtbetaerr2(Everywhere)
+    WRITES: KerrSchild::dtbetaerr3(Everywhere)
+    WRITES: KerrSchild::gerr11(Everywhere)
+    WRITES: KerrSchild::gerr12(Everywhere)
+    WRITES: KerrSchild::gerr13(Everywhere)
+    WRITES: KerrSchild::gerr22(Everywhere)
+    WRITES: KerrSchild::gerr23(Everywhere)
+    WRITES: KerrSchild::gerr33(Everywhere)
+    WRITES: KerrSchild::kerr11(Everywhere)
+    WRITES: KerrSchild::kerr12(Everywhere)
+    WRITES: KerrSchild::kerr13(Everywhere)
+    WRITES: KerrSchild::kerr22(Everywhere)
+    WRITES: KerrSchild::kerr23(Everywhere)
+    WRITES: KerrSchild::kerr33(Everywhere)
+  } "KerrSchild_error"
+}
+
 schedule KerrSchild_SelectBoundConds in MoL_PostStep
 {
   LANG: C
@@ -100,7 +159,6 @@ schedule KerrSchild_ParamCheck at PARAMCHECK
   LANG: C
   OPTIONS: global
 } "Check parameter consistency"
-
 schedule group ApplyBCs as KerrSchild_ApplyBCs in MoL_PostStep after KerrSchild_SelectBoundConds
 {
 } "Apply boundary conditions controlled by thorn Boundary"

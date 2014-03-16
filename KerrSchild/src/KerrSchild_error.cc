@@ -25,7 +25,7 @@
 namespace KerrSchild {
 
 
-static void KerrSchild_initial_Body(const cGH* restrict const cctkGH, const int dir, const int face, const CCTK_REAL normal[3], const CCTK_REAL tangentA[3], const CCTK_REAL tangentB[3], const int imin[3], const int imax[3], const int n_subblock_gfs, CCTK_REAL* restrict const subblock_gfs[])
+static void KerrSchild_error_Body(const cGH* restrict const cctkGH, const int dir, const int face, const CCTK_REAL normal[3], const CCTK_REAL tangentA[3], const CCTK_REAL tangentB[3], const int imin[3], const int imax[3], const int n_subblock_gfs, CCTK_REAL* restrict const subblock_gfs[])
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
@@ -76,7 +76,7 @@ static void KerrSchild_initial_Body(const cGH* restrict const cctkGH, const int 
   const int imax1=imax[1];
   const int imax2=imax[2];
   #pragma omp parallel
-  CCTK_LOOP3(KerrSchild_initial,
+  CCTK_LOOP3(KerrSchild_error,
     i,j,k, imin0,imin1,imin2, imax0,imax1,imax2,
     cctk_ash[0],cctk_ash[1],cctk_ash[2])
   {
@@ -87,6 +87,7 @@ static void KerrSchild_initial_Body(const cGH* restrict const cctkGH, const int 
     CCTK_REAL betaxL CCTK_ATTRIBUTE_UNUSED = betax[index];
     CCTK_REAL betayL CCTK_ATTRIBUTE_UNUSED = betay[index];
     CCTK_REAL betazL CCTK_ATTRIBUTE_UNUSED = betaz[index];
+    CCTK_REAL dtalpL CCTK_ATTRIBUTE_UNUSED = dtalp[index];
     CCTK_REAL dtbetaxL CCTK_ATTRIBUTE_UNUSED = dtbetax[index];
     CCTK_REAL dtbetayL CCTK_ATTRIBUTE_UNUSED = dtbetay[index];
     CCTK_REAL dtbetazL CCTK_ATTRIBUTE_UNUSED = dtbetaz[index];
@@ -96,6 +97,12 @@ static void KerrSchild_initial_Body(const cGH* restrict const cctkGH, const int 
     CCTK_REAL gyyL CCTK_ATTRIBUTE_UNUSED = gyy[index];
     CCTK_REAL gyzL CCTK_ATTRIBUTE_UNUSED = gyz[index];
     CCTK_REAL gzzL CCTK_ATTRIBUTE_UNUSED = gzz[index];
+    CCTK_REAL kxxL CCTK_ATTRIBUTE_UNUSED = kxx[index];
+    CCTK_REAL kxyL CCTK_ATTRIBUTE_UNUSED = kxy[index];
+    CCTK_REAL kxzL CCTK_ATTRIBUTE_UNUSED = kxz[index];
+    CCTK_REAL kyyL CCTK_ATTRIBUTE_UNUSED = kyy[index];
+    CCTK_REAL kyzL CCTK_ATTRIBUTE_UNUSED = kyz[index];
+    CCTK_REAL kzzL CCTK_ATTRIBUTE_UNUSED = kzz[index];
     CCTK_REAL xL CCTK_ATTRIBUTE_UNUSED = x[index];
     CCTK_REAL yL CCTK_ATTRIBUTE_UNUSED = y[index];
     CCTK_REAL zL CCTK_ATTRIBUTE_UNUSED = z[index];
@@ -1865,17 +1872,17 @@ static void KerrSchild_initial_Body(const cGH* restrict const cctkGH, const int 
     
     CCTK_REAL betal3 CCTK_ATTRIBUTE_UNUSED = g403;
     
-    gxxL = g411;
+    CCTK_REAL gerr11L CCTK_ATTRIBUTE_UNUSED = gxxL - g411;
     
-    gxyL = g412;
+    CCTK_REAL gerr12L CCTK_ATTRIBUTE_UNUSED = gxyL - g412;
     
-    gxzL = g413;
+    CCTK_REAL gerr13L CCTK_ATTRIBUTE_UNUSED = gxzL - g413;
     
-    gyyL = g422;
+    CCTK_REAL gerr22L CCTK_ATTRIBUTE_UNUSED = gyyL - g422;
     
-    gyzL = g423;
+    CCTK_REAL gerr23L CCTK_ATTRIBUTE_UNUSED = gyzL - g423;
     
-    gzzL = g433;
+    CCTK_REAL gerr33L CCTK_ATTRIBUTE_UNUSED = gzzL - g433;
     
     CCTK_REAL csetemp242 CCTK_ATTRIBUTE_UNUSED = SQR(gxzL);
     
@@ -1906,16 +1913,19 @@ static void KerrSchild_initial_Body(const cGH* restrict const cctkGH, const int 
     CCTK_REAL gu33 CCTK_ATTRIBUTE_UNUSED = (gxxL*gyyL - 
       csetemp244)*csetemp245;
     
-    betaxL = betal1*gu11 + betal2*gu12 + betal3*gu13;
+    CCTK_REAL betaerr1L CCTK_ATTRIBUTE_UNUSED = betaxL - betal1*gu11 - 
+      betal2*gu12 - betal3*gu13;
     
-    betayL = betal1*gu12 + betal2*gu22 + betal3*gu23;
+    CCTK_REAL betaerr2L CCTK_ATTRIBUTE_UNUSED = betayL - betal1*gu12 - 
+      betal2*gu22 - betal3*gu23;
     
-    betazL = betal1*gu13 + betal2*gu23 + betal3*gu33;
+    CCTK_REAL betaerr3L CCTK_ATTRIBUTE_UNUSED = betazL - betal1*gu13 - 
+      betal2*gu23 - betal3*gu33;
     
     CCTK_REAL betasq CCTK_ATTRIBUTE_UNUSED = betaxL*betal1 + betayL*betal2 
       + betazL*betal3;
     
-    alpL = sqrt(betasq - g400);
+    CCTK_REAL alperrL CCTK_ATTRIBUTE_UNUSED = alpL - sqrt(betasq - g400);
     
     CCTK_REAL dtg11 CCTK_ATTRIBUTE_UNUSED = dg4110;
     
@@ -2221,14 +2231,17 @@ static void KerrSchild_initial_Body(const cGH* restrict const cctkGH, const int 
     
     CCTK_REAL dbetal33 CCTK_ATTRIBUTE_UNUSED = dg4033;
     
-    dtbetaxL = betal1*dtgu11 + betal2*dtgu12 + betal3*dtgu13 + 
-      dtbetal1*gu11 + dtbetal2*gu12 + dtbetal3*gu13;
+    CCTK_REAL dtbetaerr1L CCTK_ATTRIBUTE_UNUSED = dtbetaxL - betal1*dtgu11 
+      - betal2*dtgu12 - betal3*dtgu13 - dtbetal1*gu11 - dtbetal2*gu12 - 
+      dtbetal3*gu13;
     
-    dtbetayL = betal1*dtgu12 + betal2*dtgu22 + betal3*dtgu23 + 
-      dtbetal1*gu12 + dtbetal2*gu22 + dtbetal3*gu23;
+    CCTK_REAL dtbetaerr2L CCTK_ATTRIBUTE_UNUSED = dtbetayL - betal1*dtgu12 
+      - betal2*dtgu22 - betal3*dtgu23 - dtbetal1*gu12 - dtbetal2*gu22 - 
+      dtbetal3*gu23;
     
-    dtbetazL = betal1*dtgu13 + betal2*dtgu23 + betal3*dtgu33 + 
-      dtbetal1*gu13 + dtbetal2*gu23 + dtbetal3*gu33;
+    CCTK_REAL dtbetaerr3L CCTK_ATTRIBUTE_UNUSED = dtbetazL - betal1*dtgu13 
+      - betal2*dtgu23 - betal3*dtgu33 - dtbetal1*gu13 - dtbetal2*gu23 - 
+      dtbetal3*gu33;
     
     CCTK_REAL dbeta11 CCTK_ATTRIBUTE_UNUSED = betal1*dgu111 + 
       betal2*dgu121 + betal3*dgu131 + dbetal11*gu11 + dbetal21*gu12 + 
@@ -2272,66 +2285,69 @@ static void KerrSchild_initial_Body(const cGH* restrict const cctkGH, const int 
     
     CCTK_REAL csetemp314 CCTK_ATTRIBUTE_UNUSED = INV(alpL);
     
-    CCTK_REAL dtalpL CCTK_ATTRIBUTE_UNUSED = 0.5*csetemp314*(-dg4000 + 
-      dtbetasq);
+    CCTK_REAL dtalperrL CCTK_ATTRIBUTE_UNUSED = dtalpL + 
+      0.5*csetemp314*(dg4000 - dtbetasq);
     
-    CCTK_REAL kxxL CCTK_ATTRIBUTE_UNUSED = 0.5*csetemp314*(2*(gxxL*dbeta11 
-      + gxyL*dbeta21 + gxzL*dbeta31) + betaxL*dg111 + betayL*dg112 + 
-      betazL*dg113 - dtg11);
+    CCTK_REAL kerr11L CCTK_ATTRIBUTE_UNUSED = kxxL - 
+      0.5*csetemp314*(2*(gxxL*dbeta11 + gxyL*dbeta21 + gxzL*dbeta31) + 
+      betaxL*dg111 + betayL*dg112 + betazL*dg113 - dtg11);
     
-    CCTK_REAL kxyL CCTK_ATTRIBUTE_UNUSED = 0.5*csetemp314*(gxxL*dbeta12 + 
-      gyyL*dbeta21 + gxyL*(dbeta11 + dbeta22) + gyzL*dbeta31 + gxzL*dbeta32 + 
-      betaxL*dg121 + betayL*dg122 + betazL*dg123 - dtg12);
+    CCTK_REAL kerr12L CCTK_ATTRIBUTE_UNUSED = kxyL - 
+      0.5*csetemp314*(gxxL*dbeta12 + gyyL*dbeta21 + gxyL*(dbeta11 + dbeta22) 
+      + gyzL*dbeta31 + gxzL*dbeta32 + betaxL*dg121 + betayL*dg122 + 
+      betazL*dg123 - dtg12);
     
-    CCTK_REAL kxzL CCTK_ATTRIBUTE_UNUSED = 0.5*csetemp314*(gxxL*dbeta13 + 
-      gyzL*dbeta21 + gxyL*dbeta23 + gzzL*dbeta31 + gxzL*(dbeta11 + dbeta33) + 
-      betaxL*dg131 + betayL*dg132 + betazL*dg133 - dtg13);
+    CCTK_REAL kerr13L CCTK_ATTRIBUTE_UNUSED = kxzL - 
+      0.5*csetemp314*(gxxL*dbeta13 + gyzL*dbeta21 + gxyL*dbeta23 + 
+      gzzL*dbeta31 + gxzL*(dbeta11 + dbeta33) + betaxL*dg131 + betayL*dg132 + 
+      betazL*dg133 - dtg13);
     
-    CCTK_REAL kyyL CCTK_ATTRIBUTE_UNUSED = 0.5*csetemp314*(2*(gxyL*dbeta12 
-      + gyyL*dbeta22 + gyzL*dbeta32) + betaxL*dg221 + betayL*dg222 + 
-      betazL*dg223 - dtg22);
+    CCTK_REAL kerr22L CCTK_ATTRIBUTE_UNUSED = kyyL - 
+      0.5*csetemp314*(2*(gxyL*dbeta12 + gyyL*dbeta22 + gyzL*dbeta32) + 
+      betaxL*dg221 + betayL*dg222 + betazL*dg223 - dtg22);
     
-    CCTK_REAL kyzL CCTK_ATTRIBUTE_UNUSED = 0.5*csetemp314*(gxzL*dbeta12 + 
-      gxyL*dbeta13 + gyyL*dbeta23 + gzzL*dbeta32 + gyzL*(dbeta22 + dbeta33) + 
-      betaxL*dg231 + betayL*dg232 + betazL*dg233 - dtg23);
+    CCTK_REAL kerr23L CCTK_ATTRIBUTE_UNUSED = kyzL - 
+      0.5*csetemp314*(gxzL*dbeta12 + gxyL*dbeta13 + gyyL*dbeta23 + 
+      gzzL*dbeta32 + gyzL*(dbeta22 + dbeta33) + betaxL*dg231 + betayL*dg232 + 
+      betazL*dg233 - dtg23);
     
-    CCTK_REAL kzzL CCTK_ATTRIBUTE_UNUSED = 0.5*csetemp314*(2*(gxzL*dbeta13 
-      + gyzL*dbeta23 + gzzL*dbeta33) + betaxL*dg331 + betayL*dg332 + 
-      betazL*dg333 - dtg33);
+    CCTK_REAL kerr33L CCTK_ATTRIBUTE_UNUSED = kzzL - 
+      0.5*csetemp314*(2*(gxzL*dbeta13 + gyzL*dbeta23 + gzzL*dbeta33) + 
+      betaxL*dg331 + betayL*dg332 + betazL*dg333 - dtg33);
     /* Copy local copies back to grid functions */
-    alp[index] = alpL;
-    betax[index] = betaxL;
-    betay[index] = betayL;
-    betaz[index] = betazL;
-    dtalp[index] = dtalpL;
-    dtbetax[index] = dtbetaxL;
-    dtbetay[index] = dtbetayL;
-    dtbetaz[index] = dtbetazL;
-    gxx[index] = gxxL;
-    gxy[index] = gxyL;
-    gxz[index] = gxzL;
-    gyy[index] = gyyL;
-    gyz[index] = gyzL;
-    gzz[index] = gzzL;
-    kxx[index] = kxxL;
-    kxy[index] = kxyL;
-    kxz[index] = kxzL;
-    kyy[index] = kyyL;
-    kyz[index] = kyzL;
-    kzz[index] = kzzL;
+    alperr[index] = alperrL;
+    betaerr1[index] = betaerr1L;
+    betaerr2[index] = betaerr2L;
+    betaerr3[index] = betaerr3L;
+    dtalperr[index] = dtalperrL;
+    dtbetaerr1[index] = dtbetaerr1L;
+    dtbetaerr2[index] = dtbetaerr2L;
+    dtbetaerr3[index] = dtbetaerr3L;
+    gerr11[index] = gerr11L;
+    gerr12[index] = gerr12L;
+    gerr13[index] = gerr13L;
+    gerr22[index] = gerr22L;
+    gerr23[index] = gerr23L;
+    gerr33[index] = gerr33L;
+    kerr11[index] = kerr11L;
+    kerr12[index] = kerr12L;
+    kerr13[index] = kerr13L;
+    kerr22[index] = kerr22L;
+    kerr23[index] = kerr23L;
+    kerr33[index] = kerr33L;
   }
-  CCTK_ENDLOOP3(KerrSchild_initial);
+  CCTK_ENDLOOP3(KerrSchild_error);
 }
-extern "C" void KerrSchild_initial(CCTK_ARGUMENTS)
+extern "C" void KerrSchild_error(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
   
   if (verbose > 1)
   {
-    CCTK_VInfo(CCTK_THORNSTRING,"Entering KerrSchild_initial_Body");
+    CCTK_VInfo(CCTK_THORNSTRING,"Entering KerrSchild_error_Body");
   }
-  if (cctk_iteration % KerrSchild_initial_calc_every != KerrSchild_initial_calc_offset)
+  if (cctk_iteration % KerrSchild_error_calc_every != KerrSchild_error_calc_offset)
   {
     return;
   }
@@ -2343,14 +2359,20 @@ extern "C" void KerrSchild_initial(CCTK_ARGUMENTS)
     "admbase::lapse",
     "admbase::metric",
     "admbase::shift",
-    "grid::coordinates"};
-  AssertGroupStorage(cctkGH, "KerrSchild_initial", 7, groups);
+    "KerrSchild::curv_error",
+    "KerrSchild::dtlapse_error",
+    "KerrSchild::dtshift_error",
+    "grid::coordinates",
+    "KerrSchild::lapse_error",
+    "KerrSchild::metric_error",
+    "KerrSchild::shift_error"};
+  AssertGroupStorage(cctkGH, "KerrSchild_error", 13, groups);
   
   
-  LoopOverEverything(cctkGH, KerrSchild_initial_Body);
+  LoopOverEverything(cctkGH, KerrSchild_error_Body);
   if (verbose > 1)
   {
-    CCTK_VInfo(CCTK_THORNSTRING,"Leaving KerrSchild_initial_Body");
+    CCTK_VInfo(CCTK_THORNSTRING,"Leaving KerrSchild_error_Body");
   }
 }
 

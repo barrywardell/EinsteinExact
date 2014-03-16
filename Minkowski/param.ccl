@@ -148,6 +148,19 @@ CCTK_REAL shiftaddz "shiftaddz"
 } 0
 
 restricted:
+CCTK_INT tile_size "Loop tile size"
+{
+  *:* :: ""
+} -1
+
+private:
+KEYWORD error_method "error_method"
+{
+  "none" :: ""
+  "Minkowski" :: ""
+} "none"
+
+restricted:
 CCTK_INT Minkowski_MaxNumEvolvedVars "Number of evolved variables used by this thorn" ACCUMULATOR-BASE=MethodofLines::MoL_Num_Evolved_Vars STEERABLE=RECOVER
 {
   0:0 :: "Number of evolved variables used by this thorn"
@@ -184,6 +197,12 @@ CCTK_INT Minkowski_always_calc_every "Minkowski_always_calc_every" STEERABLE=ALW
 } 1
 
 restricted:
+CCTK_INT Minkowski_error_calc_every "Minkowski_error_calc_every" STEERABLE=ALWAYS
+{
+  *:* :: ""
+} 1
+
+restricted:
 CCTK_INT Minkowski_initial_calc_offset "Minkowski_initial_calc_offset" STEERABLE=ALWAYS
 {
   *:* :: ""
@@ -191,6 +210,12 @@ CCTK_INT Minkowski_initial_calc_offset "Minkowski_initial_calc_offset" STEERABLE
 
 restricted:
 CCTK_INT Minkowski_always_calc_offset "Minkowski_always_calc_offset" STEERABLE=ALWAYS
+{
+  *:* :: ""
+} 0
+
+restricted:
+CCTK_INT Minkowski_error_calc_offset "Minkowski_error_calc_offset" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 0

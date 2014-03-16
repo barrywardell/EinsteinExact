@@ -160,6 +160,19 @@ CCTK_REAL a "a"
 } 0
 
 restricted:
+CCTK_INT tile_size "Loop tile size"
+{
+  *:* :: ""
+} -1
+
+private:
+KEYWORD error_method "error_method"
+{
+  "none" :: ""
+  "KerrSchild" :: ""
+} "none"
+
+restricted:
 CCTK_INT KerrSchild_MaxNumEvolvedVars "Number of evolved variables used by this thorn" ACCUMULATOR-BASE=MethodofLines::MoL_Num_Evolved_Vars STEERABLE=RECOVER
 {
   0:0 :: "Number of evolved variables used by this thorn"
@@ -196,6 +209,12 @@ CCTK_INT KerrSchild_always_calc_every "KerrSchild_always_calc_every" STEERABLE=A
 } 1
 
 restricted:
+CCTK_INT KerrSchild_error_calc_every "KerrSchild_error_calc_every" STEERABLE=ALWAYS
+{
+  *:* :: ""
+} 1
+
+restricted:
 CCTK_INT KerrSchild_initial_calc_offset "KerrSchild_initial_calc_offset" STEERABLE=ALWAYS
 {
   *:* :: ""
@@ -203,6 +222,12 @@ CCTK_INT KerrSchild_initial_calc_offset "KerrSchild_initial_calc_offset" STEERAB
 
 restricted:
 CCTK_INT KerrSchild_always_calc_offset "KerrSchild_always_calc_offset" STEERABLE=ALWAYS
+{
+  *:* :: ""
+} 0
+
+restricted:
+CCTK_INT KerrSchild_error_calc_offset "KerrSchild_error_calc_offset" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 0

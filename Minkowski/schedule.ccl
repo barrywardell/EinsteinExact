@@ -1,6 +1,16 @@
 # File produced by Kranc
 
+STORAGE: metric_error[other_timelevels]
 
+STORAGE: curv_error[other_timelevels]
+
+STORAGE: lapse_error[other_timelevels]
+
+STORAGE: dtlapse_error[other_timelevels]
+
+STORAGE: shift_error[other_timelevels]
+
+STORAGE: dtshift_error[other_timelevels]
 schedule Minkowski_Startup at STARTUP
 {
   LANG: C
@@ -12,7 +22,6 @@ schedule Minkowski_RegisterSymmetries in SymmetryRegister
   LANG: C
   OPTIONS: meta
 } "register symmetries"
-
 
 if (CCTK_EQUALS(initial_data, "Minkowski"))
 {
@@ -45,7 +54,6 @@ if (CCTK_EQUALS(initial_data, "Minkowski"))
   } "Minkowski_initial"
 }
 
-
 if (CCTK_EQUALS(evolution_method, "Minkowski"))
 {
   schedule Minkowski_always at CCTK_PRESTEP
@@ -77,6 +85,57 @@ if (CCTK_EQUALS(evolution_method, "Minkowski"))
   } "Minkowski_always"
 }
 
+if (CCTK_EQUALS(error_method, "Minkowski"))
+{
+  schedule Minkowski_error at CCTK_ANALYSIS
+  {
+    LANG: C
+    READS: admbase::kxx(Everywhere)
+    READS: admbase::kxy(Everywhere)
+    READS: admbase::kxz(Everywhere)
+    READS: admbase::kyy(Everywhere)
+    READS: admbase::kyz(Everywhere)
+    READS: admbase::kzz(Everywhere)
+    READS: admbase::dtalp(Everywhere)
+    READS: admbase::dtbetax(Everywhere)
+    READS: admbase::dtbetay(Everywhere)
+    READS: admbase::dtbetaz(Everywhere)
+    READS: admbase::alp(Everywhere)
+    READS: admbase::gxx(Everywhere)
+    READS: admbase::gxy(Everywhere)
+    READS: admbase::gxz(Everywhere)
+    READS: admbase::gyy(Everywhere)
+    READS: admbase::gyz(Everywhere)
+    READS: admbase::gzz(Everywhere)
+    READS: admbase::betax(Everywhere)
+    READS: admbase::betay(Everywhere)
+    READS: admbase::betaz(Everywhere)
+    READS: grid::x(Everywhere)
+    READS: grid::y(Everywhere)
+    READS: grid::z(Everywhere)
+    WRITES: Minkowski::alperr(Everywhere)
+    WRITES: Minkowski::betaerr1(Everywhere)
+    WRITES: Minkowski::betaerr2(Everywhere)
+    WRITES: Minkowski::betaerr3(Everywhere)
+    WRITES: Minkowski::dtalperr(Everywhere)
+    WRITES: Minkowski::dtbetaerr1(Everywhere)
+    WRITES: Minkowski::dtbetaerr2(Everywhere)
+    WRITES: Minkowski::dtbetaerr3(Everywhere)
+    WRITES: Minkowski::gerr11(Everywhere)
+    WRITES: Minkowski::gerr12(Everywhere)
+    WRITES: Minkowski::gerr13(Everywhere)
+    WRITES: Minkowski::gerr22(Everywhere)
+    WRITES: Minkowski::gerr23(Everywhere)
+    WRITES: Minkowski::gerr33(Everywhere)
+    WRITES: Minkowski::kerr11(Everywhere)
+    WRITES: Minkowski::kerr12(Everywhere)
+    WRITES: Minkowski::kerr13(Everywhere)
+    WRITES: Minkowski::kerr22(Everywhere)
+    WRITES: Minkowski::kerr23(Everywhere)
+    WRITES: Minkowski::kerr33(Everywhere)
+  } "Minkowski_error"
+}
+
 schedule Minkowski_SelectBoundConds in MoL_PostStep
 {
   LANG: C
@@ -100,7 +159,6 @@ schedule Minkowski_ParamCheck at PARAMCHECK
   LANG: C
   OPTIONS: global
 } "Check parameter consistency"
-
 schedule group ApplyBCs as Minkowski_ApplyBCs in MoL_PostStep after Minkowski_SelectBoundConds
 {
 } "Apply boundary conditions controlled by thorn Boundary"

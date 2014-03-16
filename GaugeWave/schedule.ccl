@@ -1,6 +1,16 @@
 # File produced by Kranc
 
+STORAGE: metric_error[other_timelevels]
 
+STORAGE: curv_error[other_timelevels]
+
+STORAGE: lapse_error[other_timelevels]
+
+STORAGE: dtlapse_error[other_timelevels]
+
+STORAGE: shift_error[other_timelevels]
+
+STORAGE: dtshift_error[other_timelevels]
 schedule GaugeWave_Startup at STARTUP
 {
   LANG: C
@@ -12,7 +22,6 @@ schedule GaugeWave_RegisterSymmetries in SymmetryRegister
   LANG: C
   OPTIONS: meta
 } "register symmetries"
-
 
 if (CCTK_EQUALS(initial_data, "GaugeWave"))
 {
@@ -45,7 +54,6 @@ if (CCTK_EQUALS(initial_data, "GaugeWave"))
   } "GaugeWave_initial"
 }
 
-
 if (CCTK_EQUALS(evolution_method, "GaugeWave"))
 {
   schedule GaugeWave_always at CCTK_PRESTEP
@@ -77,6 +85,57 @@ if (CCTK_EQUALS(evolution_method, "GaugeWave"))
   } "GaugeWave_always"
 }
 
+if (CCTK_EQUALS(error_method, "GaugeWave"))
+{
+  schedule GaugeWave_error at CCTK_ANALYSIS
+  {
+    LANG: C
+    READS: admbase::kxx(Everywhere)
+    READS: admbase::kxy(Everywhere)
+    READS: admbase::kxz(Everywhere)
+    READS: admbase::kyy(Everywhere)
+    READS: admbase::kyz(Everywhere)
+    READS: admbase::kzz(Everywhere)
+    READS: admbase::dtalp(Everywhere)
+    READS: admbase::dtbetax(Everywhere)
+    READS: admbase::dtbetay(Everywhere)
+    READS: admbase::dtbetaz(Everywhere)
+    READS: admbase::alp(Everywhere)
+    READS: admbase::gxx(Everywhere)
+    READS: admbase::gxy(Everywhere)
+    READS: admbase::gxz(Everywhere)
+    READS: admbase::gyy(Everywhere)
+    READS: admbase::gyz(Everywhere)
+    READS: admbase::gzz(Everywhere)
+    READS: admbase::betax(Everywhere)
+    READS: admbase::betay(Everywhere)
+    READS: admbase::betaz(Everywhere)
+    READS: grid::x(Everywhere)
+    READS: grid::y(Everywhere)
+    READS: grid::z(Everywhere)
+    WRITES: GaugeWave::alperr(Everywhere)
+    WRITES: GaugeWave::betaerr1(Everywhere)
+    WRITES: GaugeWave::betaerr2(Everywhere)
+    WRITES: GaugeWave::betaerr3(Everywhere)
+    WRITES: GaugeWave::dtalperr(Everywhere)
+    WRITES: GaugeWave::dtbetaerr1(Everywhere)
+    WRITES: GaugeWave::dtbetaerr2(Everywhere)
+    WRITES: GaugeWave::dtbetaerr3(Everywhere)
+    WRITES: GaugeWave::gerr11(Everywhere)
+    WRITES: GaugeWave::gerr12(Everywhere)
+    WRITES: GaugeWave::gerr13(Everywhere)
+    WRITES: GaugeWave::gerr22(Everywhere)
+    WRITES: GaugeWave::gerr23(Everywhere)
+    WRITES: GaugeWave::gerr33(Everywhere)
+    WRITES: GaugeWave::kerr11(Everywhere)
+    WRITES: GaugeWave::kerr12(Everywhere)
+    WRITES: GaugeWave::kerr13(Everywhere)
+    WRITES: GaugeWave::kerr22(Everywhere)
+    WRITES: GaugeWave::kerr23(Everywhere)
+    WRITES: GaugeWave::kerr33(Everywhere)
+  } "GaugeWave_error"
+}
+
 schedule GaugeWave_SelectBoundConds in MoL_PostStep
 {
   LANG: C
@@ -100,7 +159,6 @@ schedule GaugeWave_ParamCheck at PARAMCHECK
   LANG: C
   OPTIONS: global
 } "Check parameter consistency"
-
 schedule group ApplyBCs as GaugeWave_ApplyBCs in MoL_PostStep after GaugeWave_SelectBoundConds
 {
 } "Apply boundary conditions controlled by thorn Boundary"

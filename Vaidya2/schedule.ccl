@@ -1,6 +1,16 @@
 # File produced by Kranc
 
+STORAGE: metric_error[other_timelevels]
 
+STORAGE: curv_error[other_timelevels]
+
+STORAGE: lapse_error[other_timelevels]
+
+STORAGE: dtlapse_error[other_timelevels]
+
+STORAGE: shift_error[other_timelevels]
+
+STORAGE: dtshift_error[other_timelevels]
 schedule Vaidya2_Startup at STARTUP
 {
   LANG: C
@@ -12,7 +22,6 @@ schedule Vaidya2_RegisterSymmetries in SymmetryRegister
   LANG: C
   OPTIONS: meta
 } "register symmetries"
-
 
 if (CCTK_EQUALS(initial_data, "Vaidya2"))
 {
@@ -45,7 +54,6 @@ if (CCTK_EQUALS(initial_data, "Vaidya2"))
   } "Vaidya2_initial"
 }
 
-
 if (CCTK_EQUALS(evolution_method, "Vaidya2"))
 {
   schedule Vaidya2_always at CCTK_PRESTEP
@@ -77,6 +85,57 @@ if (CCTK_EQUALS(evolution_method, "Vaidya2"))
   } "Vaidya2_always"
 }
 
+if (CCTK_EQUALS(error_method, "Vaidya2"))
+{
+  schedule Vaidya2_error at CCTK_ANALYSIS
+  {
+    LANG: C
+    READS: admbase::kxx(Everywhere)
+    READS: admbase::kxy(Everywhere)
+    READS: admbase::kxz(Everywhere)
+    READS: admbase::kyy(Everywhere)
+    READS: admbase::kyz(Everywhere)
+    READS: admbase::kzz(Everywhere)
+    READS: admbase::dtalp(Everywhere)
+    READS: admbase::dtbetax(Everywhere)
+    READS: admbase::dtbetay(Everywhere)
+    READS: admbase::dtbetaz(Everywhere)
+    READS: admbase::alp(Everywhere)
+    READS: admbase::gxx(Everywhere)
+    READS: admbase::gxy(Everywhere)
+    READS: admbase::gxz(Everywhere)
+    READS: admbase::gyy(Everywhere)
+    READS: admbase::gyz(Everywhere)
+    READS: admbase::gzz(Everywhere)
+    READS: admbase::betax(Everywhere)
+    READS: admbase::betay(Everywhere)
+    READS: admbase::betaz(Everywhere)
+    READS: grid::x(Everywhere)
+    READS: grid::y(Everywhere)
+    READS: grid::z(Everywhere)
+    WRITES: Vaidya2::alperr(Everywhere)
+    WRITES: Vaidya2::betaerr1(Everywhere)
+    WRITES: Vaidya2::betaerr2(Everywhere)
+    WRITES: Vaidya2::betaerr3(Everywhere)
+    WRITES: Vaidya2::dtalperr(Everywhere)
+    WRITES: Vaidya2::dtbetaerr1(Everywhere)
+    WRITES: Vaidya2::dtbetaerr2(Everywhere)
+    WRITES: Vaidya2::dtbetaerr3(Everywhere)
+    WRITES: Vaidya2::gerr11(Everywhere)
+    WRITES: Vaidya2::gerr12(Everywhere)
+    WRITES: Vaidya2::gerr13(Everywhere)
+    WRITES: Vaidya2::gerr22(Everywhere)
+    WRITES: Vaidya2::gerr23(Everywhere)
+    WRITES: Vaidya2::gerr33(Everywhere)
+    WRITES: Vaidya2::kerr11(Everywhere)
+    WRITES: Vaidya2::kerr12(Everywhere)
+    WRITES: Vaidya2::kerr13(Everywhere)
+    WRITES: Vaidya2::kerr22(Everywhere)
+    WRITES: Vaidya2::kerr23(Everywhere)
+    WRITES: Vaidya2::kerr33(Everywhere)
+  } "Vaidya2_error"
+}
+
 schedule Vaidya2_SelectBoundConds in MoL_PostStep
 {
   LANG: C
@@ -100,7 +159,6 @@ schedule Vaidya2_ParamCheck at PARAMCHECK
   LANG: C
   OPTIONS: global
 } "Check parameter consistency"
-
 schedule group ApplyBCs as Vaidya2_ApplyBCs in MoL_PostStep after Vaidya2_SelectBoundConds
 {
 } "Apply boundary conditions controlled by thorn Boundary"
