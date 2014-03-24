@@ -17,101 +17,101 @@ extern "C" void Vaidya2_RegisterSymmetries(CCTK_ARGUMENTS)
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::gerr11");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::gExact11");
   
   sym[0] = -1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::gerr12");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::gExact12");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::gerr13");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::gExact13");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::gerr22");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::gExact22");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::gerr23");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::gExact23");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::gerr33");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::gExact33");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::kerr11");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::kExact11");
   
   sym[0] = -1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::kerr12");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::kExact12");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::kerr13");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::kExact13");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::kerr22");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::kExact22");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::kerr23");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::kExact23");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::kerr33");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::kExact33");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::alperr");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::alpExact");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::dtalperr");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::dtalpExact");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::betaerr1");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::betaExact1");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::betaerr2");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::betaExact2");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::betaerr3");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::betaExact3");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::dtbetaerr1");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::dtbetaExact1");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::dtbetaerr2");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::dtbetaExact2");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "Vaidya2::dtbetaerr3");
+  SetCartSymVN(cctkGH, sym, "Vaidya2::dtbetaExact3");
   
 }

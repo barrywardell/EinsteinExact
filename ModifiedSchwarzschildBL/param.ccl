@@ -166,7 +166,7 @@ CCTK_INT tile_size "Loop tile size"
 } -1
 
 private:
-KEYWORD error_method "error_method"
+KEYWORD exact_method "exact_method"
 {
   "none" :: ""
   "ModifiedSchwarzschildBL" :: ""
@@ -209,7 +209,7 @@ CCTK_INT ModifiedSchwarzschildBL_always_calc_every "ModifiedSchwarzschildBL_alwa
 } 1
 
 restricted:
-CCTK_INT ModifiedSchwarzschildBL_error_calc_every "ModifiedSchwarzschildBL_error_calc_every" STEERABLE=ALWAYS
+CCTK_INT ModifiedSchwarzschildBL_exact_calc_every "ModifiedSchwarzschildBL_exact_calc_every" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 1
@@ -227,7 +227,7 @@ CCTK_INT ModifiedSchwarzschildBL_always_calc_offset "ModifiedSchwarzschildBL_alw
 } 0
 
 restricted:
-CCTK_INT ModifiedSchwarzschildBL_error_calc_offset "ModifiedSchwarzschildBL_error_calc_offset" STEERABLE=ALWAYS
+CCTK_INT ModifiedSchwarzschildBL_exact_calc_offset "ModifiedSchwarzschildBL_exact_calc_offset" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 0

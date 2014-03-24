@@ -166,7 +166,7 @@ CCTK_INT tile_size "Loop tile size"
 } -1
 
 private:
-KEYWORD error_method "error_method"
+KEYWORD exact_method "exact_method"
 {
   "none" :: ""
   "Vaidya2" :: ""
@@ -209,7 +209,7 @@ CCTK_INT Vaidya2_always_calc_every "Vaidya2_always_calc_every" STEERABLE=ALWAYS
 } 1
 
 restricted:
-CCTK_INT Vaidya2_error_calc_every "Vaidya2_error_calc_every" STEERABLE=ALWAYS
+CCTK_INT Vaidya2_exact_calc_every "Vaidya2_exact_calc_every" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 1
@@ -227,7 +227,7 @@ CCTK_INT Vaidya2_always_calc_offset "Vaidya2_always_calc_offset" STEERABLE=ALWAY
 } 0
 
 restricted:
-CCTK_INT Vaidya2_error_calc_offset "Vaidya2_error_calc_offset" STEERABLE=ALWAYS
+CCTK_INT Vaidya2_exact_calc_offset "Vaidya2_exact_calc_offset" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 0

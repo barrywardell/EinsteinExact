@@ -17,101 +17,101 @@ extern "C" void Minkowski_RegisterSymmetries(CCTK_ARGUMENTS)
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::gerr11");
+  SetCartSymVN(cctkGH, sym, "Minkowski::gExact11");
   
   sym[0] = -1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::gerr12");
+  SetCartSymVN(cctkGH, sym, "Minkowski::gExact12");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::gerr13");
+  SetCartSymVN(cctkGH, sym, "Minkowski::gExact13");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::gerr22");
+  SetCartSymVN(cctkGH, sym, "Minkowski::gExact22");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::gerr23");
+  SetCartSymVN(cctkGH, sym, "Minkowski::gExact23");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::gerr33");
+  SetCartSymVN(cctkGH, sym, "Minkowski::gExact33");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::kerr11");
+  SetCartSymVN(cctkGH, sym, "Minkowski::kExact11");
   
   sym[0] = -1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::kerr12");
+  SetCartSymVN(cctkGH, sym, "Minkowski::kExact12");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::kerr13");
+  SetCartSymVN(cctkGH, sym, "Minkowski::kExact13");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::kerr22");
+  SetCartSymVN(cctkGH, sym, "Minkowski::kExact22");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::kerr23");
+  SetCartSymVN(cctkGH, sym, "Minkowski::kExact23");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::kerr33");
+  SetCartSymVN(cctkGH, sym, "Minkowski::kExact33");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::alperr");
+  SetCartSymVN(cctkGH, sym, "Minkowski::alpExact");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::dtalperr");
+  SetCartSymVN(cctkGH, sym, "Minkowski::dtalpExact");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::betaerr1");
+  SetCartSymVN(cctkGH, sym, "Minkowski::betaExact1");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::betaerr2");
+  SetCartSymVN(cctkGH, sym, "Minkowski::betaExact2");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::betaerr3");
+  SetCartSymVN(cctkGH, sym, "Minkowski::betaExact3");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::dtbetaerr1");
+  SetCartSymVN(cctkGH, sym, "Minkowski::dtbetaExact1");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::dtbetaerr2");
+  SetCartSymVN(cctkGH, sym, "Minkowski::dtbetaExact2");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "Minkowski::dtbetaerr3");
+  SetCartSymVN(cctkGH, sym, "Minkowski::dtbetaExact3");
   
 }

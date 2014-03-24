@@ -17,101 +17,101 @@ extern "C" void KerrSchild_RegisterSymmetries(CCTK_ARGUMENTS)
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::gerr11");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::gExact11");
   
   sym[0] = -1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::gerr12");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::gExact12");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::gerr13");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::gExact13");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::gerr22");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::gExact22");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::gerr23");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::gExact23");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::gerr33");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::gExact33");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::kerr11");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::kExact11");
   
   sym[0] = -1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::kerr12");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::kExact12");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::kerr13");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::kExact13");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::kerr22");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::kExact22");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::kerr23");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::kExact23");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::kerr33");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::kExact33");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::alperr");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::alpExact");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::dtalperr");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::dtalpExact");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::betaerr1");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::betaExact1");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::betaerr2");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::betaExact2");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::betaerr3");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::betaExact3");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::dtbetaerr1");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::dtbetaExact1");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::dtbetaerr2");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::dtbetaExact2");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "KerrSchild::dtbetaerr3");
+  SetCartSymVN(cctkGH, sym, "KerrSchild::dtbetaExact3");
   
 }

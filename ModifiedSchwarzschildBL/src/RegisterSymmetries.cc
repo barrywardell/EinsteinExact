@@ -17,101 +17,101 @@ extern "C" void ModifiedSchwarzschildBL_RegisterSymmetries(CCTK_ARGUMENTS)
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::gerr11");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::gExact11");
   
   sym[0] = -1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::gerr12");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::gExact12");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::gerr13");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::gExact13");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::gerr22");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::gExact22");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::gerr23");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::gExact23");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::gerr33");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::gExact33");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::kerr11");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::kExact11");
   
   sym[0] = -1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::kerr12");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::kExact12");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::kerr13");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::kExact13");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::kerr22");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::kExact22");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::kerr23");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::kExact23");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::kerr33");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::kExact33");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::alperr");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::alpExact");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::dtalperr");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::dtalpExact");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::betaerr1");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::betaExact1");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::betaerr2");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::betaExact2");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::betaerr3");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::betaExact3");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::dtbetaerr1");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::dtbetaExact1");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::dtbetaerr2");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::dtbetaExact2");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::dtbetaerr3");
+  SetCartSymVN(cctkGH, sym, "ModifiedSchwarzschildBL::dtbetaExact3");
   
 }

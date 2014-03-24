@@ -154,7 +154,7 @@ CCTK_INT tile_size "Loop tile size"
 } -1
 
 private:
-KEYWORD error_method "error_method"
+KEYWORD exact_method "exact_method"
 {
   "none" :: ""
   "Minkowski" :: ""
@@ -197,7 +197,7 @@ CCTK_INT Minkowski_always_calc_every "Minkowski_always_calc_every" STEERABLE=ALW
 } 1
 
 restricted:
-CCTK_INT Minkowski_error_calc_every "Minkowski_error_calc_every" STEERABLE=ALWAYS
+CCTK_INT Minkowski_exact_calc_every "Minkowski_exact_calc_every" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 1
@@ -215,7 +215,7 @@ CCTK_INT Minkowski_always_calc_offset "Minkowski_always_calc_offset" STEERABLE=A
 } 0
 
 restricted:
-CCTK_INT Minkowski_error_calc_offset "Minkowski_error_calc_offset" STEERABLE=ALWAYS
+CCTK_INT Minkowski_exact_calc_offset "Minkowski_exact_calc_offset" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 0

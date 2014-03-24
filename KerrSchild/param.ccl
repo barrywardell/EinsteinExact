@@ -166,7 +166,7 @@ CCTK_INT tile_size "Loop tile size"
 } -1
 
 private:
-KEYWORD error_method "error_method"
+KEYWORD exact_method "exact_method"
 {
   "none" :: ""
   "KerrSchild" :: ""
@@ -209,7 +209,7 @@ CCTK_INT KerrSchild_always_calc_every "KerrSchild_always_calc_every" STEERABLE=A
 } 1
 
 restricted:
-CCTK_INT KerrSchild_error_calc_every "KerrSchild_error_calc_every" STEERABLE=ALWAYS
+CCTK_INT KerrSchild_exact_calc_every "KerrSchild_exact_calc_every" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 1
@@ -227,7 +227,7 @@ CCTK_INT KerrSchild_always_calc_offset "KerrSchild_always_calc_offset" STEERABLE
 } 0
 
 restricted:
-CCTK_INT KerrSchild_error_calc_offset "KerrSchild_error_calc_offset" STEERABLE=ALWAYS
+CCTK_INT KerrSchild_exact_calc_offset "KerrSchild_exact_calc_offset" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 0

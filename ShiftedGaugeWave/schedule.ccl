@@ -1,16 +1,16 @@
 # File produced by Kranc
 
-STORAGE: metric_error[other_timelevels]
+STORAGE: metric_exact[other_timelevels]
 
-STORAGE: curv_error[other_timelevels]
+STORAGE: curv_exact[other_timelevels]
 
-STORAGE: lapse_error[other_timelevels]
+STORAGE: lapse_exact[other_timelevels]
 
-STORAGE: dtlapse_error[other_timelevels]
+STORAGE: dtlapse_exact[other_timelevels]
 
-STORAGE: shift_error[other_timelevels]
+STORAGE: shift_exact[other_timelevels]
 
-STORAGE: dtshift_error[other_timelevels]
+STORAGE: dtshift_exact[other_timelevels]
 schedule ShiftedGaugeWave_Startup at STARTUP
 {
   LANG: C
@@ -85,55 +85,41 @@ if (CCTK_EQUALS(evolution_method, "ShiftedGaugeWave"))
   } "ShiftedGaugeWave_always"
 }
 
-if (CCTK_EQUALS(error_method, "ShiftedGaugeWave"))
+if (CCTK_EQUALS(exact_method, "ShiftedGaugeWave"))
 {
-  schedule ShiftedGaugeWave_error at CCTK_ANALYSIS
+  schedule ShiftedGaugeWave_exact at CCTK_ANALYSIS
   {
     LANG: C
-    READS: admbase::kxx(Everywhere)
-    READS: admbase::kxy(Everywhere)
-    READS: admbase::kxz(Everywhere)
-    READS: admbase::kyy(Everywhere)
-    READS: admbase::kyz(Everywhere)
-    READS: admbase::kzz(Everywhere)
-    READS: admbase::dtalp(Everywhere)
-    READS: admbase::dtbetax(Everywhere)
-    READS: admbase::dtbetay(Everywhere)
-    READS: admbase::dtbetaz(Everywhere)
-    READS: admbase::alp(Everywhere)
     READS: admbase::gxx(Everywhere)
     READS: admbase::gxy(Everywhere)
     READS: admbase::gxz(Everywhere)
     READS: admbase::gyy(Everywhere)
     READS: admbase::gyz(Everywhere)
     READS: admbase::gzz(Everywhere)
-    READS: admbase::betax(Everywhere)
-    READS: admbase::betay(Everywhere)
-    READS: admbase::betaz(Everywhere)
     READS: grid::x(Everywhere)
     READS: grid::y(Everywhere)
     READS: grid::z(Everywhere)
-    WRITES: ShiftedGaugeWave::alperr(Everywhere)
-    WRITES: ShiftedGaugeWave::betaerr1(Everywhere)
-    WRITES: ShiftedGaugeWave::betaerr2(Everywhere)
-    WRITES: ShiftedGaugeWave::betaerr3(Everywhere)
-    WRITES: ShiftedGaugeWave::dtalperr(Everywhere)
-    WRITES: ShiftedGaugeWave::dtbetaerr1(Everywhere)
-    WRITES: ShiftedGaugeWave::dtbetaerr2(Everywhere)
-    WRITES: ShiftedGaugeWave::dtbetaerr3(Everywhere)
-    WRITES: ShiftedGaugeWave::gerr11(Everywhere)
-    WRITES: ShiftedGaugeWave::gerr12(Everywhere)
-    WRITES: ShiftedGaugeWave::gerr13(Everywhere)
-    WRITES: ShiftedGaugeWave::gerr22(Everywhere)
-    WRITES: ShiftedGaugeWave::gerr23(Everywhere)
-    WRITES: ShiftedGaugeWave::gerr33(Everywhere)
-    WRITES: ShiftedGaugeWave::kerr11(Everywhere)
-    WRITES: ShiftedGaugeWave::kerr12(Everywhere)
-    WRITES: ShiftedGaugeWave::kerr13(Everywhere)
-    WRITES: ShiftedGaugeWave::kerr22(Everywhere)
-    WRITES: ShiftedGaugeWave::kerr23(Everywhere)
-    WRITES: ShiftedGaugeWave::kerr33(Everywhere)
-  } "ShiftedGaugeWave_error"
+    WRITES: ShiftedGaugeWave::alpExact(Everywhere)
+    WRITES: ShiftedGaugeWave::betaExact1(Everywhere)
+    WRITES: ShiftedGaugeWave::betaExact2(Everywhere)
+    WRITES: ShiftedGaugeWave::betaExact3(Everywhere)
+    WRITES: ShiftedGaugeWave::dtalpExact(Everywhere)
+    WRITES: ShiftedGaugeWave::dtbetaExact1(Everywhere)
+    WRITES: ShiftedGaugeWave::dtbetaExact2(Everywhere)
+    WRITES: ShiftedGaugeWave::dtbetaExact3(Everywhere)
+    WRITES: ShiftedGaugeWave::gExact11(Everywhere)
+    WRITES: ShiftedGaugeWave::gExact12(Everywhere)
+    WRITES: ShiftedGaugeWave::gExact13(Everywhere)
+    WRITES: ShiftedGaugeWave::gExact22(Everywhere)
+    WRITES: ShiftedGaugeWave::gExact23(Everywhere)
+    WRITES: ShiftedGaugeWave::gExact33(Everywhere)
+    WRITES: ShiftedGaugeWave::kExact11(Everywhere)
+    WRITES: ShiftedGaugeWave::kExact12(Everywhere)
+    WRITES: ShiftedGaugeWave::kExact13(Everywhere)
+    WRITES: ShiftedGaugeWave::kExact22(Everywhere)
+    WRITES: ShiftedGaugeWave::kExact23(Everywhere)
+    WRITES: ShiftedGaugeWave::kExact33(Everywhere)
+  } "ShiftedGaugeWave_exact"
 }
 
 schedule ShiftedGaugeWave_SelectBoundConds in MoL_PostStep

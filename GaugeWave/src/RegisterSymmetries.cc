@@ -17,101 +17,101 @@ extern "C" void GaugeWave_RegisterSymmetries(CCTK_ARGUMENTS)
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::gerr11");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::gExact11");
   
   sym[0] = -1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::gerr12");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::gExact12");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::gerr13");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::gExact13");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::gerr22");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::gExact22");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::gerr23");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::gExact23");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::gerr33");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::gExact33");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::kerr11");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::kExact11");
   
   sym[0] = -1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::kerr12");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::kExact12");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::kerr13");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::kExact13");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::kerr22");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::kExact22");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::kerr23");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::kExact23");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::kerr33");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::kExact33");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::alperr");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::alpExact");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::dtalperr");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::dtalpExact");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::betaerr1");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::betaExact1");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::betaerr2");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::betaExact2");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::betaerr3");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::betaExact3");
   
   sym[0] = -1;
   sym[1] = 1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::dtbetaerr1");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::dtbetaExact1");
   
   sym[0] = 1;
   sym[1] = -1;
   sym[2] = 1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::dtbetaerr2");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::dtbetaExact2");
   
   sym[0] = 1;
   sym[1] = 1;
   sym[2] = -1;
-  SetCartSymVN(cctkGH, sym, "GaugeWave::dtbetaerr3");
+  SetCartSymVN(cctkGH, sym, "GaugeWave::dtbetaExact3");
   
 }

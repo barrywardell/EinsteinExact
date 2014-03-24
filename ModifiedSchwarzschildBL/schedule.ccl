@@ -1,16 +1,16 @@
 # File produced by Kranc
 
-STORAGE: metric_error[other_timelevels]
+STORAGE: metric_exact[other_timelevels]
 
-STORAGE: curv_error[other_timelevels]
+STORAGE: curv_exact[other_timelevels]
 
-STORAGE: lapse_error[other_timelevels]
+STORAGE: lapse_exact[other_timelevels]
 
-STORAGE: dtlapse_error[other_timelevels]
+STORAGE: dtlapse_exact[other_timelevels]
 
-STORAGE: shift_error[other_timelevels]
+STORAGE: shift_exact[other_timelevels]
 
-STORAGE: dtshift_error[other_timelevels]
+STORAGE: dtshift_exact[other_timelevels]
 schedule ModifiedSchwarzschildBL_Startup at STARTUP
 {
   LANG: C
@@ -85,55 +85,41 @@ if (CCTK_EQUALS(evolution_method, "ModifiedSchwarzschildBL"))
   } "ModifiedSchwarzschildBL_always"
 }
 
-if (CCTK_EQUALS(error_method, "ModifiedSchwarzschildBL"))
+if (CCTK_EQUALS(exact_method, "ModifiedSchwarzschildBL"))
 {
-  schedule ModifiedSchwarzschildBL_error at CCTK_ANALYSIS
+  schedule ModifiedSchwarzschildBL_exact at CCTK_ANALYSIS
   {
     LANG: C
-    READS: admbase::kxx(Everywhere)
-    READS: admbase::kxy(Everywhere)
-    READS: admbase::kxz(Everywhere)
-    READS: admbase::kyy(Everywhere)
-    READS: admbase::kyz(Everywhere)
-    READS: admbase::kzz(Everywhere)
-    READS: admbase::dtalp(Everywhere)
-    READS: admbase::dtbetax(Everywhere)
-    READS: admbase::dtbetay(Everywhere)
-    READS: admbase::dtbetaz(Everywhere)
-    READS: admbase::alp(Everywhere)
     READS: admbase::gxx(Everywhere)
     READS: admbase::gxy(Everywhere)
     READS: admbase::gxz(Everywhere)
     READS: admbase::gyy(Everywhere)
     READS: admbase::gyz(Everywhere)
     READS: admbase::gzz(Everywhere)
-    READS: admbase::betax(Everywhere)
-    READS: admbase::betay(Everywhere)
-    READS: admbase::betaz(Everywhere)
     READS: grid::x(Everywhere)
     READS: grid::y(Everywhere)
     READS: grid::z(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::alperr(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::betaerr1(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::betaerr2(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::betaerr3(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::dtalperr(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::dtbetaerr1(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::dtbetaerr2(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::dtbetaerr3(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::gerr11(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::gerr12(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::gerr13(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::gerr22(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::gerr23(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::gerr33(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::kerr11(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::kerr12(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::kerr13(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::kerr22(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::kerr23(Everywhere)
-    WRITES: ModifiedSchwarzschildBL::kerr33(Everywhere)
-  } "ModifiedSchwarzschildBL_error"
+    WRITES: ModifiedSchwarzschildBL::alpExact(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::betaExact1(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::betaExact2(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::betaExact3(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::dtalpExact(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::dtbetaExact1(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::dtbetaExact2(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::dtbetaExact3(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::gExact11(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::gExact12(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::gExact13(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::gExact22(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::gExact23(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::gExact33(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::kExact11(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::kExact12(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::kExact13(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::kExact22(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::kExact23(Everywhere)
+    WRITES: ModifiedSchwarzschildBL::kExact33(Everywhere)
+  } "ModifiedSchwarzschildBL_exact"
 }
 
 schedule ModifiedSchwarzschildBL_SelectBoundConds in MoL_PostStep

@@ -166,7 +166,7 @@ CCTK_INT tile_size "Loop tile size"
 } -1
 
 private:
-KEYWORD error_method "error_method"
+KEYWORD exact_method "exact_method"
 {
   "none" :: ""
   "GaugeWave" :: ""
@@ -209,7 +209,7 @@ CCTK_INT GaugeWave_always_calc_every "GaugeWave_always_calc_every" STEERABLE=ALW
 } 1
 
 restricted:
-CCTK_INT GaugeWave_error_calc_every "GaugeWave_error_calc_every" STEERABLE=ALWAYS
+CCTK_INT GaugeWave_exact_calc_every "GaugeWave_exact_calc_every" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 1
@@ -227,7 +227,7 @@ CCTK_INT GaugeWave_always_calc_offset "GaugeWave_always_calc_offset" STEERABLE=A
 } 0
 
 restricted:
-CCTK_INT GaugeWave_error_calc_offset "GaugeWave_error_calc_offset" STEERABLE=ALWAYS
+CCTK_INT GaugeWave_exact_calc_offset "GaugeWave_exact_calc_offset" STEERABLE=ALWAYS
 {
   *:* :: ""
 } 0

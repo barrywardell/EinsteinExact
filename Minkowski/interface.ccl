@@ -38,51 +38,51 @@ CCTK_INT FUNCTION Boundary_SelectVarForBC(CCTK_POINTER_TO_CONST IN GH, CCTK_INT 
 USES FUNCTION Boundary_SelectVarForBC
 
 public:
-CCTK_REAL metric_error type=GF timelevels=1 tags='tensortypealias="DD_sym" tensorweight=0'
+CCTK_REAL metric_exact type=GF timelevels=1 tags='tensortypealias="DD_sym" tensorweight=0'
 {
-  gerr11,
-  gerr12,
-  gerr13,
-  gerr22,
-  gerr23,
-  gerr33
-} "metric_error"
+  gExact11,
+  gExact12,
+  gExact13,
+  gExact22,
+  gExact23,
+  gExact33
+} "metric_exact"
 
 public:
-CCTK_REAL curv_error type=GF timelevels=1 tags='tensortypealias="DD_sym" tensorweight=0'
+CCTK_REAL curv_exact type=GF timelevels=1 tags='tensortypealias="DD_sym" tensorweight=0'
 {
-  kerr11,
-  kerr12,
-  kerr13,
-  kerr22,
-  kerr23,
-  kerr33
-} "curv_error"
+  kExact11,
+  kExact12,
+  kExact13,
+  kExact22,
+  kExact23,
+  kExact33
+} "curv_exact"
 
 public:
-CCTK_REAL lapse_error type=GF timelevels=1 tags='tensortypealias="Scalar" tensorweight=0'
+CCTK_REAL lapse_exact type=GF timelevels=1 tags='tensortypealias="Scalar" tensorweight=0'
 {
-  alperr
-} "lapse_error"
+  alpExact
+} "lapse_exact"
 
 public:
-CCTK_REAL dtlapse_error type=GF timelevels=1 tags='tensortypealias="Scalar" tensorweight=0'
+CCTK_REAL dtlapse_exact type=GF timelevels=1 tags='tensortypealias="Scalar" tensorweight=0'
 {
-  dtalperr
-} "dtlapse_error"
+  dtalpExact
+} "dtlapse_exact"
 
 public:
-CCTK_REAL shift_error type=GF timelevels=1 tags='tensortypealias="U" tensorweight=0'
+CCTK_REAL shift_exact type=GF timelevels=1 tags='tensortypealias="U" tensorweight=0'
 {
-  betaerr1,
-  betaerr2,
-  betaerr3
-} "shift_error"
+  betaExact1,
+  betaExact2,
+  betaExact3
+} "shift_exact"
 
 public:
-CCTK_REAL dtshift_error type=GF timelevels=1 tags='tensortypealias="U" tensorweight=0'
+CCTK_REAL dtshift_exact type=GF timelevels=1 tags='tensortypealias="U" tensorweight=0'
 {
-  dtbetaerr1,
-  dtbetaerr2,
-  dtbetaerr3
-} "dtshift_error"
+  dtbetaExact1,
+  dtbetaExact2,
+  dtbetaExact3
+} "dtshift_exact"

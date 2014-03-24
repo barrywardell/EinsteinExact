@@ -15,13 +15,6 @@
 #include "Differencing.h"
 #include "loopcontrol.h"
 
-/* Define macros used in calculations */
-#define INITVALUE (42)
-#define INV(x) ((CCTK_REAL)1.0 / (x))
-#define SQR(x) ((x) * (x))
-#define CUB(x) ((x) * SQR(x))
-#define QAD(x) (SQR(SQR(x)))
-
 namespace ModifiedSchwarzschildBL {
 
 
@@ -33,25 +26,30 @@ static void ModifiedSchwarzschildBL_always_Body(const cGH* restrict const cctkGH
   /* Include user-supplied include files */
   /* Initialise finite differencing variables */
   const ptrdiff_t di CCTK_ATTRIBUTE_UNUSED = 1;
-  const ptrdiff_t dj CCTK_ATTRIBUTE_UNUSED = CCTK_GFINDEX3D(cctkGH,0,1,0) - CCTK_GFINDEX3D(cctkGH,0,0,0);
-  const ptrdiff_t dk CCTK_ATTRIBUTE_UNUSED = CCTK_GFINDEX3D(cctkGH,0,0,1) - CCTK_GFINDEX3D(cctkGH,0,0,0);
+  const ptrdiff_t dj CCTK_ATTRIBUTE_UNUSED = 
+    CCTK_GFINDEX3D(cctkGH,0,1,0) - CCTK_GFINDEX3D(cctkGH,0,0,0);
+  const ptrdiff_t dk CCTK_ATTRIBUTE_UNUSED = 
+    CCTK_GFINDEX3D(cctkGH,0,0,1) - CCTK_GFINDEX3D(cctkGH,0,0,0);
   const ptrdiff_t cdi CCTK_ATTRIBUTE_UNUSED = sizeof(CCTK_REAL) * di;
   const ptrdiff_t cdj CCTK_ATTRIBUTE_UNUSED = sizeof(CCTK_REAL) * dj;
   const ptrdiff_t cdk CCTK_ATTRIBUTE_UNUSED = sizeof(CCTK_REAL) * dk;
   const ptrdiff_t cctkLbnd1 CCTK_ATTRIBUTE_UNUSED = cctk_lbnd[0];
   const ptrdiff_t cctkLbnd2 CCTK_ATTRIBUTE_UNUSED = cctk_lbnd[1];
   const ptrdiff_t cctkLbnd3 CCTK_ATTRIBUTE_UNUSED = cctk_lbnd[2];
-  const CCTK_REAL t CCTK_ATTRIBUTE_UNUSED = ToReal(cctk_time);
-  const CCTK_REAL cctkOriginSpace1 CCTK_ATTRIBUTE_UNUSED = ToReal(CCTK_ORIGIN_SPACE(0));
-  const CCTK_REAL cctkOriginSpace2 CCTK_ATTRIBUTE_UNUSED = ToReal(CCTK_ORIGIN_SPACE(1));
-  const CCTK_REAL cctkOriginSpace3 CCTK_ATTRIBUTE_UNUSED = ToReal(CCTK_ORIGIN_SPACE(2));
-  const CCTK_REAL dt CCTK_ATTRIBUTE_UNUSED = ToReal(CCTK_DELTA_TIME);
-  const CCTK_REAL dx CCTK_ATTRIBUTE_UNUSED = ToReal(CCTK_DELTA_SPACE(0));
-  const CCTK_REAL dy CCTK_ATTRIBUTE_UNUSED = ToReal(CCTK_DELTA_SPACE(1));
-  const CCTK_REAL dz CCTK_ATTRIBUTE_UNUSED = ToReal(CCTK_DELTA_SPACE(2));
-  const CCTK_REAL dxi CCTK_ATTRIBUTE_UNUSED = INV(dx);
-  const CCTK_REAL dyi CCTK_ATTRIBUTE_UNUSED = INV(dy);
-  const CCTK_REAL dzi CCTK_ATTRIBUTE_UNUSED = INV(dz);
+  const CCTK_REAL t CCTK_ATTRIBUTE_UNUSED = cctk_time;
+  const CCTK_REAL cctkOriginSpace1 CCTK_ATTRIBUTE_UNUSED = 
+    CCTK_ORIGIN_SPACE(0);
+  const CCTK_REAL cctkOriginSpace2 CCTK_ATTRIBUTE_UNUSED = 
+    CCTK_ORIGIN_SPACE(1);
+  const CCTK_REAL cctkOriginSpace3 CCTK_ATTRIBUTE_UNUSED = 
+    CCTK_ORIGIN_SPACE(2);
+  const CCTK_REAL dt CCTK_ATTRIBUTE_UNUSED = CCTK_DELTA_TIME;
+  const CCTK_REAL dx CCTK_ATTRIBUTE_UNUSED = CCTK_DELTA_SPACE(0);
+  const CCTK_REAL dy CCTK_ATTRIBUTE_UNUSED = CCTK_DELTA_SPACE(1);
+  const CCTK_REAL dz CCTK_ATTRIBUTE_UNUSED = CCTK_DELTA_SPACE(2);
+  const CCTK_REAL dxi CCTK_ATTRIBUTE_UNUSED = pow(dx,-1);
+  const CCTK_REAL dyi CCTK_ATTRIBUTE_UNUSED = pow(dy,-1);
+  const CCTK_REAL dzi CCTK_ATTRIBUTE_UNUSED = pow(dz,-1);
   const CCTK_REAL khalf CCTK_ATTRIBUTE_UNUSED = 0.5;
   const CCTK_REAL kthird CCTK_ATTRIBUTE_UNUSED = 
     0.333333333333333333333333333333;
@@ -113,15 +111,15 @@ static void ModifiedSchwarzschildBL_always_Body(const cGH* restrict const cctkGH
     
     CCTK_REAL xform1L10 CCTK_ATTRIBUTE_UNUSED = 0;
     
-    CCTK_REAL csetemp0 CCTK_ATTRIBUTE_UNUSED = cos(ToReal(phi));
+    CCTK_REAL csetemp0 CCTK_ATTRIBUTE_UNUSED = cos(phi);
     
-    CCTK_REAL csetemp1 CCTK_ATTRIBUTE_UNUSED = cos(ToReal(psi));
+    CCTK_REAL csetemp1 CCTK_ATTRIBUTE_UNUSED = cos(psi);
     
-    CCTK_REAL csetemp2 CCTK_ATTRIBUTE_UNUSED = cos(ToReal(theta));
+    CCTK_REAL csetemp2 CCTK_ATTRIBUTE_UNUSED = cos(theta);
     
-    CCTK_REAL csetemp3 CCTK_ATTRIBUTE_UNUSED = sin(ToReal(phi));
+    CCTK_REAL csetemp3 CCTK_ATTRIBUTE_UNUSED = sin(phi);
     
-    CCTK_REAL csetemp4 CCTK_ATTRIBUTE_UNUSED = sin(ToReal(psi));
+    CCTK_REAL csetemp4 CCTK_ATTRIBUTE_UNUSED = sin(psi);
     
     CCTK_REAL xform1L11 CCTK_ATTRIBUTE_UNUSED = csetemp0*csetemp1 - 
       csetemp2*csetemp3*csetemp4;
@@ -129,7 +127,7 @@ static void ModifiedSchwarzschildBL_always_Body(const cGH* restrict const cctkGH
     CCTK_REAL xform1L12 CCTK_ATTRIBUTE_UNUSED = csetemp1*csetemp3 + 
       csetemp0*csetemp2*csetemp4;
     
-    CCTK_REAL csetemp5 CCTK_ATTRIBUTE_UNUSED = sin(ToReal(theta));
+    CCTK_REAL csetemp5 CCTK_ATTRIBUTE_UNUSED = sin(theta);
     
     CCTK_REAL xform1L13 CCTK_ATTRIBUTE_UNUSED = csetemp4*csetemp5;
     
@@ -151,97 +149,94 @@ static void ModifiedSchwarzschildBL_always_Body(const cGH* restrict const cctkGH
     
     CCTK_REAL xform1L33 CCTK_ATTRIBUTE_UNUSED = csetemp2;
     
-    CCTK_REAL csetemp6 CCTK_ATTRIBUTE_UNUSED = SQR(ToReal(boostx));
+    CCTK_REAL csetemp6 CCTK_ATTRIBUTE_UNUSED = pow(boostx,2);
     
-    CCTK_REAL csetemp7 CCTK_ATTRIBUTE_UNUSED = SQR(ToReal(boosty));
+    CCTK_REAL csetemp7 CCTK_ATTRIBUTE_UNUSED = pow(boosty,2);
     
-    CCTK_REAL csetemp8 CCTK_ATTRIBUTE_UNUSED = SQR(ToReal(boostz));
+    CCTK_REAL csetemp8 CCTK_ATTRIBUTE_UNUSED = pow(boostz,2);
     
-    CCTK_REAL csetemp9 CCTK_ATTRIBUTE_UNUSED = INV(ToReal(lapsefactor));
+    CCTK_REAL csetemp9 CCTK_ATTRIBUTE_UNUSED = pow(lapsefactor,-1);
     
-    CCTK_REAL xform2L00 CCTK_ATTRIBUTE_UNUSED = csetemp9*INV((-1 + 
-      csetemp6 + csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8)))*(1 - csetemp6 - csetemp7 - csetemp8 + sqrt(1 - csetemp6 - 
-      csetemp7 - csetemp8))*(-1 + ToReal(boostx)*ToReal(shiftaddx) + 
-      ToReal(boosty)*ToReal(shiftaddy) + ToReal(boostz)*ToReal(shiftaddz));
+    CCTK_REAL xform2L00 CCTK_ATTRIBUTE_UNUSED = csetemp9*(-1 + 
+      boostx*shiftaddx + boosty*shiftaddy + boostz*shiftaddz)*(1 - csetemp6 - 
+      csetemp7 - csetemp8 + pow(1 - csetemp6 - csetemp7 - 
+      csetemp8,0.5))*pow(-1 + csetemp6 + csetemp7 + csetemp8,-1)*pow(1 + 
+      pow(1 - csetemp6 - csetemp7 - csetemp8,0.5),-1);
     
-    CCTK_REAL xform2L01 CCTK_ATTRIBUTE_UNUSED = csetemp9*INV((-1 + 
-      csetemp6 + csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8)))*(1 - csetemp6 - csetemp7 - csetemp8 + sqrt(1 - csetemp6 - 
-      csetemp7 - csetemp8))*ToReal(boostx);
+    CCTK_REAL xform2L01 CCTK_ATTRIBUTE_UNUSED = boostx*csetemp9*(1 - 
+      csetemp6 - csetemp7 - csetemp8 + pow(1 - csetemp6 - csetemp7 - 
+      csetemp8,0.5))*pow(-1 + csetemp6 + csetemp7 + csetemp8,-1)*pow(1 + 
+      pow(1 - csetemp6 - csetemp7 - csetemp8,0.5),-1);
     
-    CCTK_REAL xform2L02 CCTK_ATTRIBUTE_UNUSED = csetemp9*INV((-1 + 
-      csetemp6 + csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8)))*(1 - csetemp6 - csetemp7 - csetemp8 + sqrt(1 - csetemp6 - 
-      csetemp7 - csetemp8))*ToReal(boosty);
+    CCTK_REAL xform2L02 CCTK_ATTRIBUTE_UNUSED = boosty*csetemp9*(1 - 
+      csetemp6 - csetemp7 - csetemp8 + pow(1 - csetemp6 - csetemp7 - 
+      csetemp8,0.5))*pow(-1 + csetemp6 + csetemp7 + csetemp8,-1)*pow(1 + 
+      pow(1 - csetemp6 - csetemp7 - csetemp8,0.5),-1);
     
-    CCTK_REAL xform2L03 CCTK_ATTRIBUTE_UNUSED = csetemp9*INV((-1 + 
-      csetemp6 + csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8)))*(1 - csetemp6 - csetemp7 - csetemp8 + sqrt(1 - csetemp6 - 
-      csetemp7 - csetemp8))*ToReal(boostz);
+    CCTK_REAL xform2L03 CCTK_ATTRIBUTE_UNUSED = boostz*csetemp9*(1 - 
+      csetemp6 - csetemp7 - csetemp8 + pow(1 - csetemp6 - csetemp7 - 
+      csetemp8,0.5))*pow(-1 + csetemp6 + csetemp7 + csetemp8,-1)*pow(1 + 
+      pow(1 - csetemp6 - csetemp7 - csetemp8,0.5),-1);
     
-    CCTK_REAL xform2L10 CCTK_ATTRIBUTE_UNUSED = INV((-1 + csetemp6 + 
-      csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8)))*((csetemp6 + (-1 + csetemp7 + csetemp8)*(1 + sqrt(1 - 
-      csetemp6 - csetemp7 - csetemp8)))*ToReal(shiftaddx) - 
-      ToReal(boostx)*(-1 + csetemp6 + csetemp7 + csetemp8 + sqrt(1 - csetemp6 
-      - csetemp7 - csetemp8)*(-1 + ToReal(boosty)*ToReal(shiftaddy) + 
-      ToReal(boostz)*ToReal(shiftaddz))));
+    CCTK_REAL xform2L10 CCTK_ATTRIBUTE_UNUSED = (-(boostx*(-1 + csetemp6 + 
+      csetemp7 + csetemp8 + (-1 + boosty*shiftaddy + boostz*shiftaddz)*pow(1 
+      - csetemp6 - csetemp7 - csetemp8,0.5))) + shiftaddx*(csetemp6 + (-1 + 
+      csetemp7 + csetemp8)*(1 + pow(1 - csetemp6 - csetemp7 - 
+      csetemp8,0.5))))*pow(-1 + csetemp6 + csetemp7 + csetemp8,-1)*pow(1 + 
+      pow(1 - csetemp6 - csetemp7 - csetemp8,0.5),-1);
     
-    CCTK_REAL xform2L11 CCTK_ATTRIBUTE_UNUSED = INV((-1 + csetemp6 + 
-      csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8)))*(csetemp6 + (-1 + csetemp7 + csetemp8)*(1 + sqrt(1 - 
-      csetemp6 - csetemp7 - csetemp8)));
+    CCTK_REAL xform2L11 CCTK_ATTRIBUTE_UNUSED = (csetemp6 + (-1 + csetemp7 
+      + csetemp8)*(1 + pow(1 - csetemp6 - csetemp7 - csetemp8,0.5)))*pow(-1 + 
+      csetemp6 + csetemp7 + csetemp8,-1)*pow(1 + pow(1 - csetemp6 - csetemp7 
+      - csetemp8,0.5),-1);
     
-    CCTK_REAL xform2L12 CCTK_ATTRIBUTE_UNUSED = -(INV(-1 + csetemp6 + 
-      csetemp7 + csetemp8 - sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8))*ToReal(boostx)*ToReal(boosty));
+    CCTK_REAL xform2L12 CCTK_ATTRIBUTE_UNUSED = -(boostx*boosty*pow(-1 + 
+      csetemp6 + csetemp7 + csetemp8 - pow(1 - csetemp6 - csetemp7 - 
+      csetemp8,0.5),-1));
     
-    CCTK_REAL xform2L13 CCTK_ATTRIBUTE_UNUSED = -(INV(-1 + csetemp6 + 
-      csetemp7 + csetemp8 - sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8))*ToReal(boostx)*ToReal(boostz));
+    CCTK_REAL xform2L13 CCTK_ATTRIBUTE_UNUSED = -(boostx*boostz*pow(-1 + 
+      csetemp6 + csetemp7 + csetemp8 - pow(1 - csetemp6 - csetemp7 - 
+      csetemp8,0.5),-1));
     
-    CCTK_REAL xform2L20 CCTK_ATTRIBUTE_UNUSED = INV((-1 + csetemp6 + 
-      csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8)))*((csetemp7 + (-1 + csetemp6 + csetemp8)*(1 + sqrt(1 - 
-      csetemp6 - csetemp7 - csetemp8)))*ToReal(shiftaddy) - 
-      ToReal(boosty)*(-1 + csetemp6 + csetemp7 + csetemp8 + sqrt(1 - csetemp6 
-      - csetemp7 - csetemp8)*(-1 + ToReal(boostx)*ToReal(shiftaddx) + 
-      ToReal(boostz)*ToReal(shiftaddz))));
+    CCTK_REAL xform2L20 CCTK_ATTRIBUTE_UNUSED = (-(boosty*(-1 + csetemp6 + 
+      csetemp7 + csetemp8 + (-1 + boostx*shiftaddx + boostz*shiftaddz)*pow(1 
+      - csetemp6 - csetemp7 - csetemp8,0.5))) + shiftaddy*(csetemp7 + (-1 + 
+      csetemp6 + csetemp8)*(1 + pow(1 - csetemp6 - csetemp7 - 
+      csetemp8,0.5))))*pow(-1 + csetemp6 + csetemp7 + csetemp8,-1)*pow(1 + 
+      pow(1 - csetemp6 - csetemp7 - csetemp8,0.5),-1);
     
-    CCTK_REAL xform2L21 CCTK_ATTRIBUTE_UNUSED = -(INV(-1 + csetemp6 + 
-      csetemp7 + csetemp8 - sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8))*ToReal(boostx)*ToReal(boosty));
+    CCTK_REAL xform2L21 CCTK_ATTRIBUTE_UNUSED = -(boostx*boosty*pow(-1 + 
+      csetemp6 + csetemp7 + csetemp8 - pow(1 - csetemp6 - csetemp7 - 
+      csetemp8,0.5),-1));
     
-    CCTK_REAL xform2L22 CCTK_ATTRIBUTE_UNUSED = INV((-1 + csetemp6 + 
-      csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8)))*(csetemp7 + (-1 + csetemp6 + csetemp8)*(1 + sqrt(1 - 
-      csetemp6 - csetemp7 - csetemp8)));
+    CCTK_REAL xform2L22 CCTK_ATTRIBUTE_UNUSED = (csetemp7 + (-1 + csetemp6 
+      + csetemp8)*(1 + pow(1 - csetemp6 - csetemp7 - csetemp8,0.5)))*pow(-1 + 
+      csetemp6 + csetemp7 + csetemp8,-1)*pow(1 + pow(1 - csetemp6 - csetemp7 
+      - csetemp8,0.5),-1);
     
-    CCTK_REAL xform2L23 CCTK_ATTRIBUTE_UNUSED = -(INV(-1 + csetemp6 + 
-      csetemp7 + csetemp8 - sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8))*ToReal(boosty)*ToReal(boostz));
+    CCTK_REAL xform2L23 CCTK_ATTRIBUTE_UNUSED = -(boosty*boostz*pow(-1 + 
+      csetemp6 + csetemp7 + csetemp8 - pow(1 - csetemp6 - csetemp7 - 
+      csetemp8,0.5),-1));
     
-    CCTK_REAL xform2L30 CCTK_ATTRIBUTE_UNUSED = INV((-1 + csetemp6 + 
-      csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8)))*(-(ToReal(boostz)*(-1 + csetemp6 + csetemp7 + csetemp8 + 
-      sqrt(1 - csetemp6 - csetemp7 - csetemp8)*(-1 + 
-      ToReal(boostx)*ToReal(shiftaddx) + ToReal(boosty)*ToReal(shiftaddy)))) 
-      + (-1 + csetemp6 + csetemp7 + csetemp8 + (-1 + csetemp6 + 
-      csetemp7)*sqrt(1 - csetemp6 - csetemp7 - csetemp8))*ToReal(shiftaddz));
+    CCTK_REAL xform2L30 CCTK_ATTRIBUTE_UNUSED = (shiftaddz*(-1 + csetemp6 
+      + csetemp7 + csetemp8 + (-1 + csetemp6 + csetemp7)*pow(1 - csetemp6 - 
+      csetemp7 - csetemp8,0.5)) - boostz*(-1 + csetemp6 + csetemp7 + csetemp8 
+      + (-1 + boostx*shiftaddx + boosty*shiftaddy)*pow(1 - csetemp6 - 
+      csetemp7 - csetemp8,0.5)))*pow(-1 + csetemp6 + csetemp7 + 
+      csetemp8,-1)*pow(1 + pow(1 - csetemp6 - csetemp7 - csetemp8,0.5),-1);
     
-    CCTK_REAL xform2L31 CCTK_ATTRIBUTE_UNUSED = -(INV(-1 + csetemp6 + 
-      csetemp7 + csetemp8 - sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8))*ToReal(boostx)*ToReal(boostz));
+    CCTK_REAL xform2L31 CCTK_ATTRIBUTE_UNUSED = -(boostx*boostz*pow(-1 + 
+      csetemp6 + csetemp7 + csetemp8 - pow(1 - csetemp6 - csetemp7 - 
+      csetemp8,0.5),-1));
     
-    CCTK_REAL xform2L32 CCTK_ATTRIBUTE_UNUSED = -(INV(-1 + csetemp6 + 
-      csetemp7 + csetemp8 - sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8))*ToReal(boosty)*ToReal(boostz));
+    CCTK_REAL xform2L32 CCTK_ATTRIBUTE_UNUSED = -(boosty*boostz*pow(-1 + 
+      csetemp6 + csetemp7 + csetemp8 - pow(1 - csetemp6 - csetemp7 - 
+      csetemp8,0.5),-1));
     
-    CCTK_REAL xform2L33 CCTK_ATTRIBUTE_UNUSED = INV((-1 + csetemp6 + 
-      csetemp7 + csetemp8)*(1 + sqrt(1 - csetemp6 - csetemp7 - 
-      csetemp8)))*(-1 + csetemp6 + csetemp7 + csetemp8 + (-1 + csetemp6 + 
-      csetemp7)*sqrt(1 - csetemp6 - csetemp7 - csetemp8));
+    CCTK_REAL xform2L33 CCTK_ATTRIBUTE_UNUSED = (-1 + csetemp6 + csetemp7 
+      + csetemp8 + (-1 + csetemp6 + csetemp7)*pow(1 - csetemp6 - csetemp7 - 
+      csetemp8,0.5))*pow(-1 + csetemp6 + csetemp7 + csetemp8,-1)*pow(1 + 
+      pow(1 - csetemp6 - csetemp7 - csetemp8,0.5),-1);
     
     CCTK_REAL xformL00 CCTK_ATTRIBUTE_UNUSED = xform1L00*xform2L00 + 
       xform1L01*xform2L10 + xform1L02*xform2L20 + xform1L03*xform2L30;
@@ -291,13 +286,13 @@ static void ModifiedSchwarzschildBL_always_Body(const cGH* restrict const cctkGH
     CCTK_REAL xformL33 CCTK_ATTRIBUTE_UNUSED = xform1L30*xform2L03 + 
       xform1L31*xform2L13 + xform1L32*xform2L23 + xform1L33*xform2L33;
     
-    CCTK_REAL xx0 CCTK_ATTRIBUTE_UNUSED = t - ToReal(timeoffset);
+    CCTK_REAL xx0 CCTK_ATTRIBUTE_UNUSED = t - timeoffset;
     
-    CCTK_REAL xx1 CCTK_ATTRIBUTE_UNUSED = xL - ToReal(positionx);
+    CCTK_REAL xx1 CCTK_ATTRIBUTE_UNUSED = xL - positionx;
     
-    CCTK_REAL xx2 CCTK_ATTRIBUTE_UNUSED = yL - ToReal(positiony);
+    CCTK_REAL xx2 CCTK_ATTRIBUTE_UNUSED = yL - positiony;
     
-    CCTK_REAL xx3 CCTK_ATTRIBUTE_UNUSED = zL - ToReal(positionz);
+    CCTK_REAL xx3 CCTK_ATTRIBUTE_UNUSED = zL - positionz;
     
     CCTK_REAL txx1 CCTK_ATTRIBUTE_UNUSED = xformL10*xx0 + xformL11*xx1 + 
       xformL12*xx2 + xformL13*xx3;
@@ -314,7 +309,8 @@ static void ModifiedSchwarzschildBL_always_Body(const cGH* restrict const cctkGH
     
     CCTK_REAL Z CCTK_ATTRIBUTE_UNUSED = txx3;
     
-    CCTK_REAL rXYZ CCTK_ATTRIBUTE_UNUSED = sqrt(SQR(X) + SQR(Y) + SQR(Z));
+    CCTK_REAL rXYZ CCTK_ATTRIBUTE_UNUSED = pow(pow(X,2) + pow(Y,2) + 
+      pow(Z,2),0.5);
     
     CCTK_REAL tg400 CCTK_ATTRIBUTE_UNUSED = -1;
     
@@ -324,36 +320,36 @@ static void ModifiedSchwarzschildBL_always_Body(const cGH* restrict const cctkGH
     
     CCTK_REAL tg403 CCTK_ATTRIBUTE_UNUSED = 0;
     
-    CCTK_REAL csetemp10 CCTK_ATTRIBUTE_UNUSED = 0.5*ToReal(M);
+    CCTK_REAL csetemp10 CCTK_ATTRIBUTE_UNUSED = 0.5*M;
     
-    CCTK_REAL csetemp11 CCTK_ATTRIBUTE_UNUSED = INV(rXYZ);
+    CCTK_REAL csetemp11 CCTK_ATTRIBUTE_UNUSED = pow(rXYZ,-1);
     
-    CCTK_REAL csetemp12 CCTK_ATTRIBUTE_UNUSED = INV(ToReal(M));
+    CCTK_REAL csetemp12 CCTK_ATTRIBUTE_UNUSED = pow(M,-1);
     
-    CCTK_REAL csetemp13 CCTK_ATTRIBUTE_UNUSED = SQR(ToReal(M));
+    CCTK_REAL csetemp13 CCTK_ATTRIBUTE_UNUSED = pow(M,2);
     
-    CCTK_REAL csetemp14 CCTK_ATTRIBUTE_UNUSED = INV(SQR(Pi));
+    CCTK_REAL csetemp14 CCTK_ATTRIBUTE_UNUSED = pow(Pi,-2);
     
-    CCTK_REAL tg411 CCTK_ATTRIBUTE_UNUSED = 0.00390625*QAD(4 + 
+    CCTK_REAL tg411 CCTK_ATTRIBUTE_UNUSED = 0.00390625*pow(4 + 
       csetemp11*(8*fmin(csetemp10,rXYZ) + csetemp12*(csetemp13*(csetemp14 - 
       csetemp14*cos(4*csetemp12*Pi*fmin(csetemp10,rXYZ))) - 
-      8*SQR(fmin(csetemp10,rXYZ)))));
+      8*pow(fmin(csetemp10,rXYZ),2))),4);
     
     CCTK_REAL tg412 CCTK_ATTRIBUTE_UNUSED = 0;
     
     CCTK_REAL tg413 CCTK_ATTRIBUTE_UNUSED = 0;
     
-    CCTK_REAL tg422 CCTK_ATTRIBUTE_UNUSED = 0.00390625*QAD(4 + 
+    CCTK_REAL tg422 CCTK_ATTRIBUTE_UNUSED = 0.00390625*pow(4 + 
       csetemp11*(8*fmin(csetemp10,rXYZ) + csetemp12*(csetemp13*(csetemp14 - 
       csetemp14*cos(4*csetemp12*Pi*fmin(csetemp10,rXYZ))) - 
-      8*SQR(fmin(csetemp10,rXYZ)))));
+      8*pow(fmin(csetemp10,rXYZ),2))),4);
     
     CCTK_REAL tg423 CCTK_ATTRIBUTE_UNUSED = 0;
     
-    CCTK_REAL tg433 CCTK_ATTRIBUTE_UNUSED = 0.00390625*QAD(4 + 
+    CCTK_REAL tg433 CCTK_ATTRIBUTE_UNUSED = 0.00390625*pow(4 + 
       csetemp11*(8*fmin(csetemp10,rXYZ) + csetemp12*(csetemp13*(csetemp14 - 
       csetemp14*cos(4*csetemp12*Pi*fmin(csetemp10,rXYZ))) - 
-      8*SQR(fmin(csetemp10,rXYZ)))));
+      8*pow(fmin(csetemp10,rXYZ),2))),4);
     
     CCTK_REAL tdg4000 CCTK_ATTRIBUTE_UNUSED = 0;
     
@@ -393,34 +389,37 @@ static void ModifiedSchwarzschildBL_always_Body(const cGH* restrict const cctkGH
     
     CCTK_REAL csetemp16 CCTK_ATTRIBUTE_UNUSED = 2*rXYZ;
     
-    CCTK_REAL csetemp17 CCTK_ATTRIBUTE_UNUSED = INV(QAD(ToReal(M)));
+    CCTK_REAL csetemp17 CCTK_ATTRIBUTE_UNUSED = pow(M,-4);
     
     CCTK_REAL csetemp18 CCTK_ATTRIBUTE_UNUSED = pow(Pi,-8);
     
-    CCTK_REAL csetemp19 CCTK_ATTRIBUTE_UNUSED = SQR(Pi);
+    CCTK_REAL csetemp19 CCTK_ATTRIBUTE_UNUSED = pow(Pi,2);
     
-    CCTK_REAL csetemp20 CCTK_ATTRIBUTE_UNUSED = SQR(rXYZ);
+    CCTK_REAL csetemp20 CCTK_ATTRIBUTE_UNUSED = pow(rXYZ,2);
     
-    CCTK_REAL tdg4111 CCTK_ATTRIBUTE_UNUSED = IfThen(ToReal(M) <= 
-      csetemp16,-0.25*csetemp15*X*CUB(csetemp16 + 
-      ToReal(M))*ToReal(M),-0.25*csetemp15*csetemp17*csetemp18*X*CUB(csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) 
-      + csetemp19*(-4*csetemp20 + 6*rXYZ*ToReal(M)))*(4*csetemp19*csetemp20 + 
-      csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) - 
-      2*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)*ToReal(M)));
+    CCTK_REAL tdg4111 CCTK_ATTRIBUTE_UNUSED = IfThen(M <= 
+      csetemp16,-0.25*csetemp15*M*X*pow(csetemp16 + 
+      M,3),-0.25*csetemp15*csetemp17*csetemp18*X*pow(csetemp19*(-4*csetemp20 
+      + 6*M*rXYZ) + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2),3)*(4*csetemp19*csetemp20 + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2) - 
+      2*M*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)));
     
-    CCTK_REAL tdg4112 CCTK_ATTRIBUTE_UNUSED = IfThen(ToReal(M) <= 
-      csetemp16,-0.25*csetemp15*Y*CUB(csetemp16 + 
-      ToReal(M))*ToReal(M),-0.25*csetemp15*csetemp17*csetemp18*Y*CUB(csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) 
-      + csetemp19*(-4*csetemp20 + 6*rXYZ*ToReal(M)))*(4*csetemp19*csetemp20 + 
-      csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) - 
-      2*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)*ToReal(M)));
+    CCTK_REAL tdg4112 CCTK_ATTRIBUTE_UNUSED = IfThen(M <= 
+      csetemp16,-0.25*csetemp15*M*Y*pow(csetemp16 + 
+      M,3),-0.25*csetemp15*csetemp17*csetemp18*Y*pow(csetemp19*(-4*csetemp20 
+      + 6*M*rXYZ) + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2),3)*(4*csetemp19*csetemp20 + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2) - 
+      2*M*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)));
     
-    CCTK_REAL tdg4113 CCTK_ATTRIBUTE_UNUSED = IfThen(ToReal(M) <= 
-      csetemp16,-0.25*csetemp15*Z*CUB(csetemp16 + 
-      ToReal(M))*ToReal(M),-0.25*csetemp15*csetemp17*csetemp18*Z*CUB(csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) 
-      + csetemp19*(-4*csetemp20 + 6*rXYZ*ToReal(M)))*(4*csetemp19*csetemp20 + 
-      csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) - 
-      2*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)*ToReal(M)));
+    CCTK_REAL tdg4113 CCTK_ATTRIBUTE_UNUSED = IfThen(M <= 
+      csetemp16,-0.25*csetemp15*M*Z*pow(csetemp16 + 
+      M,3),-0.25*csetemp15*csetemp17*csetemp18*Z*pow(csetemp19*(-4*csetemp20 
+      + 6*M*rXYZ) + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2),3)*(4*csetemp19*csetemp20 + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2) - 
+      2*M*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)));
     
     CCTK_REAL tdg4120 CCTK_ATTRIBUTE_UNUSED = 0;
     
@@ -440,26 +439,29 @@ static void ModifiedSchwarzschildBL_always_Body(const cGH* restrict const cctkGH
     
     CCTK_REAL tdg4220 CCTK_ATTRIBUTE_UNUSED = 0;
     
-    CCTK_REAL tdg4221 CCTK_ATTRIBUTE_UNUSED = IfThen(ToReal(M) <= 
-      csetemp16,-0.25*csetemp15*X*CUB(csetemp16 + 
-      ToReal(M))*ToReal(M),-0.25*csetemp15*csetemp17*csetemp18*X*CUB(csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) 
-      + csetemp19*(-4*csetemp20 + 6*rXYZ*ToReal(M)))*(4*csetemp19*csetemp20 + 
-      csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) - 
-      2*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)*ToReal(M)));
+    CCTK_REAL tdg4221 CCTK_ATTRIBUTE_UNUSED = IfThen(M <= 
+      csetemp16,-0.25*csetemp15*M*X*pow(csetemp16 + 
+      M,3),-0.25*csetemp15*csetemp17*csetemp18*X*pow(csetemp19*(-4*csetemp20 
+      + 6*M*rXYZ) + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2),3)*(4*csetemp19*csetemp20 + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2) - 
+      2*M*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)));
     
-    CCTK_REAL tdg4222 CCTK_ATTRIBUTE_UNUSED = IfThen(ToReal(M) <= 
-      csetemp16,-0.25*csetemp15*Y*CUB(csetemp16 + 
-      ToReal(M))*ToReal(M),-0.25*csetemp15*csetemp17*csetemp18*Y*CUB(csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) 
-      + csetemp19*(-4*csetemp20 + 6*rXYZ*ToReal(M)))*(4*csetemp19*csetemp20 + 
-      csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) - 
-      2*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)*ToReal(M)));
+    CCTK_REAL tdg4222 CCTK_ATTRIBUTE_UNUSED = IfThen(M <= 
+      csetemp16,-0.25*csetemp15*M*Y*pow(csetemp16 + 
+      M,3),-0.25*csetemp15*csetemp17*csetemp18*Y*pow(csetemp19*(-4*csetemp20 
+      + 6*M*rXYZ) + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2),3)*(4*csetemp19*csetemp20 + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2) - 
+      2*M*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)));
     
-    CCTK_REAL tdg4223 CCTK_ATTRIBUTE_UNUSED = IfThen(ToReal(M) <= 
-      csetemp16,-0.25*csetemp15*Z*CUB(csetemp16 + 
-      ToReal(M))*ToReal(M),-0.25*csetemp15*csetemp17*csetemp18*Z*CUB(csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) 
-      + csetemp19*(-4*csetemp20 + 6*rXYZ*ToReal(M)))*(4*csetemp19*csetemp20 + 
-      csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) - 
-      2*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)*ToReal(M)));
+    CCTK_REAL tdg4223 CCTK_ATTRIBUTE_UNUSED = IfThen(M <= 
+      csetemp16,-0.25*csetemp15*M*Z*pow(csetemp16 + 
+      M,3),-0.25*csetemp15*csetemp17*csetemp18*Z*pow(csetemp19*(-4*csetemp20 
+      + 6*M*rXYZ) + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2),3)*(4*csetemp19*csetemp20 + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2) - 
+      2*M*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)));
     
     CCTK_REAL tdg4230 CCTK_ATTRIBUTE_UNUSED = 0;
     
@@ -471,31 +473,34 @@ static void ModifiedSchwarzschildBL_always_Body(const cGH* restrict const cctkGH
     
     CCTK_REAL tdg4330 CCTK_ATTRIBUTE_UNUSED = 0;
     
-    CCTK_REAL tdg4331 CCTK_ATTRIBUTE_UNUSED = IfThen(ToReal(M) <= 
-      csetemp16,-0.25*csetemp15*X*CUB(csetemp16 + 
-      ToReal(M))*ToReal(M),-0.25*csetemp15*csetemp17*csetemp18*X*CUB(csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) 
-      + csetemp19*(-4*csetemp20 + 6*rXYZ*ToReal(M)))*(4*csetemp19*csetemp20 + 
-      csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) - 
-      2*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)*ToReal(M)));
+    CCTK_REAL tdg4331 CCTK_ATTRIBUTE_UNUSED = IfThen(M <= 
+      csetemp16,-0.25*csetemp15*M*X*pow(csetemp16 + 
+      M,3),-0.25*csetemp15*csetemp17*csetemp18*X*pow(csetemp19*(-4*csetemp20 
+      + 6*M*rXYZ) + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2),3)*(4*csetemp19*csetemp20 + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2) - 
+      2*M*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)));
     
-    CCTK_REAL tdg4332 CCTK_ATTRIBUTE_UNUSED = IfThen(ToReal(M) <= 
-      csetemp16,-0.25*csetemp15*Y*CUB(csetemp16 + 
-      ToReal(M))*ToReal(M),-0.25*csetemp15*csetemp17*csetemp18*Y*CUB(csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) 
-      + csetemp19*(-4*csetemp20 + 6*rXYZ*ToReal(M)))*(4*csetemp19*csetemp20 + 
-      csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) - 
-      2*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)*ToReal(M)));
+    CCTK_REAL tdg4332 CCTK_ATTRIBUTE_UNUSED = IfThen(M <= 
+      csetemp16,-0.25*csetemp15*M*Y*pow(csetemp16 + 
+      M,3),-0.25*csetemp15*csetemp17*csetemp18*Y*pow(csetemp19*(-4*csetemp20 
+      + 6*M*rXYZ) + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2),3)*(4*csetemp19*csetemp20 + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2) - 
+      2*M*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)));
     
-    CCTK_REAL tdg4333 CCTK_ATTRIBUTE_UNUSED = IfThen(ToReal(M) <= 
-      csetemp16,-0.25*csetemp15*Z*CUB(csetemp16 + 
-      ToReal(M))*ToReal(M),-0.25*csetemp15*csetemp17*csetemp18*Z*CUB(csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) 
-      + csetemp19*(-4*csetemp20 + 6*rXYZ*ToReal(M)))*(4*csetemp19*csetemp20 + 
-      csetemp13*SQR(sin(2*csetemp12*Pi*rXYZ)) - 
-      2*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)*ToReal(M)));
+    CCTK_REAL tdg4333 CCTK_ATTRIBUTE_UNUSED = IfThen(M <= 
+      csetemp16,-0.25*csetemp15*M*Z*pow(csetemp16 + 
+      M,3),-0.25*csetemp15*csetemp17*csetemp18*Z*pow(csetemp19*(-4*csetemp20 
+      + 6*M*rXYZ) + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2),3)*(4*csetemp19*csetemp20 + 
+      csetemp13*pow(sin(2*csetemp12*Pi*rXYZ),2) - 
+      2*M*Pi*rXYZ*sin(4*csetemp12*Pi*rXYZ)));
     
     CCTK_REAL g400 CCTK_ATTRIBUTE_UNUSED = 2*(tg423*xformL20*xformL30 + 
       xformL00*(tg401*xformL10 + tg402*xformL20 + tg403*xformL30) + 
-      xformL10*(tg412*xformL20 + tg413*xformL30)) + tg400*SQR(xformL00) + 
-      tg411*SQR(xformL10) + tg422*SQR(xformL20) + tg433*SQR(xformL30);
+      xformL10*(tg412*xformL20 + tg413*xformL30)) + tg400*pow(xformL00,2) + 
+      tg411*pow(xformL10,2) + tg422*pow(xformL20,2) + tg433*pow(xformL30,2);
     
     CCTK_REAL csetemp21 CCTK_ATTRIBUTE_UNUSED = tg400*xformL01;
     
@@ -1651,16 +1656,16 @@ static void ModifiedSchwarzschildBL_always_Body(const cGH* restrict const cctkGH
     
     gzzL = g433;
     
-    CCTK_REAL csetemp229 CCTK_ATTRIBUTE_UNUSED = SQR(gxzL);
+    CCTK_REAL csetemp229 CCTK_ATTRIBUTE_UNUSED = pow(gxzL,2);
     
-    CCTK_REAL csetemp230 CCTK_ATTRIBUTE_UNUSED = SQR(gyzL);
+    CCTK_REAL csetemp230 CCTK_ATTRIBUTE_UNUSED = pow(gyzL,2);
     
-    CCTK_REAL csetemp231 CCTK_ATTRIBUTE_UNUSED = SQR(gxyL);
+    CCTK_REAL csetemp231 CCTK_ATTRIBUTE_UNUSED = pow(gxyL,2);
     
     CCTK_REAL detg CCTK_ATTRIBUTE_UNUSED = 2*gxyL*gxzL*gyzL + 
       gyyL*(gxxL*gzzL - csetemp229) - gxxL*csetemp230 - gzzL*csetemp231;
     
-    CCTK_REAL csetemp232 CCTK_ATTRIBUTE_UNUSED = INV(detg);
+    CCTK_REAL csetemp232 CCTK_ATTRIBUTE_UNUSED = pow(detg,-1);
     
     CCTK_REAL gu11 CCTK_ATTRIBUTE_UNUSED = (gyyL*gzzL - 
       csetemp230)*csetemp232;
@@ -1689,7 +1694,7 @@ static void ModifiedSchwarzschildBL_always_Body(const cGH* restrict const cctkGH
     CCTK_REAL betasq CCTK_ATTRIBUTE_UNUSED = betaxL*betal1 + betayL*betal2 
       + betazL*betal3;
     
-    alpL = sqrt(betasq - g400);
+    alpL = pow(betasq - g400,0.5);
     
     CCTK_REAL dtg11 CCTK_ATTRIBUTE_UNUSED = dg4110;
     
@@ -2044,7 +2049,7 @@ static void ModifiedSchwarzschildBL_always_Body(const cGH* restrict const cctkGH
       dtbetayL*betal2 + dtbetazL*betal3 + betaxL*dtbetal1 + betayL*dtbetal2 + 
       betazL*dtbetal3;
     
-    CCTK_REAL csetemp301 CCTK_ATTRIBUTE_UNUSED = INV(alpL);
+    CCTK_REAL csetemp301 CCTK_ATTRIBUTE_UNUSED = pow(alpL,-1);
     
     CCTK_REAL dtalpL CCTK_ATTRIBUTE_UNUSED = 0.5*csetemp301*(-dg4000 + 
       dtbetasq);
