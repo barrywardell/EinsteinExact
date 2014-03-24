@@ -34,7 +34,7 @@ Map[DefineTensor,
 {
   alp, dtalp, betal, beta, dtbetal, dtbeta, dbetal, dbeta,
   g, dtg, dg, gu, dtgu, dgu, k,
-  alperr, dtalperr, betaerr, dtbetaerr, gerr, kerr
+  alpExact, dtalpExact, betaExact, dtbetaExact, gExact, kExact
 }];
 
 AssertSymmetricIncreasing[g[la,lb], la, lb];
@@ -44,8 +44,8 @@ AssertSymmetricIncreasing[gu[ua,ub], ua, ub];
 AssertSymmetricIncreasing[dtgu[ua,ub], ua, ub];
 AssertSymmetricIncreasing[dgu[ua,ub,lc], ua, ub];
 AssertSymmetricIncreasing[k[la,lb], la, lb];
-AssertSymmetricIncreasing[gerr[la,lb], la, lb];
-AssertSymmetricIncreasing[kerr[la,lb], la, lb];
+AssertSymmetricIncreasing[gExact[la,lb], la, lb];
+AssertSymmetricIncreasing[kExact[la,lb], la, lb];
 
 
 (**************************************************************************************)
@@ -62,16 +62,16 @@ admGroups =
    {"admbase::dtlapse", {dtalp}},
    {"admbase::dtshift", {dtbetax,dtbetay,dtbetaz}}};
 
-errorGroups =
-  {SetGroupName[CreateGroupFromTensor[gerr[li,lj]], "metric_error"],
-   SetGroupName[CreateGroupFromTensor[kerr[li,lj]], "curv_error"],
-   SetGroupName[CreateGroupFromTensor[alperr], "lapse_error"],
-   SetGroupName[CreateGroupFromTensor[dtalperr], "dtlapse_error"],
-   SetGroupName[CreateGroupFromTensor[betaerr[ui]], "shift_error"],
-   SetGroupName[CreateGroupFromTensor[dtbetaerr[ui]], "dtshift_error"]};
+exactGroups =
+  {SetGroupName[CreateGroupFromTensor[gExact[li,lj]], "metric_exact"],
+   SetGroupName[CreateGroupFromTensor[kExact[li,lj]], "curv_exact"],
+   SetGroupName[CreateGroupFromTensor[alpExact], "lapse_exact"],
+   SetGroupName[CreateGroupFromTensor[dtalpExact], "dtlapse_exact"],
+   SetGroupName[CreateGroupFromTensor[betaExact[ui]], "shift_exact"],
+   SetGroupName[CreateGroupFromTensor[dtbetaExact[ui]], "dtshift_exact"]};
 
-groups = Join[admGroups, errorGroups];
-declaredGroups = First/@errorGroups;
+groups = Join[admGroups, exactGroups];
+declaredGroups = First/@exactGroups;
 
 (**************************************************************************************)
 (* Shorthands *)
@@ -93,14 +93,11 @@ symmetryRules =
            Table[dg4[i,j,k]  -> dg4[j,i,k] , {i, 0, 3}, {j, 0, i-1}, {k, 0, 3}]
           }] /. arrayToSymbolRules;
 
-(* Calculate the solution error instead of the solution *)
-calcErrorRules =
-  {(Tensor[g,i_,j_]->rhs_) :> (Tensor[gerr,i,j] -> Tensor[g,i,j] - rhs),
-   (Tensor[k,i_,j_]->rhs_) :> (Tensor[kerr,i,j] -> Tensor[k,i,j] - rhs),
-   (alp->rhs_) :> (alperr -> alp - rhs),
-   (dtalp->rhs_) :> (dtalperr -> dtalp - rhs),
-   (Tensor[beta,i_]->rhs_) :> (Tensor[betaerr,i] -> Tensor[beta,i] - rhs),
-   (Tensor[dtbeta,i_]->rhs_) :> (Tensor[dtbetaerr,i] -> Tensor[dtbeta,i] - rhs)};
+(* Calculate the exact solution into the "exact" variables *)
+calcExactRules =
+  {g -> gExact, k -> kExact,
+   alp -> alpExact, dtalp -> dtalpExact,
+   beta -> betaExact, dtbeta -> dtbetaExact};
 
 shorthands =
   Join[
@@ -301,7 +298,7 @@ idThorn[spacetime_, thorn_] :=
                    "ADMBase::evolution_method"}}];
 
   keywordParameters =
-    {{Name          -> "error_method",
+    {{Name          -> "exact_method",
       AllowedValues -> {"none", thorn},
       Default       -> "none"}};
 
@@ -310,14 +307,14 @@ idThorn[spacetime_, thorn_] :=
     Switch[when,
       "initial", Schedule -> {"in ADMBase_InitialData"},
       "always",  Schedule -> {"at CCTK_PRESTEP"},
-      "error",   Schedule -> {"at CCTK_ANALYSIS"},
+      "exact",   Schedule -> {"at CCTK_ANALYSIS"},
       _, Throw["Unrecognised scheduling keyword"]],
 
     ConditionalOnKeyword ->
       {Switch[when,
          "initial", "initial_data",
          "always", "evolution_method",
-         "error", "error_method",
+         "exact", "exact_method",
          _, Throw["Unrecognised scheduling keyword"]],
        thorn},
 
@@ -384,14 +381,14 @@ idThorn[spacetime_, thorn_] :=
                    + g[lk,lj] dbeta[uk,li] + g[li,lk] dbeta[uk,lj]
                    + dg[li,lj,lk] beta[uk]) / (2 alp)
     } /. arrayToSymbolRules /. symmetryRules
-      /. If[when=="error", calcErrorRules, {}])
+      /. If[when=="exact", calcExactRules, {}])
   };
 
   calculations =
   {
     calc["initial"],
     calc["always"],
-    calc["error"]
+    calc["exact"]
   };
 
   parameterConditions =
