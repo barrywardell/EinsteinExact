@@ -11,7 +11,7 @@ extern "C" void ModifiedSchwarzschildBL_RegisterSymmetries(CCTK_ARGUMENTS)
   DECLARE_CCTK_PARAMETERS;
   
   /* array holding symmetry definitions */
-  CCTK_INT sym[3];
+  int sym[3];
   
   /* Register symmetries of grid functions */
   sym[0] = 1;
