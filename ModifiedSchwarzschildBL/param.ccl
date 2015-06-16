@@ -6,37 +6,37 @@ shares: ADMBase
 
 EXTENDS CCTK_KEYWORD initial_data "initial_data"
 {
-  ModifiedSchwarzschildBL :: ""
+  "ModifiedSchwarzschildBL" :: ""
 } 
 
 
 EXTENDS CCTK_KEYWORD initial_lapse "initial_lapse"
 {
-  ModifiedSchwarzschildBL :: ""
+  "ModifiedSchwarzschildBL" :: ""
 } 
 
 
 EXTENDS CCTK_KEYWORD initial_shift "initial_shift"
 {
-  ModifiedSchwarzschildBL :: ""
+  "ModifiedSchwarzschildBL" :: ""
 } 
 
 
 EXTENDS CCTK_KEYWORD initial_dtlapse "initial_dtlapse"
 {
-  ModifiedSchwarzschildBL :: ""
+  "ModifiedSchwarzschildBL" :: ""
 } 
 
 
 EXTENDS CCTK_KEYWORD initial_dtshift "initial_dtshift"
 {
-  ModifiedSchwarzschildBL :: ""
+  "ModifiedSchwarzschildBL" :: ""
 } 
 
 
 EXTENDS CCTK_KEYWORD evolution_method "evolution_method"
 {
-  ModifiedSchwarzschildBL :: ""
+  "ModifiedSchwarzschildBL" :: ""
 } 
 
 
@@ -66,97 +66,97 @@ CCTK_INT other_timelevels "Number of active timelevels for non-evolved grid func
 restricted:
 CCTK_REAL timeoffset "timeoffset"
 {
-  "*:*" :: ""
+  *:* :: ""
 } 0
 
 restricted:
 CCTK_REAL positionx "positionx"
 {
-  "*:*" :: ""
+  *:* :: ""
 } 0
 
 restricted:
 CCTK_REAL positiony "positiony"
 {
-  "*:*" :: ""
+  *:* :: ""
 } 0
 
 restricted:
 CCTK_REAL positionz "positionz"
 {
-  "*:*" :: ""
+  *:* :: ""
 } 0
 
 restricted:
 CCTK_REAL theta "theta"
 {
-  "*:*" :: ""
+  *:* :: ""
 } 0
 
 restricted:
 CCTK_REAL phi "phi"
 {
-  "*:*" :: ""
+  *:* :: ""
 } 0
 
 restricted:
 CCTK_REAL psi "psi"
 {
-  "*:*" :: ""
+  *:* :: ""
 } 0
 
 restricted:
 CCTK_REAL lapsefactor "lapsefactor"
 {
-  "*:*" :: ""
+  *:* :: ""
 } 1
 
 restricted:
 CCTK_REAL boostx "boostx"
 {
-  "*:*" :: ""
+  *:* :: ""
 } 0
 
 restricted:
 CCTK_REAL boosty "boosty"
 {
-  "*:*" :: ""
+  *:* :: ""
 } 0
 
 restricted:
 CCTK_REAL boostz "boostz"
 {
-  "*:*" :: ""
+  *:* :: ""
 } 0
 
 restricted:
 CCTK_REAL shiftaddx "shiftaddx"
 {
-  "*:*" :: ""
+  *:* :: ""
 } 0
 
 restricted:
 CCTK_REAL shiftaddy "shiftaddy"
 {
-  "*:*" :: ""
+  *:* :: ""
 } 0
 
 restricted:
 CCTK_REAL shiftaddz "shiftaddz"
 {
-  "*:*" :: ""
+  *:* :: ""
 } 0
 
 restricted:
 CCTK_REAL M "M"
 {
-  "*:*" :: ""
+  *:* :: ""
 } 0
 
 restricted:
 CCTK_REAL epsilon "epsilon"
 {
-  "*:*" :: ""
+  *:* :: ""
 } 0
 
 restricted:
@@ -166,7 +166,7 @@ CCTK_INT tile_size "Loop tile size"
 } -1
 
 private:
-KEYWORD exact_method "exact_method"
+CCTK_KEYWORD exact_method "exact_method"
 {
   "none" :: ""
   "ModifiedSchwarzschildBL" :: ""
