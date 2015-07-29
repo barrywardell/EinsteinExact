@@ -10,7 +10,7 @@ extern "C" void ShiftedGaugeWave_ParamCheck(CCTK_ARGUMENTS)
   {
     if (((CCTK_EQUALS(initial_data,"ShiftedGaugeWave")) || (CCTK_EQUALS(initial_lapse,"ShiftedGaugeWave")) || (CCTK_EQUALS(initial_shift,"ShiftedGaugeWave")) || (CCTK_EQUALS(initial_dtlapse,"ShiftedGaugeWave")) || (CCTK_EQUALS(initial_dtshift,"ShiftedGaugeWave"))) && ((!CCTK_EQUALS(initial_data,"ShiftedGaugeWave")) || (!CCTK_EQUALS(initial_lapse,"ShiftedGaugeWave")) || (!CCTK_EQUALS(initial_shift,"ShiftedGaugeWave")) || (!CCTK_EQUALS(initial_dtlapse,"ShiftedGaugeWave")) || (!CCTK_EQUALS(initial_dtshift,"ShiftedGaugeWave"))))
     {
-      CCTK_WARN(CCTK_WARN_ABORT, "If one of the parameters ADMBase::initial_data, ADMBase::initial_lapse, ADMBase::initial_shift, ADMBase::initial_dtlapse, and ADMBase::initial_dtshift are set to \"ShiftedGaugeWave\", then all must be set to this value");
+      CCTK_ERROR("If one of the parameters ADMBase::initial_data, ADMBase::initial_lapse, ADMBase::initial_shift, ADMBase::initial_dtlapse, and ADMBase::initial_dtshift are set to \"ShiftedGaugeWave\", then all must be set to this value");
     }
   }
 }
