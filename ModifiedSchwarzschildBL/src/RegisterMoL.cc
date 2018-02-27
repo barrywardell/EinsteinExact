@@ -2,11 +2,12 @@
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "cctk_Arguments_ModifiedSchwarzschildBL.h"
 #include "cctk_Parameters.h"
 
 extern "C" void ModifiedSchwarzschildBL_RegisterVars(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS;
+  DECLARE_CCTK_ARGUMENTS_ModifiedSchwarzschildBL_RegisterVars;
   DECLARE_CCTK_PARAMETERS;
   
   CCTK_INT ierr CCTK_ATTRIBUTE_UNUSED = 0;

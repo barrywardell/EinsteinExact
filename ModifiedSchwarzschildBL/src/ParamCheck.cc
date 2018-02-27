@@ -1,9 +1,10 @@
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "cctk_Arguments_ModifiedSchwarzschildBL.h"
 #include "cctk_Parameters.h"
 extern "C" void ModifiedSchwarzschildBL_ParamCheck(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS;
+  DECLARE_CCTK_ARGUMENTS_ModifiedSchwarzschildBL_ParamCheck;
   DECLARE_CCTK_PARAMETERS;
   
   if (CCTK_MyProc(cctkGH) == 0)

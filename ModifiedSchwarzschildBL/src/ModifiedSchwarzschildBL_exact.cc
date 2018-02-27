@@ -10,6 +10,7 @@
 #include <string.h>
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "cctk_Arguments_ModifiedSchwarzschildBL.h"
 #include "cctk_Parameters.h"
 #include "Kranc.hh"
 #include "Differencing.h"
@@ -20,7 +21,7 @@ namespace ModifiedSchwarzschildBL {
 
 static void ModifiedSchwarzschildBL_exact_Body(const cGH* restrict const cctkGH, const int dir, const int face, const CCTK_REAL normal[3], const CCTK_REAL tangentA[3], const CCTK_REAL tangentB[3], const int imin[3], const int imax[3], const int n_subblock_gfs, CCTK_REAL* restrict const subblock_gfs[])
 {
-  DECLARE_CCTK_ARGUMENTS;
+  DECLARE_CCTK_ARGUMENTS_ModifiedSchwarzschildBL_exact;
   DECLARE_CCTK_PARAMETERS;
   
   /* Include user-supplied include files */
@@ -2149,7 +2150,7 @@ static void ModifiedSchwarzschildBL_exact_Body(const cGH* restrict const cctkGH,
 }
 extern "C" void ModifiedSchwarzschildBL_exact(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS;
+  DECLARE_CCTK_ARGUMENTS_ModifiedSchwarzschildBL_exact;
   DECLARE_CCTK_PARAMETERS;
   
   if (verbose > 1)
