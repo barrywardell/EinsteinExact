@@ -1,9 +1,10 @@
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "cctk_Arguments_KerrSchild.h"
 #include "cctk_Parameters.h"
 extern "C" void KerrSchild_ParamCheck(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS;
+  DECLARE_CCTK_ARGUMENTS_KerrSchild_ParamCheck;
   DECLARE_CCTK_PARAMETERS;
   
   if (CCTK_MyProc(cctkGH) == 0)

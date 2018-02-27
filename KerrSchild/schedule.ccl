@@ -145,6 +145,3 @@ schedule KerrSchild_ParamCheck at PARAMCHECK
   LANG: C
   OPTIONS: global
 } "Check parameter consistency"
-schedule group ApplyBCs as KerrSchild_ApplyBCs in MoL_PostStep after KerrSchild_SelectBoundConds
-{
-} "Apply boundary conditions controlled by thorn Boundary"
