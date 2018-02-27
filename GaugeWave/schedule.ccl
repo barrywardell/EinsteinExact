@@ -122,7 +122,7 @@ if (CCTK_EQUALS(exact_method, "GaugeWave"))
   } "GaugeWave_exact"
 }
 
-schedule GaugeWave_SelectBoundConds in MoL_PostStep
+schedule GaugeWave_SelectBoundConds in Boundary2_Selection
 {
   LANG: C
   OPTIONS: level

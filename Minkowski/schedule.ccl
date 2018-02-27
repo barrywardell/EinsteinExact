@@ -122,7 +122,7 @@ if (CCTK_EQUALS(exact_method, "Minkowski"))
   } "Minkowski_exact"
 }
 
-schedule Minkowski_SelectBoundConds in MoL_PostStep
+schedule Minkowski_SelectBoundConds in Boundary2_Selection
 {
   LANG: C
   OPTIONS: level
