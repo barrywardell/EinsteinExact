@@ -1,6 +1,6 @@
 ActiveThorns = "
   ADMBase
-  Boundary
+  Boundary2
   Carpet
   CarpetIOASCII
   CarpetLib
@@ -47,6 +47,8 @@ Carpet::ghost_size                      = 0
 Carpet::domain_from_coordbase           = "yes"
 Carpet::init_3_timelevels               = "no"
 Carpet::poison_new_timelevels           = yes
+Carpet::use_psync = "yes"
+Carpet::psync_only = "yes"
 
 #############################################################
 # Timers
