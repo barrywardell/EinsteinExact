@@ -1,6 +1,6 @@
 #include "cctk.h"
 #include "cctk_Arguments.h"
-#include "cctk_Arguments_GaugeWave.h"
+#include "cctk_Arguments_Checked.h"
 #include "cctk_Parameters.h"
 extern "C" void GaugeWave_ParamCheck(CCTK_ARGUMENTS)
 {

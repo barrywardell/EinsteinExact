@@ -2,7 +2,7 @@
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
-#include "cctk_Arguments_ModifiedSchwarzschildBL.h"
+#include "cctk_Arguments_Checked.h"
 #include "cctk_Parameters.h"
 #include "Symmetry.h"
 

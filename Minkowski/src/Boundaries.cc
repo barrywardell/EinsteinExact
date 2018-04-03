@@ -1,7 +1,7 @@
 /*  File produced by Kranc */
 
 #include "cctk.h"
-#include "cctk_Arguments_Minkowski.h"
+#include "cctk_Arguments_Checked.h"
 #include "cctk_Parameters.h"
 #include "cctk_Faces.h"
 #include "util_Table.h"
