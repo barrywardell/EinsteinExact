@@ -122,7 +122,7 @@ if (CCTK_EQUALS(exact_method, "ShiftedGaugeWave"))
   } "ShiftedGaugeWave_exact"
 }
 
-schedule ShiftedGaugeWave_SelectBoundConds in Boundary2_Selection
+schedule ShiftedGaugeWave_SelectBoundConds in PreSync_Selection
 {
   LANG: C
   OPTIONS: level
