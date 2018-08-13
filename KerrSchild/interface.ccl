@@ -2,13 +2,12 @@
 
 implements: KerrSchild
 
-inherits:   admbase Boundary2 GenericFD Grid
+inherits:   admbase GenericFD Grid
 
 
 
 USES INCLUDE: loopcontrol.h
 USES INCLUDE: Symmetry.h
-USES INCLUDE: Boundary.h
 
 CCTK_INT FUNCTION MoLRegisterEvolved(CCTK_INT IN EvolvedIndex, CCTK_INT IN RHSIndex)
 USES FUNCTION MoLRegisterEvolved
