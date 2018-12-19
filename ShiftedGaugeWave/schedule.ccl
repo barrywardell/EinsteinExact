@@ -122,7 +122,7 @@ if (CCTK_EQUALS(exact_method, "ShiftedGaugeWave"))
   } "ShiftedGaugeWave_exact"
 }
 
-if(CCTK_ParameterValInt("use_psync","Carpet") == 1) {
+if(CCTK_ParameterValInt("use_psync","Cactus") == 1) {
   schedule ShiftedGaugeWave_SelectBoundConds in PreSync_Selection
   {
     LANG: C
