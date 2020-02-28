@@ -2,6 +2,7 @@
 
 #include "cctk.h"
 #include "cctk_Arguments.h"
+#include "cctk_Arguments_Checked.h"
 #include "cctk_Parameters.h"
 #include "cctk_Faces.h"
 #include "util_Table.h"
@@ -19,7 +20,7 @@
 
 extern "C" void GaugeWave_CheckBoundaries(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS;
+  DECLARE_CCTK_ARGUMENTS_GaugeWave_CheckBoundaries;
   DECLARE_CCTK_PARAMETERS;
   
   return;
@@ -27,7 +28,7 @@ extern "C" void GaugeWave_CheckBoundaries(CCTK_ARGUMENTS)
 
 extern "C" void GaugeWave_SelectBoundConds(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS;
+  DECLARE_CCTK_ARGUMENTS_GaugeWave_SelectBoundConds;
   DECLARE_CCTK_PARAMETERS;
   
   CCTK_INT ierr CCTK_ATTRIBUTE_UNUSED = 0;

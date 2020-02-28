@@ -122,12 +122,23 @@ if (CCTK_EQUALS(exact_method, "GaugeWave"))
   } "GaugeWave_exact"
 }
 
-schedule GaugeWave_SelectBoundConds in MoL_PostStep
-{
-  LANG: C
-  OPTIONS: level
-} "select boundary conditions"
-
+if(CCTK_ParameterValInt("use_psync","Cactus") == 1) {
+  schedule GaugeWave_SelectBoundConds in PreSync_Selection
+  {
+    LANG: C
+    OPTIONS: level
+  } "select boundary conditions"
+} else {
+  schedule GaugeWave_SelectBoundConds in MoL_PostStep
+  {
+    LANG: C
+    OPTIONS: level
+  } "select boundary conditions"
+  
+  schedule group ApplyBCs as GaugeWave_ApplyBCs in MoL_PostStep after GaugeWave_SelectBoundConds
+  {
+  } "Apply boundary conditions controlled by thorn Boundary"
+}
 schedule GaugeWave_CheckBoundaries at BASEGRID
 {
   LANG: C
@@ -145,6 +156,3 @@ schedule GaugeWave_ParamCheck at PARAMCHECK
   LANG: C
   OPTIONS: global
 } "Check parameter consistency"
-schedule group ApplyBCs as GaugeWave_ApplyBCs in MoL_PostStep after GaugeWave_SelectBoundConds
-{
-} "Apply boundary conditions controlled by thorn Boundary"

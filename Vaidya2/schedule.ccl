@@ -122,11 +122,23 @@ if (CCTK_EQUALS(exact_method, "Vaidya2"))
   } "Vaidya2_exact"
 }
 
-schedule Vaidya2_SelectBoundConds in MoL_PostStep
-{
-  LANG: C
-  OPTIONS: level
-} "select boundary conditions"
+if(CCTK_ParameterValInt("use_psync","Cactus") == 1) {
+  schedule Vaidya2_SelectBoundConds in PreSync_Selection
+  {
+    LANG: C
+    OPTIONS: level
+  } "select boundary conditions"
+} else {
+  schedule Vaidya2_SelectBoundConds in MoL_PostStep
+  {
+    LANG: C
+    OPTIONS: level
+  } "select boundary conditions"
+  
+  schedule group ApplyBCs as Vaidya2_ApplyBCs in MoL_PostStep after Vaidya2_SelectBoundConds
+  {
+  } "Apply boundary conditions controlled by thorn Boundary"
+}
 
 schedule Vaidya2_CheckBoundaries at BASEGRID
 {
@@ -145,6 +157,3 @@ schedule Vaidya2_ParamCheck at PARAMCHECK
   LANG: C
   OPTIONS: global
 } "Check parameter consistency"
-schedule group ApplyBCs as Vaidya2_ApplyBCs in MoL_PostStep after Vaidya2_SelectBoundConds
-{
-} "Apply boundary conditions controlled by thorn Boundary"
