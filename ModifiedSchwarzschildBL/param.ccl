@@ -1,5 +1,9 @@
 # File produced by Kranc
 
+shares: cactus
+
+USES BOOLEAN use_psync
+
 
 shares: ADMBase
 
