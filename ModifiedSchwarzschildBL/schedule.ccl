@@ -122,7 +122,7 @@ if (CCTK_EQUALS(exact_method, "ModifiedSchwarzschildBL"))
   } "ModifiedSchwarzschildBL_exact"
 }
 
-if(use_psync == 1) {
+if(use_psync) {
   schedule ModifiedSchwarzschildBL_SelectBoundConds in PreSync_Selection
   {
     LANG: C

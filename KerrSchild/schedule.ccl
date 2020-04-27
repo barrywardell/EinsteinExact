@@ -122,7 +122,7 @@ if (CCTK_EQUALS(exact_method, "KerrSchild"))
   } "KerrSchild_exact"
 }
 
-if(use_psync == 1) {
+if(use_psync) {
   schedule KerrSchild_SelectBoundConds in PreSync_Selection
   {
     LANG: C
