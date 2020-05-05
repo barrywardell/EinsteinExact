@@ -122,23 +122,15 @@ if (CCTK_EQUALS(exact_method, "Minkowski"))
   } "Minkowski_exact"
 }
 
-if(use_psync) {
-  schedule Minkowski_SelectBoundConds in PreSync_Selection
-  {
-    LANG: C
-    OPTIONS: level
-  } "select boundary conditions"
-} else {
-  schedule Minkowski_SelectBoundConds in MoL_PostStep
-  {
-    LANG: C
-    OPTIONS: level
-  } "select boundary conditions"
-  
-  schedule group ApplyBCs as Minkowski_ApplyBCs in MoL_PostStep after Minkowski_SelectBoundConds
-  {
-  } "Apply boundary conditions controlled by thorn Boundary"
-}
+schedule Minkowski_SelectBoundConds in MoL_PostStep
+{
+  LANG: C
+  OPTIONS: level
+} "select boundary conditions"
+
+schedule group ApplyBCs as Minkowski_ApplyBCs in MoL_PostStep after Minkowski_SelectBoundConds
+{
+} "Apply boundary conditions controlled by thorn Boundary"
 
 schedule Minkowski_CheckBoundaries at BASEGRID
 {
