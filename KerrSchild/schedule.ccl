@@ -122,23 +122,15 @@ if (CCTK_EQUALS(exact_method, "KerrSchild"))
   } "KerrSchild_exact"
 }
 
-if(use_psync) {
-  schedule KerrSchild_SelectBoundConds in PreSync_Selection
-  {
-    LANG: C
-    OPTIONS: level
-  } "select boundary conditions"
-} else {
-  schedule KerrSchild_SelectBoundConds in MoL_PostStep
-  {
-    LANG: C
-    OPTIONS: level
-  } "select boundary conditions"
-  
-  schedule group ApplyBCs as KerrSchild_ApplyBCs in MoL_PostStep after KerrSchild_SelectBoundConds
-  {
-  } "Apply boundary conditions controlled by thorn Boundary"
-}
+schedule KerrSchild_SelectBoundConds in MoL_PostStep
+{
+  LANG: C
+  OPTIONS: level
+} "select boundary conditions"
+
+schedule group ApplyBCs as KerrSchild_ApplyBCs in MoL_PostStep after KerrSchild_SelectBoundConds
+{
+} "Apply boundary conditions controlled by thorn Boundary"
 
 schedule KerrSchild_CheckBoundaries at BASEGRID
 {
