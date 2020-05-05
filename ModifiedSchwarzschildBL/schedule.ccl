@@ -122,23 +122,15 @@ if (CCTK_EQUALS(exact_method, "ModifiedSchwarzschildBL"))
   } "ModifiedSchwarzschildBL_exact"
 }
 
-if(use_psync) {
-  schedule ModifiedSchwarzschildBL_SelectBoundConds in PreSync_Selection
-  {
-    LANG: C
-    OPTIONS: level
-  } "select boundary conditions"
-} else {
-  schedule ModifiedSchwarzschildBL_SelectBoundConds in MoL_PostStep
-  {
-    LANG: C
-    OPTIONS: level
-  } "select boundary conditions"
-  
-  schedule group ApplyBCs as ModifiedSchwarzschildBL_ApplyBCs in MoL_PostStep after ModifiedSchwarzschildBL_SelectBoundConds
-  {
-  } "Apply boundary conditions controlled by thorn Boundary"
-}
+schedule ModifiedSchwarzschildBL_SelectBoundConds in MoL_PostStep
+{
+  LANG: C
+  OPTIONS: level
+} "select boundary conditions"
+
+schedule group ApplyBCs as ModifiedSchwarzschildBL_ApplyBCs in MoL_PostStep after ModifiedSchwarzschildBL_SelectBoundConds
+{
+} "Apply boundary conditions controlled by thorn Boundary"
 
 schedule ModifiedSchwarzschildBL_CheckBoundaries at BASEGRID
 {
