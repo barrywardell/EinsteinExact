@@ -6,7 +6,11 @@
 
 extern "C" void KerrSchild_RegisterVars(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_KerrSchild_RegisterVars;
+  #ifdef DECLARE_CCTK_ARGUMENTS_KerrSchild_RegisterVars
+  DECLARE_CCTK_ARGUMENTS_CHECKED(KerrSchild_RegisterVars);
+  #else
+  DECLARE_CCTK_ARGUMENTS;
+  #endif
   DECLARE_CCTK_PARAMETERS;
   
   CCTK_INT ierr CCTK_ATTRIBUTE_UNUSED = 0;

@@ -20,7 +20,7 @@ namespace ShiftedGaugeWave {
 
 static void ShiftedGaugeWave_initial_Body(const cGH* restrict const cctkGH, const int dir, const int face, const CCTK_REAL normal[3], const CCTK_REAL tangentA[3], const CCTK_REAL tangentB[3], const int imin[3], const int imax[3], const int n_subblock_gfs, CCTK_REAL* restrict const subblock_gfs[])
 {
-  DECLARE_CCTK_ARGUMENTS_ShiftedGaugeWave_initial;
+  DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
   
   /* Include user-supplied include files */
@@ -2023,7 +2023,11 @@ static void ShiftedGaugeWave_initial_Body(const cGH* restrict const cctkGH, cons
 }
 extern "C" void ShiftedGaugeWave_initial(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_ShiftedGaugeWave_initial;
+  #ifdef DECLARE_CCTK_ARGUMENTS_ShiftedGaugeWave_initial
+  DECLARE_CCTK_ARGUMENTS_CHECKED(ShiftedGaugeWave_initial);
+  #else
+  DECLARE_CCTK_ARGUMENTS;
+  #endif
   DECLARE_CCTK_PARAMETERS;
   
   if (verbose > 1)

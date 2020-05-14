@@ -7,7 +7,11 @@
 
 extern "C" void KerrSchild_RegisterSymmetries(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_KerrSchild_RegisterSymmetries;
+  #ifdef DECLARE_CCTK_ARGUMENTS_KerrSchild_RegisterSymmetries
+  DECLARE_CCTK_ARGUMENTS_CHECKED(KerrSchild_RegisterSymmetries);
+  #else
+  DECLARE_CCTK_ARGUMENTS;
+  #endif
   DECLARE_CCTK_PARAMETERS;
   
   /* array holding symmetry definitions */

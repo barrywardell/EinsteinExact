@@ -3,7 +3,11 @@
 #include "cctk_Parameters.h"
 extern "C" void ShiftedGaugeWave_ParamCheck(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_ShiftedGaugeWave_ParamCheck;
+  #ifdef DECLARE_CCTK_ARGUMENTS_ShiftedGaugeWave_ParamCheck
+  DECLARE_CCTK_ARGUMENTS_CHECKED(ShiftedGaugeWave_ParamCheck);
+  #else
+  DECLARE_CCTK_ARGUMENTS;
+  #endif
   DECLARE_CCTK_PARAMETERS;
   
   if (CCTK_MyProc(cctkGH) == 0)

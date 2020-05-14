@@ -7,7 +7,11 @@
 
 extern "C" void Vaidya2_RegisterSymmetries(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_Vaidya2_RegisterSymmetries;
+  #ifdef DECLARE_CCTK_ARGUMENTS_Vaidya2_RegisterSymmetries
+  DECLARE_CCTK_ARGUMENTS_CHECKED(Vaidya2_RegisterSymmetries);
+  #else
+  DECLARE_CCTK_ARGUMENTS;
+  #endif
   DECLARE_CCTK_PARAMETERS;
   
   /* array holding symmetry definitions */

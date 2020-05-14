@@ -6,7 +6,11 @@
 
 extern "C" void GaugeWave_RegisterVars(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_GaugeWave_RegisterVars;
+  #ifdef DECLARE_CCTK_ARGUMENTS_GaugeWave_RegisterVars
+  DECLARE_CCTK_ARGUMENTS_CHECKED(GaugeWave_RegisterVars);
+  #else
+  DECLARE_CCTK_ARGUMENTS;
+  #endif
   DECLARE_CCTK_PARAMETERS;
   
   CCTK_INT ierr CCTK_ATTRIBUTE_UNUSED = 0;

@@ -6,7 +6,11 @@
 
 extern "C" void Minkowski_RegisterVars(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_Minkowski_RegisterVars;
+  #ifdef DECLARE_CCTK_ARGUMENTS_Minkowski_RegisterVars
+  DECLARE_CCTK_ARGUMENTS_CHECKED(Minkowski_RegisterVars);
+  #else
+  DECLARE_CCTK_ARGUMENTS;
+  #endif
   DECLARE_CCTK_PARAMETERS;
   
   CCTK_INT ierr CCTK_ATTRIBUTE_UNUSED = 0;

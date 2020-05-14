@@ -19,7 +19,11 @@
 
 extern "C" void KerrSchild_CheckBoundaries(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_KerrSchild_CheckBoundaries;
+#ifdef DECLARE_CCTK_ARGUMENTS_KerrSchild_CheckBoundaries
+  DECLARE_CCTK_ARGUMENTS_CHECKED(KerrSchild_CheckBoundaries);
+#else
+  DECLARE_CCTK_ARGUMENTS;
+#endif
   DECLARE_CCTK_PARAMETERS;
   
   return;
@@ -27,7 +31,11 @@ extern "C" void KerrSchild_CheckBoundaries(CCTK_ARGUMENTS)
 
 extern "C" void KerrSchild_SelectBoundConds(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_KerrSchild_SelectBoundConds;
+#ifdef DECLARE_CCTK_ARGUMENTS_KerrSchild_SelectBoundConds
+  DECLARE_CCTK_ARGUMENTS_CHECKED(KerrSchild_SelectBoundConds);
+#else
+  DECLARE_CCTK_ARGUMENTS;
+#endif
   DECLARE_CCTK_PARAMETERS;
   
   CCTK_INT ierr CCTK_ATTRIBUTE_UNUSED = 0;

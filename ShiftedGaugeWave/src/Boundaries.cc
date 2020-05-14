@@ -19,7 +19,11 @@
 
 extern "C" void ShiftedGaugeWave_CheckBoundaries(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_ShiftedGaugeWave_CheckBoundaries;
+#ifdef DECLARE_CCTK_ARGUMENTS_ShiftedGaugeWave_CheckBoundaries
+  DECLARE_CCTK_ARGUMENTS_CHECKED(ShiftedGaugeWave_CheckBoundaries);
+#else
+  DECLARE_CCTK_ARGUMENTS;
+#endif
   DECLARE_CCTK_PARAMETERS;
   
   return;
@@ -27,7 +31,11 @@ extern "C" void ShiftedGaugeWave_CheckBoundaries(CCTK_ARGUMENTS)
 
 extern "C" void ShiftedGaugeWave_SelectBoundConds(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_ShiftedGaugeWave_SelectBoundConds;
+#ifdef DECLARE_CCTK_ARGUMENTS_ShiftedGaugeWave_SelectBoundConds
+  DECLARE_CCTK_ARGUMENTS_CHECKED(ShiftedGaugeWave_SelectBoundConds);
+#else
+  DECLARE_CCTK_ARGUMENTS;
+#endif
   DECLARE_CCTK_PARAMETERS;
   
   CCTK_INT ierr CCTK_ATTRIBUTE_UNUSED = 0;

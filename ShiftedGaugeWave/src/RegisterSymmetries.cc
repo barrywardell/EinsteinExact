@@ -7,7 +7,11 @@
 
 extern "C" void ShiftedGaugeWave_RegisterSymmetries(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_ShiftedGaugeWave_RegisterSymmetries;
+  #ifdef DECLARE_CCTK_ARGUMENTS_ShiftedGaugeWave_RegisterSymmetries
+  DECLARE_CCTK_ARGUMENTS_CHECKED(ShiftedGaugeWave_RegisterSymmetries);
+  #else
+  DECLARE_CCTK_ARGUMENTS;
+  #endif
   DECLARE_CCTK_PARAMETERS;
   
   /* array holding symmetry definitions */

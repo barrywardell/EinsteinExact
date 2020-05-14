@@ -128,10 +128,6 @@ schedule ShiftedGaugeWave_SelectBoundConds in MoL_PostStep
   OPTIONS: level
 } "select boundary conditions"
 
-schedule group ApplyBCs as ShiftedGaugeWave_ApplyBCs in MoL_PostStep after ShiftedGaugeWave_SelectBoundConds
-{
-} "Apply boundary conditions controlled by thorn Boundary"
-
 schedule ShiftedGaugeWave_CheckBoundaries at BASEGRID
 {
   LANG: C
@@ -149,3 +145,6 @@ schedule ShiftedGaugeWave_ParamCheck at PARAMCHECK
   LANG: C
   OPTIONS: global
 } "Check parameter consistency"
+schedule group ApplyBCs as ShiftedGaugeWave_ApplyBCs in MoL_PostStep after ShiftedGaugeWave_SelectBoundConds
+{
+} "Apply boundary conditions controlled by thorn Boundary"

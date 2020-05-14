@@ -3,7 +3,11 @@
 #include "cctk_Parameters.h"
 extern "C" void ModifiedSchwarzschildBL_ParamCheck(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_ModifiedSchwarzschildBL_ParamCheck;
+  #ifdef DECLARE_CCTK_ARGUMENTS_ModifiedSchwarzschildBL_ParamCheck
+  DECLARE_CCTK_ARGUMENTS_CHECKED(ModifiedSchwarzschildBL_ParamCheck);
+  #else
+  DECLARE_CCTK_ARGUMENTS;
+  #endif
   DECLARE_CCTK_PARAMETERS;
   
   if (CCTK_MyProc(cctkGH) == 0)

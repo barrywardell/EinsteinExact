@@ -6,7 +6,11 @@
 
 extern "C" void Vaidya2_RegisterVars(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_Vaidya2_RegisterVars;
+  #ifdef DECLARE_CCTK_ARGUMENTS_Vaidya2_RegisterVars
+  DECLARE_CCTK_ARGUMENTS_CHECKED(Vaidya2_RegisterVars);
+  #else
+  DECLARE_CCTK_ARGUMENTS;
+  #endif
   DECLARE_CCTK_PARAMETERS;
   
   CCTK_INT ierr CCTK_ATTRIBUTE_UNUSED = 0;

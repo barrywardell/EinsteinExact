@@ -20,7 +20,7 @@ namespace Minkowski {
 
 static void Minkowski_exact_Body(const cGH* restrict const cctkGH, const int dir, const int face, const CCTK_REAL normal[3], const CCTK_REAL tangentA[3], const CCTK_REAL tangentB[3], const int imin[3], const int imax[3], const int n_subblock_gfs, CCTK_REAL* restrict const subblock_gfs[])
 {
-  DECLARE_CCTK_ARGUMENTS_Minkowski_exact;
+  DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
   
   /* Include user-supplied include files */
@@ -2035,7 +2035,11 @@ static void Minkowski_exact_Body(const cGH* restrict const cctkGH, const int dir
 }
 extern "C" void Minkowski_exact(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_Minkowski_exact;
+  #ifdef DECLARE_CCTK_ARGUMENTS_Minkowski_exact
+  DECLARE_CCTK_ARGUMENTS_CHECKED(Minkowski_exact);
+  #else
+  DECLARE_CCTK_ARGUMENTS;
+  #endif
   DECLARE_CCTK_PARAMETERS;
   
   if (verbose > 1)

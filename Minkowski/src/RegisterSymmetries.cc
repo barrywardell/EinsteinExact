@@ -7,7 +7,11 @@
 
 extern "C" void Minkowski_RegisterSymmetries(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_Minkowski_RegisterSymmetries;
+  #ifdef DECLARE_CCTK_ARGUMENTS_Minkowski_RegisterSymmetries
+  DECLARE_CCTK_ARGUMENTS_CHECKED(Minkowski_RegisterSymmetries);
+  #else
+  DECLARE_CCTK_ARGUMENTS;
+  #endif
   DECLARE_CCTK_PARAMETERS;
   
   /* array holding symmetry definitions */

@@ -19,7 +19,11 @@
 
 extern "C" void Vaidya2_CheckBoundaries(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_Vaidya2_CheckBoundaries;
+#ifdef DECLARE_CCTK_ARGUMENTS_Vaidya2_CheckBoundaries
+  DECLARE_CCTK_ARGUMENTS_CHECKED(Vaidya2_CheckBoundaries);
+#else
+  DECLARE_CCTK_ARGUMENTS;
+#endif
   DECLARE_CCTK_PARAMETERS;
   
   return;
@@ -27,7 +31,11 @@ extern "C" void Vaidya2_CheckBoundaries(CCTK_ARGUMENTS)
 
 extern "C" void Vaidya2_SelectBoundConds(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_Vaidya2_SelectBoundConds;
+#ifdef DECLARE_CCTK_ARGUMENTS_Vaidya2_SelectBoundConds
+  DECLARE_CCTK_ARGUMENTS_CHECKED(Vaidya2_SelectBoundConds);
+#else
+  DECLARE_CCTK_ARGUMENTS;
+#endif
   DECLARE_CCTK_PARAMETERS;
   
   CCTK_INT ierr CCTK_ATTRIBUTE_UNUSED = 0;

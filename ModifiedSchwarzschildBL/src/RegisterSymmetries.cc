@@ -7,7 +7,11 @@
 
 extern "C" void ModifiedSchwarzschildBL_RegisterSymmetries(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_ModifiedSchwarzschildBL_RegisterSymmetries;
+  #ifdef DECLARE_CCTK_ARGUMENTS_ModifiedSchwarzschildBL_RegisterSymmetries
+  DECLARE_CCTK_ARGUMENTS_CHECKED(ModifiedSchwarzschildBL_RegisterSymmetries);
+  #else
+  DECLARE_CCTK_ARGUMENTS;
+  #endif
   DECLARE_CCTK_PARAMETERS;
   
   /* array holding symmetry definitions */

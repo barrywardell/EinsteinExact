@@ -3,7 +3,11 @@
 #include "cctk_Parameters.h"
 extern "C" void Vaidya2_ParamCheck(CCTK_ARGUMENTS)
 {
-  DECLARE_CCTK_ARGUMENTS_Vaidya2_ParamCheck;
+  #ifdef DECLARE_CCTK_ARGUMENTS_Vaidya2_ParamCheck
+  DECLARE_CCTK_ARGUMENTS_CHECKED(Vaidya2_ParamCheck);
+  #else
+  DECLARE_CCTK_ARGUMENTS;
+  #endif
   DECLARE_CCTK_PARAMETERS;
   
   if (CCTK_MyProc(cctkGH) == 0)
