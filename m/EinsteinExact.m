@@ -463,4 +463,7 @@ thorns = spacetimes /. thornNameRules;
 MapThread[idThorn, {spacetimes, thorns}];
 
 spacetimeDescriptions = StringJoin[ToString /@ MapThread[docGenerate, {spacetimes, thorns}]];
-Splice["documentation.mtex", "../doc/documentation.tex", FormatType -> OutputForm, PageWidth -> Infinity];
+(* MMA 12.1 removes Splice in favor of FileTemplate *)
+(*Splice["documentation.mtex", "../doc/documentation.tex", FormatType -> OutputForm, PageWidth -> Infinity]*)
+DeleteFile["../doc/documentation.tex"];
+FileTemplateApply[FileTemplate["documentation.mtex"], "../doc/documentation.tex"];
