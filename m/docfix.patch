@@ -6,9 +6,9 @@ index 31ef3cc..54e33b7 100644
  \left(
  \begin{array}{cccc}
   -1 & 0 & 0 & 0 \\
-- 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \left(\frac{\left(\cos \left(\frac{4 \pi  \min \left(\frac{M}{2},r\right)}{M}\right)-1\right) M^2}{16 \pi ^2}+\frac{1}{2} \min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 & 0 & 0 \\
-- 0 & 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \left(\frac{\left(\cos \left(\frac{4 \pi  \min \left(\frac{M}{2},r\right)}{M}\right)-1\right) M^2}{16 \pi ^2}+\frac{1}{2} \min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 & 0 \\
-- 0 & 0 & 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \left(\frac{\left(\cos \left(\frac{4 \pi  \min \left(\frac{M}{2},r\right)}{M}\right)-1\right) M^2}{16 \pi ^2}+\frac{1}{2} \min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 \\
+- 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \left(\frac{M^2 \left(\cos \left(\frac{4 \pi  \min \left(\frac{M}{2},r\right)}{M}\right)-1\right)}{16 \pi ^2}+\frac{1}{2} \min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 & 0 & 0 \\
+- 0 & 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \left(\frac{M^2 \left(\cos \left(\frac{4 \pi  \min \left(\frac{M}{2},r\right)}{M}\right)-1\right)}{16 \pi ^2}+\frac{1}{2} \min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 & 0 \\
+- 0 & 0 & 0 & \left(\frac{4 \min \left(\frac{M}{2},r\right)-\frac{8 \left(\frac{M^2 \left(\cos \left(\frac{4 \pi  \min \left(\frac{M}{2},r\right)}{M}\right)-1\right)}{16 \pi ^2}+\frac{1}{2} \min \left(\frac{M}{2},r\right)^2\right)}{M}}{2 r}+1\right)^4 \\
 -\end{array}
 -\right)
 + 0 & \left(1+\frac{M(r)}{2 r}\right)^4 & 0 & 0 \\
