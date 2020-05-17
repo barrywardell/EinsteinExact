@@ -6,6 +6,7 @@
 #include "cctk_Faces.h"
 #include "util_Table.h"
 #include "Symmetry.h"
+#include "Kranc.hh"
 
 
 /* the boundary treatment is split into 3 steps:    */
