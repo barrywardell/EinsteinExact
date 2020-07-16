@@ -28,7 +28,7 @@ CoordBase::boundary_size_x_lower = 2
 CoordBase::boundary_size_y_lower = 2
 CoordBase::boundary_size_z_lower = 2
 
-ActiveThorns = "ADMBase ADMCoupling ADMMacros CoordGauge SpaceMask StaticConformal TmunuBase"
+ActiveThorns = "ADMBase ADMMacros CoordGauge SpaceMask StaticConformal TmunuBase"
 SpaceMask::use_mask = yes
 
 ActiveThorns = "KerrSchild"
