@@ -28,7 +28,7 @@ CoordBase::boundary_size_x_lower = 2
 CoordBase::boundary_size_y_lower = 2
 CoordBase::boundary_size_z_lower = 2
 
-ActiveThorns = "ADMBase ADMMacros CoordGauge SpaceMask StaticConformal TmunuBase"
+ActiveThorns = "ADMBase CoordGauge SpaceMask StaticConformal TmunuBase"
 SpaceMask::use_mask = yes
 
 ActiveThorns = "KerrSchild"
@@ -71,7 +71,7 @@ ML_BSSN::ML_dtlapse_bound    = "none"
 ML_BSSN::ML_shift_bound      = "none"
 ML_BSSN::ML_dtshift_bound    = "none"
 
-ActiveThorns = "ADMConstraints"
+ActiveThorns = "ML_ADMConstraints"
 
 ActiveThorns = "AHFinderDirect"
 AHFinderDirect::output_OpenDX_control_files    = no
@@ -84,7 +84,7 @@ ActiveThorns = "IOBasic"
 IOBasic::outInfo_every      = 1
 IOBasic::outInfo_reductions = "norm2"
 IOBasic::outInfo_vars       = "
-        ADMConstraints::ham
+        ML_ADMConstraints::ml_ham
         ADMBase::gxx
 "
 
@@ -95,8 +95,8 @@ IOBasic::outScalar_vars       = "
         ADMBase::curv
         ADMBase::lapse
         ADMBase::shift
-        ADMConstraints::hamiltonian
-        ADMConstraints::momentum
+        ML_ADMConstraints::ml_ham
+        ML_ADMConstraints::ml_mom
         SpaceMask::mask
 "
 
@@ -107,7 +107,7 @@ IOASCII::out1D_vars  = "
         ADMBase::curv
         ADMBase::lapse
         ADMBase::shift
-        ADMConstraints::hamiltonian
-        ADMConstraints::momentum
+        ML_ADMConstraints::ml_ham
+        ML_ADMConstraints::ml_mom
         SpaceMask::mask
 "
