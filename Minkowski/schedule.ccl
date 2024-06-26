@@ -28,9 +28,6 @@ if (CCTK_EQUALS(initial_data, "Minkowski"))
   schedule Minkowski_initial in ADMBase_InitialData
   {
     LANG: C
-    READS: grid::x(Everywhere)
-    READS: grid::y(Everywhere)
-    READS: grid::z(Everywhere)
     WRITES: admbase::alp(Everywhere)
     WRITES: admbase::betax(Everywhere)
     WRITES: admbase::betay(Everywhere)
@@ -59,9 +56,6 @@ if (CCTK_EQUALS(evolution_method, "Minkowski"))
   schedule Minkowski_always at CCTK_PRESTEP
   {
     LANG: C
-    READS: grid::x(Everywhere)
-    READS: grid::y(Everywhere)
-    READS: grid::z(Everywhere)
     WRITES: admbase::alp(Everywhere)
     WRITES: admbase::betax(Everywhere)
     WRITES: admbase::betay(Everywhere)
@@ -96,9 +90,6 @@ if (CCTK_EQUALS(exact_method, "Minkowski"))
     READS: admbase::gyy(Everywhere)
     READS: admbase::gyz(Everywhere)
     READS: admbase::gzz(Everywhere)
-    READS: grid::x(Everywhere)
-    READS: grid::y(Everywhere)
-    READS: grid::z(Everywhere)
     WRITES: Minkowski::alpExact(Everywhere)
     WRITES: Minkowski::betaExact1(Everywhere)
     WRITES: Minkowski::betaExact2(Everywhere)
